@@ -196,21 +196,22 @@ select.inp{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.
 
 /* ── LOCK ─────────────────────────────── */
 (function(){
-  function h(s){var n=0;for(var i=0;i<s.length;i++){n=((n<<5)-n)+s.charCodeAt(i);n|=0;}return Math.abs(n).toString(36);}
-  var T=h('Dooby@112');
+  // Hash of 'Dooby@112' = 2ycez1 (pre-computed, avoids any runtime hash mismatch)
+  var TARGET='2ycez1';
+  function h(s){var n=0;for(var i=0;i<s.length;i++){n=((n<<5)-n)+s.charCodeAt(i);n=n|0;}return Math.abs(n).toString(36);}
   if(sessionStorage.getItem('dla')==='1'){document.getElementById('LS').className='gone';}
   document.getElementById('LI').addEventListener('keydown',function(e){if(e.key==='Enter')tryUnlock();});
   window.tryUnlock=function(){
     var v=document.getElementById('LI').value;
-    if(h(v)===T){
+    if(h(v)===TARGET){
       sessionStorage.setItem('dla','1');
       var ls=document.getElementById('LS');
       ls.style.opacity='0';ls.style.transition='opacity .3s';
       setTimeout(function(){ls.className='gone';},300);
     } else {
-      document.getElementById('LE').textContent='Incorrect password';
+      document.getElementById('LE').textContent='Incorrect password — try again';
       document.getElementById('LI').value='';
-      setTimeout(function(){document.getElementById('LE').textContent='';},2000);
+      setTimeout(function(){document.getElementById('LE').textContent='';},2500);
     }
   };
 })();
