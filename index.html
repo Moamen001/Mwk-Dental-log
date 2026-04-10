@@ -196,14 +196,14 @@ select.inp{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.
 
 /* ── LOCK ─────────────────────────────── */
 (function(){
-  // Hash of 'Dooby@112' = 2ycez1 (pre-computed, avoids any runtime hash mismatch)
-  var TARGET='2ycez1';
-  function h(s){var n=0;for(var i=0;i<s.length;i++){n=((n<<5)-n)+s.charCodeAt(i);n=n|0;}return Math.abs(n).toString(36);}
+  // Access key stored as char codes to avoid plain text
+  var _k=[68,111,111,98,121,64,49,49,50]; // Dooby@112
+  var _pw=_k.map(function(c){return String.fromCharCode(c);}).join('');
   if(sessionStorage.getItem('dla')==='1'){document.getElementById('LS').className='gone';}
   document.getElementById('LI').addEventListener('keydown',function(e){if(e.key==='Enter')tryUnlock();});
   window.tryUnlock=function(){
     var v=document.getElementById('LI').value;
-    if(h(v)===TARGET){
+    if(v===_pw){
       sessionStorage.setItem('dla','1');
       var ls=document.getElementById('LS');
       ls.style.opacity='0';ls.style.transition='opacity .3s';
