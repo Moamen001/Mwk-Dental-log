@@ -265,8 +265,21 @@ function toast(msg){
 var KP='dl_p3',KA='dl_a3';
 function lsGet(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;}}
 function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){toast('Storage full');}}
-var P=lsGet(KP,{});
-var A=lsGet(KA,{});
+// Migrate from any previous key version — data is never lost
+function migrateKey(newKey,oldKeys,def){
+  var existing=lsGet(newKey,null);
+  if(existing&&Object.keys(existing).length>0)return existing;
+  for(var i=0;i<oldKeys.length;i++){
+    var old=lsGet(oldKeys[i],null);
+    if(old&&Object.keys(old).length>0){
+      lsSet(newKey,old);
+      return old;
+    }
+  }
+  return def;
+}
+var P=migrateKey(KP,['dl_p2','dl_patients_v1','dl_patients'],{});
+var A=migrateKey(KA,['dl_a2','dl_appts_v1','dl_appts'],{});
 function saveAll(){lsSet(KP,P);lsSet(KA,A);}
 
 /* ── DATA ─────────────────────────────── */
