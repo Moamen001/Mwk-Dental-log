@@ -133,15 +133,17 @@ select.inp{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.
   font-size:.82rem;font-weight:600;z-index:1100;display:none;
   white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,.3);pointer-events:none}
 #toast.on{display:block;animation:popin .2s ease}
-/* Emoji picker */
-.epdrop{position:absolute;top:62px;left:-50px;background:var(--warm);border:1.5px solid var(--ln);
-  border-radius:14px;box-shadow:0 10px 36px rgba(0,0,0,.16);z-index:950;width:248px;display:none}
-.epdrop.on{display:block;animation:popin .17s ease}
-.epbtn{width:36px;height:36px;font-size:1.2rem;border-radius:8px;display:flex;align-items:center;
-  justify-content:center;cursor:pointer;border:2px solid transparent;transition:background .1s;
+/* Emoji picker modal */
+#ep-modal{position:fixed;top:0;left:0;right:0;bottom:0;z-index:1000;
+  background:rgba(5,12,8,.55);display:none;align-items:flex-end;justify-content:center}
+#ep-modal.on{display:flex;animation:popin .18s ease}
+#ep-sheet{background:var(--cream);border-radius:22px 22px 0 0;width:100%;max-width:500px;
+  padding-bottom:env(safe-area-inset-bottom);max-height:78vh;display:flex;flex-direction:column}
+.epbtn{width:44px;height:44px;font-size:1.45rem;border-radius:10px;display:flex;align-items:center;
+  justify-content:center;cursor:pointer;border:2px solid transparent;transition:all .1s;
   background:none;-webkit-tap-highlight-color:transparent}
 .epbtn:active{background:var(--parch)}
-.epbtn.sel{border-color:var(--F);background:rgba(15,35,24,.06)}
+.epbtn.sel{border-color:var(--F);background:rgba(15,35,24,.08)}
 /* Visit counter */
 .vc-btn{width:36px;height:36px;border-radius:50%;background:var(--parch);border:1.5px solid var(--ln);
   font-size:1.15rem;font-weight:700;color:var(--slate);display:flex;align-items:center;
@@ -178,6 +180,16 @@ select.inp{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.
 <div id="RP"></div>
 <div id="CF"></div>
 <div id="toast"></div>
+<div id="ep-modal" onclick="if(event.target===document.getElementById('ep-modal'))closeEpModal()">
+  <div id="ep-sheet">
+    <div style="padding:14px 16px 10px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--ln);flex-shrink:0">
+      <div style="font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--slate)">Choose Avatar</div>
+      <button onclick="closeEpModal()" style="width:30px;height:30px;border-radius:50%;background:var(--parch);font-size:1rem;color:var(--slate);display:flex;align-items:center;justify-content:center;cursor:pointer;border:none">x</button>
+    </div>
+    <div id="ep-body" style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px"></div>
+  </div>
+</div>
+
 
 <script>
 'use strict';
@@ -215,6 +227,16 @@ var PC={
   'Emergency Treatment':'#B91C1C','Prescription':'#64748B'
 };
 var TX=Object.keys(PC);
+var EMOJI_CATS=[
+  {l:'Dental',e:['🦷','🦴','💉','🩺','🩻','🩹','💊','🔬','🩸','🧬','🏥','🫁']},
+  {l:'Babies & Kids',e:['👶','🧒','👦','👧','🍼','🐣','🎀','🎈','🧸','⭐','🌟','🎠']},
+  {l:'Adults',e:['🧑','👨','👩','🧔','👱','👱‍♀️','🧑‍🦰','🧑‍🦱','🧑‍🦳','🧑‍🦲','👲','🧕']},
+  {l:'Elderly',e:['👴','👵','🧓','👨‍🦳','👩‍🦳','👨‍🦲','👩‍🦲']},
+  {l:'Medical',e:['👨‍⚕️','👩‍⚕️','🧑‍⚕️','👨‍🔬','👩‍🔬','💪','🤝','🫶','🫀','🧠']},
+  {l:'Expressions',e:['😁','😬','😷','🤕','🤒','😰','😨','😮','🥴','😵','🤓','😎','🤧','😴','🥱','😇']},
+  {l:'Animals',e:['🐣','🐧','🦁','🐯','🐻','🦊','🐼','🐨','🦄','🐙','🦋','🐬']},
+  {l:'Symbols',e:['⭐','🌟','💎','👑','🏆','🎯','❤️','💚','💙','🧡','💜','🖤']}
+];
 var EMOJIS=['🦷','😁','😬','👶','👦','👧','🧑','👨','👩','👴','👵','🧓','👨‍⚕️','👩‍⚕️','🤕','😷','🤓','😎','🐣','⭐','💎','👑'];
 
 /* ── UTILS ────────────────────────────── */
@@ -265,21 +287,60 @@ function toast(msg){
 var KP='dl_p3',KA='dl_a3';
 function lsGet(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;}}
 function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){toast('Storage full');}}
-// Migrate from any previous key version — data is never lost
-function migrateKey(newKey,oldKeys,def){
-  var existing=lsGet(newKey,null);
-  if(existing&&Object.keys(existing).length>0)return existing;
-  for(var i=0;i<oldKeys.length;i++){
-    var old=lsGet(oldKeys[i],null);
-    if(old&&Object.keys(old).length>0){
-      lsSet(newKey,old);
-      return old;
+// Scan ALL localStorage keys to recover any patient/appointment data
+function recoverData(){
+  var patients={},appts={};
+  try{
+    for(var i=0;i<localStorage.length;i++){
+      var k=localStorage.key(i);
+      if(!k)continue;
+      try{
+        var val=JSON.parse(localStorage.getItem(k));
+        if(!val||typeof val!=='object')continue;
+        // Detect patient maps: objects whose values have a 'name' and 'visits' field
+        if(!Array.isArray(val)){
+          var keys=Object.keys(val);
+          if(keys.length>0){
+            var first=val[keys[0]];
+            if(first&&(first.name!==undefined||first.visits!==undefined||first.patientName!==undefined)){
+              // looks like patients
+              Object.assign(patients,val);
+              continue;
+            }
+            // Detect appointment maps: objects whose values are arrays of appointment objects
+            var firstVal=val[keys[0]];
+            if(Array.isArray(firstVal)&&firstVal.length>0&&firstVal[0].time!==undefined){
+              Object.assign(appts,val);
+              continue;
+            }
+          }
+        }
+      }catch(e2){}
     }
-  }
-  return def;
+  }catch(e){}
+  return {patients:patients,appts:appts};
 }
-var P=migrateKey(KP,['dl_p2','dl_patients_v1','dl_patients'],{});
-var A=migrateKey(KA,['dl_a2','dl_appts_v1','dl_appts'],{});
+var P={},A={};
+// First try known keys
+var _knownPKeys=['dl_p3','dl_p2','dl_patients_v1','dl_patients'];
+var _knownAKeys=['dl_a3','dl_a2','dl_appts_v1','dl_appts'];
+var _foundP=false,_foundA=false;
+for(var _i=0;_i<_knownPKeys.length;_i++){
+  var _v=lsGet(_knownPKeys[_i],null);
+  if(_v&&Object.keys(_v).length>0){P=_v;_foundP=true;break;}
+}
+for(var _i=0;_i<_knownAKeys.length;_i++){
+  var _v=lsGet(_knownAKeys[_i],null);
+  if(_v&&Object.keys(_v).length>0){A=_v;_foundA=true;break;}
+}
+// If still empty, scan everything
+if(!_foundP||!_foundA){
+  var _recovered=recoverData();
+  if(!_foundP&&Object.keys(_recovered.patients).length>0){P=_recovered.patients;}
+  if(!_foundA&&Object.keys(_recovered.appts).length>0){A=_recovered.appts;}
+}
+// Always save under current key so future loads are instant
+lsSet(KP,P);lsSet(KA,A);
 function saveAll(){lsSet(KP,P);lsSet(KA,A);}
 
 /* ── DATA ─────────────────────────────── */
@@ -1003,14 +1064,11 @@ function buildPatPanel(){
     +'<div style="margin-bottom:20px"><div class="sbar">👤 Patient Information</div>'
     +'<div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:14px">'
     +'<div style="position:relative;flex-shrink:0">'
-    +'<div id="pp-av" onclick="document.getElementById(\'pp-ep\').classList.toggle(\'on\')" style="width:54px;height:54px;border-radius:50%;background:'+(f.emoji?'var(--parch)':(f.name&&ini(f.name)!=='?'?FOREST:'var(--parch)'))+';color:'+(f.emoji?'inherit':(f.name&&ini(f.name)!=='?'?'#fff':'var(--mist)'))+';display:flex;align-items:center;justify-content:center;font-size:'+(f.emoji?'1.6rem':'.88rem')+';font-weight:700;border:'+(f.emoji?'1.5px solid var(--ln)':'none')+';cursor:pointer;position:relative">'
+    +'<div id="pp-av" onclick=\"openEpModal()\" style="width:54px;height:54px;border-radius:50%;background:'+(f.emoji?'var(--parch)':(f.name&&ini(f.name)!=='?'?FOREST:'var(--parch)'))+';color:'+(f.emoji?'inherit':(f.name&&ini(f.name)!=='?'?'#fff':'var(--mist)'))+';display:flex;align-items:center;justify-content:center;font-size:'+(f.emoji?'1.6rem':'.88rem')+';font-weight:700;border:'+(f.emoji?'1.5px solid var(--ln)':'none')+';cursor:pointer;position:relative">'
     +(f.emoji?esc(f.emoji):(f.name&&ini(f.name)!=='?'?ini(f.name):'🦷'))
     +'<div style="position:absolute;bottom:0;right:0;width:17px;height:17px;background:'+GOLD+';border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.55rem;color:'+FOREST+';font-weight:700;border:2px solid var(--warm)">✏</div>'
     +'</div>'
-    +'<div id="pp-ep" class="epdrop">'
-    +'<div style="padding:8px 10px 2px;font-size:.65rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--slate)">Choose Avatar</div>'
-    +'<div style="display:grid;grid-template-columns:repeat(6,1fr);gap:4px;padding:8px">'+epH+'</div>'
-    +'</div></div>'
+    +'</div>'
     +'<div style="flex:1"><label class="lbl">Full Name</label>'
     +'<input class="inp" id="pp-name" value="'+esc(f.name||'')+'" placeholder="Patient full name" oninput="ppName(this.value)" style="font-size:16px"></div>'
     +'</div>'
@@ -1029,13 +1087,7 @@ function buildPatPanel(){
     +'<button class="bgold" onclick="savePat()" style="flex:1;padding:12px;font-size:.88rem">Save Patient</button>'
     +'</div>';
 
-  setTimeout(function(){
-    document.addEventListener('click',function epClose(e){
-      var ep=document.getElementById('pp-ep');
-      var av=document.getElementById('pp-av');
-      if(ep&&av&&!ep.contains(e.target)&&!av.contains(e.target)){ep.classList.remove('on');}
-    },true);
-  },100);
+  // emoji handled by modal
 }
 
 function ppName(v){
@@ -1073,7 +1125,7 @@ function pickEmoji(em){
     }
     av.appendChild(badge);
   }
-  var ep=document.getElementById('pp-ep');if(ep)ep.classList.remove('on');
+  closeEpModal();
   document.querySelectorAll('.epbtn').forEach(function(b){b.classList.remove('sel');});
   document.querySelectorAll('.epbtn').forEach(function(b){
     if(em&&b.textContent===em)b.classList.add('sel');
@@ -1139,8 +1191,66 @@ if('serviceWorker' in navigator){
   });
 }
 
+/* ── EMOJI MODAL ──────────────────────── */
+function openEpModal(){
+  var modal=document.getElementById('ep-modal');
+  var body=document.getElementById('ep-body');
+  if(!modal||!body)return;
+  var h='';
+  EMOJI_CATS.forEach(function(cat){
+    h+='<div style="margin-bottom:14px">';
+    h+='<div style="font-size:.64rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--slate);margin-bottom:8px">'+esc(cat.l)+'</div>';
+    h+='<div style="display:grid;grid-template-columns:repeat(6,1fr);gap:6px">';
+    cat.e.forEach(function(em){
+      var sel=_PF.emoji===em?' sel':'';
+      h+='<button class="epbtn'+sel+'" onclick="pickEmoji(''+esc(em)+'');closeEpModal()">'+em+'</button>';
+    });
+    h+='</div></div>';
+  });
+  h+='<div style="margin-bottom:24px">';
+  h+='<div style="font-size:.64rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--slate);margin-bottom:8px">Use Initials</div>';
+  h+='<button class="epbtn'+(_PF.emoji===null?' sel':'')+'" onclick="pickEmoji(null);closeEpModal()" style="font-size:.75rem;font-weight:700;color:var(--slate);width:auto;padding:0 14px;height:36px">ABC</button>';
+  h+='</div>';
+  body.innerHTML=h;
+  modal.className='on';
+}
+function closeEpModal(){
+  var m=document.getElementById('ep-modal');
+  if(m)m.className='';
+}
+
+/* ── BACKUP ───────────────────────────── */
+var _bkTimer=null;
+
+function autoBackup(){
+  clearTimeout(_bkTimer);
+  _bkTimer=setTimeout(function(){
+    try{
+      var data=JSON.stringify({patients:P,appointments:A,exported:new Date().toISOString(),version:3},null,2);
+      var blob=new Blob([data],{type:'application/json'});
+      var a=document.createElement('a');
+      a.href=URL.createObjectURL(blob);
+      a.download='DentaLog_backup.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(function(){try{URL.revokeObjectURL(a.href);}catch(e){}},1000);
+    }catch(e){}
+  },800);
+}
+
+
+
+// Auto-backup on every save
+var _origSaveAll=saveAll;
+window.saveAll=function(){
+  _origSaveAll();
+  autoBackup();
+};
+saveAll=window.saveAll;
+
 /* ── INIT ─────────────────────────────── */
 paint();
 </script>
 </body>
-</html>
+</html>id=\"pp-av\" onclick=\"openEpModal()\" 
