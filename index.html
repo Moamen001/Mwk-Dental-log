@@ -97,8 +97,8 @@ select.inp{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.
 /* Overlay + Panel */
 #OV{position:fixed;inset:0;z-index:800;background:rgba(5,12,8,.52);backdrop-filter:blur(3px);display:none}
 #OV.on{display:block}
-#RP{position:fixed;z-index:900;background:var(--cream);display:none;flex-direction:column}
-#RP.on{display:flex}
+#RP{position:fixed;z-index:900;background:var(--cream);display:none;flex-direction:column;top:0;right:0;bottom:0;left:0}
+#RP.on{display:flex!important;flex-direction:column}
 /* Confirm */
 #CF{position:fixed;inset:0;z-index:1000;background:rgba(5,12,8,.65);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:20px}
 #CF.on{display:flex}
@@ -535,14 +535,10 @@ function delApptConfirm(id,date){
 function openPanel(){
   var ov=document.getElementById('OV'),rp=document.getElementById('RP');
   ov.className='on';rp.className='on';
-  if(S.mob){rp.className='on slUp';Object.assign(rp.style,{inset:'0',right:'',top:'',bottom:'',width:'',boxShadow:'none'})}
-  else{rp.className='on slR';Object.assign(rp.style,{inset:'auto',right:'0',top:'0',bottom:'0',width:'460px',maxWidth:'100vw',boxShadow:'-18px 0 55px rgba(0,0,0,.2)'})}
+  if(S.mob){rp.className='on slUp';rp.style.position='fixed';rp.style.top='0';rp.style.right='0';rp.style.bottom='0';rp.style.left='0';rp.style.width='100%';rp.style.height='100%';rp.style.boxShadow='none';rp.style.zIndex='900'}
+  else{rp.className='on slR';rp.style.position='fixed';rp.style.top='0';rp.style.right='0';rp.style.bottom='0';rp.style.left='auto';rp.style.width='460px';rp.style.maxWidth='100vw';rp.style.height='100%';rp.style.boxShadow='-18px 0 55px rgba(0,0,0,.2)';rp.style.zIndex='900'}
 }
-function closePanel(){
-  document.getElementById('OV').className='';
-  document.getElementById('RP').className='';
-  document.getElementById('RP').innerHTML='';
-}
+function closePanel(){var ov=document.getElementById('OV'),rp=document.getElementById('RP');ov.className='';rp.className='';rp.innerHTML='';rp.removeAttribute('style');rp.style.display='none';}
 function maybeClosePanel(e){if(e.target===document.getElementById('OV'))closePanel()}
 
 /* ══════════════════════════════════
