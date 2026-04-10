@@ -29,6 +29,20 @@ input,textarea,select,button{font-family:inherit;-webkit-appearance:none;appeara
 .slR{animation:slR .27s cubic-bezier(.16,1,.3,1)}
 .popin{animation:popin .17s ease}
 .fup{animation:fup .18s ease both}
+/* Visit counter rows */
+.tx-row{background:var(--warm);border:1.5px solid var(--ln);border-radius:12px;overflow:hidden;margin-bottom:7px;transition:border-color .13s}
+.tx-row.active{border-color:var(--tcolor,#94A3B8)}
+.tx-row-hdr{display:flex;align-items:center;gap:8px;padding:10px 12px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.tx-row-hdr:active{background:rgba(0,0,0,.03)}
+.tx-vctr{display:flex;align-items:center;gap:0;flex-shrink:0;background:var(--parch);border-radius:8px;overflow:hidden;border:1px solid var(--ln)}
+.tx-vctr button{width:30px;height:28px;font-size:1rem;font-weight:700;display:flex;align-items:center;justify-content:center;color:var(--slate);background:none;border:none;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.tx-vctr button:active{background:rgba(0,0,0,.06)}
+.tx-vctr-val{min-width:38px;text-align:center;font-size:.78rem;font-weight:700;color:var(--ink);padding:0 2px}
+.tx-row-body{padding:0 12px 12px;display:none}
+.tx-row.active .tx-row-body{display:block}
+/* Progress pill */
+.tx-prog{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:.65rem;font-weight:700}
+
 button{cursor:pointer;-webkit-tap-highlight-color:transparent}
 .scr{overflow-y:auto;-webkit-overflow-scrolling:touch}
 .sx{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
@@ -235,7 +249,18 @@ function avH(pat,sz){
   var av=pat&&pat.name?ini(pat.name):'?';
   return '<div style="width:'+sz+'px;height:'+sz+'px;border-radius:50%;background:'+(av!='?'?FOREST:'var(--parch)')+';color:'+(av!='?'?'#fff':'var(--mist)')+';display:flex;align-items:center;justify-content:center;font-weight:700;font-size:'+Math.round(sz*.34)+'px;flex-shrink:0;border:'+(av!='?'?'none':'1.5px solid var(--ln)')+'">'+esc(av)+'</div>'
 }
-function txBadges(tx,max){if(!tx||!tx.length)return '';var h='',s=tx.slice(0,max||3);s.forEach(function(t){var c=pc(t);h+='<span class="txb" style="background:'+c+'18;color:'+c+';border:1px solid '+c+'33"><span style="width:5px;height:5px;border-radius:50%;background:'+c+';display:inline-block"></span>'+esc(t)+'</span>'});if(tx.length>(max||3))h+='<span style="font-size:.59rem;color:var(--mist)">+'+( tx.length-(max||3))+'</span>';return h}
+function txBadges(tx,max,txData){
+  if(!tx||!tx.length)return '';
+  var h='',s=tx.slice(0,max||3);
+  s.forEach(function(t){
+    var c=pc(t);
+    var item=txData&&txData.find(function(x){return x.name===t});
+    var prog=item&&item.totalVisits>1?' <span style="opacity:.8">'+item.visitNum+'/'+item.totalVisits+'</span>':'';
+    h+='<span class="txb" style="background:'+c+'18;color:'+c+';border:1px solid '+c+'33"><span style="width:5px;height:5px;border-radius:50%;background:'+c+';display:inline-block"></span>'+esc(t)+prog+'</span>';
+  });
+  if(tx.length>(max||3))h+='<span style="font-size:.59rem;color:var(--mist)">+'+( tx.length-(max||3))+'</span>';
+  return h;
+}
 
 /* ══════════════════════════════════
    PAINT
@@ -363,7 +388,7 @@ function apptCard(appt,date){
     +'<div onclick="openApptPanel(\''+esc(appt.id)+'\',\''+esc(date)+'\')" style="flex:1;min-width:0;cursor:pointer">'
     +'<div style="font-weight:600;font-size:.88rem;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+esc(name)+'</div>'
     +'<div style="font-size:.71rem;color:var(--slate);margin-top:2px">'+esc(sub)+'</div>'
-    +(lastTx?'<div style="display:flex;gap:4px;margin-top:5px;flex-wrap:wrap">'+txBadges(lastTx,3)+'</div>':'')
+    +(lastTx?'<div style="display:flex;gap:4px;margin-top:5px;flex-wrap:wrap">'+txBadges(lastTx,3,lv?lv.txData:null)+'</div>':'')
     +'</div>'
     +'<div style="display:flex;gap:6px;flex-shrink:0">'
     +'<button onclick="openApptPanel(\''+esc(appt.id)+'\',\''+esc(date)+'\')" style="width:34px;height:34px;border-radius:9px;background:rgba(15,35,24,.05);color:var(--slate);font-size:.75rem;font-weight:700;display:flex;align-items:center;justify-content:center">✏️</button>'
@@ -395,7 +420,7 @@ function paintPatients(){
         +'<div style="flex:1;min-width:0">'
         +'<div style="font-weight:600;font-size:.9rem;color:var(--ink)">'+esc(pat.name||'Unnamed')+'</div>'
         +'<div style="font-size:.71rem;color:var(--slate);margin-top:2px">'+esc([pat.age&&pat.age+'y',pat.gender,pat.phone].filter(Boolean).join('  ·  '))+'</div>'
-        +(lv&&lv.treatments&&lv.treatments.length?'<div style="display:flex;gap:4px;margin-top:5px;flex-wrap:wrap">'+txBadges(lv.treatments,2)+'</div>':'')
+        +(lv&&lv.treatments&&lv.treatments.length?'<div style="display:flex;gap:4px;margin-top:5px;flex-wrap:wrap">'+txBadges(lv.treatments,2,lv.txData)+'</div>':'')
         +'</div>'
         +(lv?'<div style="text-align:right;flex-shrink:0"><div style="font-size:.67rem;color:var(--mist)">Last visit</div><div style="font-size:.72rem;font-weight:600;color:var(--ink)">'+shortD(lv.date)+'</div></div>':'')
         +'</div>';
@@ -555,19 +580,23 @@ function openApptPanel(apptId,date){
     date:date,time:appt?appt.time:'09:00',dur:appt?appt.duration:'30 min',
     title:appt?appt.title:'',notes:appt?appt.notes:'',
     patientId:appt?appt.patientId:null,
-    tx:visit?visit.treatments.slice():[],
+    txData:visit&&visit.txData?JSON.parse(JSON.stringify(visit.txData)):[],
     diag:visit?visit.diagnosis:'',
     complaint:visit?visit.complaint:'',
     vnotes:visit?visit.notes:'',
     photos:visit?(visit.photos||[]).slice():[],
     visitId:visit?visit.id:uid()
   };
+  // back-compat: if old plain treatments array, convert
+  if(visit&&visit.treatments&&visit.treatments.length&&!visit.txData){
+    _AF.txData=visit.treatments.map(function(t){return{name:t,visitNum:1,totalVisits:1,txNote:''}});
+  }
   buildApptPanel();
 }
 
 function buildApptPanel(){
   openPanel();
-  var f=_AF,col=f.tx&&f.tx.length?pc(f.tx[0]):FOREST;
+  var f=_AF,col=f.txData&&f.txData.length?pc(f.txData[0].name):FOREST;
   var pats=allPats().sort(function(a,b){return(a.name||'').localeCompare(b.name||'')});
   var patOpts='<option value="">— No patient linked —</option>';
   pats.forEach(function(p){patOpts+='<option value="'+esc(p.id)+'"'+(f.patientId===p.id?' selected':'')+'>'+esc(p.name)+'</option>'});
@@ -600,7 +629,8 @@ function buildApptPanel(){
   +'<div style="margin-bottom:10px"><label class="lbl">Chief Complaint</label><input class="inp" id="ap-cc" value="'+esc(f.complaint)+'" placeholder="e.g. Pain upper right molar" oninput="_AF.complaint=this.value"></div>'
   +'<div style="margin-bottom:10px"><label class="lbl">Diagnosis</label><textarea class="inp" id="ap-dx" style="min-height:60px" placeholder="Clinical diagnosis, tooth numbers…" oninput="_AF.diag=this.value">'+esc(f.diag)+'</textarea></div>'
   +'<div style="margin-bottom:14px"><label class="lbl" style="margin-bottom:8px">Treatments Done</label>'
-  +'<div id="ap-txc" style="display:flex;flex-wrap:wrap;gap:6px">'+txH+'</div></div>'
+  +'<div style="margin-bottom:8px;display:flex;flex-wrap:wrap;gap:5px" id="ap-tx-pick">'+buildTxPickerHTML()+'</div>'
+  +'<div id="ap-txc">'+txH+'</div></div>'
   +'<div style="margin-bottom:10px"><label class="lbl">Clinical Notes</label><textarea class="inp" id="ap-vn" style="min-height:60px" oninput="_AF.vnotes=this.value">'+esc(f.vnotes)+'</textarea></div>'
   +'<div style="margin-bottom:10px"><div class="sbar">📷 Photos</div>'
   +'<div onclick="document.getElementById(\'ap-pf\').click()" style="border:2px dashed var(--ln);border-radius:12px;padding:16px;text-align:center;background:var(--parch);cursor:pointer"><div style="font-size:1.5rem;margin-bottom:4px">🔬</div><div style="font-size:.8rem;font-weight:600;color:var(--slate)">Upload Clinical Photos</div><div style="font-size:.69rem;color:var(--mist);margin-top:2px">X-rays · Intraoral · Periapical</div></div>'
@@ -621,12 +651,72 @@ function apPatChange(val){
   var hdr=document.getElementById('ap-hdr');
   if(hdr)hdr.style.background=_AF.tx&&_AF.tx.length?pc(_AF.tx[0]):FOREST;
 }
-function toggleTx(t){
-  var idx=_AF.tx.indexOf(t);
-  if(idx>-1)_AF.tx.splice(idx,1);else _AF.tx.push(t);
-  var txH='';TX.forEach(function(tx){var on=_AF.tx.indexOf(tx)>-1,c=pc(tx);txH+='<div class="txc" onclick="toggleTx(\''+esc(tx)+'\')" style="background:'+(on?c+'22':'var(--warm)')+';color:'+(on?c:'var(--slate)')+';border-color:'+(on?c:'var(--ln)')+'"><span class="txdot" style="background:'+c+'"></span>'+esc(tx)+'</div>'});
-  var el=document.getElementById('ap-txc');if(el)el.innerHTML=txH;
-  var hdr=document.getElementById('ap-hdr');if(hdr)hdr.style.background=_AF.tx&&_AF.tx.length?pc(_AF.tx[0]):FOREST;
+function buildTxPickerHTML(){
+  var h='';
+  TX.forEach(function(t){
+    var on=_AF.txData.some(function(x){return x.name===t});
+    var c=pc(t);
+    h+='<div onclick="toggleTxNew(\''+esc(t)+'\')" style="padding:6px 11px;border-radius:18px;font-size:.75rem;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:4px;border:1.5px solid '+(on?c:'var(--ln)')+';background:'+(on?c+'22':'var(--warm)')+';color:'+(on?c:'var(--slate)')+'"><span style="width:6px;height:6px;border-radius:50%;background:'+c+';display:inline-block"></span>'+esc(t)+'</div>';
+  });
+  return h;
+}
+function buildTxChipsHTML(){
+  if(!_AF.txData||!_AF.txData.length)return '<div style="font-size:.77rem;color:var(--mist);padding:8px 0;font-style:italic">Select treatments above — then set visit number and total planned visits</div>';
+  var h='';
+  _AF.txData.forEach(function(item,idx){
+    var c=pc(item.name);
+    var pct=item.totalVisits>0?Math.round((item.visitNum/item.totalVisits)*100):0;
+    h+='<div class="tx-row active" style="--tcolor:'+c+';margin-bottom:8px">'
+      +'<div class="tx-row-hdr">'
+      +'<span style="width:10px;height:10px;border-radius:50%;background:'+c+';flex-shrink:0"></span>'
+      +'<span style="flex:1;font-size:.82rem;font-weight:600;color:var(--ink)">'+esc(item.name)+'</span>'
+      +(item.totalVisits>1?'<span class="tx-prog" style="background:'+c+'18;color:'+c+';border:1px solid '+c+'33;margin-right:6px">Visit '+item.visitNum+'/'+item.totalVisits+'</span>':'')
+      +'<button onclick="removeTxItem('+idx+')" style="width:24px;height:24px;border-radius:50%;background:rgba(192,57,43,.08);color:var(--red);font-size:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0">×</button>'
+      +'</div>'
+      +'<div style="padding:0 12px 12px">'
+      +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px">'
+      +'<div><div style="font-size:.66rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--slate);margin-bottom:6px">This visit #</div>'
+      +'<div style="display:flex;align-items:center;gap:6px">'
+      +'<button onclick="txVisitAdj('+idx+',-1,\'num\')" style="width:36px;height:36px;border-radius:50%;background:var(--parch);border:1.5px solid var(--ln);font-size:1.2rem;font-weight:700;color:var(--slate);display:flex;align-items:center;justify-content:center">−</button>'
+      +'<div style="flex:1;text-align:center;font-size:1.5rem;font-weight:800;color:'+c+'">'+item.visitNum+'</div>'
+      +'<button onclick="txVisitAdj('+idx+',1,\'num\')" style="width:36px;height:36px;border-radius:50%;background:var(--parch);border:1.5px solid var(--ln);font-size:1.2rem;font-weight:700;color:var(--slate);display:flex;align-items:center;justify-content:center">+</button>'
+      +'</div></div>'
+      +'<div><div style="font-size:.66rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--slate);margin-bottom:6px">Total planned</div>'
+      +'<div style="display:flex;align-items:center;gap:6px">'
+      +'<button onclick="txVisitAdj('+idx+',-1,\'total\')" style="width:36px;height:36px;border-radius:50%;background:var(--parch);border:1.5px solid var(--ln);font-size:1.2rem;font-weight:700;color:var(--slate);display:flex;align-items:center;justify-content:center">−</button>'
+      +'<div style="flex:1;text-align:center;font-size:1.5rem;font-weight:800;color:var(--ink)">'+item.totalVisits+'</div>'
+      +'<button onclick="txVisitAdj('+idx+',1,\'total\')" style="width:36px;height:36px;border-radius:50%;background:var(--parch);border:1.5px solid var(--ln);font-size:1.2rem;font-weight:700;color:var(--slate);display:flex;align-items:center;justify-content:center">+</button>'
+      +'</div></div>'
+      +'</div>'
+      +(item.totalVisits>1?'<div style="background:var(--parch);border-radius:6px;height:7px;overflow:hidden;margin-bottom:10px"><div style="background:'+c+';height:100%;border-radius:6px;width:'+pct+'%"></div></div>':'')
+      +'<div style="font-size:.66rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--slate);margin-bottom:4px">Treatment note</div>'
+      +'<input class="inp" style="font-size:14px;padding:9px 12px" value="'+esc(item.txNote||'')+'" placeholder="e.g. WL 21mm, ISO #35, GP obturation…" oninput="txNoteChange('+idx+',this.value)">'
+      +'</div>'
+      +'</div>';
+  });
+  return h;
+}
+function toggleTxNew(t){
+  var idx=_AF.txData.findIndex(function(x){return x.name===t});
+  if(idx>-1)_AF.txData.splice(idx,1);
+  else _AF.txData.push({name:t,visitNum:1,totalVisits:1,txNote:''});
+  var picker=document.getElementById('ap-tx-pick');if(picker)picker.innerHTML=buildTxPickerHTML();
+  var chips=document.getElementById('ap-txc');if(chips)chips.innerHTML=buildTxChipsHTML();
+  var hdr=document.getElementById('ap-hdr');if(hdr)hdr.style.background=_AF.txData&&_AF.txData.length?pc(_AF.txData[0].name):FOREST;
+}
+function txVisitAdj(idx,delta,field){
+  if(!_AF.txData[idx])return;
+  var item=_AF.txData[idx];
+  if(field==='num'){item.visitNum=Math.max(1,Math.min(item.totalVisits,(item.visitNum||1)+delta))}
+  else{item.totalVisits=Math.max(1,(item.totalVisits||1)+delta);item.visitNum=Math.min(item.visitNum,item.totalVisits)}
+  var chips=document.getElementById('ap-txc');if(chips)chips.innerHTML=buildTxChipsHTML();
+}
+function txNoteChange(idx,val){if(_AF.txData[idx])_AF.txData[idx].txNote=val}
+function removeTxItem(idx){
+  _AF.txData.splice(idx,1);
+  var picker=document.getElementById('ap-tx-pick');if(picker)picker.innerHTML=buildTxPickerHTML();
+  var chips=document.getElementById('ap-txc');if(chips)chips.innerHTML=buildTxChipsHTML();
+  var hdr=document.getElementById('ap-hdr');if(hdr)hdr.style.background=_AF.txData&&_AF.txData.length?pc(_AF.txData[0].name):FOREST;
 }
 function addPhotos(input){
   var files=Array.from(input.files),pending=files.length;
@@ -643,12 +733,12 @@ function saveAppt(){
   var idx=A[_AF.date].findIndex(function(a){return a.id===_AF.id});
   if(idx>-1)A[_AF.date][idx]=appt;else A[_AF.date].push(appt);
   // save visit if patient linked and has data
-  if(_AF.patientId&&(_AF.tx.length||_AF.diag||_AF.complaint||_AF.vnotes||_AF.photos.length)){
+  if(_AF.patientId&&(_AF.txData.length||_AF.diag||_AF.complaint||_AF.vnotes||_AF.photos.length)){
     var pat=P[_AF.patientId];
     if(pat){
       if(!pat.visits)pat.visits=[];
       var vi=pat.visits.findIndex(function(v){return v.apptId===_AF.id});
-      var visit={id:_AF.visitId,apptId:_AF.id,date:_AF.date,treatments:_AF.tx,diagnosis:_AF.diag,complaint:_AF.complaint,notes:_AF.vnotes,photos:_AF.photos,createdAt:new Date().toISOString()};
+      var visit={id:_AF.visitId,apptId:_AF.id,date:_AF.date,txData:_AF.txData,treatments:_AF.txData.map(function(x){return x.name}),diagnosis:_AF.diag,complaint:_AF.complaint,notes:_AF.vnotes,photos:_AF.photos,createdAt:new Date().toISOString()};
       if(vi>-1)pat.visits[vi]=visit;else pat.visits.push(visit);
     }
   }
@@ -678,8 +768,9 @@ function buildPatPanel(){
       +'<div style="font-size:.8rem;font-weight:700;color:var(--ink)">'+esc(shortD(v.date))+'</div>'
       +'<button onclick="delVisit(\''+esc(v.id)+'\')" style="font-size:.7rem;color:var(--red);cursor:pointer;font-weight:600;padding:2px 8px;border-radius:6px;background:rgba(192,57,43,.08)">Remove</button>'
       +'</div>'
-      +(v.treatments&&v.treatments.length?'<div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:4px">'+txBadges(v.treatments,4)+'</div>':'')
-      +(v.diagnosis?'<div style="font-size:.73rem;color:var(--slate);margin-top:3px"><strong>Dx:</strong> '+esc(v.diagnosis)+'</div>':'')
+      +(v.treatments&&v.treatments.length?'<div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:4px">'+txBadges(v.treatments,4,v.txData)+'</div>':'')
+      +(v.txData&&v.txData.some(function(x){return x.txNote})?'<div style="margin-top:4px;display:flex;flex-direction:column;gap:2px">'+v.txData.filter(function(x){return x.txNote}).map(function(x){var c=pc(x.name);return '<div style="font-size:.7rem;color:var(--slate);padding:3px 7px;background:'+c+'10;border-radius:6px;border-left:2px solid '+c+'"><span style="font-weight:600;color:'+c+'">'+esc(x.name)+(x.totalVisits>1?' ('+x.visitNum+'/'+x.totalVisits+')':'')+':</span> '+esc(x.txNote)+'</div>'}).join('')+'</div>':'')
+      +(v.diagnosis?'<div style="font-size:.73rem;color:var(--slate);margin-top:4px"><strong>Dx:</strong> '+esc(v.diagnosis)+'</div>':'')
       +(v.notes?'<div style="font-size:.72rem;color:var(--mist);margin-top:2px">'+esc(v.notes)+'</div>':'')
       +(v.photos&&v.photos.length?'<div style="display:flex;gap:4px;margin-top:6px">'+v.photos.slice(0,4).map(function(ph){return '<img src="'+ph.data+'" style="width:36px;height:36px;border-radius:6px;object-fit:cover" alt="">'}).join('')+'</div>':'')
       +'</div>';
