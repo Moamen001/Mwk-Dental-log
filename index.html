@@ -1219,7 +1219,7 @@ function openEpModal(){
     h+='<div style="display:grid;grid-template-columns:repeat(6,1fr);gap:6px">';
     cat.e.forEach(function(em){
       var sel=_PF.emoji===em?' sel':'';
-      h+='<button class="epbtn'+sel+'" onclick="pickEmoji(''+esc(em)+'');closeEpModal()">'+em+'</button>';
+      h+='<button class="epbtn'+sel+'" onclick="pickEmoji(\'' + esc(em) + '\');closeEpModal()">'+em+'</button>';
     });
     h+='</div></div>';
   });
