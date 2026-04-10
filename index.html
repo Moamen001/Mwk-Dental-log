@@ -164,7 +164,7 @@ select.inp{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.
     <div style="font-size:.75rem;color:#8BAF95;letter-spacing:.08em;text-transform:uppercase;margin-bottom:36px">Practice Manager</div>
     <input id="LI" type="password" placeholder="Password" autocomplete="off"
       style="width:100%;padding:14px 18px;border-radius:14px;border:1.5px solid rgba(255,255,255,.15);background:rgba(255,255,255,.08);color:#fff;font-size:1.1rem;text-align:center;letter-spacing:.1em;font-family:inherit;outline:none"/>
-    <button onclick="tryUnlock()"
+    <button id="LB"
       style="width:100%;margin-top:12px;padding:15px;border-radius:14px;background:linear-gradient(135deg,#C9A84C,#9E7B28);color:#0F2318;font-size:1rem;font-weight:700;cursor:pointer;border:none;font-family:inherit">
       Unlock
     </button>
@@ -195,29 +195,40 @@ select.inp{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.
 
 
 <script>
-'use strict';
-
-/* ── LOCK ─────────────────────────────── */
+/* ── LOCK — standalone, no dependency on app code ── */
 (function(){
-  // Access key stored as char codes to avoid plain text
-  var _k=[68,111,111,98,121,64,49,49,50]; // Dooby@112
-  var _pw=_k.map(function(c){return String.fromCharCode(c);}).join('');
-  if(sessionStorage.getItem('dla')==='1'){document.getElementById('LS').className='gone';}
-  document.getElementById('LI').addEventListener('keydown',function(e){if(e.key==='Enter')tryUnlock();});
-  window.tryUnlock=function(){
-    var v=document.getElementById('LI').value;
-    if(v===_pw){
+  var pw=[68,111,111,98,121,64,49,49,50].map(function(c){return String.fromCharCode(c);}).join('');
+  function unlock(){
+    var val=document.getElementById('LI').value;
+    var err=document.getElementById('LE');
+    var ls=document.getElementById('LS');
+    if(val===pw){
       sessionStorage.setItem('dla','1');
-      var ls=document.getElementById('LS');
-      ls.style.opacity='0';ls.style.transition='opacity .3s';
-      setTimeout(function(){ls.className='gone';},300);
+      ls.style.transition='opacity .35s';
+      ls.style.opacity='0';
+      setTimeout(function(){ls.className='gone';ls.style.cssText='';},380);
     } else {
-      document.getElementById('LE').textContent='Incorrect password — try again';
+      err.textContent='Wrong password';
       document.getElementById('LI').value='';
-      setTimeout(function(){document.getElementById('LE').textContent='';},2500);
+      setTimeout(function(){err.textContent='';},2500);
     }
-  };
+  }
+  // Check if already unlocked
+  if(sessionStorage.getItem('dla')==='1'){
+    document.getElementById('LS').className='gone';
+  }
+  // Attach listeners after DOM ready
+  window.addEventListener('DOMContentLoaded',function(){
+    var btn=document.getElementById('LB');
+    var inp=document.getElementById('LI');
+    if(btn)btn.addEventListener('click',unlock);
+    if(inp)inp.addEventListener('keydown',function(e){if(e.key==='Enter')unlock();});
+  });
 })();
+</script>
+
+<script>
+'use strict';
 
 /* ── CONSTANTS ────────────────────────── */
 var FOREST='#0F2318', GOLD='#C9A84C';
