@@ -18,8 +18,14 @@
 html,body{height:100%;overflow:hidden;-webkit-text-size-adjust:100%}
 body{font-family:'Outfit',system-ui,sans-serif;background:#F4EFE8;overscroll-behavior:none;-webkit-font-smoothing:antialiased}
 input,textarea,select,button{font-family:inherit;-webkit-appearance:none;appearance:none;border:none;background:none;outline:none}
-::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:rgba(15,35,24,.2);border-radius:4px}
-:root{--F:#0F2318;--FL:#2A5C3F;--sage:#8BAF95;--gold:#C9A84C;--gd:#9E7B28;--cream:#FAF7F2;--parch:#F4EFE8;--warm:#FEFCF9;--ink:#1C2B22;--slate:#4A6355;--mist:#B8CBBF;--ln:#E4DDD4;--red:#C0392B}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-thumb{background:rgba(15,35,24,.2);border-radius:4px}
+:root{
+  --F:#0F2318;--FL:#2A5C3F;--sage:#8BAF95;
+  --gold:#C9A84C;--gd:#9E7B28;
+  --cream:#FAF7F2;--parch:#F4EFE8;--warm:#FEFCF9;
+  --ink:#1C2B22;--slate:#4A6355;--mist:#B8CBBF;--ln:#E4DDD4;--red:#C0392B;
+}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes slUp{from{transform:translateY(100%);opacity:0}to{transform:translateY(0);opacity:1}}
 @keyframes slR{from{transform:translateX(100%)}to{transform:translateX(0)}}
@@ -29,51 +35,52 @@ input,textarea,select,button{font-family:inherit;-webkit-appearance:none;appeara
 .slR{animation:slR .27s cubic-bezier(.16,1,.3,1)}
 .popin{animation:popin .17s ease}
 .fup{animation:fup .18s ease both}
-/* Visit counter rows */
-.tx-row{background:var(--warm);border:1.5px solid var(--ln);border-radius:12px;overflow:hidden;margin-bottom:7px;transition:border-color .13s}
-.tx-row.active{border-color:var(--tcolor,#94A3B8)}
-.tx-row-hdr{display:flex;align-items:center;gap:8px;padding:10px 12px;cursor:pointer;-webkit-tap-highlight-color:transparent}
-.tx-row-hdr:active{background:rgba(0,0,0,.03)}
-.tx-vctr{display:flex;align-items:center;gap:0;flex-shrink:0;background:var(--parch);border-radius:8px;overflow:hidden;border:1px solid var(--ln)}
-.tx-vctr button{width:30px;height:28px;font-size:1rem;font-weight:700;display:flex;align-items:center;justify-content:center;color:var(--slate);background:none;border:none;cursor:pointer;-webkit-tap-highlight-color:transparent}
-.tx-vctr button:active{background:rgba(0,0,0,.06)}
-.tx-vctr-val{min-width:38px;text-align:center;font-size:.78rem;font-weight:700;color:var(--ink);padding:0 2px}
-.tx-row-body{padding:0 12px 12px;display:none}
-.tx-row.active .tx-row-body{display:block}
-/* Progress pill */
-.tx-prog{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:.65rem;font-weight:700}
-
 button{cursor:pointer;-webkit-tap-highlight-color:transparent}
 .scr{overflow-y:auto;-webkit-overflow-scrolling:touch}
 .sx{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .sx::-webkit-scrollbar{display:none}
 textarea{resize:vertical}
-/* Lock screen */
-#LS{position:fixed;inset:0;z-index:9000;background:radial-gradient(ellipse at 20% 20%,rgba(42,92,63,.5) 0,transparent 55%),radial-gradient(ellipse at 80% 80%,rgba(201,168,76,.12) 0,transparent 50%),#0F2318;display:flex;align-items:center;justify-content:center;padding:32px}
-#LS.gone{display:none!important;pointer-events:none}
-/* App shell */
+/* Lock */
+#LS{position:fixed;top:0;right:0;bottom:0;left:0;z-index:9000;
+  background:radial-gradient(ellipse at 20% 20%,rgba(42,92,63,.5) 0,transparent 55%),
+  radial-gradient(ellipse at 80% 80%,rgba(201,168,76,.12) 0,transparent 50%),#0F2318;
+  display:flex;align-items:center;justify-content:center;padding:32px}
+#LS.gone{display:none!important}
+/* Shell */
 #app{display:flex;height:100dvh;overflow:hidden}
-#sidebar{width:240px;flex-shrink:0;height:100%;display:flex;flex-direction:column;background:radial-gradient(ellipse at 10% 10%,rgba(42,92,63,.45) 0,transparent 55%),radial-gradient(ellipse at 88% 82%,rgba(201,168,76,.1) 0,transparent 50%),var(--F);box-shadow:5px 0 20px rgba(0,0,0,.18)}
+#sidebar{width:240px;flex-shrink:0;height:100%;display:flex;flex-direction:column;
+  background:radial-gradient(ellipse at 10% 10%,rgba(42,92,63,.45) 0,transparent 55%),
+  radial-gradient(ellipse at 88% 82%,rgba(201,168,76,.1) 0,transparent 50%),var(--F);
+  box-shadow:5px 0 20px rgba(0,0,0,.18)}
 #main{flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden}
 #view{flex:1;display:flex;flex-direction:column;min-height:0;overflow:hidden}
-/* Shared inputs */
-.inp{width:100%;padding:11px 14px;border:1.5px solid var(--ln);border-radius:10px;font-size:16px;color:var(--ink);background:var(--warm);display:block;font-family:inherit;transition:border-color .15s,box-shadow .15s}
+/* Inputs */
+.inp{width:100%;padding:11px 14px;border:1.5px solid var(--ln);border-radius:10px;
+  font-size:16px;color:var(--ink);background:var(--warm);display:block;
+  font-family:inherit;transition:border-color .15s,box-shadow .15s}
 .inp:focus{border-color:var(--FL);box-shadow:0 0 0 3px rgba(42,92,63,.09)}
 .inp::placeholder{color:var(--mist)}
-select.inp{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath fill='%234A6355' d='M6 8 0 0h12z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:34px}
+select.inp{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath fill='%234A6355' d='M6 8 0 0h12z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 12px center;padding-right:34px}
 .lbl{display:block;font-size:.66rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--slate);margin-bottom:4px}
 .sbar{font-size:.63rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--FL);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--ln)}
-.bgold{background:linear-gradient(135deg,var(--gold),var(--gd));color:var(--F);font-weight:700;border-radius:12px;cursor:pointer;font-family:inherit;box-shadow:0 3px 14px rgba(201,168,76,.28);transition:opacity .15s;border:none}
+.bgold{background:linear-gradient(135deg,var(--gold),var(--gd));color:var(--F);font-weight:700;
+  border-radius:12px;cursor:pointer;font-family:inherit;box-shadow:0 3px 14px rgba(201,168,76,.28);transition:opacity .15s;border:none}
 .bgold:active{opacity:.85}
-.bghost{background:rgba(15,35,24,.06);color:var(--ink);font-weight:600;border:1.5px solid var(--ln);border-radius:12px;cursor:pointer;font-family:inherit;transition:background .13s}
+.bghost{background:rgba(15,35,24,.06);color:var(--ink);font-weight:600;border:1.5px solid var(--ln);
+  border-radius:12px;cursor:pointer;font-family:inherit;transition:background .13s}
 .bghost:active{background:rgba(15,35,24,.14)}
 /* Sidebar nav */
-.sdn{display:flex;align-items:center;gap:10px;width:100%;padding:12px 14px;border-radius:12px;font-size:.85rem;color:rgba(255,255,255,.45);text-align:left;border:1px solid transparent;transition:all .15s;font-family:inherit;cursor:pointer;background:none}
+.sdn{display:flex;align-items:center;gap:10px;width:100%;padding:12px 14px;border-radius:12px;
+  font-size:.85rem;color:rgba(255,255,255,.45);text-align:left;border:1px solid transparent;
+  transition:all .15s;font-family:inherit;cursor:pointer;background:none}
 .sdn.on{background:rgba(255,255,255,.13);border-color:rgba(255,255,255,.1);color:#fff;font-weight:600}
 /* Cards */
 .card{background:var(--warm);border-radius:14px;border:1.5px solid var(--ln);transition:box-shadow .13s}
 /* Date strip */
-.dsd{flex-shrink:0;width:52px;height:68px;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;border:1.5px solid var(--ln);gap:2px;cursor:pointer;background:var(--warm);transition:all .14s}
+.dsd{flex-shrink:0;width:52px;height:68px;border-radius:14px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;border:1.5px solid var(--ln);gap:2px;cursor:pointer;
+  background:var(--warm);transition:all .14s}
 .dsd.sel{background:var(--F);border-color:var(--F);box-shadow:0 4px 14px rgba(15,35,24,.22)}
 .dsd.tod{background:rgba(201,168,76,.07);border-color:var(--gold)}
 /* Week */
@@ -83,11 +90,10 @@ select.inp{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.
 .wkh.tod{background:rgba(201,168,76,.08)}
 .wkn{width:30px;height:30px;border-radius:50%;font-size:1.1rem;font-weight:700;color:var(--ink);display:flex;align-items:center;justify-content:center;margin:0 auto 2px}
 .wkn.tod{background:var(--F);color:#fff}
-.wka{padding:5px 7px;margin:3px 5px;border-radius:7px;cursor:pointer;border-left:3px solid #ccc;transition:opacity .1s}
-.wka:active{opacity:.7}
+.wka{padding:5px 7px;margin:3px 5px;border-radius:7px;cursor:pointer;border-left:3px solid #ccc}
 /* Month */
 .mgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:var(--ln);border-radius:12px;overflow:hidden}
-.mcell{background:var(--warm);padding:6px 5px 5px;min-height:58px;cursor:pointer;display:flex;flex-direction:column;gap:2px;transition:background .1s}
+.mcell{background:var(--warm);padding:6px 5px 5px;min-height:58px;cursor:pointer;display:flex;flex-direction:column;gap:2px}
 .mcell:active{background:rgba(201,168,76,.1)}
 .mcell.other{background:var(--parch)}
 .mcell.todcell{background:rgba(15,35,24,.04)}
@@ -96,50 +102,72 @@ select.inp{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.
 .mnum.onum{color:var(--mist)}
 .mdots{display:flex;gap:3px;flex-wrap:wrap}
 .mdot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-/* Procedure colors */
-.txc{padding:7px 12px;border-radius:20px;font-size:.77rem;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:5px;border:1.5px solid var(--ln);background:var(--warm);color:var(--slate);transition:all .1s;-webkit-tap-highlight-color:transparent;user-select:none}
-.txdot{width:7px;height:7px;border-radius:50%;flex-shrink:0;display:inline-block}
+/* Tx badges */
 .txb{font-size:.59rem;padding:2px 7px;border-radius:7px;font-weight:600;display:inline-flex;align-items:center;gap:3px}
 /* View toggle */
 .vtog{display:flex;background:var(--ln);border-radius:9px;padding:3px;gap:2px}
 .vtog button{flex:1;padding:7px 8px;border-radius:6px;font-size:.71rem;font-weight:600;color:var(--slate);cursor:pointer;transition:all .13s;font-family:inherit;border:none}
 .vtog button.on{background:var(--warm);color:var(--F);box-shadow:0 1px 4px rgba(0,0,0,.1)}
 /* Bottom nav */
-#bnav{position:fixed;bottom:0;left:0;right:0;z-index:300;background:var(--warm);border-top:1px solid var(--ln);display:none;padding-bottom:env(safe-area-inset-bottom);box-shadow:0 -4px 20px rgba(15,35,24,.08)}
+#bnav{position:fixed;bottom:0;left:0;right:0;z-index:300;background:var(--warm);
+  border-top:1px solid var(--ln);display:none;padding-bottom:env(safe-area-inset-bottom);
+  box-shadow:0 -4px 20px rgba(15,35,24,.08)}
 #bnav.on{display:flex;align-items:stretch}
-.bni{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 0 8px;cursor:pointer;font-family:inherit;background:none;border:none;-webkit-tap-highlight-color:transparent}
+.bni{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 0 8px;
+  cursor:pointer;font-family:inherit;background:none;border:none;-webkit-tap-highlight-color:transparent}
 /* Overlay + Panel */
-#OV{position:fixed;inset:0;z-index:800;background:rgba(5,12,8,.52);backdrop-filter:blur(3px);display:none}
+#OV{position:fixed;top:0;right:0;bottom:0;left:0;z-index:800;
+  background:rgba(5,12,8,.52);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);display:none}
 #OV.on{display:block}
-#RP{position:fixed;z-index:900;background:var(--cream);display:none;flex-direction:column;top:0;right:0;bottom:0;left:0}
-#RP.on{display:flex!important;flex-direction:column}
+#RP{position:fixed;z-index:900;background:var(--cream);display:none;flex-direction:column;
+  top:0;right:0;bottom:0;left:0;width:100%;height:100%}
+#RP.on{display:flex}
 /* Confirm */
-#CF{position:fixed;inset:0;z-index:1000;background:rgba(5,12,8,.65);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:20px}
+#CF{position:fixed;top:0;right:0;bottom:0;left:0;z-index:1000;
+  background:rgba(5,12,8,.65);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
+  display:none;align-items:center;justify-content:center;padding:20px}
 #CF.on{display:flex}
 /* Toast */
-#toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--F);color:#fff;padding:10px 20px;border-radius:24px;font-size:.82rem;font-weight:600;z-index:1100;display:none;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,.3);pointer-events:none}
+#toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);
+  background:var(--F);color:#fff;padding:10px 20px;border-radius:24px;
+  font-size:.82rem;font-weight:600;z-index:1100;display:none;
+  white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,.3);pointer-events:none}
 #toast.on{display:block;animation:popin .2s ease}
 /* Emoji picker */
-.epdrop{position:absolute;top:62px;left:-50px;background:var(--warm);border:1.5px solid var(--ln);border-radius:14px;box-shadow:0 10px 36px rgba(0,0,0,.16);z-index:950;width:248px;display:none}
+.epdrop{position:absolute;top:62px;left:-50px;background:var(--warm);border:1.5px solid var(--ln);
+  border-radius:14px;box-shadow:0 10px 36px rgba(0,0,0,.16);z-index:950;width:248px;display:none}
 .epdrop.on{display:block;animation:popin .17s ease}
-.epbtn{width:36px;height:36px;font-size:1.2rem;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:2px solid transparent;transition:background .1s;background:none;-webkit-tap-highlight-color:transparent}
+.epbtn{width:36px;height:36px;font-size:1.2rem;border-radius:8px;display:flex;align-items:center;
+  justify-content:center;cursor:pointer;border:2px solid transparent;transition:background .1s;
+  background:none;-webkit-tap-highlight-color:transparent}
 .epbtn:active{background:var(--parch)}
 .epbtn.sel{border-color:var(--F);background:rgba(15,35,24,.06)}
+/* Visit counter */
+.vc-btn{width:36px;height:36px;border-radius:50%;background:var(--parch);border:1.5px solid var(--ln);
+  font-size:1.15rem;font-weight:700;color:var(--slate);display:flex;align-items:center;
+  justify-content:center;flex-shrink:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.vc-btn:active{background:var(--ln)}
 </style>
 </head>
 <body>
+
 <!-- LOCK SCREEN -->
 <div id="LS">
   <div style="width:100%;max-width:300px;text-align:center">
     <div style="width:72px;height:72px;border-radius:20px;background:linear-gradient(135deg,#C9A84C,#9E7B28);display:flex;align-items:center;justify-content:center;font-size:2rem;margin:0 auto 20px;box-shadow:0 8px 28px rgba(201,168,76,.35)">🦷</div>
     <div style="font-family:'Playfair Display',serif;font-size:2rem;color:#fff;margin-bottom:4px">DentaLog</div>
     <div style="font-size:.75rem;color:#8BAF95;letter-spacing:.08em;text-transform:uppercase;margin-bottom:36px">Practice Manager</div>
-    <input id="LI" type="password" placeholder="Password" autocomplete="off" style="width:100%;padding:14px 18px;border-radius:14px;border:1.5px solid rgba(255,255,255,.15);background:rgba(255,255,255,.08);color:#fff;font-size:1.1rem;text-align:center;letter-spacing:.1em;font-family:inherit;outline:none"/>
-    <button id="LB" onclick="tryUnlock()" style="width:100%;margin-top:12px;padding:15px;border-radius:14px;background:linear-gradient(135deg,#C9A84C,#9E7B28);color:#0F2318;font-size:1rem;font-weight:700;cursor:pointer;border:none;font-family:inherit">Unlock</button>
+    <input id="LI" type="password" placeholder="Password" autocomplete="off"
+      style="width:100%;padding:14px 18px;border-radius:14px;border:1.5px solid rgba(255,255,255,.15);background:rgba(255,255,255,.08);color:#fff;font-size:1.1rem;text-align:center;letter-spacing:.1em;font-family:inherit;outline:none"/>
+    <button onclick="tryUnlock()"
+      style="width:100%;margin-top:12px;padding:15px;border-radius:14px;background:linear-gradient(135deg,#C9A84C,#9E7B28);color:#0F2318;font-size:1rem;font-weight:700;cursor:pointer;border:none;font-family:inherit">
+      Unlock
+    </button>
     <div id="LE" style="margin-top:10px;font-size:.8rem;color:#EF4444;min-height:18px"></div>
     <div style="margin-top:28px;font-size:.65rem;color:rgba(255,255,255,.2)">Private — authorised access only</div>
   </div>
 </div>
+
 <!-- APP -->
 <div id="app">
   <div id="sidebar" style="display:none"></div>
@@ -153,84 +181,118 @@ select.inp{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.
 
 <script>
 'use strict';
-/* ══════════════════════════════════
-   LOCK
-══════════════════════════════════ */
+
+/* ── LOCK ─────────────────────────────── */
 (function(){
-  function h(s){var n=0;for(var i=0;i<s.length;i++){n=((n<<5)-n)+s.charCodeAt(i);n|=0}return Math.abs(n).toString(36)}
+  function h(s){var n=0;for(var i=0;i<s.length;i++){n=((n<<5)-n)+s.charCodeAt(i);n|=0;}return Math.abs(n).toString(36);}
   var T=h('Dooby@112');
-  if(sessionStorage.getItem('dla')==='1'){document.getElementById('LS').className='gone';return}
-  document.getElementById('LI').addEventListener('keydown',function(e){if(e.key==='Enter')tryUnlock()});
+  if(sessionStorage.getItem('dla')==='1'){document.getElementById('LS').className='gone';}
+  document.getElementById('LI').addEventListener('keydown',function(e){if(e.key==='Enter')tryUnlock();});
   window.tryUnlock=function(){
     var v=document.getElementById('LI').value;
     if(h(v)===T){
       sessionStorage.setItem('dla','1');
       var ls=document.getElementById('LS');
       ls.style.opacity='0';ls.style.transition='opacity .3s';
-      setTimeout(function(){ls.className='gone'},300);
+      setTimeout(function(){ls.className='gone';},300);
     } else {
       document.getElementById('LE').textContent='Incorrect password';
       document.getElementById('LI').value='';
-      setTimeout(function(){document.getElementById('LE').textContent=''},2000);
+      setTimeout(function(){document.getElementById('LE').textContent='';},2000);
     }
   };
 })();
 
-/* ══════════════════════════════════
-   CONSTANTS
-══════════════════════════════════ */
+/* ── CONSTANTS ────────────────────────── */
 var FOREST='#0F2318', GOLD='#C9A84C';
-var PC={'Examination':'#3B82F6','X-Ray / OPG':'#8B5CF6','Scaling & Polishing':'#06B6D4','Composite Filling':'#F59E0B','Amalgam Filling':'#D97706','Temporary Filling':'#FBBF24','Root Canal Treatment':'#EF4444','Crown':'#C9A84C','Bridge':'#92400E','Veneer':'#EC4899','Extraction':'#F97316','Surgical Extraction':'#DC2626','Implant':'#1D4ED8','Partial Denture':'#7C3AED','Full Denture':'#6D28D9','Orthodontic Adjustment':'#059669','Whitening':'#0EA5E9','Fluoride Treatment':'#38BDF8','Fissure Sealant':'#34D399','Emergency Treatment':'#B91C1C','Prescription':'#64748B'};
+var PC={
+  'Examination':'#3B82F6','X-Ray / OPG':'#8B5CF6','Scaling & Polishing':'#06B6D4',
+  'Composite Filling':'#F59E0B','Amalgam Filling':'#D97706','Temporary Filling':'#FBBF24',
+  'Root Canal Treatment':'#EF4444','Crown':'#C9A84C','Bridge':'#92400E','Veneer':'#EC4899',
+  'Extraction':'#F97316','Surgical Extraction':'#DC2626','Implant':'#1D4ED8',
+  'Partial Denture':'#7C3AED','Full Denture':'#6D28D9','Orthodontic Adjustment':'#059669',
+  'Whitening':'#0EA5E9','Fluoride Treatment':'#38BDF8','Fissure Sealant':'#34D399',
+  'Emergency Treatment':'#B91C1C','Prescription':'#64748B'
+};
 var TX=Object.keys(PC);
 var EMOJIS=['🦷','😁','😬','👶','👦','👧','🧑','👨','👩','👴','👵','🧓','👨‍⚕️','👩‍⚕️','🤕','😷','🤓','😎','🐣','⭐','💎','👑'];
 
-/* ══════════════════════════════════
-   UTILS
-══════════════════════════════════ */
-function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
-function today(){return fd(new Date())}
-function fd(d){return d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate())}
-function p2(n){return n<10?'0'+n:''+n}
-function pd(s){var x=s.split('-');return new Date(+x[0],+x[1]-1,+x[2])}
-function isToday(s){return s===today()}
-function addDays(s,n){var d=pd(s);d.setDate(d.getDate()+n);return fd(d)}
-function weekMon(s){var d=pd(s),dow=d.getDay()||7;d.setDate(d.getDate()-(dow-1));return fd(d)}
-function prettyD(s){return pd(s).toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'})}
-function shortD(s){return pd(s).toLocaleDateString('en-US',{month:'short',day:'numeric'})}
-function monthLbl(y,m){return new Date(y,m,1).toLocaleDateString('en-US',{month:'long',year:'numeric'})}
-function ini(n){if(!n)return '?';return(n.split(' ').map(function(w){return w[0]||''}).slice(0,2).join('')||'?').toUpperCase()}
-function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
-function pc(tx){return PC[tx]||'#94A3B8'}
-function compress(file,cb){var r=new FileReader();r.onload=function(e){var img=new Image();img.onload=function(){var sc=Math.min(1,900/Math.max(img.width,img.height)),c=document.createElement('canvas');c.width=img.width*sc;c.height=img.height*sc;c.getContext('2d').drawImage(img,0,0,c.width,c.height);cb(c.toDataURL('image/jpeg',.72))};img.src=e.target.result};r.readAsDataURL(file)}
-function monthDays(y,m){var f=new Date(y,m,1),l=new Date(y,m+1,0),off=(f.getDay()||7)-1,days=[];for(var i=0;i<off;i++)days.push(fd(new Date(y,m,1-off+i)));for(var i=1;i<=l.getDate();i++)days.push(fd(new Date(y,m,i)));var rem=days.length%7;if(rem)for(var i=1;i<=7-rem;i++)days.push(fd(new Date(y,m+1,i)));return days}
-var _toast_t;
-function toast(msg){var t=document.getElementById('toast');t.textContent=msg;t.className='on';clearTimeout(_toast_t);_toast_t=setTimeout(function(){t.className=''},2000)}
+/* ── UTILS ────────────────────────────── */
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+function today(){return fd(new Date());}
+function fd(d){return d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate());}
+function p2(n){return n<10?'0'+n:''+n;}
+function pd(s){var x=s.split('-');return new Date(+x[0],+x[1]-1,+x[2]);}
+function isToday(s){return s===today();}
+function addDays(s,n){var d=pd(s);d.setDate(d.getDate()+n);return fd(d);}
+function weekMon(s){var d=pd(s),dow=d.getDay()||7;d.setDate(d.getDate()-(dow-1));return fd(d);}
+function prettyD(s){return pd(s).toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});}
+function shortD(s){return pd(s).toLocaleDateString('en-US',{month:'short',day:'numeric'});}
+function monthLbl(y,m){return new Date(y,m,1).toLocaleDateString('en-US',{month:'long',year:'numeric'});}
+function ini(n){if(!n)return '?';return (n.split(' ').map(function(w){return w[0]||'';}).slice(0,2).join('')||'?').toUpperCase();}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function pc(tx){return PC[tx]||'#94A3B8';}
+function compress(file,cb){
+  var r=new FileReader();
+  r.onload=function(e){
+    var img=new Image();
+    img.onload=function(){
+      var sc=Math.min(1,900/Math.max(img.width,img.height));
+      var c=document.createElement('canvas');
+      c.width=img.width*sc;c.height=img.height*sc;
+      c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+      cb(c.toDataURL('image/jpeg',.72));
+    };
+    img.src=e.target.result;
+  };
+  r.readAsDataURL(file);
+}
+function monthDays(y,m){
+  var f=new Date(y,m,1),l=new Date(y,m+1,0),off=(f.getDay()||7)-1,days=[];
+  for(var i=0;i<off;i++)days.push(fd(new Date(y,m,1-off+i)));
+  for(var i=1;i<=l.getDate();i++)days.push(fd(new Date(y,m,i)));
+  var rem=days.length%7;if(rem)for(var i=1;i<=7-rem;i++)days.push(fd(new Date(y,m+1,i)));
+  return days;
+}
+var _tt;
+function toast(msg){
+  var t=document.getElementById('toast');
+  t.textContent=msg;t.className='on';
+  clearTimeout(_tt);_tt=setTimeout(function(){t.className='';},2200);
+}
 
-/* ══════════════════════════════════
-   STORAGE
-══════════════════════════════════ */
-var KP='dl_p2', KA='dl_a2';
-function lsGet(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}}
-function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){toast('⚠️ Storage full')}}
-var P=lsGet(KP,{}); // patients
-var A=lsGet(KA,{}); // appointments by date
-function saveAll(){lsSet(KP,P);lsSet(KA,A)}
+/* ── STORAGE ──────────────────────────── */
+var KP='dl_p3',KA='dl_a3';
+function lsGet(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;}}
+function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){toast('Storage full');}}
+var P=lsGet(KP,{});
+var A=lsGet(KA,{});
+function saveAll(){lsSet(KP,P);lsSet(KA,A);}
 
-/* ══════════════════════════════════
-   DATA HELPERS
-══════════════════════════════════ */
-function getAppts(date){return(A[date]||[]).slice().sort(function(a,b){return(a.time||'')>(b.time||'')?1:-1})}
-function allPats(){return Object.values(P)}
-function lastVisit(pat){if(!pat||!pat.visits||!pat.visits.length)return null;return pat.visits.slice().sort(function(a,b){return b.date>a.date?1:-1})[0]}
-function apptColor(appt){if(appt.patientId){var p2=P[appt.patientId];if(p2&&p2.visits){var vv=p2.visits.filter(function(v){return v.apptId===appt.id});if(vv.length&&vv[0].treatments&&vv[0].treatments.length)return pc(vv[0].treatments[0])}}return appt.color||GOLD}
+/* ── DATA ─────────────────────────────── */
+function getAppts(date){return (A[date]||[]).slice().sort(function(a,b){return (a.time||'')>(b.time||'')?1:-1;});}
+function allPats(){return Object.values(P);}
+function lastVisit(pat){
+  if(!pat||!pat.visits||!pat.visits.length)return null;
+  return pat.visits.slice().sort(function(a,b){return b.date>a.date?1:-1;})[0];
+}
+function apptColor(appt){
+  if(appt.patientId){
+    var p2=P[appt.patientId];
+    if(p2&&p2.visits){
+      var vv=p2.visits.filter(function(v){return v.apptId===appt.id;});
+      if(vv.length&&vv[0].txData&&vv[0].txData.length)return pc(vv[0].txData[0].name);
+      if(vv.length&&vv[0].treatments&&vv[0].treatments.length)return pc(vv[0].treatments[0]);
+    }
+  }
+  return appt.color||GOLD;
+}
 
-/* ══════════════════════════════════
-   STATE
-══════════════════════════════════ */
+/* ── STATE ────────────────────────────── */
 var S={
   mob:window.innerWidth<640,
-  view:'today',       // today | patients | schedule
-  sched:'day',        // day | week | month
+  view:'today',
+  sched:'day',
   date:today(),
   wkBase:weekMon(today()),
   moY:new Date().getFullYear(),
@@ -238,36 +300,39 @@ var S={
   patQ:''
 };
 var _rf;
-function R(){if(!_rf)_rf=requestAnimationFrame(function(){_rf=null;paint()})}
+function R(){if(!_rf)_rf=requestAnimationFrame(function(){_rf=null;paint();});}
 
-/* ══════════════════════════════════
-   HTML HELPERS
-══════════════════════════════════ */
+/* ── HTML HELPERS ─────────────────────── */
 function avH(pat,sz){
-  sz=sz||42;var fs=Math.round(sz*.52);
-  if(pat&&pat.emoji)return '<div style="width:'+sz+'px;height:'+sz+'px;border-radius:50%;background:var(--parch);border:1.5px solid var(--ln);display:flex;align-items:center;justify-content:center;font-size:'+fs+'px;flex-shrink:0">'+esc(pat.emoji)+'</div>';
+  sz=sz||42;
+  if(pat&&pat.emoji){
+    return '<div style="width:'+sz+'px;height:'+sz+'px;border-radius:50%;background:var(--parch);border:1.5px solid var(--ln);display:flex;align-items:center;justify-content:center;font-size:'+Math.round(sz*.52)+'px;flex-shrink:0">'+esc(pat.emoji)+'</div>';
+  }
   var av=pat&&pat.name?ini(pat.name):'?';
-  return '<div style="width:'+sz+'px;height:'+sz+'px;border-radius:50%;background:'+(av!='?'?FOREST:'var(--parch)')+';color:'+(av!='?'?'#fff':'var(--mist)')+';display:flex;align-items:center;justify-content:center;font-weight:700;font-size:'+Math.round(sz*.34)+'px;flex-shrink:0;border:'+(av!='?'?'none':'1.5px solid var(--ln)')+'">'+esc(av)+'</div>'
+  var bg=av!=='?'?FOREST:'var(--parch)';
+  var col=av!=='?'?'#fff':'var(--mist)';
+  var border=av!=='?'?'none':'1.5px solid var(--ln)';
+  return '<div style="width:'+sz+'px;height:'+sz+'px;border-radius:50%;background:'+bg+';color:'+col+';display:flex;align-items:center;justify-content:center;font-weight:700;font-size:'+Math.round(sz*.34)+'px;flex-shrink:0;border:'+border+'">'+esc(av)+'</div>';
 }
-function txBadges(tx,max,txData){
-  if(!tx||!tx.length)return '';
-  var h='',s=tx.slice(0,max||3);
-  s.forEach(function(t){
-    var c=pc(t);
-    var item=txData&&txData.find(function(x){return x.name===t});
-    var prog=item&&item.totalVisits>1?' <span style="opacity:.8">'+item.visitNum+'/'+item.totalVisits+'</span>':'';
-    h+='<span class="txb" style="background:'+c+'18;color:'+c+';border:1px solid '+c+'33"><span style="width:5px;height:5px;border-radius:50%;background:'+c+';display:inline-block"></span>'+esc(t)+prog+'</span>';
+
+function txBadges(txData,treatments,max){
+  var list=txData&&txData.length?txData:(treatments||[]).map(function(t){return {name:t,visitNum:1,totalVisits:1};});
+  if(!list.length)return '';
+  var h='',s=list.slice(0,max||3);
+  s.forEach(function(item){
+    var c=pc(item.name);
+    var prog=(item.totalVisits>1)?' <span style="opacity:.75;font-size:.58rem">'+item.visitNum+'/'+item.totalVisits+'</span>':'';
+    h+='<span class="txb" style="background:'+c+'18;color:'+c+';border:1px solid '+c+'33"><span style="width:5px;height:5px;border-radius:50%;background:'+c+';display:inline-block"></span>'+esc(item.name)+prog+'</span>';
   });
-  if(tx.length>(max||3))h+='<span style="font-size:.59rem;color:var(--mist)">+'+( tx.length-(max||3))+'</span>';
+  if(list.length>(max||3))h+='<span style="font-size:.59rem;color:var(--mist)">+'+(list.length-(max||3))+'</span>';
   return h;
 }
 
-/* ══════════════════════════════════
-   PAINT
-══════════════════════════════════ */
+/* ── PAINT ────────────────────────────── */
 function paint(){
   var sd=document.getElementById('sidebar');
-  if(S.mob){sd.style.display='none'}else{sd.style.display='flex';sd.style.flexDirection='column';sd.innerHTML=paintSidebar()}
+  if(S.mob){sd.style.display='none';}
+  else{sd.style.display='flex';sd.style.flexDirection='column';sd.innerHTML=paintSidebar();}
   document.getElementById('topbar').innerHTML=paintTopbar();
   paintBnav();
   var v='';
@@ -280,43 +345,68 @@ function paint(){
 
 function afterPaint(){
   requestAnimationFrame(function(){
-    // scroll date strip
     var ds=document.getElementById('ds');
-    if(ds){var sel=ds.querySelector('.sel');if(sel)sel.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'})}
-    // patient search
+    if(ds){var sel=ds.querySelector('.sel');if(sel)sel.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});}
     var pq=document.getElementById('patq');
-    if(pq){pq.oninput=function(){S.patQ=pq.value;var scr=document.querySelector('#view .scr');if(scr){var t=document.createElement('div');t.innerHTML=paintPatients();var ns=t.querySelector('.scr');if(ns)scr.innerHTML=ns.innerHTML;afterPaint()}}}
+    if(pq){
+      pq.oninput=function(){
+        S.patQ=pq.value;
+        var scr=document.querySelector('#view .scr');
+        if(scr){
+          var t2=document.createElement('div');
+          t2.innerHTML=paintPatients();
+          var ns=t2.querySelector('.scr');
+          if(ns)scr.innerHTML=ns.innerHTML;
+          afterPaint();
+        }
+      };
+    }
   });
 }
 
-/* ── SIDEBAR ── */
+/* ── SIDEBAR ──────────────────────────── */
 function paintSidebar(){
   var total=allPats().length,todayCnt=(A[today()]||[]).length;
-  var html='<div style="padding:26px 20px 18px"><div style="display:flex;align-items:center;gap:10px;margin-bottom:3px"><div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#C9A84C,#9E7B28);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;box-shadow:0 4px 12px rgba(201,168,76,.3)">🦷</div><div style="font-family:\'Playfair Display\',serif;font-size:1.42rem;color:#fff">DentaLog</div></div><div style="font-size:.66rem;color:var(--sage);letter-spacing:.08em;text-transform:uppercase;font-weight:500;margin-left:46px">Practice Manager</div></div>'
-  +'<div style="height:1px;background:rgba(255,255,255,.08);margin:0 18px"></div>'
-  +'<div style="flex:1;padding:12px 12px 0">';
-  [{id:'today',ic:'📅',lb:'Today'},{id:'patients',ic:'🧑‍⚕️',lb:'Patients'},{id:'schedule',ic:'🗓',lb:'Schedule'}].forEach(function(n){
-    html+='<button class="sdn'+(S.view===n.id?' on':'')+'" onclick="nav(\''+n.id+'\')"><span style="font-size:1rem">'+n.ic+'</span>'+n.lb+'</button>';
+  var h='<div style="padding:26px 20px 18px">'
+    +'<div style="display:flex;align-items:center;gap:10px;margin-bottom:3px">'
+    +'<div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#C9A84C,#9E7B28);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;box-shadow:0 4px 12px rgba(201,168,76,.3)">🦷</div>'
+    +'<div style="font-family:\'Playfair Display\',serif;font-size:1.42rem;color:#fff">DentaLog</div>'
+    +'</div>'
+    +'<div style="font-size:.66rem;color:var(--sage);letter-spacing:.08em;text-transform:uppercase;font-weight:500;margin-left:46px">Practice Manager</div>'
+    +'</div>'
+    +'<div style="height:1px;background:rgba(255,255,255,.08);margin:0 18px"></div>'
+    +'<div style="flex:1;padding:12px 12px 0">';
+  var navs=[{id:'today',ic:'📅',lb:'Today'},{id:'patients',ic:'🧑‍⚕️',lb:'Patients'},{id:'schedule',ic:'🗓',lb:'Schedule'}];
+  navs.forEach(function(n){
+    h+='<button class="sdn'+(S.view===n.id?' on':'')+'" onclick="nav(\''+n.id+'\')"><span style="font-size:1rem">'+n.ic+'</span>'+n.lb+'</button>';
   });
-  html+='<div style="height:1px;background:rgba(255,255,255,.07);margin:12px 2px"></div>'
-  +'<button class="sdn" style="border:1.5px dashed rgba(201,168,76,.3);color:rgba(201,168,76,.7)!important" onclick="openApptPanel(null,\''+S.date+'\')">＋&nbsp; Add Appointment</button>'
-  +'</div>'
-  +'<div style="padding:16px 20px 22px;margin-top:auto;border-top:1px solid rgba(255,255,255,.07)"><div style="display:grid;grid-template-columns:1fr 1fr;gap:9px">'
-  +'<div style="background:rgba(255,255,255,.06);border-radius:10px;padding:10px 12px;border:1px solid rgba(255,255,255,.07)"><div style="font-size:.6rem;color:var(--sage);text-transform:uppercase;letter-spacing:.07em;font-weight:600">Today</div><div style="font-size:.85rem;color:#fff;font-weight:700;margin-top:2px">'+todayCnt+' appt</div></div>'
-  +'<div style="background:rgba(255,255,255,.06);border-radius:10px;padding:10px 12px;border:1px solid rgba(255,255,255,.07)"><div style="font-size:.6rem;color:var(--sage);text-transform:uppercase;letter-spacing:.07em;font-weight:600">Patients</div><div style="font-size:.85rem;color:#fff;font-weight:700;margin-top:2px">'+total+' total</div></div>'
-  +'</div></div>';
-  return html;
+  h+='<div style="height:1px;background:rgba(255,255,255,.07);margin:12px 2px"></div>'
+    +'<button class="sdn" style="border:1.5px dashed rgba(201,168,76,.3);color:rgba(201,168,76,.7)!important" onclick="openApptPanel(null,\''+S.date+'\')">＋&nbsp; Add Appointment</button>'
+    +'</div>'
+    +'<div style="padding:16px 20px 22px;margin-top:auto;border-top:1px solid rgba(255,255,255,.07)">'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:9px">'
+    +'<div style="background:rgba(255,255,255,.06);border-radius:10px;padding:10px 12px;border:1px solid rgba(255,255,255,.07)">'
+    +'<div style="font-size:.6rem;color:var(--sage);text-transform:uppercase;letter-spacing:.07em;font-weight:600">Today</div>'
+    +'<div style="font-size:.85rem;color:#fff;font-weight:700;margin-top:2px">'+todayCnt+' appt</div></div>'
+    +'<div style="background:rgba(255,255,255,.06);border-radius:10px;padding:10px 12px;border:1px solid rgba(255,255,255,.07)">'
+    +'<div style="font-size:.6rem;color:var(--sage);text-transform:uppercase;letter-spacing:.07em;font-weight:600">Patients</div>'
+    +'<div style="font-size:.85rem;color:#fff;font-weight:700;margin-top:2px">'+total+' total</div></div>'
+    +'</div></div>';
+  return h;
 }
 
-/* ── TOPBAR ── */
+/* ── TOPBAR ───────────────────────────── */
 function paintTopbar(){
+  var subs={today:(A[today()]||[]).length+' appointments today',patients:allPats().length+' patients',schedule:''};
   var titles={today:'Daily Agenda',patients:'Patient Records',schedule:'Schedule'};
   if(S.mob){
-    var subs={today:(A[today()]||[]).length+' appointments today',patients:allPats().length+' patients',schedule:''};
     return '<div style="background:'+FOREST+';padding:max(14px,env(safe-area-inset-top)) 18px 14px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;box-shadow:0 2px 10px rgba(0,0,0,.14)">'
-      +'<div style="display:flex;align-items:center;gap:10px"><div style="width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#C9A84C,#9E7B28);display:flex;align-items:center;justify-content:center;font-size:.95rem">🦷</div>'
-      +'<div><div style="font-family:\'Playfair Display\',serif;font-size:1.15rem;color:#fff;line-height:1">DentaLog</div>'
-      +'<div style="font-size:.6rem;color:var(--sage);margin-top:1px">'+subs[S.view]+'</div></div></div>'
+      +'<div style="display:flex;align-items:center;gap:10px">'
+      +'<div style="width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#C9A84C,#9E7B28);display:flex;align-items:center;justify-content:center;font-size:.95rem">🦷</div>'
+      +'<div>'
+      +'<div style="font-family:\'Playfair Display\',serif;font-size:1.15rem;color:#fff;line-height:1">DentaLog</div>'
+      +'<div style="font-size:.6rem;color:var(--sage);margin-top:1px">'+subs[S.view]+'</div>'
+      +'</div></div>'
       +'<button onclick="openApptPanel(null,\''+S.date+'\')" style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);border-radius:10px;padding:8px 14px;color:#fff;font-size:.75rem;font-weight:700">+ Add</button>'
       +'</div>';
   }
@@ -326,15 +416,12 @@ function paintTopbar(){
     +'</div>';
 }
 
-/* ── BOTTOM NAV ── */
+/* ── BOTTOM NAV ───────────────────────── */
 function paintBnav(){
-  if(!S.mob){document.getElementById('bnav').className='';return}
-  var items=[{id:'today',ic:'📅',lb:'Today'},{id:'patients',ic:'🧑‍⚕️',lb:'Patients'},{id:'schedule',ic:'🗓',lb:'Schedule'}];
+  if(!S.mob){document.getElementById('bnav').className='';return;}
   var h='';
-  // today + patients
   h+='<button class="bni" onclick="nav(\'today\')" style="color:'+(S.view==='today'?FOREST:'var(--mist)')+'"><span style="font-size:1.22rem">📅</span><span style="font-size:.61rem;font-weight:'+(S.view==='today'?700:500)+'">Today</span></button>';
   h+='<button class="bni" onclick="nav(\'patients\')" style="color:'+(S.view==='patients'?FOREST:'var(--mist)')+'"><span style="font-size:1.22rem">🧑‍⚕️</span><span style="font-size:.61rem;font-weight:'+(S.view==='patients'?700:500)+'">Patients</span></button>';
-  // FAB
   h+='<button class="bni" onclick="openApptPanel(null,\''+S.date+'\')">'
     +'<div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#C9A84C,#9E7B28);display:flex;align-items:center;justify-content:center;color:'+FOREST+';font-size:1.4rem;margin-top:-12px;box-shadow:0 4px 14px rgba(201,168,76,.38);font-weight:700">＋</div>'
     +'<span style="font-size:.61rem;color:var(--mist)">Add</span></button>';
@@ -343,11 +430,40 @@ function paintBnav(){
   document.getElementById('bnav').className='on';
 }
 
-/* ── TODAY VIEW ── */
+/* ── APPT CARD ────────────────────────── */
+function apptCard(appt,date){
+  var pat=appt.patientId?P[appt.patientId]:null;
+  var col=apptColor(appt);
+  var lv=pat?lastVisit(pat):null;
+  var visitForAppt=lv&&lv.apptId===appt.id?lv:null;
+  var name=pat?pat.name:(appt.title||'Appointment');
+  var sub=pat?[pat.age&&(pat.age+'y'),pat.gender].filter(Boolean).join(' · '):(appt.notes||'Tap to open');
+  return '<div class="card fup" style="border-color:'+col+';margin-bottom:10px;position:relative;overflow:hidden">'
+    +'<div style="position:absolute;left:0;top:10px;bottom:10px;width:3px;border-radius:0 2px 2px 0;background:'+col+'"></div>'
+    +'<div style="display:flex;align-items:center;gap:12px;padding:14px 14px 14px 18px">'
+    +'<div onclick="openApptPanel(\''+esc(appt.id)+'\',\''+esc(date)+'\')" style="width:50px;text-align:center;flex-shrink:0;cursor:pointer">'
+    +'<div style="font-size:.82rem;font-weight:700;color:var(--ink)">'+esc(appt.time||'—')+'</div>'
+    +'<div style="font-size:.61rem;color:var(--mist);margin-top:1px">'+esc(appt.duration||'')+'</div>'
+    +'</div>'
+    +'<div onclick="openApptPanel(\''+esc(appt.id)+'\',\''+esc(date)+'\')" style="cursor:pointer">'+avH(pat,40)+'</div>'
+    +'<div onclick="openApptPanel(\''+esc(appt.id)+'\',\''+esc(date)+'\')" style="flex:1;min-width:0;cursor:pointer">'
+    +'<div style="font-weight:600;font-size:.88rem;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+esc(name)+'</div>'
+    +'<div style="font-size:.71rem;color:var(--slate);margin-top:2px">'+esc(sub)+'</div>'
+    +(visitForAppt?'<div style="display:flex;gap:4px;margin-top:5px;flex-wrap:wrap">'+txBadges(visitForAppt.txData,visitForAppt.treatments,3)+'</div>':'')
+    +'</div>'
+    +'<div style="display:flex;gap:6px;flex-shrink:0">'
+    +'<button onclick="openApptPanel(\''+esc(appt.id)+'\',\''+esc(date)+'\')" style="width:34px;height:34px;border-radius:9px;background:rgba(15,35,24,.05);color:var(--slate);font-size:.75rem;font-weight:700;display:flex;align-items:center;justify-content:center">✏️</button>'
+    +'<button onclick="delAppt(\''+esc(appt.id)+'\',\''+esc(date)+'\')" style="width:34px;height:34px;border-radius:9px;background:rgba(192,57,43,.06);color:var(--red);font-size:.75rem;display:flex;align-items:center;justify-content:center">🗑️</button>'
+    +'</div>'
+    +'</div></div>';
+}
+
+/* ── TODAY VIEW ───────────────────────── */
 function paintToday(){
   var appts=getAppts(S.date);
-  var days=[];for(var i=0;i<14;i++){var dd=new Date();dd.setDate(dd.getDate()-4+i);days.push(fd(dd))}
-  var h='<div id="ds" class="sx" style="display:flex;gap:6px;padding:12px 16px 12px;flex-shrink:0">';
+  var days=[];
+  for(var i=0;i<14;i++){var dd=new Date();dd.setDate(dd.getDate()-4+i);days.push(fd(dd));}
+  var h='<div id="ds" class="sx" style="display:flex;gap:6px;padding:12px 16px;flex-shrink:0">';
   days.forEach(function(ds){
     var d=pd(ds),sel=ds===S.date,tod=isToday(ds);
     h+='<div class="dsd'+(sel?' sel':'')+(tod&&!sel?' tod':'')+'" onclick="pickDate(\''+ds+'\')">'
@@ -364,44 +480,23 @@ function paintToday(){
     +'<button onclick="pickDate(\''+today()+'\')" style="padding:6px 13px;background:'+(todayBtn?'rgba(15,35,24,.07)':'var(--warm)')+';border:1.5px solid '+(todayBtn?FOREST:'var(--ln)')+';border-radius:18px;font-size:.71rem;font-weight:600;color:'+(todayBtn?'var(--FL)':'var(--slate)')+'">Today</button>'
     +'</div>';
   h+='<div class="scr" style="flex:1;padding:'+(S.mob?'0 16px 100px':'0 24px 20px')+'">';
-  if(!appts.length)h+='<div style="text-align:center;padding:60px 20px"><div style="width:68px;height:68px;border-radius:50%;background:var(--warm);border:2px solid var(--ln);display:flex;align-items:center;justify-content:center;font-size:1.7rem;margin:0 auto 14px">📭</div><div style="font-family:\'Playfair Display\',serif;font-size:1.05rem;color:var(--ink);margin-bottom:5px">No appointments</div><div style="font-size:.77rem;color:var(--mist)">Tap + to add one</div></div>';
-  else appts.forEach(function(a){h+=apptCard(a,S.date)});
+  if(!appts.length){
+    h+='<div style="text-align:center;padding:60px 20px">'
+      +'<div style="width:68px;height:68px;border-radius:50%;background:var(--warm);border:2px solid var(--ln);display:flex;align-items:center;justify-content:center;font-size:1.7rem;margin:0 auto 14px">📭</div>'
+      +'<div style="font-family:\'Playfair Display\',serif;font-size:1.05rem;color:var(--ink);margin-bottom:5px">No appointments</div>'
+      +'<div style="font-size:.77rem;color:var(--mist)">Tap + to add one</div></div>';
+  } else {
+    appts.forEach(function(a){h+=apptCard(a,S.date);});
+  }
   h+='</div>';
   return h;
 }
 
-function apptCard(appt,date){
-  var pat=appt.patientId?P[appt.patientId]:null;
-  var col=apptColor(appt);
-  var lv=pat?lastVisit(pat):null;
-  var lastTx=lv&&lv.apptId===appt.id&&lv.treatments&&lv.treatments.length?lv.treatments:null;
-  var name=pat?pat.name:(appt.title||'Appointment');
-  var sub=pat?[pat.age&&pat.age+'y',pat.gender].filter(Boolean).join(' · '):(appt.notes||'Tap to open');
-  return '<div class="card fup" style="border-color:'+col+';margin-bottom:10px;position:relative;overflow:hidden">'
-    +'<div style="position:absolute;left:0;top:10px;bottom:10px;width:3px;border-radius:0 2px 2px 0;background:'+col+'"></div>'
-    +'<div style="display:flex;align-items:center;gap:12px;padding:14px 14px 14px 18px">'
-    +'<div onclick="openApptPanel(\''+esc(appt.id)+'\',\''+esc(date)+'\')" style="width:50px;text-align:center;flex-shrink:0;cursor:pointer">'
-    +'<div style="font-size:.82rem;font-weight:700;color:var(--ink)">'+esc(appt.time||'—')+'</div>'
-    +'<div style="font-size:.61rem;color:var(--mist);margin-top:1px">'+esc(appt.duration||'')+'</div>'
-    +'</div>'
-    +'<div onclick="openApptPanel(\''+esc(appt.id)+'\',\''+esc(date)+'\')" style="cursor:pointer">'+avH(pat,40)+'</div>'
-    +'<div onclick="openApptPanel(\''+esc(appt.id)+'\',\''+esc(date)+'\')" style="flex:1;min-width:0;cursor:pointer">'
-    +'<div style="font-weight:600;font-size:.88rem;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+esc(name)+'</div>'
-    +'<div style="font-size:.71rem;color:var(--slate);margin-top:2px">'+esc(sub)+'</div>'
-    +(lastTx?'<div style="display:flex;gap:4px;margin-top:5px;flex-wrap:wrap">'+txBadges(lastTx,3,lv?lv.txData:null)+'</div>':'')
-    +'</div>'
-    +'<div style="display:flex;gap:6px;flex-shrink:0">'
-    +'<button onclick="openApptPanel(\''+esc(appt.id)+'\',\''+esc(date)+'\')" style="width:34px;height:34px;border-radius:9px;background:rgba(15,35,24,.05);color:var(--slate);font-size:.75rem;font-weight:700;display:flex;align-items:center;justify-content:center">✏️</button>'
-    +'<button onclick="delApptConfirm(\''+esc(appt.id)+'\',\''+esc(date)+'\')" style="width:34px;height:34px;border-radius:9px;background:rgba(192,57,43,.06);color:var(--red);font-size:.75rem;display:flex;align-items:center;justify-content:center">🗑️</button>'
-    +'</div>'
-    +'</div></div>';
-}
-
-/* ── PATIENTS VIEW ── */
+/* ── PATIENTS VIEW ────────────────────── */
 function paintPatients(){
   var all=allPats(),q=S.patQ.trim().toLowerCase();
-  var list=q?all.filter(function(p){return(p.name||'').toLowerCase().indexOf(q)>-1||(p.phone||'').indexOf(q)>-1}):all;
-  list=list.slice().sort(function(a,b){var av=lastVisit(a),bv=lastVisit(b);return(bv?bv.date:'')>(av?av.date:'')?1:-1});
+  var list=q?all.filter(function(p){return (p.name||'').toLowerCase().indexOf(q)>-1||(p.phone||'').indexOf(q)>-1;}):all;
+  list=list.slice().sort(function(a,b){var av=lastVisit(a),bv=lastVisit(b);return (bv?bv.date:'')>(av?av.date:'')?1:-1;});
   var h='<div style="padding:'+(S.mob?'12px 16px 8px':'12px 24px 8px')+';flex-shrink:0;display:flex;gap:10px;align-items:center">'
     +'<div style="position:relative;flex:1"><span style="position:absolute;left:13px;top:50%;transform:translateY(-50%);pointer-events:none">🔍</span>'
     +'<input id="patq" class="inp" style="padding-left:38px" placeholder="Search by name or phone…" value="'+esc(S.patQ)+'"></div>'
@@ -409,18 +504,19 @@ function paintPatients(){
     +'</div>'
     +'<div class="scr" style="flex:1;padding:'+(S.mob?'0 16px 100px':'0 24px 20px')+'">';
   if(!list.length){
-    h+='<div style="text-align:center;padding:60px 20px"><div style="width:68px;height:68px;border-radius:50%;background:var(--warm);border:2px solid var(--ln);display:flex;align-items:center;justify-content:center;font-size:1.7rem;margin:0 auto 14px">🧑‍⚕️</div>'
+    h+='<div style="text-align:center;padding:60px 20px">'
+      +'<div style="width:68px;height:68px;border-radius:50%;background:var(--warm);border:2px solid var(--ln);display:flex;align-items:center;justify-content:center;font-size:1.7rem;margin:0 auto 14px">🧑‍⚕️</div>'
       +'<div style="font-family:\'Playfair Display\',serif;font-size:1.05rem;color:var(--ink);margin-bottom:5px">'+(q?'No results':'No patients yet')+'</div>'
-      +'<div style="font-size:.77rem;color:var(--mist)">'+(q?'Try a different search':'Tap + New Patient to add your first one')+'</div></div>';
+      +'<div style="font-size:.77rem;color:var(--mist)">'+(q?'Try a different search':'Tap + New Patient to get started')+'</div></div>';
   } else {
     list.forEach(function(pat){
       var lv=lastVisit(pat);
-      var col=lv&&lv.treatments&&lv.treatments.length?pc(lv.treatments[0]):null;
+      var col=lv&&lv.txData&&lv.txData.length?pc(lv.txData[0].name):(lv&&lv.treatments&&lv.treatments.length?pc(lv.treatments[0]):null);
       h+='<div class="card fup" onclick="openPatPanel(\''+esc(pat.id)+'\')" style="padding:14px 16px;display:flex;align-items:center;gap:13px;cursor:pointer;margin-bottom:9px;border-color:'+(col||'var(--ln)')+'">'+avH(pat,44)
         +'<div style="flex:1;min-width:0">'
         +'<div style="font-weight:600;font-size:.9rem;color:var(--ink)">'+esc(pat.name||'Unnamed')+'</div>'
-        +'<div style="font-size:.71rem;color:var(--slate);margin-top:2px">'+esc([pat.age&&pat.age+'y',pat.gender,pat.phone].filter(Boolean).join('  ·  '))+'</div>'
-        +(lv&&lv.treatments&&lv.treatments.length?'<div style="display:flex;gap:4px;margin-top:5px;flex-wrap:wrap">'+txBadges(lv.treatments,2,lv.txData)+'</div>':'')
+        +'<div style="font-size:.71rem;color:var(--slate);margin-top:2px">'+esc([pat.age&&(pat.age+'y'),pat.gender,pat.phone].filter(Boolean).join('  ·  '))+'</div>'
+        +(lv?'<div style="display:flex;gap:4px;margin-top:5px;flex-wrap:wrap">'+txBadges(lv.txData,lv.treatments,2)+'</div>':'')
         +'</div>'
         +(lv?'<div style="text-align:right;flex-shrink:0"><div style="font-size:.67rem;color:var(--mist)">Last visit</div><div style="font-size:.72rem;font-weight:600;color:var(--ink)">'+shortD(lv.date)+'</div></div>':'')
         +'</div>';
@@ -430,7 +526,7 @@ function paintPatients(){
   return h;
 }
 
-/* ── SCHEDULE VIEW ── */
+/* ── SCHEDULE VIEW ────────────────────── */
 function paintSchedule(){
   var h='<div style="padding:'+(S.mob?'10px 16px 8px':'12px 24px 8px')+';flex-shrink:0">'
     +'<div class="vtog">'
@@ -459,7 +555,7 @@ function paintSchedDay(){
   var h=navBar(prettyD(S.date),'schPrev','schNext','schToday');
   h+='<div class="scr" style="flex:1;padding:'+(S.mob?'0 16px 100px':'0 24px 20px')+'">';
   if(!appts.length)h+='<div style="text-align:center;padding:60px 20px"><div style="font-size:2rem;margin-bottom:12px">📭</div><div style="font-size:.85rem;color:var(--mist)">No appointments</div></div>';
-  else appts.forEach(function(a){h+=apptCard(a,S.date)});
+  else appts.forEach(function(a){h+=apptCard(a,S.date);});
   return h+'</div>';
 }
 
@@ -474,16 +570,17 @@ function paintSchedWeek(){
     h+='<div class="wkc" style="min-width:'+(S.mob?'110px':'0')+'">'
       +'<div class="wkh'+(tod?' tod':'')+'" onclick="pickDate(\''+ds+'\')">'
       +'<div class="wkn'+(tod?' tod':'')+'">'+pd(ds).getDate()+'</div>'
-      +'<div style="font-size:.57rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--mist)">'+DNs[i]+'</div>'
+      +'<div style="font-size:.57rem;font-weight:700;text-transform:uppercase;color:var(--mist)">'+DNs[i]+'</div>'
       +'</div>'
       +'<div class="scr" style="flex:1;padding:3px 0">';
     if(!appts.length)h+='<div style="text-align:center;padding:12px 4px;color:var(--ln);font-size:.65rem">—</div>';
     appts.forEach(function(appt){
-      var pat=appt.patientId?P[appt.patientId]:null,col=apptColor(appt);
+      var pat=appt.patientId?P[appt.patientId]:null;
+      var col=apptColor(appt);
       h+='<div class="wka" onclick="openApptPanel(\''+esc(appt.id)+'\',\''+esc(ds)+'\')" style="border-left-color:'+col+';background:'+col+'12">'
         +'<div style="font-size:.59rem;color:var(--slate);font-weight:600">'+esc(appt.time||'')+'</div>'
         +(pat&&pat.emoji?'<span>'+esc(pat.emoji)+'</span>':'')
-        +'<div style="font-size:.68rem;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+esc(pat?pat.name:appt.title||'Appt')+'</div>'
+        +'<div style="font-size:.68rem;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+esc(pat?pat.name:(appt.title||'Appt'))+'</div>'
         +'</div>';
     });
     h+='</div></div>';
@@ -497,46 +594,44 @@ function paintSchedMonth(){
   var h=navBar(monthLbl(y,m),'moPrev','moNext','moToday');
   h+='<div class="scr" style="flex:1;padding:'+(S.mob?'0 12px 100px':'0 24px 20px')+'">';
   h+='<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:1px;margin-bottom:3px">';
-  DNs.forEach(function(n){h+='<div style="text-align:center;font-size:.6rem;font-weight:700;text-transform:uppercase;color:var(--mist);padding:5px 0">'+n+'</div>'});
+  DNs.forEach(function(n){h+='<div style="text-align:center;font-size:.6rem;font-weight:700;text-transform:uppercase;color:var(--mist);padding:5px 0">'+n+'</div>';});
   h+='</div><div class="mgrid">';
   days.forEach(function(ds){
     var d=pd(ds),cur=d.getMonth()===m,tod=isToday(ds);
     var dayAppts=getAppts(ds),cols=[];
-    dayAppts.forEach(function(a){var c=apptColor(a);if(cols.indexOf(c)<0)cols.push(c)});
-    h+='<div class="mcell'+(cur?'':(tod?' todcell':' other'))+'" onclick="pickDate(\''+ds+'\')">'
+    dayAppts.forEach(function(a){var c=apptColor(a);if(cols.indexOf(c)<0)cols.push(c);});
+    h+='<div class="mcell'+(cur?'':' other')+(tod?' todcell':'')+'" onclick="pickDate(\''+ds+'\')">'
       +'<div class="mnum'+(tod?' tonum':'')+(cur?'':(d.getMonth()!==m?' onum':''))+'">'+d.getDate()+'</div>'
-      +(cols.length?'<div class="mdots">'+cols.slice(0,4).map(function(c){return '<span class="mdot" style="background:'+c+'"></span>'}).join('')+(dayAppts.length>4?'<span style="font-size:.53rem;color:var(--slate)">+'+(dayAppts.length-4)+'</span>':'')+'</div>':'')
+      +(cols.length?'<div class="mdots">'+cols.slice(0,4).map(function(c){return '<span class="mdot" style="background:'+c+'"></span>';}).join('')+(dayAppts.length>4?'<span style="font-size:.53rem;color:var(--slate)">+'+(dayAppts.length-4)+'</span>':'')+'</div>':'')
       +'</div>';
   });
   h+='</div>';
-  // legend
-  h+='<div style="margin-top:14px;padding:14px;background:var(--warm);border-radius:12px;border:1px solid var(--ln)"><div style="font-size:.66rem;font-weight:700;text-transform:uppercase;color:var(--slate);margin-bottom:9px;letter-spacing:.07em">Procedure Colour Guide</div><div style="display:flex;flex-wrap:wrap;gap:7px">';
-  TX.forEach(function(t){h+='<div style="display:flex;align-items:center;gap:4px;font-size:.7rem;color:var(--ink)"><span style="width:9px;height:9px;border-radius:50%;background:'+pc(t)+';display:inline-block;flex-shrink:0"></span>'+esc(t)+'</div>'});
+  h+='<div style="margin-top:14px;padding:14px;background:var(--warm);border-radius:12px;border:1px solid var(--ln)">'
+    +'<div style="font-size:.66rem;font-weight:700;text-transform:uppercase;color:var(--slate);margin-bottom:9px;letter-spacing:.07em">Procedure Colour Guide</div>'
+    +'<div style="display:flex;flex-wrap:wrap;gap:7px">';
+  TX.forEach(function(t){h+='<div style="display:flex;align-items:center;gap:4px;font-size:.7rem;color:var(--ink)"><span style="width:9px;height:9px;border-radius:50%;background:'+pc(t)+';display:inline-block;flex-shrink:0"></span>'+esc(t)+'</div>';});
   h+='</div></div></div>';
   return h;
 }
 
-/* ══════════════════════════════════
-   NAV ACTIONS
-══════════════════════════════════ */
-function nav(v){S.view=v;R()}
-function setSched(m){S.sched=m;R()}
-function pickDate(ds){S.date=ds;if(S.view==='schedule')S.sched='day';else S.view='today';R()}
-function schPrev(){S.date=addDays(S.date,-1);R()}
-function schNext(){S.date=addDays(S.date,1);R()}
-function schToday(){S.date=today();R()}
-function wkPrev(){S.wkBase=addDays(S.wkBase,-7);R()}
-function wkNext(){S.wkBase=addDays(S.wkBase,7);R()}
-function wkToday(){S.wkBase=weekMon(today());R()}
-function moPrev(){S.moM--;if(S.moM<0){S.moM=11;S.moY--}R()}
-function moNext(){S.moM++;if(S.moM>11){S.moM=0;S.moY++}R()}
-function moToday(){var n=new Date();S.moM=n.getMonth();S.moY=n.getFullYear();R()}
+/* ── NAV ACTIONS ──────────────────────── */
+function nav(v){S.view=v;R();}
+function setSched(m){S.sched=m;R();}
+function pickDate(ds){S.date=ds;if(S.view==='schedule')S.sched='day';else S.view='today';R();}
+function schPrev(){S.date=addDays(S.date,-1);R();}
+function schNext(){S.date=addDays(S.date,1);R();}
+function schToday(){S.date=today();R();}
+function wkPrev(){S.wkBase=addDays(S.wkBase,-7);R();}
+function wkNext(){S.wkBase=addDays(S.wkBase,7);R();}
+function wkToday(){S.wkBase=weekMon(today());R();}
+function moPrev(){S.moM--;if(S.moM<0){S.moM=11;S.moY--;}R();}
+function moNext(){S.moM++;if(S.moM>11){S.moM=0;S.moY++;}R();}
+function moToday(){var n=new Date();S.moM=n.getMonth();S.moY=n.getFullYear();R();}
 
-/* ══════════════════════════════════
-   CONFIRM DIALOG
-══════════════════════════════════ */
+/* ── CONFIRM ──────────────────────────── */
 function confirm2(title,body,onOk){
-  var bg=document.getElementById('CF');bg.className='on';
+  var bg=document.getElementById('CF');
+  bg.className='on';
   bg.innerHTML='<div class="popin" style="background:var(--cream);border-radius:20px;padding:26px 22px;max-width:300px;width:100%;box-shadow:0 28px 70px rgba(0,0,0,.28)">'
     +'<div style="width:44px;height:44px;border-radius:50%;background:rgba(192,57,43,.1);display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:12px">⚠️</div>'
     +'<div style="font-family:\'Playfair Display\',serif;font-size:1.15rem;color:var(--ink);margin-bottom:7px">'+esc(title)+'</div>'
@@ -545,40 +640,67 @@ function confirm2(title,body,onOk){
     +'<button class="bghost" onclick="document.getElementById(\'CF\').className=\'\'" style="flex:1;padding:12px;font-size:.88rem">Cancel</button>'
     +'<button id="cfok" style="flex:1;padding:12px;background:var(--red);border-radius:12px;font-size:.88rem;font-weight:700;color:#fff;cursor:pointer;font-family:inherit">Delete</button>'
     +'</div></div>';
-  document.getElementById('cfok').onclick=function(){onOk();bg.className=''};
+  document.getElementById('cfok').onclick=function(){onOk();bg.className='';};
 }
-function delApptConfirm(id,date){
+function delAppt(id,date){
   confirm2('Delete Appointment','Remove this appointment?',function(){
-    if(A[date])A[date]=A[date].filter(function(a){return a.id!==id});
+    if(A[date])A[date]=A[date].filter(function(a){return a.id!==id;});
     saveAll();toast('Deleted');R();
   });
 }
 
-/* ══════════════════════════════════
-   PANEL HELPERS
-══════════════════════════════════ */
+/* ── PANEL ────────────────────────────── */
 function openPanel(){
   var ov=document.getElementById('OV'),rp=document.getElementById('RP');
-  ov.className='on';rp.className='on';
-  if(S.mob){rp.className='on slUp';rp.style.position='fixed';rp.style.top='0';rp.style.right='0';rp.style.bottom='0';rp.style.left='0';rp.style.width='100%';rp.style.height='100%';rp.style.boxShadow='none';rp.style.zIndex='900'}
-  else{rp.className='on slR';rp.style.position='fixed';rp.style.top='0';rp.style.right='0';rp.style.bottom='0';rp.style.left='auto';rp.style.width='460px';rp.style.maxWidth='100vw';rp.style.height='100%';rp.style.boxShadow='-18px 0 55px rgba(0,0,0,.2)';rp.style.zIndex='900'}
+  ov.className='on';
+  rp.style.position='fixed';
+  rp.style.zIndex='900';
+  rp.style.top='0';
+  rp.style.left='0';
+  rp.style.right='0';
+  rp.style.bottom='0';
+  rp.style.width='100%';
+  rp.style.height='100%';
+  rp.style.background='var(--cream)';
+  rp.style.display='flex';
+  rp.style.flexDirection='column';
+  if(!S.mob){
+    rp.style.left='auto';
+    rp.style.width='460px';
+    rp.style.maxWidth='100vw';
+    rp.style.boxShadow='-18px 0 55px rgba(0,0,0,.2)';
+    rp.className='on slR';
+  } else {
+    rp.className='on slUp';
+  }
 }
-function closePanel(){var ov=document.getElementById('OV'),rp=document.getElementById('RP');ov.className='';rp.className='';rp.innerHTML='';rp.removeAttribute('style');rp.style.display='none';}
-function maybeClosePanel(e){if(e.target===document.getElementById('OV'))closePanel()}
+function closePanel(){
+  document.getElementById('OV').className='';
+  var rp=document.getElementById('RP');
+  rp.className='';
+  rp.style.cssText='display:none;';
+  rp.innerHTML='';
+}
+function maybeClosePanel(e){if(e.target===document.getElementById('OV'))closePanel();}
 
-/* ══════════════════════════════════
+/* ══════════════════════════════════════
    APPOINTMENT PANEL
-══════════════════════════════════ */
+══════════════════════════════════════ */
 var _AF={};
+
 function openApptPanel(apptId,date){
   date=date||S.date;
-  var appt=apptId?(A[date]||[]).find(function(a){return a.id===apptId}):null;
+  var appt=apptId?(A[date]||[]).find(function(a){return a.id===apptId;}):null;
   var pat=appt&&appt.patientId?P[appt.patientId]:null;
-  var visit=pat?(pat.visits||[]).find(function(v){return v.apptId===apptId}):null;
+  var visit=pat?(pat.visits||[]).find(function(v){return v.apptId===apptId;}):null;
   _AF={
-    id:apptId||uid(),isNew:!apptId,
-    date:date,time:appt?appt.time:'09:00',dur:appt?appt.duration:'30 min',
-    title:appt?appt.title:'',notes:appt?appt.notes:'',
+    id:apptId||uid(),
+    isNew:!apptId,
+    date:date,
+    time:appt?appt.time:'09:00',
+    dur:appt?appt.duration:'30 min',
+    title:appt?appt.title:'',
+    notes:appt?appt.notes:'',
     patientId:appt?appt.patientId:null,
     txData:visit&&visit.txData?JSON.parse(JSON.stringify(visit.txData)):[],
     diag:visit?visit.diagnosis:'',
@@ -587,303 +709,424 @@ function openApptPanel(apptId,date){
     photos:visit?(visit.photos||[]).slice():[],
     visitId:visit?visit.id:uid()
   };
-  // back-compat: if old plain treatments array, convert
-  if(visit&&visit.treatments&&visit.treatments.length&&!visit.txData){
-    _AF.txData=visit.treatments.map(function(t){return{name:t,visitNum:1,totalVisits:1,txNote:''}});
+  // back-compat: old plain treatments
+  if(visit&&!visit.txData&&visit.treatments&&visit.treatments.length){
+    _AF.txData=visit.treatments.map(function(t){return {name:t,visitNum:1,totalVisits:1,txNote:''};});
   }
   buildApptPanel();
 }
 
+/* Build treatment picker HTML */
+function txPickerHTML(){
+  var h='';
+  TX.forEach(function(t){
+    var on=_AF.txData.some(function(x){return x.name===t;});
+    var c=pc(t);
+    h+='<div onclick="toggleTx(\''+esc(t)+'\')" style="padding:6px 11px;border-radius:18px;font-size:.75rem;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:4px;border:1.5px solid '+(on?c:'var(--ln)')+';background:'+(on?(c+'22'):'var(--warm)')+';color:'+(on?c:'var(--slate)')+'"><span style="width:6px;height:6px;border-radius:50%;background:'+c+';display:inline-block"></span>'+esc(t)+'</div>';
+  });
+  return h;
+}
+
+/* Build treatment rows (with visit counters) */
+function txRowsHTML(){
+  if(!_AF.txData||!_AF.txData.length){
+    return '<div style="font-size:.77rem;color:var(--mist);padding:8px 4px;font-style:italic">Select treatments above, then set visit numbers below</div>';
+  }
+  var h='';
+  _AF.txData.forEach(function(item,idx){
+    var c=pc(item.name);
+    var pct=item.totalVisits>0?Math.round((item.visitNum/item.totalVisits)*100):0;
+    h+='<div style="background:var(--warm);border:1.5px solid '+c+'44;border-radius:12px;overflow:hidden;margin-bottom:8px">'
+      // header
+      +'<div style="display:flex;align-items:center;gap:8px;padding:10px 12px">'
+      +'<span style="width:10px;height:10px;border-radius:50%;background:'+c+';flex-shrink:0"></span>'
+      +'<span style="flex:1;font-size:.82rem;font-weight:600;color:var(--ink)">'+esc(item.name)+'</span>'
+      +(item.totalVisits>1?'<span style="padding:2px 8px;border-radius:10px;font-size:.65rem;font-weight:700;background:'+c+'18;color:'+c+';border:1px solid '+c+'33">Visit '+item.visitNum+'/'+item.totalVisits+'</span>':'')
+      +'<button onclick="removeTx('+idx+')" style="width:24px;height:24px;border-radius:50%;background:rgba(192,57,43,.08);color:var(--red);font-size:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer">×</button>'
+      +'</div>'
+      // counters
+      +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 12px 12px">'
+      // visit num
+      +'<div>'
+      +'<div style="font-size:.64rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--slate);margin-bottom:6px">This visit #</div>'
+      +'<div style="display:flex;align-items:center;gap:8px">'
+      +'<button class="vc-btn" onclick="adjVisit('+idx+',-1,\'num\')">−</button>'
+      +'<div style="flex:1;text-align:center;font-size:1.5rem;font-weight:800;color:'+c+'">'+item.visitNum+'</div>'
+      +'<button class="vc-btn" onclick="adjVisit('+idx+',1,\'num\')">+</button>'
+      +'</div></div>'
+      // total
+      +'<div>'
+      +'<div style="font-size:.64rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--slate);margin-bottom:6px">Total planned</div>'
+      +'<div style="display:flex;align-items:center;gap:8px">'
+      +'<button class="vc-btn" onclick="adjVisit('+idx+',-1,\'total\')">−</button>'
+      +'<div style="flex:1;text-align:center;font-size:1.5rem;font-weight:800;color:var(--ink)">'+item.totalVisits+'</div>'
+      +'<button class="vc-btn" onclick="adjVisit('+idx+',1,\'total\')">+</button>'
+      +'</div></div>'
+      +'</div>'
+      // progress bar
+      +(item.totalVisits>1?'<div style="margin:0 12px 10px;background:var(--parch);border-radius:6px;height:6px;overflow:hidden"><div style="background:'+c+';height:100%;border-radius:6px;width:'+pct+'%"></div></div>':'')
+      // tx note
+      +'<div style="padding:0 12px 12px">'
+      +'<div style="font-size:.64rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--slate);margin-bottom:4px">Clinical note</div>'
+      +'<input class="inp" style="font-size:14px;padding:9px 12px" value="'+esc(item.txNote||'')+'" placeholder="e.g. WL 21mm, ISO #35, obturation…" oninput="txNote('+idx+',this.value)">'
+      +'</div>'
+      +'</div>';
+  });
+  return h;
+}
+
 function buildApptPanel(){
   openPanel();
-  var f=_AF,col=f.txData&&f.txData.length?pc(f.txData[0].name):FOREST;
-  var pats=allPats().sort(function(a,b){return(a.name||'').localeCompare(b.name||'')});
+  var f=_AF;
+  var col=f.txData&&f.txData.length?pc(f.txData[0].name):FOREST;
+  var pats=allPats().sort(function(a,b){return (a.name||'').localeCompare(b.name||'');});
   var patOpts='<option value="">— No patient linked —</option>';
-  pats.forEach(function(p){patOpts+='<option value="'+esc(p.id)+'"'+(f.patientId===p.id?' selected':'')+'>'+esc(p.name)+'</option>'});
-  var txH='';TX.forEach(function(t){var on=f.tx.indexOf(t)>-1,c=pc(t);txH+='<div class="txc" onclick="toggleTx(\''+esc(t)+'\')" style="background:'+(on?c+'22':'var(--warm)')+';color:'+(on?c:'var(--slate)')+';border-color:'+(on?c:'var(--ln)')+'"><span class="txdot" style="background:'+c+'"></span>'+esc(t)+'</div>'});
-  var phH='';(f.photos||[]).forEach(function(ph){phH+='<div style="position:relative;aspect-ratio:1;border-radius:9px;overflow:hidden;background:var(--ln)"><img src="'+ph.data+'" style="width:100%;height:100%;object-fit:cover" alt=""><button onclick="rmPhoto(\''+esc(ph.id)+'\')" style="position:absolute;top:3px;right:3px;width:20px;height:20px;background:rgba(0,0,0,.7);color:#fff;border-radius:50%;font-size:.72rem;display:flex;align-items:center;justify-content:center;cursor:pointer">×</button></div>'});
-
+  pats.forEach(function(p){patOpts+='<option value="'+esc(p.id)+'"'+(f.patientId===p.id?' selected':'')+'>'+esc(p.name)+'</option>';});
+  var phH='';
+  (f.photos||[]).forEach(function(ph){
+    phH+='<div style="position:relative;aspect-ratio:1;border-radius:9px;overflow:hidden;background:var(--ln)">'
+      +'<img src="'+ph.data+'" style="width:100%;height:100%;object-fit:cover" alt="">'
+      +'<button onclick="rmPhoto(\''+esc(ph.id)+'\')" style="position:absolute;top:3px;right:3px;width:20px;height:20px;background:rgba(0,0,0,.7);color:#fff;border-radius:50%;font-size:.72rem;display:flex;align-items:center;justify-content:center;cursor:pointer">×</button>'
+      +'</div>';
+  });
+  var pad=S.mob?'18px':'18px 22px';
   document.getElementById('RP').innerHTML=
-  '<div id="ap-hdr" style="background:'+col+';padding:'+(S.mob?'max(18px,env(safe-area-inset-top)) 18px 16px':'18px 22px')+';flex-shrink:0;display:flex;justify-content:space-between;align-items:flex-start;transition:background .3s">'
-  +'<div><div style="font-family:\'Playfair Display\',serif;font-size:1.05rem;color:#fff">'+(f.isNew?'New Appointment':'Edit Appointment')+'</div>'
-  +'<div style="font-size:.68rem;color:rgba(255,255,255,.7);margin-top:3px">'+esc(f.date)+'</div></div>'
-  +'<button onclick="closePanel()" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.18);color:#fff;font-size:1.2rem;display:flex;align-items:center;justify-content:center">×</button>'
-  +'</div>'
-  +'<div id="ap-body" class="scr" style="flex:1;padding:'+(S.mob?'18px':'18px 22px')+'">'
-  // Appointment section
-  +'<div style="margin-bottom:20px"><div class="sbar">📅 Appointment</div>'
-  +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">'
-  +'<div><label class="lbl">Time</label><input class="inp" id="ap-time" type="time" value="'+esc(f.time)+'" oninput="_AF.time=this.value"></div>'
-  +'<div><label class="lbl">Duration</label><select class="inp" id="ap-dur" onchange="_AF.dur=this.value">'
-  +['15 min','30 min','45 min','1 hr','1.5 hr','2 hr'].map(function(d){return '<option'+(f.dur===d?' selected':'')+'>'+d+'</option>'}).join('')+'</select></div>'
-  +'</div>'
-  +'<label class="lbl">Notes</label><textarea class="inp" id="ap-notes" style="min-height:52px" oninput="_AF.notes=this.value">'+esc(f.notes)+'</textarea></div>'
-  // Patient section
-  +'<div style="margin-bottom:20px"><div class="sbar">🧑‍⚕️ Patient</div>'
-  +'<select class="inp" id="ap-pat" onchange="apPatChange(this.value)">'+patOpts+'</select>'
-  +'<button onclick="quickNewPat()" style="margin-top:8px;font-size:.77rem;color:var(--FL);font-weight:600;text-decoration:underline;cursor:pointer">+ Create new patient</button>'
-  +'</div>'
-  // Clinical section
-  +'<div id="ap-clin" style="'+(f.patientId?'':'opacity:.4;pointer-events:none')+'">'
-  +'<div class="sbar">🦷 Visit Record</div>'
-  +'<div style="margin-bottom:10px"><label class="lbl">Chief Complaint</label><input class="inp" id="ap-cc" value="'+esc(f.complaint)+'" placeholder="e.g. Pain upper right molar" oninput="_AF.complaint=this.value"></div>'
-  +'<div style="margin-bottom:10px"><label class="lbl">Diagnosis</label><textarea class="inp" id="ap-dx" style="min-height:60px" placeholder="Clinical diagnosis, tooth numbers…" oninput="_AF.diag=this.value">'+esc(f.diag)+'</textarea></div>'
-  +'<div style="margin-bottom:14px"><label class="lbl" style="margin-bottom:8px">Treatments Done</label>'
-  +'<div style="margin-bottom:8px;display:flex;flex-wrap:wrap;gap:5px" id="ap-tx-pick">'+buildTxPickerHTML()+'</div>'
-  +'<div id="ap-txc">'+txH+'</div></div>'
-  +'<div style="margin-bottom:10px"><label class="lbl">Clinical Notes</label><textarea class="inp" id="ap-vn" style="min-height:60px" oninput="_AF.vnotes=this.value">'+esc(f.vnotes)+'</textarea></div>'
-  +'<div style="margin-bottom:10px"><div class="sbar">📷 Photos</div>'
-  +'<div onclick="document.getElementById(\'ap-pf\').click()" style="border:2px dashed var(--ln);border-radius:12px;padding:16px;text-align:center;background:var(--parch);cursor:pointer"><div style="font-size:1.5rem;margin-bottom:4px">🔬</div><div style="font-size:.8rem;font-weight:600;color:var(--slate)">Upload Clinical Photos</div><div style="font-size:.69rem;color:var(--mist);margin-top:2px">X-rays · Intraoral · Periapical</div></div>'
-  +'<input type="file" id="ap-pf" accept="image/*" multiple style="display:none" onchange="addPhotos(this)">'
-  +'<div id="ap-pg" style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:8px">'+phH+'</div>'
-  +'</div></div>'
-  +'</div>'
-  +'<div style="padding:'+(S.mob?'12px 18px':'12px 22px')+';padding-bottom:'+(S.mob?'max(12px,env(safe-area-inset-bottom))':'12px')+';border-top:1px solid var(--ln);display:flex;gap:9px;background:var(--cream);flex-shrink:0">'
-  +'<button class="bghost" onclick="closePanel()" style="padding:12px 18px;font-size:.88rem">Cancel</button>'
-  +'<button class="bgold" onclick="saveAppt()" style="flex:1;padding:12px;font-size:.88rem">Save</button>'
-  +'</div>';
+    '<div id="ap-hdr" style="background:'+col+';padding:'+(S.mob?'max(18px,env(safe-area-inset-top)) 18px 16px':'18px 22px')+';flex-shrink:0;display:flex;justify-content:space-between;align-items:flex-start;transition:background .3s">'
+    +'<div><div style="font-family:\'Playfair Display\',serif;font-size:1.05rem;color:#fff">'+(f.isNew?'New Appointment':'Edit Appointment')+'</div>'
+    +'<div style="font-size:.68rem;color:rgba(255,255,255,.7);margin-top:3px">'+esc(f.date)+'</div></div>'
+    +'<button onclick="closePanel()" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.18);color:#fff;font-size:1.2rem;display:flex;align-items:center;justify-content:center">×</button>'
+    +'</div>'
+    +'<div class="scr" style="flex:1;padding:'+pad+'">'
+    // Appointment basics
+    +'<div style="margin-bottom:20px"><div class="sbar">📅 Appointment</div>'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">'
+    +'<div><label class="lbl">Time</label><input class="inp" id="ap-time" type="time" value="'+esc(f.time)+'" oninput="_AF.time=this.value"></div>'
+    +'<div><label class="lbl">Duration</label><select class="inp" id="ap-dur" onchange="_AF.dur=this.value">'
+    +['15 min','30 min','45 min','1 hr','1.5 hr','2 hr'].map(function(d){return '<option'+(f.dur===d?' selected':'')+'>'+d+'</option>';}).join('')
+    +'</select></div></div>'
+    +'<label class="lbl">Appointment Notes</label>'
+    +'<textarea class="inp" id="ap-notes" style="min-height:52px" oninput="_AF.notes=this.value">'+esc(f.notes)+'</textarea></div>'
+    // Patient
+    +'<div style="margin-bottom:20px"><div class="sbar">🧑‍⚕️ Patient</div>'
+    +'<select class="inp" id="ap-pat" onchange="apPatChange(this.value)">'+patOpts+'</select>'
+    +'<button onclick="quickNewPat()" style="margin-top:8px;font-size:.77rem;color:var(--FL);font-weight:600;text-decoration:underline;cursor:pointer">+ Create new patient</button>'
+    +'</div>'
+    // Clinical
+    +'<div id="ap-clin" style="'+(f.patientId?'':'opacity:.4;pointer-events:none')+'">'
+    +'<div class="sbar">🦷 Visit Record</div>'
+    +'<div style="margin-bottom:10px"><label class="lbl">Chief Complaint</label>'
+    +'<input class="inp" id="ap-cc" value="'+esc(f.complaint)+'" placeholder="e.g. Pain upper right molar" oninput="_AF.complaint=this.value"></div>'
+    +'<div style="margin-bottom:14px"><label class="lbl">Diagnosis</label>'
+    +'<textarea class="inp" id="ap-dx" style="min-height:60px" oninput="_AF.diag=this.value">'+esc(f.diag)+'</textarea></div>'
+    // Treatments
+    +'<div style="margin-bottom:14px">'
+    +'<label class="lbl" style="margin-bottom:8px">Treatments Done</label>'
+    +'<div id="ap-tx-pick" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px">'+txPickerHTML()+'</div>'
+    +'<div id="ap-tx-rows">'+txRowsHTML()+'</div>'
+    +'</div>'
+    +'<div style="margin-bottom:10px"><label class="lbl">Visit Notes</label>'
+    +'<textarea class="inp" id="ap-vn" style="min-height:60px" oninput="_AF.vnotes=this.value">'+esc(f.vnotes)+'</textarea></div>'
+    // Photos
+    +'<div><div class="sbar">📷 Photos</div>'
+    +'<div onclick="document.getElementById(\'ap-pf\').click()" style="border:2px dashed var(--ln);border-radius:12px;padding:16px;text-align:center;background:var(--parch);cursor:pointer">'
+    +'<div style="font-size:1.5rem;margin-bottom:4px">🔬</div>'
+    +'<div style="font-size:.8rem;font-weight:600;color:var(--slate)">Upload Clinical Photos</div>'
+    +'<div style="font-size:.69rem;color:var(--mist);margin-top:2px">X-rays · Intraoral · Periapical</div></div>'
+    +'<input type="file" id="ap-pf" accept="image/*" multiple style="display:none" onchange="addPhotos(this)">'
+    +'<div id="ap-pg" style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:8px">'+phH+'</div>'
+    +'</div></div>'
+    +'</div>'
+    +'<div style="padding:'+(S.mob?'12px 18px':'12px 22px')+';padding-bottom:'+(S.mob?'max(12px,env(safe-area-inset-bottom))':'12px')+';border-top:1px solid var(--ln);display:flex;gap:9px;background:var(--cream);flex-shrink:0">'
+    +'<button class="bghost" onclick="closePanel()" style="padding:12px 18px;font-size:.88rem">Cancel</button>'
+    +'<button class="bgold" id="ap-save-btn" onclick="saveAppt()" style="flex:1;padding:12px;font-size:.88rem">Save</button>'
+    +'</div>';
 }
 
 function apPatChange(val){
   _AF.patientId=val||null;
   var clin=document.getElementById('ap-clin');
   if(clin)clin.style.cssText=_AF.patientId?'':'opacity:.4;pointer-events:none';
+  updateHdrColor();
+}
+function updateHdrColor(){
   var hdr=document.getElementById('ap-hdr');
-  if(hdr)hdr.style.background=_AF.tx&&_AF.tx.length?pc(_AF.tx[0]):FOREST;
+  if(hdr)hdr.style.background=_AF.txData&&_AF.txData.length?pc(_AF.txData[0].name):FOREST;
 }
-function buildTxPickerHTML(){
-  var h='';
-  TX.forEach(function(t){
-    var on=_AF.txData.some(function(x){return x.name===t});
-    var c=pc(t);
-    h+='<div onclick="toggleTxNew(\''+esc(t)+'\')" style="padding:6px 11px;border-radius:18px;font-size:.75rem;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:4px;border:1.5px solid '+(on?c:'var(--ln)')+';background:'+(on?c+'22':'var(--warm)')+';color:'+(on?c:'var(--slate)')+'"><span style="width:6px;height:6px;border-radius:50%;background:'+c+';display:inline-block"></span>'+esc(t)+'</div>';
-  });
-  return h;
-}
-function buildTxChipsHTML(){
-  if(!_AF.txData||!_AF.txData.length)return '<div style="font-size:.77rem;color:var(--mist);padding:8px 0;font-style:italic">Select treatments above — then set visit number and total planned visits</div>';
-  var h='';
-  _AF.txData.forEach(function(item,idx){
-    var c=pc(item.name);
-    var pct=item.totalVisits>0?Math.round((item.visitNum/item.totalVisits)*100):0;
-    h+='<div class="tx-row active" style="--tcolor:'+c+';margin-bottom:8px">'
-      +'<div class="tx-row-hdr">'
-      +'<span style="width:10px;height:10px;border-radius:50%;background:'+c+';flex-shrink:0"></span>'
-      +'<span style="flex:1;font-size:.82rem;font-weight:600;color:var(--ink)">'+esc(item.name)+'</span>'
-      +(item.totalVisits>1?'<span class="tx-prog" style="background:'+c+'18;color:'+c+';border:1px solid '+c+'33;margin-right:6px">Visit '+item.visitNum+'/'+item.totalVisits+'</span>':'')
-      +'<button onclick="removeTxItem('+idx+')" style="width:24px;height:24px;border-radius:50%;background:rgba(192,57,43,.08);color:var(--red);font-size:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0">×</button>'
-      +'</div>'
-      +'<div style="padding:0 12px 12px">'
-      +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px">'
-      +'<div><div style="font-size:.66rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--slate);margin-bottom:6px">This visit #</div>'
-      +'<div style="display:flex;align-items:center;gap:6px">'
-      +'<button onclick="txVisitAdj('+idx+',-1,\'num\')" style="width:36px;height:36px;border-radius:50%;background:var(--parch);border:1.5px solid var(--ln);font-size:1.2rem;font-weight:700;color:var(--slate);display:flex;align-items:center;justify-content:center">−</button>'
-      +'<div style="flex:1;text-align:center;font-size:1.5rem;font-weight:800;color:'+c+'">'+item.visitNum+'</div>'
-      +'<button onclick="txVisitAdj('+idx+',1,\'num\')" style="width:36px;height:36px;border-radius:50%;background:var(--parch);border:1.5px solid var(--ln);font-size:1.2rem;font-weight:700;color:var(--slate);display:flex;align-items:center;justify-content:center">+</button>'
-      +'</div></div>'
-      +'<div><div style="font-size:.66rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--slate);margin-bottom:6px">Total planned</div>'
-      +'<div style="display:flex;align-items:center;gap:6px">'
-      +'<button onclick="txVisitAdj('+idx+',-1,\'total\')" style="width:36px;height:36px;border-radius:50%;background:var(--parch);border:1.5px solid var(--ln);font-size:1.2rem;font-weight:700;color:var(--slate);display:flex;align-items:center;justify-content:center">−</button>'
-      +'<div style="flex:1;text-align:center;font-size:1.5rem;font-weight:800;color:var(--ink)">'+item.totalVisits+'</div>'
-      +'<button onclick="txVisitAdj('+idx+',1,\'total\')" style="width:36px;height:36px;border-radius:50%;background:var(--parch);border:1.5px solid var(--ln);font-size:1.2rem;font-weight:700;color:var(--slate);display:flex;align-items:center;justify-content:center">+</button>'
-      +'</div></div>'
-      +'</div>'
-      +(item.totalVisits>1?'<div style="background:var(--parch);border-radius:6px;height:7px;overflow:hidden;margin-bottom:10px"><div style="background:'+c+';height:100%;border-radius:6px;width:'+pct+'%"></div></div>':'')
-      +'<div style="font-size:.66rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--slate);margin-bottom:4px">Treatment note</div>'
-      +'<input class="inp" style="font-size:14px;padding:9px 12px" value="'+esc(item.txNote||'')+'" placeholder="e.g. WL 21mm, ISO #35, GP obturation…" oninput="txNoteChange('+idx+',this.value)">'
-      +'</div>'
-      +'</div>';
-  });
-  return h;
-}
-function toggleTxNew(t){
-  var idx=_AF.txData.findIndex(function(x){return x.name===t});
+function toggleTx(t){
+  var idx=_AF.txData.findIndex(function(x){return x.name===t;});
   if(idx>-1)_AF.txData.splice(idx,1);
   else _AF.txData.push({name:t,visitNum:1,totalVisits:1,txNote:''});
-  var picker=document.getElementById('ap-tx-pick');if(picker)picker.innerHTML=buildTxPickerHTML();
-  var chips=document.getElementById('ap-txc');if(chips)chips.innerHTML=buildTxChipsHTML();
-  var hdr=document.getElementById('ap-hdr');if(hdr)hdr.style.background=_AF.txData&&_AF.txData.length?pc(_AF.txData[0].name):FOREST;
+  var picker=document.getElementById('ap-tx-pick');if(picker)picker.innerHTML=txPickerHTML();
+  var rows=document.getElementById('ap-tx-rows');if(rows)rows.innerHTML=txRowsHTML();
+  updateHdrColor();
 }
-function txVisitAdj(idx,delta,field){
+function adjVisit(idx,delta,field){
   if(!_AF.txData[idx])return;
   var item=_AF.txData[idx];
-  if(field==='num'){item.visitNum=Math.max(1,Math.min(item.totalVisits,(item.visitNum||1)+delta))}
-  else{item.totalVisits=Math.max(1,(item.totalVisits||1)+delta);item.visitNum=Math.min(item.visitNum,item.totalVisits)}
-  var chips=document.getElementById('ap-txc');if(chips)chips.innerHTML=buildTxChipsHTML();
+  if(field==='num'){
+    item.visitNum=Math.max(1,Math.min(item.totalVisits,(item.visitNum||1)+delta));
+  } else {
+    item.totalVisits=Math.max(1,(item.totalVisits||1)+delta);
+    item.visitNum=Math.min(item.visitNum||1,item.totalVisits);
+  }
+  var rows=document.getElementById('ap-tx-rows');if(rows)rows.innerHTML=txRowsHTML();
 }
-function txNoteChange(idx,val){if(_AF.txData[idx])_AF.txData[idx].txNote=val}
-function removeTxItem(idx){
+function txNote(idx,val){if(_AF.txData[idx])_AF.txData[idx].txNote=val;}
+function removeTx(idx){
   _AF.txData.splice(idx,1);
-  var picker=document.getElementById('ap-tx-pick');if(picker)picker.innerHTML=buildTxPickerHTML();
-  var chips=document.getElementById('ap-txc');if(chips)chips.innerHTML=buildTxChipsHTML();
-  var hdr=document.getElementById('ap-hdr');if(hdr)hdr.style.background=_AF.txData&&_AF.txData.length?pc(_AF.txData[0].name):FOREST;
+  var picker=document.getElementById('ap-tx-pick');if(picker)picker.innerHTML=txPickerHTML();
+  var rows=document.getElementById('ap-tx-rows');if(rows)rows.innerHTML=txRowsHTML();
+  updateHdrColor();
 }
 function addPhotos(input){
   var files=Array.from(input.files),pending=files.length;
-  files.forEach(function(f){compress(f,function(data){_AF.photos.push({id:uid(),data:data});pending--;if(!pending)refreshPhotos()})});
+  files.forEach(function(f){
+    compress(f,function(data){
+      _AF.photos.push({id:uid(),data:data});
+      pending--;
+      if(!pending)refreshPhotos();
+    });
+  });
   input.value='';
 }
-function rmPhoto(id){_AF.photos=_AF.photos.filter(function(p){return p.id!==id});refreshPhotos()}
-function refreshPhotos(){var pg=document.getElementById('ap-pg');if(!pg)return;var h='';(_AF.photos||[]).forEach(function(ph){h+='<div style="position:relative;aspect-ratio:1;border-radius:9px;overflow:hidden;background:var(--ln)"><img src="'+ph.data+'" style="width:100%;height:100%;object-fit:cover" alt=""><button onclick="rmPhoto(\''+esc(ph.id)+'\')" style="position:absolute;top:3px;right:3px;width:20px;height:20px;background:rgba(0,0,0,.7);color:#fff;border-radius:50%;font-size:.72rem;display:flex;align-items:center;justify-content:center;cursor:pointer">×</button></div>'});pg.innerHTML=h}
-function quickNewPat(){closePanel();openPatPanel(null,function(newPat){_AF.patientId=newPat.id;buildApptPanel()})}
+function rmPhoto(id){
+  _AF.photos=_AF.photos.filter(function(p){return p.id!==id;});
+  refreshPhotos();
+}
+function refreshPhotos(){
+  var pg=document.getElementById('ap-pg');if(!pg)return;
+  var h='';
+  (_AF.photos||[]).forEach(function(ph){
+    h+='<div style="position:relative;aspect-ratio:1;border-radius:9px;overflow:hidden;background:var(--ln)">'
+      +'<img src="'+ph.data+'" style="width:100%;height:100%;object-fit:cover" alt="">'
+      +'<button onclick="rmPhoto(\''+esc(ph.id)+'\')" style="position:absolute;top:3px;right:3px;width:20px;height:20px;background:rgba(0,0,0,.7);color:#fff;border-radius:50%;font-size:.72rem;display:flex;align-items:center;justify-content:center;cursor:pointer">×</button>'
+      +'</div>';
+  });
+  pg.innerHTML=h;
+}
+function quickNewPat(){
+  closePanel();
+  openPatPanel(null,function(newPat){_AF.patientId=newPat.id;buildApptPanel();});
+}
 function saveAppt(){
-  var btn=document.querySelector('#RP .bgold');if(btn){btn.textContent='Saving…';btn.disabled=true}
+  var btn=document.getElementById('ap-save-btn');
+  if(btn){btn.textContent='Saving…';btn.disabled=true;}
   var appt={id:_AF.id,date:_AF.date,time:_AF.time,duration:_AF.dur,title:_AF.title,notes:_AF.notes,patientId:_AF.patientId||null};
   if(!A[_AF.date])A[_AF.date]=[];
-  var idx=A[_AF.date].findIndex(function(a){return a.id===_AF.id});
+  var idx=A[_AF.date].findIndex(function(a){return a.id===_AF.id;});
   if(idx>-1)A[_AF.date][idx]=appt;else A[_AF.date].push(appt);
-  // save visit if patient linked and has data
   if(_AF.patientId&&(_AF.txData.length||_AF.diag||_AF.complaint||_AF.vnotes||_AF.photos.length)){
     var pat=P[_AF.patientId];
     if(pat){
       if(!pat.visits)pat.visits=[];
-      var vi=pat.visits.findIndex(function(v){return v.apptId===_AF.id});
-      var visit={id:_AF.visitId,apptId:_AF.id,date:_AF.date,txData:_AF.txData,treatments:_AF.txData.map(function(x){return x.name}),diagnosis:_AF.diag,complaint:_AF.complaint,notes:_AF.vnotes,photos:_AF.photos,createdAt:new Date().toISOString()};
+      var vi=pat.visits.findIndex(function(v){return v.apptId===_AF.id;});
+      var visit={
+        id:_AF.visitId,apptId:_AF.id,date:_AF.date,
+        txData:_AF.txData,
+        treatments:_AF.txData.map(function(x){return x.name;}),
+        diagnosis:_AF.diag,complaint:_AF.complaint,
+        notes:_AF.vnotes,photos:_AF.photos,
+        createdAt:new Date().toISOString()
+      };
       if(vi>-1)pat.visits[vi]=visit;else pat.visits.push(visit);
     }
   }
   saveAll();
   toast('✓ Saved');
-  setTimeout(function(){closePanel();R()},400);
+  setTimeout(function(){closePanel();R();},400);
 }
 
-/* ══════════════════════════════════
+/* ══════════════════════════════════════
    PATIENT PANEL
-══════════════════════════════════ */
+══════════════════════════════════════ */
 var _PF={},_PF_cb=null;
+
 function openPatPanel(patId,cb){
   var pat=patId?P[patId]:null;
   _PF=pat?JSON.parse(JSON.stringify(pat)):{id:uid(),name:'',age:'',gender:'',phone:'',email:'',emoji:null,note:'',visits:[]};
   _PF_cb=cb||null;
   buildPatPanel();
 }
+
 function buildPatPanel(){
   openPanel();
   var f=_PF,isNew=!P[f.id];
   var visH='';
-  (f.visits||[]).slice().sort(function(a,b){return b.date>a.date?1:-1}).forEach(function(v){
-    var col=v.treatments&&v.treatments.length?pc(v.treatments[0]):GOLD;
+  (f.visits||[]).slice().sort(function(a,b){return b.date>a.date?1:-1;}).forEach(function(v){
+    var col=v.txData&&v.txData.length?pc(v.txData[0].name):(v.treatments&&v.treatments.length?pc(v.treatments[0]):GOLD);
     visH+='<div class="card" style="padding:12px 14px;margin-bottom:8px;border-left:3px solid '+col+'">'
-      +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">'
+      +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">'
       +'<div style="font-size:.8rem;font-weight:700;color:var(--ink)">'+esc(shortD(v.date))+'</div>'
       +'<button onclick="delVisit(\''+esc(v.id)+'\')" style="font-size:.7rem;color:var(--red);cursor:pointer;font-weight:600;padding:2px 8px;border-radius:6px;background:rgba(192,57,43,.08)">Remove</button>'
       +'</div>'
-      +(v.treatments&&v.treatments.length?'<div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:4px">'+txBadges(v.treatments,4,v.txData)+'</div>':'')
-      +(v.txData&&v.txData.some(function(x){return x.txNote})?'<div style="margin-top:4px;display:flex;flex-direction:column;gap:2px">'+v.txData.filter(function(x){return x.txNote}).map(function(x){var c=pc(x.name);return '<div style="font-size:.7rem;color:var(--slate);padding:3px 7px;background:'+c+'10;border-radius:6px;border-left:2px solid '+c+'"><span style="font-weight:600;color:'+c+'">'+esc(x.name)+(x.totalVisits>1?' ('+x.visitNum+'/'+x.totalVisits+')':'')+':</span> '+esc(x.txNote)+'</div>'}).join('')+'</div>':'')
+      +'<div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:4px">'+txBadges(v.txData,v.treatments,4)+'</div>'
+      // per-treatment notes
+      +(v.txData&&v.txData.some(function(x){return x.txNote;})?
+        '<div style="display:flex;flex-direction:column;gap:3px;margin-top:4px">'
+        +v.txData.filter(function(x){return x.txNote;}).map(function(x){
+          var c=pc(x.name);
+          return '<div style="font-size:.7rem;padding:3px 8px;background:'+c+'10;border-radius:6px;border-left:2px solid '+c+'">'
+            +'<span style="font-weight:600;color:'+c+'">'+esc(x.name)+(x.totalVisits>1?' ('+x.visitNum+'/'+x.totalVisits+')':'')+':</span> '+esc(x.txNote)
+            +'</div>';
+        }).join('')
+        +'</div>':'')
       +(v.diagnosis?'<div style="font-size:.73rem;color:var(--slate);margin-top:4px"><strong>Dx:</strong> '+esc(v.diagnosis)+'</div>':'')
       +(v.notes?'<div style="font-size:.72rem;color:var(--mist);margin-top:2px">'+esc(v.notes)+'</div>':'')
-      +(v.photos&&v.photos.length?'<div style="display:flex;gap:4px;margin-top:6px">'+v.photos.slice(0,4).map(function(ph){return '<img src="'+ph.data+'" style="width:36px;height:36px;border-radius:6px;object-fit:cover" alt="">'}).join('')+'</div>':'')
+      +(v.photos&&v.photos.length?'<div style="display:flex;gap:4px;margin-top:6px">'+v.photos.slice(0,4).map(function(ph){return '<img src="'+ph.data+'" style="width:36px;height:36px;border-radius:6px;object-fit:cover" alt="">';}).join('')+'</div>':'')
       +'</div>';
   });
   var epH='';
-  EMOJIS.forEach(function(em){epH+='<button class="epbtn'+(f.emoji===em?' sel':'')+'" onclick="pickEmoji(\''+esc(em)+'\')">'+esc(em)+'</button>'});
+  EMOJIS.forEach(function(em){epH+='<button class="epbtn'+(f.emoji===em?' sel':'')+'" onclick="pickEmoji(\''+esc(em)+'\')">'+esc(em)+'</button>';});
   epH+='<button class="epbtn'+(f.emoji===null?' sel':'')+'" onclick="pickEmoji(null)" style="font-size:.64rem;font-weight:700;color:var(--slate)">ABC</button>';
-
+  var pad=S.mob?'18px':'18px 22px';
   document.getElementById('RP').innerHTML=
-  '<div style="background:'+FOREST+';padding:'+(S.mob?'max(18px,env(safe-area-inset-top)) 18px 16px':'18px 22px')+';flex-shrink:0;display:flex;justify-content:space-between;align-items:flex-start">'
-  +'<div><div style="font-family:\'Playfair Display\',serif;font-size:1.05rem;color:#fff">'+(isNew?'New Patient':'Patient Profile')+'</div>'
-  +(f.name?'<div style="font-size:.7rem;color:var(--sage);margin-top:3px">'+esc(f.name)+'</div>':'')
-  +'</div>'
-  +'<button onclick="closePanel()" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.18);color:#fff;font-size:1.2rem;display:flex;align-items:center;justify-content:center">×</button>'
-  +'</div>'
-  +'<div class="scr" style="flex:1;padding:'+(S.mob?'18px':'18px 22px')+'">'
-  +'<div style="margin-bottom:20px"><div class="sbar">👤 Patient Information</div>'
-  +'<div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:14px">'
-  // Avatar + emoji picker
-  +'<div style="position:relative;flex-shrink:0">'
-  +'<div id="pp-av" onclick="document.getElementById(\'pp-ep\').classList.toggle(\'on\')" style="width:54px;height:54px;border-radius:50%;background:'+(f.emoji?'var(--parch)':f.name&&ini(f.name)!='?'?FOREST:'var(--parch)')+';color:'+(f.emoji?'inherit':f.name&&ini(f.name)!='?'?'#fff':'var(--mist)')+';display:flex;align-items:center;justify-content:center;font-size:'+(f.emoji?'1.6rem':'.88rem')+';font-weight:700;border:'+(f.emoji?'1.5px solid var(--ln)':'none')+';cursor:pointer;position:relative">'
-  +(f.emoji?esc(f.emoji):(f.name&&ini(f.name)!='?'?ini(f.name):'🦷'))
-  +'<div style="position:absolute;bottom:0;right:0;width:17px;height:17px;background:'+GOLD+';border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.55rem;color:'+FOREST+';font-weight:700;border:2px solid var(--warm)">✏</div>'
-  +'</div>'
-  +'<div id="pp-ep" class="epdrop"><div style="padding:8px 10px 2px;font-size:.65rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--slate)">Choose Avatar</div>'
-  +'<div style="display:grid;grid-template-columns:repeat(6,1fr);gap:4px;padding:8px">'+epH+'</div></div>'
-  +'</div>'
-  +'<div style="flex:1"><label class="lbl">Full Name</label><input class="inp" id="pp-name" value="'+esc(f.name||'')+'" placeholder="Patient full name" oninput="ppNameChange(this.value)" style="font-size:16px"></div>'
-  +'</div>'
-  +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">'
-  +'<div><label class="lbl">Age</label><input class="inp" id="pp-age" type="number" inputmode="numeric" value="'+esc(f.age||'')+'" placeholder="Years" oninput="_PF.age=this.value"></div>'
-  +'<div><label class="lbl">Gender</label><select class="inp" onchange="_PF.gender=this.value"><option value="">—</option><option'+(f.gender==='Male'?' selected':'')+'>Male</option><option'+(f.gender==='Female'?' selected':'')+'>Female</option><option'+(f.gender==='Other'?' selected':'')+'>Other</option></select></div>'
-  +'<div><label class="lbl">Phone</label><input class="inp" type="tel" value="'+esc(f.phone||'')+'" placeholder="+1 000 0000" oninput="_PF.phone=this.value"></div>'
-  +'<div><label class="lbl">Email</label><input class="inp" type="email" value="'+esc(f.email||'')+'" placeholder="email@…" oninput="_PF.email=this.value"></div>'
-  +'<div style="grid-column:1/-1"><label class="lbl">Notes / Allergies</label><textarea class="inp" style="min-height:55px" oninput="_PF.note=this.value">'+esc(f.note||'')+'</textarea></div>'
-  +'</div></div>'
-  +(!isNew?'<div><div class="sbar">📋 Visit History ('+(f.visits||[]).length+')</div>'+(visH||'<div style="text-align:center;padding:20px;color:var(--mist);font-size:.8rem">No visits recorded yet</div>')+'</div>':'')
-  +'</div>'
-  +'<div style="padding:'+(S.mob?'12px 18px':'12px 22px')+';padding-bottom:'+(S.mob?'max(12px,env(safe-area-inset-bottom))':'12px')+';border-top:1px solid var(--ln);display:flex;gap:9px;background:var(--cream);flex-shrink:0">'
-  +(!isNew?'<button onclick="delPatConfirm()" style="padding:12px 14px;background:rgba(192,57,43,.08);color:var(--red);font-weight:600;border-radius:12px;font-size:.85rem;cursor:pointer;font-family:inherit">Delete</button>':'')
-  +'<button class="bghost" onclick="closePanel()" style="padding:12px 18px;font-size:.88rem">Cancel</button>'
-  +'<button class="bgold" onclick="savePat()" style="flex:1;padding:12px;font-size:.88rem">Save Patient</button>'
-  +'</div>';
+    '<div style="background:'+FOREST+';padding:'+(S.mob?'max(18px,env(safe-area-inset-top)) 18px 16px':'18px 22px')+';flex-shrink:0;display:flex;justify-content:space-between;align-items:flex-start">'
+    +'<div><div style="font-family:\'Playfair Display\',serif;font-size:1.05rem;color:#fff">'+(isNew?'New Patient':'Patient Profile')+'</div>'
+    +(f.name?'<div style="font-size:.7rem;color:var(--sage);margin-top:3px">'+esc(f.name)+'</div>':'')
+    +'</div>'
+    +'<button onclick="closePanel()" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.18);color:#fff;font-size:1.2rem;display:flex;align-items:center;justify-content:center">×</button>'
+    +'</div>'
+    +'<div class="scr" style="flex:1;padding:'+pad+'">'
+    +'<div style="margin-bottom:20px"><div class="sbar">👤 Patient Information</div>'
+    +'<div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:14px">'
+    +'<div style="position:relative;flex-shrink:0">'
+    +'<div id="pp-av" onclick="document.getElementById(\'pp-ep\').classList.toggle(\'on\')" style="width:54px;height:54px;border-radius:50%;background:'+(f.emoji?'var(--parch)':(f.name&&ini(f.name)!=='?'?FOREST:'var(--parch)'))+';color:'+(f.emoji?'inherit':(f.name&&ini(f.name)!=='?'?'#fff':'var(--mist)'))+';display:flex;align-items:center;justify-content:center;font-size:'+(f.emoji?'1.6rem':'.88rem')+';font-weight:700;border:'+(f.emoji?'1.5px solid var(--ln)':'none')+';cursor:pointer;position:relative">'
+    +(f.emoji?esc(f.emoji):(f.name&&ini(f.name)!=='?'?ini(f.name):'🦷'))
+    +'<div style="position:absolute;bottom:0;right:0;width:17px;height:17px;background:'+GOLD+';border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.55rem;color:'+FOREST+';font-weight:700;border:2px solid var(--warm)">✏</div>'
+    +'</div>'
+    +'<div id="pp-ep" class="epdrop">'
+    +'<div style="padding:8px 10px 2px;font-size:.65rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--slate)">Choose Avatar</div>'
+    +'<div style="display:grid;grid-template-columns:repeat(6,1fr);gap:4px;padding:8px">'+epH+'</div>'
+    +'</div></div>'
+    +'<div style="flex:1"><label class="lbl">Full Name</label>'
+    +'<input class="inp" id="pp-name" value="'+esc(f.name||'')+'" placeholder="Patient full name" oninput="ppName(this.value)" style="font-size:16px"></div>'
+    +'</div>'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">'
+    +'<div><label class="lbl">Age</label><input class="inp" id="pp-age" type="number" inputmode="numeric" value="'+esc(f.age||'')+'" placeholder="Years" oninput="_PF.age=this.value"></div>'
+    +'<div><label class="lbl">Gender</label><select class="inp" onchange="_PF.gender=this.value"><option value="">—</option><option'+(f.gender==='Male'?' selected':'')+'>Male</option><option'+(f.gender==='Female'?' selected':'')+'>Female</option><option'+(f.gender==='Other'?' selected':'')+'>Other</option></select></div>'
+    +'<div><label class="lbl">Phone</label><input class="inp" type="tel" value="'+esc(f.phone||'')+'" placeholder="+1 000 0000" oninput="_PF.phone=this.value"></div>'
+    +'<div><label class="lbl">Email</label><input class="inp" type="email" value="'+esc(f.email||'')+'" placeholder="email@…" oninput="_PF.email=this.value"></div>'
+    +'<div style="grid-column:1/-1"><label class="lbl">Notes / Allergies</label><textarea class="inp" style="min-height:55px" oninput="_PF.note=this.value">'+esc(f.note||'')+'</textarea></div>'
+    +'</div></div>'
+    +(!isNew?'<div><div class="sbar">📋 Visit History ('+(f.visits||[]).length+')</div>'+(visH||'<div style="text-align:center;padding:20px;color:var(--mist);font-size:.8rem">No visits recorded yet</div>')+'</div>':'')
+    +'</div>'
+    +'<div style="padding:'+(S.mob?'12px 18px':'12px 22px')+';padding-bottom:'+(S.mob?'max(12px,env(safe-area-inset-bottom))':'12px')+';border-top:1px solid var(--ln);display:flex;gap:9px;background:var(--cream);flex-shrink:0">'
+    +(!isNew?'<button onclick="delPat()" style="padding:12px 14px;background:rgba(192,57,43,.08);color:var(--red);font-weight:600;border-radius:12px;font-size:.85rem;cursor:pointer;font-family:inherit">Delete</button>':'')
+    +'<button class="bghost" onclick="closePanel()" style="padding:12px 18px;font-size:.88rem">Cancel</button>'
+    +'<button class="bgold" onclick="savePat()" style="flex:1;padding:12px;font-size:.88rem">Save Patient</button>'
+    +'</div>';
 
-  // close emoji picker on outside click
   setTimeout(function(){
     document.addEventListener('click',function epClose(e){
       var ep=document.getElementById('pp-ep');
       var av=document.getElementById('pp-av');
-      if(ep&&!ep.contains(e.target)&&e.target!==av&&!av.contains(e.target)){ep.classList.remove('on')}
+      if(ep&&av&&!ep.contains(e.target)&&!av.contains(e.target)){ep.classList.remove('on');}
     },true);
   },100);
 }
 
-function ppNameChange(v){
+function ppName(v){
   _PF.name=v;
   if(!_PF.emoji){
     var av=document.getElementById('pp-av');
-    if(av){var i=ini(v);av.style.background=i!='?'?FOREST:'var(--parch)';av.style.color=i!='?'?'#fff':'var(--mist)';av.style.fontSize='.88rem';av.textContent=i!='?'?i:'🦷';var b=document.createElement('div');b.style.cssText='position:absolute;bottom:0;right:0;width:17px;height:17px;background:'+GOLD+';border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.55rem;color:'+FOREST+';font-weight:700;border:2px solid var(--warm)';b.textContent='✏';av.appendChild(b)}
+    if(av){
+      var i=ini(v);
+      av.style.background=i!=='?'?FOREST:'var(--parch)';
+      av.style.color=i!=='?'?'#fff':'var(--mist)';
+      av.style.fontSize='.88rem';
+      av.style.border='none';
+      var badge=av.querySelector('div');
+      var text=i!=='?'?i:'🦷';
+      av.textContent=text;
+      if(!badge){badge=document.createElement('div');badge.style.cssText='position:absolute;bottom:0;right:0;width:17px;height:17px;background:'+GOLD+';border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.55rem;color:'+FOREST+';font-weight:700;border:2px solid var(--warm)';badge.textContent='✏';}
+      av.appendChild(badge);
+    }
   }
 }
 function pickEmoji(em){
   _PF.emoji=em;
   var av=document.getElementById('pp-av');
   if(av){
-    if(em){av.textContent=em;av.style.fontSize='1.6rem';av.style.background='var(--parch)';av.style.border='1.5px solid var(--ln)';av.style.color='inherit'}
-    else{var i=ini(_PF.name||'');av.textContent=i!='?'?i:'🦷';av.style.fontSize='.88rem';av.style.background=i!='?'?FOREST:'var(--parch)';av.style.color=i!='?'?'#fff':'var(--mist)';av.style.border='none'}
-    var b=document.createElement('div');b.style.cssText='position:absolute;bottom:0;right:0;width:17px;height:17px;background:'+GOLD+';border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.55rem;color:'+FOREST+';font-weight:700;border:2px solid var(--warm)';b.textContent='✏';av.appendChild(b);
+    var badge=document.createElement('div');
+    badge.style.cssText='position:absolute;bottom:0;right:0;width:17px;height:17px;background:'+GOLD+';border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.55rem;color:'+FOREST+';font-weight:700;border:2px solid var(--warm)';
+    badge.textContent='✏';
+    if(em){
+      av.textContent=em;av.style.fontSize='1.6rem';av.style.background='var(--parch)';
+      av.style.border='1.5px solid var(--ln)';av.style.color='inherit';
+    } else {
+      var i=ini(_PF.name||'');av.textContent=i!=='?'?i:'🦷';
+      av.style.fontSize='.88rem';av.style.background=i!=='?'?FOREST:'var(--parch)';
+      av.style.color=i!=='?'?'#fff':'var(--mist)';av.style.border='none';
+    }
+    av.appendChild(badge);
   }
   var ep=document.getElementById('pp-ep');if(ep)ep.classList.remove('on');
-  document.querySelectorAll('.epbtn').forEach(function(b){b.classList.remove('sel')});
-  document.querySelectorAll('.epbtn').forEach(function(b){if(b.textContent===(em||'ABC'))b.classList.add('sel')});
+  document.querySelectorAll('.epbtn').forEach(function(b){b.classList.remove('sel');});
+  document.querySelectorAll('.epbtn').forEach(function(b){
+    if(em&&b.textContent===em)b.classList.add('sel');
+    else if(!em&&b.textContent==='ABC')b.classList.add('sel');
+  });
 }
 function delVisit(vid){
-  _PF.visits=(_PF.visits||[]).filter(function(v){return v.id!==vid});
+  _PF.visits=(_PF.visits||[]).filter(function(v){return v.id!==vid;});
   P[_PF.id]=_PF;saveAll();toast('Visit removed');
-  var card=document.querySelector('[onclick="delVisit(\''+vid+'\')"]');
-  if(card)card.closest('.card').remove();
+  var el=document.querySelector('[onclick="delVisit(\''+vid+'\')"]');
+  if(el)el.closest('.card').remove();
 }
-function delPatConfirm(){
-  confirm2('Delete Patient','This will permanently remove this patient and all records.',function(){
+function delPat(){
+  confirm2('Delete Patient','Permanently remove this patient and all their records?',function(){
     delete P[_PF.id];
-    Object.keys(A).forEach(function(d){A[d]=(A[d]||[]).filter(function(a){return a.patientId!==_PF.id})});
+    Object.keys(A).forEach(function(d){A[d]=(A[d]||[]).filter(function(a){return a.patientId!==_PF.id;});});
     saveAll();closePanel();toast('Patient deleted');R();
   });
 }
 function savePat(){
-  if(!(_PF.name||'').trim()){toast('⚠️ Please enter a name');return}
+  if(!(_PF.name||'').trim()){toast('Please enter a name');return;}
   P[_PF.id]=_PF;saveAll();
   toast('✓ Patient saved');
-  if(_PF_cb){var cb=_PF_cb;_PF_cb=null;closePanel();cb(_PF)}
-  else{closePanel();R()}
+  if(_PF_cb){var cb=_PF_cb;_PF_cb=null;closePanel();cb(_PF);}
+  else{closePanel();R();}
 }
 
-/* ══════════════════════════════════
-   RESIZE
-══════════════════════════════════ */
-window.addEventListener('resize',function(){var m=window.innerWidth<640;if(m!==S.mob){S.mob=m;R()}});
+/* ── RESIZE ───────────────────────────── */
+window.addEventListener('resize',function(){
+  var m=window.innerWidth<640;
+  if(m!==S.mob){S.mob=m;R();}
+});
 
-/* ══════════════════════════════════
-   BACKUP / RESTORE
-══════════════════════════════════ */
-window.exportDentaLog=function(){var data=JSON.stringify({patients:P,appointments:A,exported:new Date().toISOString()},null,2);var blob=new Blob([data],{type:'application/json'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='dentalog_backup_'+today()+'.json';a.click();toast('✓ Backup downloaded')};
-window.importDentaLog=function(){var input=document.createElement('input');input.type='file';input.accept='.json';input.onchange=function(e){var file=e.target.files[0];var r=new FileReader();r.onload=function(ev){try{var d=JSON.parse(ev.target.result);if(d.patients)Object.assign(P,d.patients);if(d.appointments)Object.assign(A,d.appointments);saveAll();toast('✓ Data imported');R()}catch(e){toast('⚠️ Invalid file')}};r.readAsText(file)};input.click()};
+/* ── BACKUP / RESTORE ─────────────────── */
+window.exportDentaLog=function(){
+  var data=JSON.stringify({patients:P,appointments:A,exported:new Date().toISOString()},null,2);
+  var blob=new Blob([data],{type:'application/json'});
+  var a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download='dentalog_backup_'+today()+'.json';a.click();
+  toast('Backup downloaded');
+};
+window.importDentaLog=function(){
+  var input=document.createElement('input');input.type='file';input.accept='.json';
+  input.onchange=function(e){
+    var r=new FileReader();
+    r.onload=function(ev){
+      try{
+        var d=JSON.parse(ev.target.result);
+        if(d.patients)Object.assign(P,d.patients);
+        if(d.appointments)Object.assign(A,d.appointments);
+        saveAll();toast('Data imported');R();
+      }catch(e2){toast('Invalid file');}
+    };
+    r.readAsText(e.target.files[0]);
+  };
+  input.click();
+};
 
-/* ══════════════════════════════════
-   SERVICE WORKER
-══════════════════════════════════ */
-if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})}
+/* ── SERVICE WORKER ───────────────────── */
+if('serviceWorker' in navigator){
+  window.addEventListener('load',function(){
+    navigator.serviceWorker.register('sw.js').catch(function(){});
+  });
+}
 
-/* ══════════════════════════════════
-   INIT
-══════════════════════════════════ */
+/* ── INIT ─────────────────────────────── */
 paint();
 </script>
 </body>
