@@ -946,7 +946,7 @@ function maybeClosePanel(e){if(e.target===document.getElementById('OV'))closePan
 
 /* ══════════════════════════════════════
    APPOINTMENT PANEL
-══════════════════════════════════════ */
+  ══════════════════════════════════════ */
 var _AF={};
 
 function openApptPanel(apptId,date){
@@ -1079,7 +1079,6 @@ function buildApptPanel(){
     +'<button onclick="closePanel()" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.18);color:#fff;font-size:1.2rem;display:flex;align-items:center;justify-content:center">×</button>'
     +'</div>'
     +'<div class="scr" style="flex:1;padding:'+pad+'">'
-    // Appointment basics
     +'<div style="margin-bottom:20px"><div class="sbar">📅 Appointment</div>'
     +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">'
     +'<div><label class="lbl">Time</label><input class="inp" id="ap-time" type="time" value="'+esc(f.time)+'" oninput="_AF.time=this.value"></div>'
@@ -1088,19 +1087,16 @@ function buildApptPanel(){
     +'</select></div></div>'
     +'<label class="lbl">Appointment Notes</label>'
     +'<textarea class="inp" id="ap-notes" style="min-height:52px" oninput="_AF.notes=this.value">'+esc(f.notes)+'</textarea></div>'
-    // Patient
     +'<div style="margin-bottom:20px"><div class="sbar">🧑‍⚕️ Patient</div>'
     +'<select class="inp" id="ap-pat" onchange="apPatChange(this.value)">'+patOpts+'</select>'
     +'<button onclick="quickNewPat()" style="margin-top:8px;font-size:.77rem;color:var(--FL);font-weight:600;text-decoration:underline;cursor:pointer">+ Create new patient</button>'
     +'</div>'
-    // Clinical
     +'<div id="ap-clin" style="'+(f.patientId?'':'opacity:.4;pointer-events:none')+'">'
     +'<div class="sbar">🦷 Visit Record</div>'
     +'<div style="margin-bottom:10px"><label class="lbl">Chief Complaint</label>'
     +'<input class="inp" id="ap-cc" value="'+esc(f.complaint)+'" placeholder="e.g. Pain upper right molar" oninput="_AF.complaint=this.value"></div>'
     +'<div style="margin-bottom:14px"><label class="lbl">Diagnosis</label>'
     +'<textarea class="inp" id="ap-dx" style="min-height:60px" oninput="_AF.diag=this.value">'+esc(f.diag)+'</textarea></div>'
-    // Treatments
     +'<div style="margin-bottom:14px">'
     +'<label class="lbl" style="margin-bottom:8px">Treatments Done</label>'
     +'<div id="ap-tx-pick" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px">'+txPickerHTML()+'</div>'
@@ -1108,7 +1104,6 @@ function buildApptPanel(){
     +'</div>'
     +'<div style="margin-bottom:10px"><label class="lbl">Visit Notes</label>'
     +'<textarea class="inp" id="ap-vn" style="min-height:60px" oninput="_AF.vnotes=this.value">'+esc(f.vnotes)+'</textarea></div>'
-    // Photos
     +'<div><div class="sbar">📷 Photos</div>'
     +'<div onclick="document.getElementById(\'ap-pf\').click()" style="border:2px dashed var(--ln);border-radius:12px;padding:16px;text-align:center;background:var(--parch);cursor:pointer">'
     +'<div style="font-size:1.5rem;margin-bottom:4px">🔬</div>'
@@ -1280,7 +1275,6 @@ function buildPatPanel(){
       +'<button onclick="delVisit(\''+esc(v.id)+'\')" style="font-size:.7rem;color:var(--red);cursor:pointer;font-weight:600;padding:2px 8px;border-radius:6px;background:rgba(192,57,43,.08)">Remove</button>'
       +'</div>'
       +'<div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:4px">'+txBadges(v.txData,v.treatments,4)+'</div>'
-      // per-treatment notes
       +(v.txData&&v.txData.some(function(x){return x.txNote;})?
         '<div style="display:flex;flex-direction:column;gap:3px;margin-top:4px">'
         +v.txData.filter(function(x){return x.txNote;}).map(function(x){
@@ -1679,4 +1673,234 @@ function archGrid(teeth,jaw){
       }
     }
 
-    var numCol=miss?'#9CA3AF':(immature?'#60A5
+    var numCol=miss?'#9CA3AF':(immature?'#60A5FA':'var(--slate)');
+    var numLbl=esc(tooth)+(immature?' ⬟':'')+(hasPerioIssue?'<span style="color:#EF4444;font-size:1.2em;line-height:0.5;vertical-align:top">•</span>':'');
+    var out='<div data-tooth="'+esc(tooth)+'" style="display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;-webkit-tap-highlight-color:transparent;width:100%;min-width:0">';
+    if(jaw==='lower') out+='<div style="font-size:.45rem;font-weight:700;color:'+numCol+';line-height:1;text-align:center;white-space:nowrap">'+numLbl+'</div>';
+    out+=toothSVG(tooth,data,_chartMode,26);
+    if(jaw==='upper') out+='<div style="font-size:.45rem;font-weight:700;color:'+numCol+';line-height:1;text-align:center;white-space:nowrap">'+numLbl+'</div>';
+    out+='</div>';
+    return out;
+  }
+
+  if(teeth.length === 10) {
+     h+='<div></div><div></div><div></div>';
+     for(var i=0; i<5; i++) h+=renderCell(teeth[i]);
+     h+='<div style="width:4px;background:rgba(15,35,24,.15);border-radius:2px;align-self:stretch"></div>';
+     for(var j=5; j<10; j++) h+=renderCell(teeth[j]);
+     h+='<div></div><div></div><div></div>';
+  } else if (teeth.length === 14) {
+     h+='<div></div>';
+     for(var k=0; k<7; k++) h+=renderCell(teeth[k]);
+     h+='<div style="width:4px;background:rgba(15,35,24,.15);border-radius:2px;align-self:stretch"></div>';
+     for(var m=7; m<14; m++) h+=renderCell(teeth[m]);
+     h+='<div></div>';
+  } else {
+     for(var x=0; x<8; x++) h+=renderCell(teeth[x]);
+     h+='<div style="width:4px;background:rgba(15,35,24,.15);border-radius:2px;align-self:stretch"></div>';
+     for(var y=8; y<16; y++) h+=renderCell(teeth[y]);
+  }
+  h+='</div>';
+  return h;
+}
+
+function renderChart(){
+  var b=document.getElementById('chart-body'); if(!b)return;
+  var h='';
+  if(_chartMode==='adult'){
+    h+='<div style="text-align:center;font-size:.6rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mist);padding:6px 0 3px">Permanent Dentition</div>';
+    h+=archGrid(A_U,'upper');
+    h+='<div style="text-align:center;font-size:.55rem;letter-spacing:.1em;color:var(--mist);padding:3px 0">─ MIDLINE ─</div>';
+    h+=archGrid(A_L,'lower');
+  } else if(_chartMode==='primary'){
+    h+='<div style="text-align:center;font-size:.6rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mist);padding:6px 0 3px">Deciduous Dentition</div>';
+    h+=archGrid(P_U,'upper');
+    h+='<div style="text-align:center;font-size:.55rem;letter-spacing:.1em;color:var(--mist);padding:3px 0">─ MIDLINE ─</div>';
+    h+=archGrid(P_L,'lower');
+  } else if(_chartMode==='mixed'){
+    h+='<div style="text-align:center;font-size:.6rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mist);padding:6px 0 2px">Mixed Dentition</div>';
+    h+='<div style="text-align:center;font-size:.58rem;color:var(--slate);padding:2px 0 1px">Permanent</div>';
+    h+=archGrid(MX_U,'upper');
+    h+='<div style="text-align:center;font-size:.55rem;color:var(--slate);font-weight:600;padding:3px 0 1px">Deciduous</div>';
+    h+=archGrid(P_U,'upper');
+    h+='<div style="text-align:center;font-size:.55rem;letter-spacing:.1em;color:var(--mist);padding:3px 0">─ MIDLINE ─</div>';
+    h+='<div style="text-align:center;font-size:.55rem;color:var(--slate);font-weight:600;padding:1px 0 3px">Deciduous</div>';
+    h+=archGrid(P_L,'lower');
+    h+='<div style="text-align:center;font-size:.55rem;color:var(--slate);font-weight:600;padding:3px 0 1px">Permanent</div>';
+    h+=archGrid(MX_L,'lower');
+  }
+  b.innerHTML=h;
+  buildCondSelector();
+  b.addEventListener('click',function(e){
+    var tw=e.target.closest('[data-tooth]');
+    if(!tw)return;
+    openToothDetail(tw.dataset.tooth);
+  });
+}
+
+function selCond(cond){_selCond=cond;buildCondSelector();}
+function buildCondSelector(){
+  var COND=getCOND(_chartMode);
+  var h='<div style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--FL);width:100%;margin-bottom:8px">'
+    +'Mode: '+MODE_LABELS[_chartMode]
+    +'</div><div style="display:flex;flex-wrap:wrap;gap:5px">';
+  Object.keys(COND).forEach(function(k){
+    var c=COND[k], on=_selCond===k;
+    h+='<div class="csel'+(on?' active':'')+'" data-cond="'+esc(k)+'" '
+      +'style="background:'+c.color+';color:'+(k?c.text:'var(--ink)')+';border-color:'+(on?'var(--ink)':c.border)+'">'
+      +(k?'<span style="width:8px;height:8px;border-radius:50%;background:'+c.border+';display:inline-block;flex-shrink:0"></span>':'')
+      +c.label+(on?' ✓':'')+'</div>';
+  });
+  h+='</div>';
+  if(_chartMode!=='adult')h+='<div style="font-size:.58rem;color:var(--mist);margin-top:5px;font-style:italic">Pink tones = paediatric procedures</div>';
+  var el=document.getElementById('cond-legend'); if(el)el.innerHTML=h;
+  document.querySelectorAll('#cond-legend .csel').forEach(function(el){
+    el.addEventListener('click',function(){selCond(this.dataset.cond);});
+  });
+}
+
+var _detailTooth=null;
+function openToothDetail(tooth){
+  _detailTooth=tooth;
+  var COND=getCOND(_chartMode);
+  var data=getTC(tooth);
+  var miss=data['all']==='missing';
+  var surfs=twSurfs(tooth);
+  var n=parseInt(tooth.split('.')[1]);
+  var names={1:'Central Incisor',2:'Lateral Incisor',3:'Canine',
+    4:'1st Premolar',5:'2nd Premolar',6:'1st Molar',7:'2nd Molar',8:'3rd Molar'};
+  document.getElementById('td-title').textContent='Tooth '+tooth;
+  document.getElementById('td-sub').textContent=(names[n]||'Tooth')+' — selected: '+(COND[_selCond]||COND['']).label;
+  
+  var prev='<div style="display:flex;justify-content:center;margin-bottom:12px">'+toothSVG(tooth,data,_chartMode,80)+'</div>';
+  function tdCell(surf,label,extraStyle){
+    var cond=miss?'missing':(data[surf]||'');
+    var c=COND[cond]||COND[''];
+    var isDark = document.body.classList.contains('dark');
+    var bg = c.color;
+    if(cond === '' && isDark) bg = '#2A2A2A'; 
+    return '<div class="td-cell" data-surf="'+esc(surf)+'" '
+      +'style="background:'+bg+';border-color:'+c.border+';color:'+(cond?c.text:'var(--slate)')+';'+(extraStyle||'')+'">'
+      +label+'</div>';
+  }
+  var grid='<div class="td-grid">'
+    +'<div class="td-cell td-empty"></div>'+tdCell(surfs.top,surfs.top)+'<div class="td-cell td-empty"></div>'
+    +tdCell('M','M')+tdCell(surfs.mid,surfs.mid)+tdCell('D','D')
+    +'<div class="td-cell td-empty"></div>'+tdCell(surfs.bot,surfs.bot)+'<div class="td-cell td-empty"></div>'
+    +'</div>';
+
+  var missBtn='<button data-surf="__miss" style="margin-top:12px;width:100%;padding:10px;border-radius:10px;background:'
+    +(miss?'#6B7280':'var(--parch)')+';border:1.5px solid '+(miss?'#4B5563':'var(--ln)')+';color:'+(miss?'#fff':'var(--slate)')
+    +';font-size:.78rem;font-weight:600;cursor:pointer;font-family:inherit">'
+    +(miss?'✓ Tooth Missing — tap to restore':'Mark Whole Tooth Missing')+'</button>';
+    
+  var immBtn='';
+  if(_chartMode==='mixed'){
+    var isImm = isImmature(tooth);
+    immBtn='<button data-surf="__immature" style="margin-top:8px;width:100%;padding:10px;border-radius:10px;background:'
+      +(isImm?'#60A5FA':'var(--parch)')+';border:1.5px solid '+(isImm?'#3B82F6':'var(--ln)')+';color:'+(isImm?'#fff':'var(--slate)')
+      +';font-size:.78rem;font-weight:600;cursor:pointer;font-family:inherit">'
+      +(isImm?'✓ Immature (Tap to clear)':'Mark as Immature ⬟')+'</button>';
+  }
+
+  document.getElementById('td-grid-wrap').innerHTML=prev+grid+missBtn+immBtn;
+  
+  var info=[];
+  [surfs.top,'M',surfs.mid,'D',surfs.bot].forEach(function(s){
+    if(data[s])info.push(s+': '+((COND[data[s]]||{}).label||data[s]));
+  });
+  document.getElementById('td-cond-info').textContent=info.length?info.join(' · '):'All surfaces healthy';
+  
+  if(data.perio) {
+    document.getElementById('perio-b').value = data.perio.b || '';
+    document.getElementById('perio-l').value = data.perio.l || '';
+    document.getElementById('perio-bop').checked = !!data.perio.bop;
+    document.getElementById('perio-mob').value = data.perio.mob || '0';
+  } else {
+    document.getElementById('perio-b').value = '';
+    document.getElementById('perio-l').value = '';
+    document.getElementById('perio-bop').checked = false;
+    document.getElementById('perio-mob').value = '0';
+  }
+
+  document.getElementById('tooth-detail-bg').className='on';
+  document.getElementById('tooth-detail').className='on';
+
+  document.querySelectorAll('#td-grid-wrap .td-cell[data-surf]').forEach(function(el){
+    el.addEventListener('click',function(){
+      tapSurf(_detailTooth,this.dataset.surf);
+      openToothDetail(_detailTooth);
+    });
+  });
+  var mb=document.querySelector('#td-grid-wrap [data-surf="__miss"]');
+  if(mb)mb.addEventListener('click',function(){ tapSurf(_detailTooth,'__miss'); openToothDetail(_detailTooth); });
+  var ib=document.querySelector('#td-grid-wrap [data-surf="__immature"]');
+  if(ib)ib.addEventListener('click',function(){ toggleImmature(_detailTooth); openToothDetail(_detailTooth); });
+}
+
+function closeToothDetail(){
+  document.getElementById('tooth-detail-bg').className='';
+  document.getElementById('tooth-detail').className='';
+  _detailTooth=null;
+}
+
+window.savePerio = function() {
+  if(!_detailTooth) return;
+  var pat=P[_chartPatId]; if(!pat)return;
+  if(!pat.chart)pat.chart={mode:_chartMode,teeth:{},immature:{}};
+  if(!pat.chart.teeth[_detailTooth])pat.chart.teeth[_detailTooth]={};
+  
+  var pb = document.getElementById('perio-b').value.trim();
+  var pl = document.getElementById('perio-l').value.trim();
+  var pbop = document.getElementById('perio-bop').checked;
+  var pmob = document.getElementById('perio-mob').value;
+
+  if(!pb && !pl && !pbop && pmob==='0') {
+    delete pat.chart.teeth[_detailTooth].perio;
+  } else {
+    pat.chart.teeth[_detailTooth].perio = { b:pb, l:pl, bop:pbop, mob:pmob };
+  }
+  
+  saveQuiet(); 
+  renderChart();
+  toast('Perio saved for ' + _detailTooth);
+};
+
+function tapSurf(tooth,surf){
+  var pat=P[_chartPatId]; if(!pat)return;
+  if(!pat.chart)pat.chart={mode:_chartMode,teeth:{},immature:{}};
+  if(!pat.chart.teeth[tooth])pat.chart.teeth[tooth]={};
+  var td=pat.chart.teeth[tooth];
+
+  var WHOLE_TOOTH = ['crown', 'bridge', 'pontic', 'ssc']; 
+
+  if(surf==='__miss'){
+    pat.chart.teeth[tooth]=td['all']==='missing'?{}:{all:'missing'};
+  } else if(WHOLE_TOOTH.indexOf(_selCond) > -1){
+    if(td['all']===_selCond) pat.chart.teeth[tooth]={};
+    else pat.chart.teeth[tooth]={all:_selCond};
+  } else if(_selCond==='missing'){
+    pat.chart.teeth[tooth]={all:'missing'};
+  } else if(_selCond===''){
+    if(td['all'])pat.chart.teeth[tooth]={};
+    else{delete td[surf];}
+  } else {
+    if(td['all'])pat.chart.teeth[tooth]={};
+    pat.chart.teeth[tooth][surf]=_selCond;
+  }
+  saveQuiet(); renderChart();
+}
+
+function toggleImmature(tooth){
+  var pat=P[_chartPatId]; if(!pat)return;
+  if(!pat.chart)pat.chart={mode:_chartMode,teeth:{},immature:{}};
+  if(!pat.chart.immature)pat.chart.immature={};
+  pat.chart.immature[tooth]=!pat.chart.immature[tooth];
+  saveQuiet(); renderChart();
+}
+
+/* ── INIT ─────────────────────────────── */
+paint();
+</script>
+</body>
+</html>
