@@ -1085,6 +1085,7 @@ function buildApptPanel(){
     +'<button onclick="closePanel()" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.18);color:#fff;font-size:1.2rem;display:flex;align-items:center;justify-content:center">×</button>'
     +'</div>'
     +'<div class="scr" style="flex:1;padding:'+pad+'">'
+    // Appointment basics
     +'<div style="margin-bottom:20px"><div class="sbar">📅 Appointment</div>'
     +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">'
     +'<div><label class="lbl">Time</label><input class="inp" id="ap-time" type="time" value="'+esc(f.time)+'" oninput="_AF.time=this.value"></div>'
@@ -1093,16 +1094,19 @@ function buildApptPanel(){
     +'</select></div></div>'
     +'<label class="lbl">Appointment Notes</label>'
     +'<textarea class="inp" id="ap-notes" style="min-height:52px" oninput="_AF.notes=this.value">'+esc(f.notes)+'</textarea></div>'
+    // Patient
     +'<div style="margin-bottom:20px"><div class="sbar">🧑‍⚕️ Patient</div>'
     +'<select class="inp" id="ap-pat" onchange="apPatChange(this.value)">'+patOpts+'</select>'
     +'<button onclick="quickNewPat()" style="margin-top:8px;font-size:.77rem;color:var(--FL);font-weight:600;text-decoration:underline;cursor:pointer">+ Create new patient</button>'
     +'</div>'
+    // Clinical
     +'<div id="ap-clin" style="'+(f.patientId?'':'opacity:.4;pointer-events:none')+'">'
     +'<div class="sbar">🦷 Visit Record</div>'
     +'<div style="margin-bottom:10px"><label class="lbl">Chief Complaint</label>'
     +'<input class="inp" id="ap-cc" value="'+esc(f.complaint)+'" placeholder="e.g. Pain upper right molar" oninput="_AF.complaint=this.value"></div>'
     +'<div style="margin-bottom:14px"><label class="lbl">Diagnosis</label>'
     +'<textarea class="inp" id="ap-dx" style="min-height:60px" oninput="_AF.diag=this.value">'+esc(f.diag)+'</textarea></div>'
+    // Treatments
     +'<div style="margin-bottom:14px">'
     +'<label class="lbl" style="margin-bottom:8px">Treatments Done</label>'
     +'<div id="ap-tx-pick" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px">'+txPickerHTML()+'</div>'
@@ -1110,6 +1114,7 @@ function buildApptPanel(){
     +'</div>'
     +'<div style="margin-bottom:10px"><label class="lbl">Visit Notes</label>'
     +'<textarea class="inp" id="ap-vn" style="min-height:60px" oninput="_AF.vnotes=this.value">'+esc(f.vnotes)+'</textarea></div>'
+    // Photos
     +'<div><div class="sbar">📷 Photos</div>'
     +'<div onclick="document.getElementById(\'ap-pf\').click()" style="border:2px dashed var(--ln);border-radius:12px;padding:16px;text-align:center;background:var(--parch);cursor:pointer">'
     +'<div style="font-size:1.5rem;margin-bottom:4px">🔬</div>'
@@ -1556,13 +1561,13 @@ function toothSVG(tooth,data,mode,size){
     if(miss)return '#E5E7EB';
     if(allCond && C[allCond]) return C[allCond].color;
     var c=data[s]||'';
-    return c?C[c].color:'none';
+    return c? (C[c] ? C[c].color : 'none') : 'none';
   }
   function str(s){
     if(miss)return '#CBD5E1';
     if(allCond && C[allCond]) return C[allCond].border;
     var c=data[s]||'';
-    return c?C[c].border:'#D1D5DB';
+    return c? (C[c] ? C[c].border : '#D1D5DB') : '#D1D5DB';
   }
   var n=parseInt(tooth.split('.')[1]);
   var isMolar=(n>=4&&n<=8)||(n>=4&&n<=5&&tooth.indexOf('.')>-1&&parseInt(tooth.split('.')[0])>=5);
@@ -1644,7 +1649,13 @@ function toggleChartMode(){
 function getTC(tooth){
   var pat=P[_chartPatId];
   if(!pat||!pat.chart||!pat.chart.teeth)return{};
-  return pat.chart.teeth[tooth]||{};
+  var t = pat.chart.teeth[tooth]||{};
+  // Migration for old "Pontic/Bridge" key to prevent crashes
+  if(t.all === 'Pontic/Bridge') t.all = 'pontic';
+  ['La','B','Pa','L','I','O','M','D'].forEach(function(s){
+    if(t[s] === 'Pontic/Bridge') t[s] = 'pontic';
+  });
+  return t;
 }
 function isImmature(tooth){
   var pat=P[_chartPatId];
@@ -1658,13 +1669,12 @@ function archGrid(teeth,jaw){
     var miss=data['all']==='missing';
     var immature=(_chartMode==='mixed')&&isImmature(tooth);
     
-    // Check if Perio PD/BOP exists to show a small red dot indicator
     var hasPerioIssue = false;
     if(data.perio) {
       if(data.perio.bop) hasPerioIssue = true;
       else {
         var pds = (data.perio.b + '-' + data.perio.l).split('-');
-        if(pds.some(function(n){return parseInt(n)>=4})) hasPerioIssue = true;
+        if(pds.some(function(n){return parseInt(n)>=4;})) hasPerioIssue = true;
       }
     }
 
@@ -1679,21 +1689,21 @@ function archGrid(teeth,jaw){
   }
 
   if(teeth.length === 10) {
-     for(var e=0; e<3; e++) h+='<div></div>';
+     h+='<div></div><div></div><div></div>';
      for(var i=0; i<5; i++) h+=renderCell(teeth[i]);
      h+='<div style="width:4px;background:rgba(15,35,24,.15);border-radius:2px;align-self:stretch"></div>';
-     for(var i=5; i<10; i++) h+=renderCell(teeth[i]);
-     for(var e=0; e<3; e++) h+='<div></div>';
+     for(var j=5; j<10; j++) h+=renderCell(teeth[j]);
+     h+='<div></div><div></div><div></div>';
   } else if (teeth.length === 14) {
-     for(var e=0; e<1; e++) h+='<div></div>';
-     for(var i=0; i<7; i++) h+=renderCell(teeth[i]);
+     h+='<div></div>';
+     for(var k=0; k<7; k++) h+=renderCell(teeth[k]);
      h+='<div style="width:4px;background:rgba(15,35,24,.15);border-radius:2px;align-self:stretch"></div>';
-     for(var i=7; i<14; i++) h+=renderCell(teeth[i]);
-     for(var e=0; e<1; e++) h+='<div></div>';
+     for(var m=7; m<14; m++) h+=renderCell(teeth[m]);
+     h+='<div></div>';
   } else {
-     for(var i=0; i<8; i++) h+=renderCell(teeth[i]);
+     for(var x=0; x<8; x++) h+=renderCell(teeth[x]);
      h+='<div style="width:4px;background:rgba(15,35,24,.15);border-radius:2px;align-self:stretch"></div>';
-     for(var i=8; i<16; i++) h+=renderCell(teeth[i]);
+     for(var y=8; y<16; y++) h+=renderCell(teeth[y]);
   }
   h+='</div>';
   return h;
@@ -1872,7 +1882,7 @@ function tapSurf(tooth,surf){
 
   if(surf==='__miss'){
     pat.chart.teeth[tooth]=td['all']==='missing'?{}:{all:'missing'};
-  } else if(WHOLE_TOOTH.includes(_selCond)){
+  } else if(WHOLE_TOOTH.indexOf(_selCond) > -1){
     if(td['all']===_selCond) pat.chart.teeth[tooth]={};
     else pat.chart.teeth[tooth]={all:_selCond};
   } else if(_selCond==='missing'){
