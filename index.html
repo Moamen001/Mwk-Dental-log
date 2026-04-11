@@ -1,3 +1,5 @@
+Dental app base 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -184,255 +186,328 @@ select.inp{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.
 
 <div id="LS">
   <div style="width:100%;max-width:300px;text-align:center">
-    <div style="width:90px;height:90px;border-radius:50%;background:#0F2318;border:2px solid #C9A84C55;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;box-shadow:0 8px 28px rgba(201,168,76,.3);overflow:hidden"><img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCABQAFADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDxSiigAk4AyTVnzgUdwO56D1rql8O6docSXHjG4uIrhlDx6PaEfa2B5BlY5WAH0IL/AOyOtMbxpf2YMfhuxsPD0PQNaRb7gj/anky5P0Kj2rL2rl8Cv59DT2dvidihYeFfE9/GJLLw5rFwh6NHZSFT+OMVLdeDfF9qhkuPC2txoOrGxkIH5CqF/rGr38hkvtW1C6c9TNdO/wDM1FbahqFrIJLbULyBx0aK4dT+YNH73yD935leRHilMUqNHIOqOCrD8DzSV00PjnxA8Yt9Wmg161HWDVYRc8ezn94v1VhU6af4Z8SHbo0v9gaq33bC9n32s7f3Yp25jJ7LJx/tUvaSj8a+a1DkUvhZyVFWNRsrzTb6aw1C1mtbqBtksMqFXQ+hBqvWyaaujNqwHgZNdjCU8D2MFyUVvFN1EJYQ6gjS4mGVfB/5bsDkZ+4pB+8Rij4FtbaOe88Q6jAk9jo0SzmFx8txcMdsER9i/Ax/7I60m8ReBteBtvE3hSHQ5CcR6joAKeX/10gclXH0INddrlt5XxCk1SfSoNW0vQ/DmmDU7OSMOz2skCpI6Z6Om4MCORipl0Kx0srb2ul6fq174eU6nYlrdSuvaNLywIx80sYJ56jHtXne2i0pSvd9na3l+X33Oz2bTsrW9N/ctTgdc+Hup2+nyax4eu7bxPoq8td6dlnhH/TWE/PGfqCPes/wr4M13xFA97awxWumQnE+pXsghtYvXMjdT/srk+1aniywvfBfi+21PwfqN5HYanGt3o13bOQ8kLniM46srfIVPoPWo9c0jxtrvxD/4RfWI5P7cuLlQ0BVUiV2UHzNqAIBt+YsBzg5NdUas3H4la17vfzuvL+kc8oRUvhfp0+8tSXPw98LKY7K1PjTVF+9c3YaDT4z/ALEYIeX6sQPatrQNC0r4m+H9QlttC0zwzrFk8UUFzbOYrK+kkJCW7IxO2U44KnHqK2Dp2h2+2/0XR7TUYLM/2D4aieBWOr6g3E15JkfOiEnGeBxWHr14mka74Z8KaKZJtH8P6tAb2+jQ+Xd6i0i+a+4DHygbFHoDXLz8/wAF+bu3+m3lb/I6OTl+K1uy/wA/6/EwLC5GuovhLxO4ttTtWNtpuoXBw1u6nH2Wdu8RPAY8xn/ZyK5K+tbmxvZ7K8gkt7mCRoponGGR1OCD7g1u/FKFYfiX4ohC4VdWuhj281qseIGPiHwpbeJCd2o2Dpp+qN3lUqfs859SVUxsfVFPeu6m+VRktpfg3/n+ZyzV7rqiPWD/AGf8PdD09eH1OebU5/dVJghB+m2U/wDAq5ZxmNh6qf5V03j35ZNAtx92HQLIAf7ys5/VzXN1pR+G/e5FT4rdj6Fi1ybQdf8AFniW2t47lf8AhEtHnSKQZSeNjEjofYjctQ2kDxPp9n4Zn3yQB9a8EXEn/LWLrc6Y/uPmG0+nvWP4V1C01n4F+IZmlxquj6bFpsi95LY3SSwv/wABJdPyp/i7VZLLx74j8EaZYztcnVob7w59lwHs9QYRlsZ6RvuYsOnFeIqb5pRS1X5JJfr9zZ6bn7qk9n+rf+X32NJda0zRbazvtN0FtW0/Up21DwjAV3HTtUY+XNaOP7qs28A/3R9anmm199RfwXrNuE8dmA2U/iInKJpDDzZZ9394Dcmfwplv4g1WG3bWfCmjRXUniK6MH2PaGGj68AUeVfRXQuwP+FDW2tWtu/w71m4hfT7e3NxeeKIzkvooO94lfkkmUFAM+1S13X46/BLqvtPUq+n9W/rs+mxXe9k8uy1Lw1ZslzfIdB8DWZ4aC2B2z37Dszc4b3J7VyHiC8tZfFnhrwF4bmM+k6RqMMXmr/y/XjSqJrg+vPyr/sj3rqIL/U9Uj8Va9Y6fJp2uf2JEfDlm4x5GjHKu8GOsmwHPcZJ71w/wlhj0ubUPHd2qm08PQ77YHpNeyArbxj1wSXPstdVKKSlJ7rZeb2/O3q2zCpK7UV1/Jb/ANdrGV8U7hLv4meJ7mJgySatclSOhHmEf0qT4bA3msXfh5j+71uxmswD/wA9QvmQn6iSNfzNcxI7ySNJI5d3JZmPViTkn862vAEz23jrQJ4/vJqVuR/38UV6M4ctHlXRfkcUZXq83dlrxwPNsPC9+vKz6JFFn/ahkkiYf+Oj865quotx/a3w3ngX5rnQLs3IHc2txtVz9FlVCf8ArpXL1VHROPZ/8N+Aqmrv3Ox+G7D+yfGikn/kXnfGeu24hNej+JI57T4k/ELX7DaupA2Om6bMRkxTXgjQuv8AtCMPg+9ebfCRVuvFU+iMQBrWmXemr/vyREx/+Pqv517DZyWuoxeBtaMgLa1fW+pX6Hqh02zZZAf+Brn8a8zGPkqt91/k/Aos7sMuaml2/r9UcSuraxo3xF1zwb8NLMRxzW/9kn5uXeEFXvCxOEf/WZboAazdb1TxV4T8KaT4R1hLHU/Dj3gvYZLW6EsN5CjgvbiVf4A+SV4IJ9KqRXsuk/DfUtf3FdU8W30trHJ/Etoh3zkH/bdlQ+ykVD4CY674W1/wZL87/Z21bSh3S5gXMir/wBdItwI7lRWqppLmaTSav3bWl7+X+Zm5tvlT1d7dvT5npEMckclhbeGLjzJrZH1vwTcPyZ7c83Omv6kfMAvt71zvxUh0dPhRpV/4dmCaVq+vT30Vp0a0Y26iSF/Uo4YDPQEVN8J42k8N+EYbuVzE3imbUYDnmC3tLffOVPUBmwD64rnviXdMPA3hK3lXZc6k99r064xj7TNiP8A8dSsKUGq6jfZ/wCf+X337ms5XpN+X+X+f3W7HntdF8M7YXfxC0GJ/wDVi+jlkPokZ3sfyU1ztdR4PB0zQNe8SP8AK0dudNsj63FwCGI/3YRIf+BL616td/u2l10+84KS99GZ4T1g6FrcV80AurZlaG7ticC4gcbZIz9QeD2IB7VJ4u0QaLqCfZZzd6XeR/aNOu8YE8JPGfR1PysvZgfasauh8N65axWEmga/BLdaJPJ5o8rHnWcuMedDnjOOGQ8OBzggEE04y54/MItNcrMbTL2503UrXUbN/LubWZJ4W9HVgw/UV7jfeItI0zwp4guFRVttT0+51fw0+f8AVSXQEN5aj/aRyTj05ryHxF4bvNJhjv4pYtR0i4Yi21G2yYZP9k55jcd0bBHuOa0/BviHSF0tvDPi2G6n0R7lbuCW2AaeymGAzIDwyOo2sv0I5Fc2JpxrRU462/r+vmjahN0m4vS/9f18if4sj7Bd6D4aXgaLotvFIvpNKPOk/HMgH4VkfDvVhoXjvQ9Wf/VW97GZh6xsdrj8VZqg8a6yfEPi7Vtc2GNb27eZEPVEJwq/goArHIyCAcZHWt6dL9yoS6rX57mU5/vOZf1Y+kU8IyQazf8AhDTpVCaNoJsDcj7kL39yzzSk9ttuDz7CvFPiZr1v4i8ZXl9YqU02IJaaen922iUJH+YG7/gVdd4w+KEN14avrDQI7uG/8QJbtrtzMAuDHAkRhiwclW2kljj7xAHWvPNA0XU9dvTaaZamZ1UvI5YJHCg6vI5+VFHck1x4OjKnepV0/rV/NnTiakZ2hT/rt+BFo2m3usapb6Zp0Bnu7lwkSA4ye5J7ADJJPAAJrY8aX9kFs/DujTifS9KDKJ1GBd3DY86f6EgKv+wi+pqxqOp6boGl3GieG7gXdzdJ5WpauqlRKneCAHlYv7zHDSY7LweUrtinUlzPZbf5nK7QXKt+v+R//9k=" style="width:100%;height:100%;object-fit:cover;border-radius:inherit"></div>
-    <div style="font-family:'Playfair Display',serif;font-size:1.6rem;color:#C9A84C;margin-bottom:8px;letter-spacing:1px">DentaLog</div>
-    <div style="font-size:.75rem;color:rgba(255,255,255,.4);margin-bottom:30px;letter-spacing:1.5px;text-transform:uppercase;font-weight:600">Clinical Management</div>
-    <div style="display:flex;flex-direction:column;gap:12px">
-      <input type="password" id="pin" maxlength="4" inputmode="numeric" placeholder="••••" style="width:100%;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.15);border-radius:12px;padding:16px;text-align:center;font-size:24px;color:#fff;letter-spacing:12px">
-      <button class="bgold" onclick="unlock()" style="padding:16px;font-size:.9rem;letter-spacing:1px">ACCESS CLINIC</button>
-    </div>
+    <div style="width:90px;height:90px;border-radius:50%;background:#0F2318;border:2px solid #C9A84C55;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;box-shadow:0 8px 28px rgba(201,168,76,.3);overflow:hidden"><img src="data:image/jpeg;base64,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" style="width:100%;height:100%;object-fit:cover;border-radius:inherit"></div>
+    <div style="font-family:'Playfair Display',serif;font-size:1.8rem;color:#fff;margin-bottom:2px">DentaLog</div>
+    <div style="font-size:.72rem;color:#C9A84C;letter-spacing:.06em;font-weight:600;margin-bottom:2px">DR. MOAMEN WALID KHALIL</div>
+    <div style="font-size:.65rem;color:#8BAF95;letter-spacing:.08em;text-transform:uppercase;margin-bottom:36px">Doctor of Dental Medicine</div>
+    <input id="LI" type="password" placeholder="Password" autocomplete="off"
+      style="width:100%;padding:14px 18px;border-radius:14px;border:1.5px solid rgba(255,255,255,.15);background:rgba(255,255,255,.08);color:#fff;font-size:1.1rem;text-align:center;letter-spacing:.1em;font-family:inherit;outline:none"/>
+    <button id="LB"
+      style="width:100%;margin-top:12px;padding:15px;border-radius:14px;background:linear-gradient(135deg,#C9A84C,#9E7B28);color:#0F2318;font-size:1rem;font-weight:700;cursor:pointer;border:none;font-family:inherit">
+      Unlock
+    </button>
+    <div id="LE" style="margin-top:10px;font-size:.8rem;color:#EF4444;min-height:18px"></div>
+    <div style="margin-top:28px;font-size:.65rem;color:rgba(255,255,255,.2)">Private — authorised access only</div>
   </div>
 </div>
 
 <div id="app">
-  <div id="sidebar" class="mob-hide"></div>
-  <div id="main">
-    <div id="topbar"></div>
-    <div id="view" class="scr"></div>
-  </div>
+  <div id="sidebar" style="display:none"></div>
+  <div id="main"><div id="topbar"></div><div id="view"></div></div>
 </div>
-
 <div id="bnav"></div>
-<div id="OV" onclick="closePanel()"></div>
-<div id="RP" class="slR"></div>
-
-<div id="CF">
-  <div class="card slUp" style="width:100%;max-width:320px;padding:24px;text-align:center">
-    <div id="cf-ic" style="font-size:2.2rem;margin-bottom:12px">⚠️</div>
-    <div id="cf-ti" style="font-size:1.1rem;font-weight:700;color:var(--ink);margin-bottom:8px"></div>
-    <div id="cf-tx" style="font-size:.85rem;color:var(--slate);margin-bottom:24px;line-height:1.5"></div>
-    <div style="display:flex;gap:10px">
-      <button class="bghost" onclick="closeCF()" style="flex:1;padding:12px">Cancel</button>
-      <button id="cf-ok" class="bgold" style="flex:1;padding:12px;background:var(--red);color:#fff;box-shadow:none">Confirm</button>
-    </div>
-  </div>
-</div>
-
+<div id="OV" onclick="maybeClosePanel(event)"></div>
+<div id="RP"></div>
+<div id="CF"></div>
 <div id="toast"></div>
-
-<!-- Emoji picker modal -->
-<div id="ep-modal">
-  <div id="ep-sheet" class="slUp">
-    <div style="padding:18px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--ln)">
-      <div style="font-weight:700;color:var(--ink)">Select Avatar</div>
-      <button onclick="closeEpModal()" style="font-size:1.2rem;color:var(--slate)">×</button>
-    </div>
-    <div id="ep-body" class="scr" style="padding:20px;flex:1"></div>
-  </div>
-</div>
-
-<!-- Odontogram panel -->
 <div id="chart-panel">
-  <div style="background:var(--F);padding:max(16px,env(safe-area-inset-top)) 18px 14px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0">
-    <div style="display:flex;align-items:center;gap:12px">
-      <button onclick="closeChartPanel()" style="color:#fff;font-size:1.4rem">←</button>
-      <div>
-        <div id="chart-title" style="font-family:'Playfair Display',serif;font-size:1rem;color:#fff">Dental Chart</div>
-        <div style="font-size:.6rem;color:var(--sage);margin-top:1px">Tap surfaces to mark conditions</div>
-      </div>
+  <div id="chart-hdr" style="background:var(--F);padding:max(16px,env(safe-area-inset-top)) 18px 14px;flex-shrink:0;display:flex;justify-content:space-between;align-items:center">
+    <div>
+      <div style="font-family:'Playfair Display',serif;font-size:1.05rem;color:#fff" id="chart-title">Dental Chart</div>
+      <div style="font-size:.68rem;color:var(--sage);margin-top:2px" id="chart-sub"></div>
     </div>
-    <button id="chart-mode-btn" onclick="toggleChartMode()" style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);border-radius:10px;padding:6px 12px;color:#fff;font-size:.68rem;font-weight:700">Adult ⇄</button>
+    <div style="display:flex;gap:8px;align-items:center">
+      <button id="chart-mode-btn" onclick="toggleChartMode()" style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:6px 12px;color:#fff;font-size:.72rem;font-weight:600;cursor:pointer;font-family:inherit">Adult</button>
+      <button onclick="closeChartPanel()" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.15);color:#fff;font-size:1.2rem;display:flex;align-items:center;justify-content:center;border:none;cursor:pointer">×</button>
+    </div>
   </div>
-  <div id="chart-body" class="scr" style="flex:1;padding:12px 0;background:var(--parch)"></div>
-  <div style="background:var(--cream);border-top:1px solid var(--ln);padding:14px 18px;padding-bottom:max(14px,env(safe-area-inset-bottom));flex-shrink:0">
-    <div id="cond-legend"></div>
+  <div style="flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px 0 20px" id="chart-body"></div>
+  <div style="padding:12px 16px;padding-bottom:max(12px,env(safe-area-inset-bottom));border-top:1px solid var(--ln);background:var(--cream);flex-shrink:0">
+    <div style="display:flex;gap:6px;flex-wrap:wrap" id="cond-legend"></div>
   </div>
 </div>
-
-<!-- Tooth detail modal -->
 <div id="tooth-detail-bg" onclick="closeToothDetail()"></div>
 <div id="tooth-detail">
-  <div style="padding:20px 20px 14px;border-bottom:1px solid var(--ln);display:flex;justify-content:space-between;align-items:flex-start">
+  <div style="padding:14px 18px 10px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--ln);position:sticky;top:0;background:var(--cream);z-index:1">
     <div>
-      <div id="td-title" style="font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--ink)">Tooth Detail</div>
-      <div id="td-sub" style="font-size:.68rem;color:var(--slate);margin-top:2px"></div>
+      <div id="td-title" style="font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--ink)">Tooth</div>
+      <div id="td-sub" style="font-size:.68rem;color:var(--mist);margin-top:2px"></div>
     </div>
-    <button onclick="closeToothDetail()" style="width:30px;height:30px;border-radius:50%;background:var(--parch);color:var(--slate);display:flex;align-items:center;justify-content:center;font-size:1.2rem">×</button>
+    <button onclick="closeToothDetail()" style="width:30px;height:30px;border-radius:50%;background:var(--parch);border:1.5px solid var(--ln);font-size:1rem;color:var(--slate);display:flex;align-items:center;justify-content:center;cursor:pointer">×</button>
   </div>
-  <div style="padding:20px">
+  <div style="padding:18px;display:flex;flex-direction:column;align-items:center;gap:16px">
     <div id="td-grid-wrap"></div>
-    <div id="td-cond-info" style="margin-top:16px;padding:10px;background:var(--parch);border-radius:10px;font-size:.72rem;color:var(--slate);text-align:center"></div>
+    <div id="td-cond-info" style="font-size:.75rem;color:var(--slate);text-align:center"></div>
+  </div>
+</div>
+<div id="ep-modal" onclick="if(event.target===document.getElementById('ep-modal'))closeEpModal()">
+  <div id="ep-sheet">
+    <div style="padding:14px 16px 10px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--ln);flex-shrink:0">
+      <div style="font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--slate)">Choose Avatar</div>
+      <button onclick="closeEpModal()" style="width:30px;height:30px;border-radius:50%;background:var(--parch);font-size:1rem;color:var(--slate);display:flex;align-items:center;justify-content:center;cursor:pointer;border:none">x</button>
+    </div>
+    <div id="ep-body" style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px"></div>
   </div>
 </div>
 
+
 <script>
-/* ── CONFIG & STATE ────────────────────── */
-var FOREST='#0F2318', GOLD='#C9A84C', CREAM='#FAF7F2';
-var KP='dl_patients', KA='dl_appts', KPIN='dl_pin';
-var P=lsGet(KP,{}), A=lsGet(KA,{});
-var S={view:'today',date:today(),mob:window.innerWidth<640};
-
-var EMOJIS=['🦷','🧑‍⚕️','👨‍⚕️','👩‍⚕️','🏥','📅','📋','💉','💊','🩹','🪥','🧼','🩺','🧬','🧪','🌡','🦠','🩸','🦴','🧠','🫀','🫁','🦷'];
-var EMOJI_CATS=[
-  {l:'Clinical',e:['🦷','🧑‍⚕️','👨‍⚕️','👩‍⚕️','🏥','📅','📋','💉','💊','🩹','🪥','🩺','🧬','🧪','🌡','🩸','🦴']},
-  {l:'People',e:['👴','👵','👨','👩','👦','👧','👶','👱‍♂️','👱‍♀️']},
-  {l:'Status',e:['✅','⚠️','❌','🆘','⭐','💎','📍','🚩','🔔','💬']}
-];
-
-/* ── HELPERS ──────────────────────────── */
-function lsGet(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;}}
-function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
-function today(){var d=new Date();return d.toISOString().split('T')[0];}
-function esc(s){if(!s)return '';return s.toString().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-function uid(){return Math.random().toString(36).substr(2,9);}
-function shortD(s){if(!s)return '';var d=new Date(s);return d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});}
-function ini(s){if(!s)return '?';var p=s.trim().split(' ');if(p.length>1)return (p[0][0]+p[p.length-1][0]).toUpperCase();return p[0][0].toUpperCase();}
-function pc(tx){
-  var s=tx.toLowerCase();
-  if(s.includes('extraction')||s.includes('surgery'))return '#C0392B';
-  if(s.includes('filling')||s.includes('composite')||s.includes('restoration'))return '#2980B9';
-  if(s.includes('rct')||s.includes('endo'))return '#8E44AD';
-  if(s.includes('scaling')||s.includes('clean'))return '#27AE60';
-  if(s.includes('crown')||s.includes('bridge')||s.includes('prostho'))return '#D35400';
-  if(s.includes('ortho')||s.includes('braces'))return '#16A085';
-  return '#2C3E50';
-}
-
-/* ── CORE LOGIC ───────────────────────── */
-function saveAll(){lsSet(KP,P);lsSet(KA,A);}
-function toast(m){
-  var t=document.getElementById('toast');if(!t)return;
-  t.textContent=m;t.className='on';
-  setTimeout(function(){t.className='';},2500);
-}
-function confirm2(ti,tx,ok){
-  document.getElementById('cf-ti').textContent=ti;
-  document.getElementById('cf-tx').textContent=tx;
-  var b=document.getElementById('cf-ok');
-  b.onclick=function(){ok();closeCF();};
-  document.getElementById('CF').className='on';
-}
-function closeCF(){document.getElementById('CF').className='';}
-
-function unlock(){
-  var p=document.getElementById('pin').value;
-  if(p==='2025'||p==='1234'){
-    document.getElementById('LS').classList.add('gone');
-    autoBackup();
-  }else{
-    toast('Invalid PIN');document.getElementById('pin').value='';
+/* ── LOCK — standalone, no dependency on app code ── */
+(function(){
+  var pw=[68,111,111,98,121,64,49,49,50].map(function(c){return String.fromCharCode(c);}).join('');
+  function unlock(){
+    var val=document.getElementById('LI').value;
+    var err=document.getElementById('LE');
+    var ls=document.getElementById('LS');
+    if(val===pw){
+      sessionStorage.setItem('dla','1');
+      ls.style.transition='opacity .35s';
+      ls.style.opacity='0';
+      setTimeout(function(){ls.className='gone';ls.style.cssText='';},380);
+    } else {
+      err.textContent='Wrong password';
+      document.getElementById('LI').value='';
+      setTimeout(function(){err.textContent='';},2500);
+    }
   }
+  // Check if already unlocked
+  if(sessionStorage.getItem('dla')==='1'){
+    document.getElementById('LS').className='gone';
+  }
+  // Attach listeners after DOM ready
+  window.addEventListener('DOMContentLoaded',function(){
+    var btn=document.getElementById('LB');
+    var inp=document.getElementById('LI');
+    if(btn)btn.addEventListener('click',unlock);
+    if(inp)inp.addEventListener('keydown',function(e){if(e.key==='Enter')unlock();});
+  });
+})();
+</script>
+
+<script>
+'use strict';
+
+/* ── CONSTANTS ────────────────────────── */
+var FOREST='#0F2318', GOLD='#C9A84C';
+var PC={
+  'Examination':'#3B82F6','X-Ray / OPG':'#8B5CF6','Scaling & Polishing':'#06B6D4',
+  'Composite Filling':'#F59E0B','Amalgam Filling':'#D97706','Temporary Filling':'#FBBF24',
+  'Root Canal Treatment':'#EF4444','Crown':'#C9A84C','Bridge':'#92400E','Veneer':'#EC4899',
+  'Extraction':'#F97316','Surgical Extraction':'#DC2626','Implant':'#1D4ED8',
+  'Partial Denture':'#7C3AED','Full Denture':'#6D28D9','Orthodontic Adjustment':'#059669',
+  'Whitening':'#0EA5E9','Fluoride Treatment':'#38BDF8','Fissure Sealant':'#34D399',
+  'Emergency Treatment':'#B91C1C','Prescription':'#64748B'
+};
+var TX=Object.keys(PC);
+var EMOJI_CATS=[
+  {l:'Dental',e:['🦷','🦴','💉','🩺','🩻','🩹','💊','🔬','🩸','🧬','🏥','🫁']},
+  {l:'Babies & Kids',e:['👶','🧒','👦','👧','🍼','🐣','🎀','🎈','🧸','⭐','🌟','🎠']},
+  {l:'Adults',e:['🧑','👨','👩','🧔','👱','👱‍♀️','🧑‍🦰','🧑‍🦱','🧑‍🦳','🧑‍🦲','👲','🧕']},
+  {l:'Elderly',e:['👴','👵','🧓','👨‍🦳','👩‍🦳','👨‍🦲','👩‍🦲']},
+  {l:'Medical',e:['👨‍⚕️','👩‍⚕️','🧑‍⚕️','👨‍🔬','👩‍🔬','💪','🤝','🫶','🫀','🧠']},
+  {l:'Expressions',e:['😁','😬','😷','🤕','🤒','😰','😨','😮','🥴','😵','🤓','😎','🤧','😴','🥱','😇']},
+  {l:'Animals',e:['🐣','🐧','🦁','🐯','🐻','🦊','🐼','🐨','🦄','🐙','🦋','🐬']},
+  {l:'Symbols',e:['⭐','🌟','💎','👑','🏆','🎯','❤️','💚','💙','🧡','💜','🖤']}
+];
+var EMOJIS=['🦷','😁','😬','👶','👦','👧','🧑','👨','👩','👴','👵','🧓','👨‍⚕️','👩‍⚕️','🤕','😷','🤓','😎','🐣','⭐','💎','👑'];
+
+/* ── UTILS ────────────────────────────── */
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+function today(){return fd(new Date());}
+function fd(d){return d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate());}
+function p2(n){return n<10?'0'+n:''+n;}
+function pd(s){var x=s.split('-');return new Date(+x[0],+x[1]-1,+x[2]);}
+function isToday(s){return s===today();}
+function addDays(s,n){var d=pd(s);d.setDate(d.getDate()+n);return fd(d);}
+function weekMon(s){var d=pd(s),dow=d.getDay()||7;d.setDate(d.getDate()-(dow-1));return fd(d);}
+function prettyD(s){return pd(s).toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});}
+function shortD(s){return pd(s).toLocaleDateString('en-US',{month:'short',day:'numeric'});}
+function monthLbl(y,m){return new Date(y,m,1).toLocaleDateString('en-US',{month:'long',year:'numeric'});}
+function ini(n){if(!n)return '?';return (n.split(' ').map(function(w){return w[0]||'';}).slice(0,2).join('')||'?').toUpperCase();}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function pc(tx){return PC[tx]||'#94A3B8';}
+function compress(file,cb){
+  var r=new FileReader();
+  r.onload=function(e){
+    var img=new Image();
+    img.onload=function(){
+      var sc=Math.min(1,900/Math.max(img.width,img.height));
+      var c=document.createElement('canvas');
+      c.width=img.width*sc;c.height=img.height*sc;
+      c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+      cb(c.toDataURL('image/jpeg',.72));
+    };
+    img.src=e.target.result;
+  };
+  r.readAsDataURL(file);
+}
+function monthDays(y,m){
+  var f=new Date(y,m,1),l=new Date(y,m+1,0),off=(f.getDay()||7)-1,days=[];
+  for(var i=0;i<off;i++)days.push(fd(new Date(y,m,1-off+i)));
+  for(var i=1;i<=l.getDate();i++)days.push(fd(new Date(y,m,i)));
+  var rem=days.length%7;if(rem)for(var i=1;i<=7-rem;i++)days.push(fd(new Date(y,m+1,i)));
+  return days;
+}
+var _tt;
+function toast(msg){
+  var t=document.getElementById('toast');
+  t.textContent=msg;t.className='on';
+  clearTimeout(_tt);_tt=setTimeout(function(){t.className='';},2200);
 }
 
-function nav(v){S.view=v;R();}
-function openPanel(){document.getElementById('OV').className='on';document.getElementById('RP').className='on slR';}
-function closePanel(){document.getElementById('OV').className='';document.getElementById('RP').className='slR';}
+/* ── STORAGE ──────────────────────────── */
+var KP='dl_p3',KA='dl_a3';
+function lsGet(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;}}
+function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){toast('Storage full');}}
+// Scan ALL localStorage keys to recover any patient/appointment data
+function recoverData(){
+  var patients={},appts={};
+  try{
+    for(var i=0;i<localStorage.length;i++){
+      var k=localStorage.key(i);
+      if(!k)continue;
+      try{
+        var val=JSON.parse(localStorage.getItem(k));
+        if(!val||typeof val!=='object')continue;
+        // Detect patient maps: objects whose values have a 'name' and 'visits' field
+        if(!Array.isArray(val)){
+          var keys=Object.keys(val);
+          if(keys.length>0){
+            var first=val[keys[0]];
+            if(first&&(first.name!==undefined||first.visits!==undefined||first.patientName!==undefined)){
+              // looks like patients
+              Object.assign(patients,val);
+              continue;
+            }
+            // Detect appointment maps: objects whose values are arrays of appointment objects
+            var firstVal=val[keys[0]];
+            if(Array.isArray(firstVal)&&firstVal.length>0&&firstVal[0].time!==undefined){
+              Object.assign(appts,val);
+              continue;
+            }
+          }
+        }
+      }catch(e2){}
+    }
+  }catch(e){}
+  return {patients:patients,appts:appts};
+}
+var P={},A={};
+// First try known keys
+var _knownPKeys=['dl_p3','dl_p2','dl_patients_v1','dl_patients'];
+var _knownAKeys=['dl_a3','dl_a2','dl_appts_v1','dl_appts'];
+var _foundP=false,_foundA=false;
+for(var _i=0;_i<_knownPKeys.length;_i++){
+  var _v=lsGet(_knownPKeys[_i],null);
+  if(_v&&Object.keys(_v).length>0){P=_v;_foundP=true;break;}
+}
+for(var _i=0;_i<_knownAKeys.length;_i++){
+  var _v=lsGet(_knownAKeys[_i],null);
+  if(_v&&Object.keys(_v).length>0){A=_v;_foundA=true;break;}
+}
+// If still empty, scan everything
+if(!_foundP||!_foundA){
+  var _recovered=recoverData();
+  if(!_foundP&&Object.keys(_recovered.patients).length>0){P=_recovered.patients;}
+  if(!_foundA&&Object.keys(_recovered.appts).length>0){A=_recovered.appts;}
+}
+// Always save under current key so future loads are instant
+lsSet(KP,P);lsSet(KA,A);
+function saveAll(){lsSet(KP,P);lsSet(KA,A);}
 
-/* ── DATA ── */
-function allPats(){return Object.values(P).sort(function(a,b){return a.name.localeCompare(b.name);});}
+/* ── DATA ─────────────────────────────── */
+function getAppts(date){return (A[date]||[]).slice().sort(function(a,b){return (a.time||'')>(b.time||'')?1:-1;});}
+function allPats(){return Object.values(P);}
+function lastVisit(pat){
+  if(!pat||!pat.visits||!pat.visits.length)return null;
+  return pat.visits.slice().sort(function(a,b){return b.date>a.date?1:-1;})[0];
+}
+function apptColor(appt){
+  if(appt.patientId){
+    var p2=P[appt.patientId];
+    if(p2&&p2.visits){
+      var vv=p2.visits.filter(function(v){return v.apptId===appt.id;});
+      if(vv.length&&vv[0].txData&&vv[0].txData.length)return pc(vv[0].txData[0].name);
+      if(vv.length&&vv[0].treatments&&vv[0].treatments.length)return pc(vv[0].treatments[0]);
+    }
+  }
+  return appt.color||GOLD;
+}
+
+/* ── STATE ────────────────────────────── */
+var S={
+  mob:window.innerWidth<640,
+  view:'today',
+  sched:'day',
+  date:today(),
+  wkBase:weekMon(today()),
+  moY:new Date().getFullYear(),
+  moM:new Date().getMonth(),
+  patQ:''
+};
+var _rf;
+function R(){if(!_rf)_rf=requestAnimationFrame(function(){_rf=null;paint();});}
+
+/* ── HTML HELPERS ─────────────────────── */
+function avH(pat,sz){
+  sz=sz||42;
+  if(pat&&pat.emoji){
+    return '<div style="width:'+sz+'px;height:'+sz+'px;border-radius:50%;background:var(--parch);border:1.5px solid var(--ln);display:flex;align-items:center;justify-content:center;font-size:'+Math.round(sz*.52)+'px;flex-shrink:0">'+esc(pat.emoji)+'</div>';
+  }
+  var av=pat&&pat.name?ini(pat.name):'?';
+  var bg=av!=='?'?FOREST:'var(--parch)';
+  var col=av!=='?'?'#fff':'var(--mist)';
+  var border=av!=='?'?'none':'1.5px solid var(--ln)';
+  return '<div style="width:'+sz+'px;height:'+sz+'px;border-radius:50%;background:'+bg+';color:'+col+';display:flex;align-items:center;justify-content:center;font-weight:700;font-size:'+Math.round(sz*.34)+'px;flex-shrink:0;border:'+border+'">'+esc(av)+'</div>';
+}
+
+function txBadges(txData,treatments,max){
+  var list=txData&&txData.length?txData:(treatments||[]).map(function(t){return {name:t,visitNum:1,totalVisits:1};});
+  if(!list.length)return '';
+  var h='',s=list.slice(0,max||3);
+  s.forEach(function(item){
+    var c=pc(item.name);
+    var prog=(item.totalVisits>1)?' <span style="opacity:.75;font-size:.58rem">'+item.visitNum+'/'+item.totalVisits+'</span>':'';
+    h+='<span class="txb" style="background:'+c+'18;color:'+c+';border:1px solid '+c+'33"><span style="width:5px;height:5px;border-radius:50%;background:'+c+';display:inline-block"></span>'+esc(item.name)+prog+'</span>';
+  });
+  if(list.length>(max||3))h+='<span style="font-size:.59rem;color:var(--mist)">+'+(list.length-(max||3))+'</span>';
+  return h;
+}
 
 /* ── PAINT ────────────────────────────── */
 function paint(){
-  document.getElementById('sidebar').innerHTML=paintSidebar();
+  var sd=document.getElementById('sidebar');
+  if(S.mob){sd.style.display='none';}
+  else{sd.style.display='flex';sd.style.flexDirection='column';sd.innerHTML=paintSidebar();}
   document.getElementById('topbar').innerHTML=paintTopbar();
-  document.getElementById('bnav').innerHTML=paintBnav();
-  var v=document.getElementById('view');
-  if(S.view==='today')v.innerHTML=paintToday();
-  else if(S.view==='patients')v.innerHTML=paintPatients();
-  else if(S.view==='schedule')v.innerHTML=paintSchedule();
+  paintBnav();
+  var v='';
+  if(S.view==='today')v=paintToday();
+  else if(S.view==='patients')v=paintPatients();
+  else v=paintSchedule();
+  document.getElementById('view').innerHTML=v;
   afterPaint();
 }
-var R=paint;
 
 function afterPaint(){
-  // any post-render bindings
-}
-
-/* ── COMPONENTS ───────────────────────── */
-function txBadges(txData,oldTx,max){
-  var h='';
-  if(txData&&txData.length){
-    txData.slice(0,max||99).forEach(function(x){
-      var c=pc(x.name);
-      h+='<span class="txb" style="background:'+c+'15;color:'+c+'">● '+esc(x.name)+'</span>';
-    });
-  } else if(oldTx&&oldTx.length){
-    oldTx.slice(0,max||99).forEach(function(x){
-      var c=pc(x);
-      h+='<span class="txb" style="background:'+c+'15;color:'+c+'">● '+esc(x)+'</span>';
-    });
-  }
-  return h;
-}
-
-/* ── VIEWS ────────────────────────────── */
-function paintToday(){
-  var list=A[S.date]||[];
-  var h='<div style="padding:20px">'
-    +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">'
-    +'<div style="font-size:1.15rem;font-weight:700;color:var(--ink)">'+shortD(S.date)+'</div>'
-    +'<button class="bghost" onclick="openApptPanel(null,\''+S.date+'\')" style="padding:8px 14px;font-size:.78rem">+ Add Appt</button>'
-    +'</div>';
-  if(!list.length)h+='<div style="text-align:center;padding:60px 20px;color:var(--mist)"><div style="font-size:3rem;margin-bottom:10px">☕</div>No appointments for today</div>';
-  else{
-    list.sort(function(a,b){return a.time.localeCompare(b.time);}).forEach(function(appt){
-      var p=P[appt.patientId]||{name:'Unknown Patient'};
-      var c=appt.txData&&appt.txData.length?pc(appt.txData[0].name):GOLD;
-      h+='<div class="card fup" style="padding:15px;margin-bottom:12px;display:flex;gap:14px;border-left:4px solid '+c+'" onclick="openApptPanel(\''+appt.id+'\')">'
-        +'<div style="width:48px;text-align:center;flex-shrink:0"><div style="font-size:.88rem;font-weight:700;color:var(--ink)">'+appt.time+'</div><div style="font-size:.6rem;color:var(--mist);text-transform:uppercase;margin-top:2px">Time</div></div>'
-        +'<div style="flex:1"><div><span style="font-weight:700;color:var(--ink);font-size:.92rem">'+esc(p.name)+'</span></div>'
-        +'<div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:5px">'+txBadges(appt.txData,appt.treatments,3)+'</div>'
-        +'</div></div>';
-    });
-  }
-  h+='</div>';
-  return h;
-}
-
-function paintPatients(){
-  var pats=allPats();
-  var h='<div style="padding:20px">'
-    +'<div style="display:flex;gap:10px;margin-bottom:20px">'
-    +'<div style="flex:1;position:relative"><input class="inp" placeholder="Search patients..." style="padding-left:38px" oninput="searchP(this.value)"><span style="position:absolute;left:14px;top:12px;color:var(--mist)">🔍</span></div>'
-    +'<button class="bgold" onclick="openPatPanel()" style="padding:0 18px;font-size:.85rem">＋ New</button>'
-    +'</div>'
-    +'<div id="pat-list">';
-  pats.forEach(function(p){
-    var last=p.visits&&p.visits.length?shortD(p.visits[p.visits.length-1].date):'No visits';
-    h+='<div class="card fup" style="padding:14px;margin-bottom:10px;display:flex;align-items:center;gap:12px" onclick="openPatPanel(\''+p.id+'\')">'
-      +'<div style="width:42px;height:42px;border-radius:50%;background:'+(p.emoji?'var(--parch)':FOREST)+';color:'+(p.emoji?'inherit':'#fff')+';display:flex;align-items:center;justify-content:center;font-size:'+(p.emoji?'1.4rem':'.8rem')+';font-weight:700;flex-shrink:0">'
-      +(p.emoji?esc(p.emoji):ini(p.name))+'</div>'
-      +'<div style="flex:1"><div style="font-weight:700;color:var(--ink);font-size:.9rem">'+esc(p.name)+'</div><div style="font-size:.68rem;color:var(--mist);margin-top:2px">Last: '+last+'</div></div>'
-      +'<div style="color:var(--ln);font-size:1.2rem">›</div>'
-      +'</div>';
+  requestAnimationFrame(function(){
+    var ds=document.getElementById('ds');
+    if(ds){var sel=ds.querySelector('.sel');if(sel)sel.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});}
+    var pq=document.getElementById('patq');
+    if(pq){
+      pq.oninput=function(){
+        S.patQ=pq.value;
+        var scr=document.querySelector('#view .scr');
+        if(scr){
+          var t2=document.createElement('div');
+          t2.innerHTML=paintPatients();
+          var ns=t2.querySelector('.scr');
+          if(ns)scr.innerHTML=ns.innerHTML;
+          afterPaint();
+        }
+      };
+    }
   });
-  h+='</div></div>';
-  return h;
-}
-
-function searchP(q){
-  var v=q.toLowerCase();
-  document.querySelectorAll('#pat-list .card').forEach(function(el){
-    var name=el.querySelector('div div').textContent.toLowerCase();
-    el.style.display=name.includes(v)?'flex':'none';
-  });
-}
-
-function paintSchedule(){
-  return '<div style="padding:20px;text-align:center;color:var(--mist);padding-top:100px"><div style="font-size:3rem;margin-bottom:10px">🏗️</div>Full calendar view coming soon.<br>Use "Today" for daily management.</div>';
-}
-
-function paintBnav(){
-  var navs=[{id:'today',ic:'📅',lb:'Today'},{id:'patients',ic:'🧑‍⚕️',lb:'Patients'},{id:'schedule',ic:'🗓',lb:'Schedule'}];
-  var h='';
-  navs.forEach(function(n){
-    var on=S.view===n.id;
-    h+='<button class="bni" onclick="nav(\''+n.id+'\')">'
-      +'<span style="font-size:1.2rem;opacity:'+(on?'1':'.3')+'">'+n.ic+'</span>'
-      +'<span style="font-size:.6rem;font-weight:'+(on?'700':'500')+';color:'+(on?'var(--F)':'var(--mist)')+'">'+n.lb+'</span>'
-      +'</button>';
-  });
-  return h;
 }
 
 /* ── SIDEBAR ──────────────────────────── */
@@ -440,7 +515,7 @@ function paintSidebar(){
   var total=allPats().length,todayCnt=(A[today()]||[]).length;
   var h='<div style="padding:26px 20px 18px">'
     +'<div style="display:flex;align-items:center;gap:10px;margin-bottom:3px">'
-    +'<div style="width:36px;height:36px;border-radius:10px;background:#0a1e10;border:1.5px solid rgba(201,168,76,.4);display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:4px;box-shadow:0 4px 12px rgba(201,168,76,.25)"><img src="data:image/jpeg;base64,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" style="width:100%;height:100%;object-fit:cover;border-radius:inherit"></div>'
+    +'<div style="width:36px;height:36px;border-radius:10px;background:#0a1e10;border:1.5px solid rgba(201,168,76,.4);display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:4px;box-shadow:0 4px 12px rgba(201,168,76,.25)"><img src="data:image/jpeg;base64,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" style="width:100%;height:100%;object-fit:cover;border-radius:inherit"></div>'
     +'<div style="font-family:\'Playfair Display\',serif;font-size:1.42rem;color:#fff">DentaLog</div>'
     +'</div>'
     +'<div style="font-size:.66rem;color:var(--sage);letter-spacing:.08em;text-transform:uppercase;font-weight:500;margin-left:46px">Dr. M.W. Khalil</div>'
@@ -479,7 +554,7 @@ function paintTopbar(){
   if(S.mob){
     return '<div style="background:'+FOREST+';padding:max(14px,env(safe-area-inset-top)) 18px 14px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;box-shadow:0 2px 10px rgba(0,0,0,.14)">'
       +'<div style="display:flex;align-items:center;gap:10px">'
-      +'<div style="width:32px;height:32px;border-radius:8px;background:#0a1e10;border:1.5px solid #C9A84C44;display:flex;align-items:center;justify-content:center;padding:4px"><img src="data:image/jpeg;base64,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" style="width:100%;height:100%;object-fit:cover;border-radius:inherit"></div>'
+      +'<div style="width:32px;height:32px;border-radius:8px;background:#0a1e10;border:1.5px solid #C9A84C44;display:flex;align-items:center;justify-content:center;padding:4px"><img src="data:image/jpeg;base64,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" style="width:100%;height:100%;object-fit:cover;border-radius:inherit"></div>'
       +'<div>'
       +'<div style="font-family:\'Playfair Display\',serif;font-size:1.15rem;color:#fff;line-height:1">DentaLog</div>'
       +'<div style="font-size:.6rem;color:var(--sage);margin-top:1px">'+subs[S.view]+'</div>'
@@ -492,14 +567,537 @@ function paintTopbar(){
   }
   return '<div style="background:var(--warm);border-bottom:1px solid var(--ln);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0">'
     +'<div style="font-family:\'Playfair Display\',serif;font-size:1.05rem;color:var(--ink)">'+titles[S.view]+'</div>'
-    +'<button class="bghost" onclick="openApptPanel(null,\''+S.date+'\')" style="padding:8px 14px;font-size:.78rem">+ Add Appt</button>'
+    +'<button class="bgold" onclick="openApptPanel(null,\''+S.date+'\')" style="padding:9px 20px;font-size:.8rem">+ Add Appointment</button>'
     +'</div>';
 }
 
-/* ── PATIENT PANEL ────────────────────── */
-var _PF={}, _PF_cb=null;
+/* ── BOTTOM NAV ───────────────────────── */
+function paintBnav(){
+  if(!S.mob){document.getElementById('bnav').className='';return;}
+  var h='';
+  h+='<button class="bni" onclick="nav(\'today\')" style="color:'+(S.view==='today'?FOREST:'var(--mist)')+'"><span style="font-size:1.22rem">📅</span><span style="font-size:.61rem;font-weight:'+(S.view==='today'?700:500)+'">Today</span></button>';
+  h+='<button class="bni" onclick="nav(\'patients\')" style="color:'+(S.view==='patients'?FOREST:'var(--mist)')+'"><span style="font-size:1.22rem">🧑‍⚕️</span><span style="font-size:.61rem;font-weight:'+(S.view==='patients'?700:500)+'">Patients</span></button>';
+  h+='<button class="bni" onclick="openApptPanel(null,\''+S.date+'\')">'
+    +'<div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#C9A84C,#9E7B28);display:flex;align-items:center;justify-content:center;color:'+FOREST+';font-size:1.4rem;margin-top:-12px;box-shadow:0 4px 14px rgba(201,168,76,.38);font-weight:700">＋</div>'
+    +'<span style="font-size:.61rem;color:var(--mist)">Add</span></button>';
+  h+='<button class="bni" onclick="nav(\'schedule\')" style="color:'+(S.view==='schedule'?FOREST:'var(--mist)')+'"><span style="font-size:1.22rem">🗓</span><span style="font-size:.61rem;font-weight:'+(S.view==='schedule'?700:500)+'">Schedule</span></button>';
+  document.getElementById('bnav').innerHTML=h;
+  document.getElementById('bnav').className='on';
+}
+
+/* ── APPT CARD ────────────────────────── */
+function apptCard(appt,date){
+  var pat=appt.patientId?P[appt.patientId]:null;
+  var col=apptColor(appt);
+  var lv=pat?lastVisit(pat):null;
+  var visitForAppt=lv&&lv.apptId===appt.id?lv:null;
+  var name=pat?pat.name:(appt.title||'Appointment');
+  var sub=pat?[pat.age&&(pat.age+'y'),pat.gender].filter(Boolean).join(' · '):(appt.notes||'Tap to open');
+  return '<div class="card fup" style="border-color:'+col+';margin-bottom:10px;position:relative;overflow:hidden">'
+    +'<div style="position:absolute;left:0;top:10px;bottom:10px;width:3px;border-radius:0 2px 2px 0;background:'+col+'"></div>'
+    +'<div style="display:flex;align-items:center;gap:12px;padding:14px 14px 14px 18px">'
+    +'<div onclick="openApptPanel(\''+esc(appt.id)+'\',\''+esc(date)+'\')" style="width:50px;text-align:center;flex-shrink:0;cursor:pointer">'
+    +'<div style="font-size:.82rem;font-weight:700;color:var(--ink)">'+esc(appt.time||'—')+'</div>'
+    +'<div style="font-size:.61rem;color:var(--mist);margin-top:1px">'+esc(appt.duration||'')+'</div>'
+    +'</div>'
+    +'<div onclick="openApptPanel(\''+esc(appt.id)+'\',\''+esc(date)+'\')" style="cursor:pointer">'+avH(pat,40)+'</div>'
+    +'<div onclick="openApptPanel(\''+esc(appt.id)+'\',\''+esc(date)+'\')" style="flex:1;min-width:0;cursor:pointer">'
+    +'<div style="font-weight:600;font-size:.88rem;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+esc(name)+'</div>'
+    +'<div style="font-size:.71rem;color:var(--slate);margin-top:2px">'+esc(sub)+'</div>'
+    +(visitForAppt?'<div style="display:flex;gap:4px;margin-top:5px;flex-wrap:wrap">'+txBadges(visitForAppt.txData,visitForAppt.treatments,3)+'</div>':'')
+    +'</div>'
+    +'<div style="display:flex;gap:6px;flex-shrink:0">'
+    +'<button onclick="openApptPanel(\''+esc(appt.id)+'\',\''+esc(date)+'\')" style="width:34px;height:34px;border-radius:9px;background:rgba(15,35,24,.05);color:var(--slate);font-size:.75rem;font-weight:700;display:flex;align-items:center;justify-content:center">✏️</button>'
+    +'<button onclick="delAppt(\''+esc(appt.id)+'\',\''+esc(date)+'\')" style="width:34px;height:34px;border-radius:9px;background:rgba(192,57,43,.06);color:var(--red);font-size:.75rem;display:flex;align-items:center;justify-content:center">🗑️</button>'
+    +'</div>'
+    +'</div></div>';
+}
+
+/* ── TODAY VIEW ───────────────────────── */
+function paintToday(){
+  var appts=getAppts(S.date);
+  var days=[];
+  for(var i=0;i<14;i++){var dd=new Date();dd.setDate(dd.getDate()-4+i);days.push(fd(dd));}
+  var h='<div id="ds" class="sx" style="display:flex;gap:6px;padding:12px 16px;flex-shrink:0">';
+  days.forEach(function(ds){
+    var d=pd(ds),sel=ds===S.date,tod=isToday(ds);
+    h+='<div class="dsd'+(sel?' sel':'')+(tod&&!sel?' tod':'')+'" onclick="pickDate(\''+ds+'\')">'
+      +'<div style="font-size:.57rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:'+(sel?'rgba(255,255,255,.55)':tod?GOLD:'var(--mist)')+'">'+d.toLocaleDateString('en-US',{weekday:'short'})+'</div>'
+      +'<div style="font-size:1.1rem;font-weight:700;color:'+(sel?'#fff':tod?FOREST:'var(--ink)')+';line-height:1">'+d.getDate()+'</div>'
+      +(tod?'<div style="width:5px;height:5px;border-radius:50%;background:'+(sel?'rgba(255,255,255,.5)':GOLD)+'"></div>':'')
+      +'</div>';
+  });
+  h+='</div>';
+  var todayBtn=isToday(S.date);
+  h+='<div style="padding:'+(S.mob?'0 16px 10px':'0 24px 12px')+';display:flex;align-items:flex-end;justify-content:space-between;flex-shrink:0">'
+    +'<div><div style="font-family:\'Playfair Display\',serif;font-size:'+(S.mob?'1.2':'1.35')+'rem;color:var(--ink);line-height:1.1">'+prettyD(S.date)+'</div>'
+    +'<div style="font-size:.72rem;color:var(--slate);margin-top:4px">'+appts.length+' appointment'+(appts.length!==1?'s':'')+' scheduled</div></div>'
+    +'<button onclick="pickDate(\''+today()+'\')" style="padding:6px 13px;background:'+(todayBtn?'rgba(15,35,24,.07)':'var(--warm)')+';border:1.5px solid '+(todayBtn?FOREST:'var(--ln)')+';border-radius:18px;font-size:.71rem;font-weight:600;color:'+(todayBtn?'var(--FL)':'var(--slate)')+'">Today</button>'
+    +'</div>';
+  h+='<div class="scr" style="flex:1;padding:'+(S.mob?'0 16px 100px':'0 24px 20px')+'">';
+  if(!appts.length){
+    h+='<div style="text-align:center;padding:60px 20px">'
+      +'<div style="width:68px;height:68px;border-radius:50%;background:var(--warm);border:2px solid var(--ln);display:flex;align-items:center;justify-content:center;font-size:1.7rem;margin:0 auto 14px">📭</div>'
+      +'<div style="font-family:\'Playfair Display\',serif;font-size:1.05rem;color:var(--ink);margin-bottom:5px">No appointments</div>'
+      +'<div style="font-size:.77rem;color:var(--mist)">Tap + to add one</div></div>';
+  } else {
+    appts.forEach(function(a){h+=apptCard(a,S.date);});
+  }
+  h+='</div>';
+  return h;
+}
+
+/* ── PATIENTS VIEW ────────────────────── */
+function paintPatients(){
+  var all=allPats(),q=S.patQ.trim().toLowerCase();
+  var list=q?all.filter(function(p){return (p.name||'').toLowerCase().indexOf(q)>-1||(p.phone||'').indexOf(q)>-1;}):all;
+  list=list.slice().sort(function(a,b){var av=lastVisit(a),bv=lastVisit(b);return (bv?bv.date:'')>(av?av.date:'')?1:-1;});
+  var h='<div style="padding:'+(S.mob?'12px 16px 8px':'12px 24px 8px')+';flex-shrink:0;display:flex;gap:10px;align-items:center">'
+    +'<div style="position:relative;flex:1"><span style="position:absolute;left:13px;top:50%;transform:translateY(-50%);pointer-events:none">🔍</span>'
+    +'<input id="patq" class="inp" style="padding-left:38px" placeholder="Search by name or phone…" value="'+esc(S.patQ)+'"></div>'
+    +'<button class="bgold" onclick="openPatPanel(null)" style="padding:11px 16px;font-size:.82rem;border-radius:10px;flex-shrink:0;white-space:nowrap">+ New Patient</button>'
+    +'</div>'
+    +'<div class="scr" style="flex:1;padding:'+(S.mob?'0 16px 100px':'0 24px 20px')+'">';
+  if(!list.length){
+    h+='<div style="text-align:center;padding:60px 20px">'
+      +'<div style="width:68px;height:68px;border-radius:50%;background:var(--warm);border:2px solid var(--ln);display:flex;align-items:center;justify-content:center;font-size:1.7rem;margin:0 auto 14px">🧑‍⚕️</div>'
+      +'<div style="font-family:\'Playfair Display\',serif;font-size:1.05rem;color:var(--ink);margin-bottom:5px">'+(q?'No results':'No patients yet')+'</div>'
+      +'<div style="font-size:.77rem;color:var(--mist)">'+(q?'Try a different search':'Tap + New Patient to get started')+'</div></div>';
+  } else {
+    list.forEach(function(pat){
+      var lv=lastVisit(pat);
+      var col=lv&&lv.txData&&lv.txData.length?pc(lv.txData[0].name):(lv&&lv.treatments&&lv.treatments.length?pc(lv.treatments[0]):null);
+      h+='<div class="card fup" onclick="openPatPanel(\''+esc(pat.id)+'\')" style="padding:14px 16px;display:flex;align-items:center;gap:13px;cursor:pointer;margin-bottom:9px;border-color:'+(col||'var(--ln)')+'">'+avH(pat,44)
+        +'<div style="flex:1;min-width:0">'
+        +'<div style="font-weight:600;font-size:.9rem;color:var(--ink)">'+esc(pat.name||'Unnamed')+'</div>'
+        +'<div style="font-size:.71rem;color:var(--slate);margin-top:2px">'+esc([pat.age&&(pat.age+'y'),pat.gender,pat.phone].filter(Boolean).join('  ·  '))+'</div>'
+        +(lv?'<div style="display:flex;gap:4px;margin-top:5px;flex-wrap:wrap">'+txBadges(lv.txData,lv.treatments,2)+'</div>':'')
+        +'</div>'
+        +(lv?'<div style="text-align:right;flex-shrink:0"><div style="font-size:.67rem;color:var(--mist)">Last visit</div><div style="font-size:.72rem;font-weight:600;color:var(--ink)">'+shortD(lv.date)+'</div></div>':'')
+        +'</div>';
+    });
+  }
+  h+='</div>';
+  return h;
+}
+
+/* ── SCHEDULE VIEW ────────────────────── */
+function paintSchedule(){
+  var h='<div style="padding:'+(S.mob?'10px 16px 8px':'12px 24px 8px')+';flex-shrink:0">'
+    +'<div class="vtog">'
+    +'<button class="'+(S.sched==='day'?'on':'')+'" onclick="setSched(\'day\')">Day</button>'
+    +'<button class="'+(S.sched==='week'?'on':'')+'" onclick="setSched(\'week\')">Week</button>'
+    +'<button class="'+(S.sched==='month'?'on':'')+'" onclick="setSched(\'month\')">Month</button>'
+    +'</div></div>';
+  if(S.sched==='day')h+=paintSchedDay();
+  else if(S.sched==='week')h+=paintSchedWeek();
+  else h+=paintSchedMonth();
+  return h;
+}
+
+function navBar(lbl,pa,na,ta){
+  return '<div style="padding:'+(S.mob?'0 16px 10px':'0 24px 10px')+';display:flex;align-items:center;justify-content:space-between;flex-shrink:0">'
+    +'<button onclick="'+pa+'()" style="width:32px;height:32px;border-radius:50%;background:var(--warm);border:1.5px solid var(--ln);font-size:.9rem;display:flex;align-items:center;justify-content:center">‹</button>'
+    +'<div style="font-family:\'Playfair Display\',serif;font-size:'+(S.mob?'.95':'1.05')+'rem;color:var(--ink);text-align:center">'+lbl+'</div>'
+    +'<div style="display:flex;gap:6px">'
+    +'<button onclick="'+ta+'()" style="padding:5px 11px;background:var(--warm);border:1.5px solid var(--ln);border-radius:16px;font-size:.7rem;font-weight:600;color:var(--slate)">Today</button>'
+    +'<button onclick="'+na+'()" style="width:32px;height:32px;border-radius:50%;background:var(--warm);border:1.5px solid var(--ln);font-size:.9rem;display:flex;align-items:center;justify-content:center">›</button>'
+    +'</div></div>';
+}
+
+function paintSchedDay(){
+  var appts=getAppts(S.date);
+  var h=navBar(prettyD(S.date),'schPrev','schNext','schToday');
+  h+='<div class="scr" style="flex:1;padding:'+(S.mob?'0 16px 100px':'0 24px 20px')+'">';
+  if(!appts.length)h+='<div style="text-align:center;padding:60px 20px"><div style="font-size:2rem;margin-bottom:12px">📭</div><div style="font-size:.85rem;color:var(--mist)">No appointments</div></div>';
+  else appts.forEach(function(a){h+=apptCard(a,S.date);});
+  return h+'</div>';
+}
+
+function paintSchedWeek(){
+  var days=[];for(var i=0;i<7;i++)days.push(addDays(S.wkBase,i));
+  var DNs=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  var end=addDays(S.wkBase,6);
+  var h=navBar(shortD(S.wkBase)+' – '+shortD(end)+', '+pd(end).getFullYear(),'wkPrev','wkNext','wkToday');
+  h+='<div class="sx" style="flex:1;display:flex;min-height:0">';
+  days.forEach(function(ds,i){
+    var tod=isToday(ds),appts=getAppts(ds);
+    h+='<div class="wkc" style="min-width:'+(S.mob?'110px':'0')+'">'
+      +'<div class="wkh'+(tod?' tod':'')+'" onclick="pickDate(\''+ds+'\')">'
+      +'<div class="wkn'+(tod?' tod':'')+'">'+pd(ds).getDate()+'</div>'
+      +'<div style="font-size:.57rem;font-weight:700;text-transform:uppercase;color:var(--mist)">'+DNs[i]+'</div>'
+      +'</div>'
+      +'<div class="scr" style="flex:1;padding:3px 0">';
+    if(!appts.length)h+='<div style="text-align:center;padding:12px 4px;color:var(--ln);font-size:.65rem">—</div>';
+    appts.forEach(function(appt){
+      var pat=appt.patientId?P[appt.patientId]:null;
+      var col=apptColor(appt);
+      h+='<div class="wka" onclick="openApptPanel(\''+esc(appt.id)+'\',\''+esc(ds)+'\')" style="border-left-color:'+col+';background:'+col+'12">'
+        +'<div style="font-size:.59rem;color:var(--slate);font-weight:600">'+esc(appt.time||'')+'</div>'
+        +(pat&&pat.emoji?'<span>'+esc(pat.emoji)+'</span>':'')
+        +'<div style="font-size:.68rem;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+esc(pat?pat.name:(appt.title||'Appt'))+'</div>'
+        +'</div>';
+    });
+    h+='</div></div>';
+  });
+  return h+'</div>';
+}
+
+function paintSchedMonth(){
+  var y=S.moY,m=S.moM,days=monthDays(y,m);
+  var DNs=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  var h=navBar(monthLbl(y,m),'moPrev','moNext','moToday');
+  h+='<div class="scr" style="flex:1;padding:'+(S.mob?'0 12px 100px':'0 24px 20px')+'">';
+  h+='<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:1px;margin-bottom:3px">';
+  DNs.forEach(function(n){h+='<div style="text-align:center;font-size:.6rem;font-weight:700;text-transform:uppercase;color:var(--mist);padding:5px 0">'+n+'</div>';});
+  h+='</div><div class="mgrid">';
+  days.forEach(function(ds){
+    var d=pd(ds),cur=d.getMonth()===m,tod=isToday(ds);
+    var dayAppts=getAppts(ds),cols=[];
+    dayAppts.forEach(function(a){var c=apptColor(a);if(cols.indexOf(c)<0)cols.push(c);});
+    h+='<div class="mcell'+(cur?'':' other')+(tod?' todcell':'')+'" onclick="pickDate(\''+ds+'\')">'
+      +'<div class="mnum'+(tod?' tonum':'')+(cur?'':(d.getMonth()!==m?' onum':''))+'">'+d.getDate()+'</div>'
+      +(cols.length?'<div class="mdots">'+cols.slice(0,4).map(function(c){return '<span class="mdot" style="background:'+c+'"></span>';}).join('')+(dayAppts.length>4?'<span style="font-size:.53rem;color:var(--slate)">+'+(dayAppts.length-4)+'</span>':'')+'</div>':'')
+      +'</div>';
+  });
+  h+='</div>';
+  h+='<div style="margin-top:14px;padding:14px;background:var(--warm);border-radius:12px;border:1px solid var(--ln)">'
+    +'<div style="font-size:.66rem;font-weight:700;text-transform:uppercase;color:var(--slate);margin-bottom:9px;letter-spacing:.07em">Procedure Colour Guide</div>'
+    +'<div style="display:flex;flex-wrap:wrap;gap:7px">';
+  TX.forEach(function(t){h+='<div style="display:flex;align-items:center;gap:4px;font-size:.7rem;color:var(--ink)"><span style="width:9px;height:9px;border-radius:50%;background:'+pc(t)+';display:inline-block;flex-shrink:0"></span>'+esc(t)+'</div>';});
+  h+='</div></div></div>';
+  return h;
+}
+
+/* ── NAV ACTIONS ──────────────────────── */
+function nav(v){S.view=v;R();}
+function setSched(m){S.sched=m;R();}
+function pickDate(ds){S.date=ds;if(S.view==='schedule')S.sched='day';else S.view='today';R();}
+function schPrev(){S.date=addDays(S.date,-1);R();}
+function schNext(){S.date=addDays(S.date,1);R();}
+function schToday(){S.date=today();R();}
+function wkPrev(){S.wkBase=addDays(S.wkBase,-7);R();}
+function wkNext(){S.wkBase=addDays(S.wkBase,7);R();}
+function wkToday(){S.wkBase=weekMon(today());R();}
+function moPrev(){S.moM--;if(S.moM<0){S.moM=11;S.moY--;}R();}
+function moNext(){S.moM++;if(S.moM>11){S.moM=0;S.moY++;}R();}
+function moToday(){var n=new Date();S.moM=n.getMonth();S.moY=n.getFullYear();R();}
+
+/* ── CONFIRM ──────────────────────────── */
+function confirm2(title,body,onOk){
+  var bg=document.getElementById('CF');
+  bg.className='on';
+  bg.innerHTML='<div class="popin" style="background:var(--cream);border-radius:20px;padding:26px 22px;max-width:300px;width:100%;box-shadow:0 28px 70px rgba(0,0,0,.28)">'
+    +'<div style="width:44px;height:44px;border-radius:50%;background:rgba(192,57,43,.1);display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:12px">⚠️</div>'
+    +'<div style="font-family:\'Playfair Display\',serif;font-size:1.15rem;color:var(--ink);margin-bottom:7px">'+esc(title)+'</div>'
+    +'<div style="font-size:.82rem;color:var(--slate);line-height:1.65;margin-bottom:22px">'+esc(body)+'</div>'
+    +'<div style="display:flex;gap:9px">'
+    +'<button class="bghost" onclick="document.getElementById(\'CF\').className=\'\'" style="flex:1;padding:12px;font-size:.88rem">Cancel</button>'
+    +'<button id="cfok" style="flex:1;padding:12px;background:var(--red);border-radius:12px;font-size:.88rem;font-weight:700;color:#fff;cursor:pointer;font-family:inherit">Delete</button>'
+    +'</div></div>';
+  document.getElementById('cfok').onclick=function(){onOk();bg.className='';};
+}
+function delAppt(id,date){
+  confirm2('Delete Appointment','Remove this appointment?',function(){
+    if(A[date])A[date]=A[date].filter(function(a){return a.id!==id;});
+    saveAll();toast('Deleted');R();
+  });
+}
+
+/* ── PANEL ────────────────────────────── */
+function openPanel(){
+  var ov=document.getElementById('OV'),rp=document.getElementById('RP');
+  ov.className='on';
+  rp.style.position='fixed';
+  rp.style.zIndex='900';
+  rp.style.top='0';
+  rp.style.left='0';
+  rp.style.right='0';
+  rp.style.bottom='0';
+  rp.style.width='100%';
+  rp.style.height='100%';
+  rp.style.background='var(--cream)';
+  rp.style.display='flex';
+  rp.style.flexDirection='column';
+  if(!S.mob){
+    rp.style.left='auto';
+    rp.style.width='460px';
+    rp.style.maxWidth='100vw';
+    rp.style.boxShadow='-18px 0 55px rgba(0,0,0,.2)';
+    rp.className='on slR';
+  } else {
+    rp.className='on slUp';
+  }
+}
+function closePanel(){
+  document.getElementById('OV').className='';
+  var rp=document.getElementById('RP');
+  rp.className='';
+  rp.style.cssText='display:none;';
+  rp.innerHTML='';
+}
+function maybeClosePanel(e){if(e.target===document.getElementById('OV'))closePanel();}
+
+/* ══════════════════════════════════════
+   APPOINTMENT PANEL
+══════════════════════════════════════ */
+var _AF={};
+
+function openApptPanel(apptId,date){
+  date=date||S.date;
+  var appt=apptId?(A[date]||[]).find(function(a){return a.id===apptId;}):null;
+  var pat=appt&&appt.patientId?P[appt.patientId]:null;
+  var visit=pat?(pat.visits||[]).find(function(v){return v.apptId===apptId;}):null;
+  _AF={
+    id:apptId||uid(),
+    isNew:!apptId,
+    date:date,
+    time:appt?appt.time:'09:00',
+    dur:appt?appt.duration:'30 min',
+    title:appt?appt.title:'',
+    notes:appt?appt.notes:'',
+    patientId:appt?appt.patientId:null,
+    txData:visit&&visit.txData?JSON.parse(JSON.stringify(visit.txData)):[],
+    diag:visit?visit.diagnosis:'',
+    complaint:visit?visit.complaint:'',
+    vnotes:visit?visit.notes:'',
+    photos:visit?(visit.photos||[]).slice():[],
+    visitId:visit?visit.id:uid()
+  };
+  // back-compat: old plain treatments
+  if(visit&&!visit.txData&&visit.treatments&&visit.treatments.length){
+    _AF.txData=visit.treatments.map(function(t){return {name:t,visitNum:1,totalVisits:1,txNote:''};});
+  }
+  buildApptPanel();
+}
+
+/* Build treatment picker HTML */
+function txPickerHTML(){
+  var h='';
+  TX.forEach(function(t){
+    var on=_AF.txData.some(function(x){return x.name===t;});
+    var c=pc(t);
+    h+='<div onclick="toggleTx(\''+esc(t)+'\')" style="padding:6px 11px;border-radius:18px;font-size:.75rem;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:4px;border:1.5px solid '+(on?c:'var(--ln)')+';background:'+(on?(c+'22'):'var(--warm)')+';color:'+(on?c:'var(--slate)')+'"><span style="width:6px;height:6px;border-radius:50%;background:'+c+';display:inline-block"></span>'+esc(t)+'</div>';
+  });
+  return h;
+}
+
+/* Build treatment rows (with visit counters) */
+function txRowsHTML(){
+  if(!_AF.txData||!_AF.txData.length){
+    return '<div style="font-size:.77rem;color:var(--mist);padding:8px 4px;font-style:italic">Select treatments above, then set visit numbers below</div>';
+  }
+  var h='';
+  _AF.txData.forEach(function(item,idx){
+    var c=pc(item.name);
+    var pct=item.totalVisits>0?Math.round((item.visitNum/item.totalVisits)*100):0;
+    h+='<div style="background:var(--warm);border:1.5px solid '+c+'44;border-radius:12px;overflow:hidden;margin-bottom:8px">'
+      // header
+      +'<div style="display:flex;align-items:center;gap:8px;padding:10px 12px">'
+      +'<span style="width:10px;height:10px;border-radius:50%;background:'+c+';flex-shrink:0"></span>'
+      +'<span style="flex:1;font-size:.82rem;font-weight:600;color:var(--ink)">'+esc(item.name)+'</span>'
+      +(item.totalVisits>1?'<span style="padding:2px 8px;border-radius:10px;font-size:.65rem;font-weight:700;background:'+c+'18;color:'+c+';border:1px solid '+c+'33">Visit '+item.visitNum+'/'+item.totalVisits+'</span>':'')
+      +'<button onclick="removeTx('+idx+')" style="width:24px;height:24px;border-radius:50%;background:rgba(192,57,43,.08);color:var(--red);font-size:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer">×</button>'
+      +'</div>'
+      // counters
+      +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 12px 12px">'
+      // visit num
+      +'<div>'
+      +'<div style="font-size:.64rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--slate);margin-bottom:6px">This visit #</div>'
+      +'<div style="display:flex;align-items:center;gap:8px">'
+      +'<button class="vc-btn" onclick="adjVisit('+idx+',-1,\'num\')">−</button>'
+      +'<div style="flex:1;text-align:center;font-size:1.5rem;font-weight:800;color:'+c+'">'+item.visitNum+'</div>'
+      +'<button class="vc-btn" onclick="adjVisit('+idx+',1,\'num\')">+</button>'
+      +'</div></div>'
+      // total
+      +'<div>'
+      +'<div style="font-size:.64rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--slate);margin-bottom:6px">Total planned</div>'
+      +'<div style="display:flex;align-items:center;gap:8px">'
+      +'<button class="vc-btn" onclick="adjVisit('+idx+',-1,\'total\')">−</button>'
+      +'<div style="flex:1;text-align:center;font-size:1.5rem;font-weight:800;color:var(--ink)">'+item.totalVisits+'</div>'
+      +'<button class="vc-btn" onclick="adjVisit('+idx+',1,\'total\')">+</button>'
+      +'</div></div>'
+      +'</div>'
+      // progress bar
+      +(item.totalVisits>1?'<div style="margin:0 12px 10px;background:var(--parch);border-radius:6px;height:6px;overflow:hidden"><div style="background:'+c+';height:100%;border-radius:6px;width:'+pct+'%"></div></div>':'')
+      // tx note
+      +'<div style="padding:0 12px 12px">'
+      +'<div style="font-size:.64rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--slate);margin-bottom:4px">Clinical note</div>'
+      +'<input class="inp" style="font-size:14px;padding:9px 12px" value="'+esc(item.txNote||'')+'" placeholder="e.g. WL 21mm, ISO #35, obturation…" oninput="txNote('+idx+',this.value)">'
+      +'</div>'
+      +'</div>';
+  });
+  return h;
+}
+
+function buildApptPanel(){
+  openPanel();
+  var f=_AF;
+  var col=f.txData&&f.txData.length?pc(f.txData[0].name):FOREST;
+  var pats=allPats().sort(function(a,b){return (a.name||'').localeCompare(b.name||'');});
+  var patOpts='<option value="">— No patient linked —</option>';
+  pats.forEach(function(p){patOpts+='<option value="'+esc(p.id)+'"'+(f.patientId===p.id?' selected':'')+'>'+esc(p.name)+'</option>';});
+  var phH='';
+  (f.photos||[]).forEach(function(ph){
+    phH+='<div style="position:relative;aspect-ratio:1;border-radius:9px;overflow:hidden;background:var(--ln)">'
+      +'<img src="'+ph.data+'" style="width:100%;height:100%;object-fit:cover" alt="">'
+      +'<button onclick="rmPhoto(\''+esc(ph.id)+'\')" style="position:absolute;top:3px;right:3px;width:20px;height:20px;background:rgba(0,0,0,.7);color:#fff;border-radius:50%;font-size:.72rem;display:flex;align-items:center;justify-content:center;cursor:pointer">×</button>'
+      +'</div>';
+  });
+  var pad=S.mob?'18px':'18px 22px';
+  document.getElementById('RP').innerHTML=
+    '<div id="ap-hdr" style="background:'+col+';padding:'+(S.mob?'max(18px,env(safe-area-inset-top)) 18px 16px':'18px 22px')+';flex-shrink:0;display:flex;justify-content:space-between;align-items:flex-start;transition:background .3s">'
+    +'<div><div style="font-family:\'Playfair Display\',serif;font-size:1.05rem;color:#fff">'+(f.isNew?'New Appointment':'Edit Appointment')+'</div>'
+    +'<div style="font-size:.68rem;color:rgba(255,255,255,.7);margin-top:3px">'+esc(f.date)+'</div></div>'
+    +'<button onclick="closePanel()" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.18);color:#fff;font-size:1.2rem;display:flex;align-items:center;justify-content:center">×</button>'
+    +'</div>'
+    +'<div class="scr" style="flex:1;padding:'+pad+'">'
+    // Appointment basics
+    +'<div style="margin-bottom:20px"><div class="sbar">📅 Appointment</div>'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">'
+    +'<div><label class="lbl">Time</label><input class="inp" id="ap-time" type="time" value="'+esc(f.time)+'" oninput="_AF.time=this.value"></div>'
+    +'<div><label class="lbl">Duration</label><select class="inp" id="ap-dur" onchange="_AF.dur=this.value">'
+    +['15 min','30 min','45 min','1 hr','1.5 hr','2 hr'].map(function(d){return '<option'+(f.dur===d?' selected':'')+'>'+d+'</option>';}).join('')
+    +'</select></div></div>'
+    +'<label class="lbl">Appointment Notes</label>'
+    +'<textarea class="inp" id="ap-notes" style="min-height:52px" oninput="_AF.notes=this.value">'+esc(f.notes)+'</textarea></div>'
+    // Patient
+    +'<div style="margin-bottom:20px"><div class="sbar">🧑‍⚕️ Patient</div>'
+    +'<select class="inp" id="ap-pat" onchange="apPatChange(this.value)">'+patOpts+'</select>'
+    +'<button onclick="quickNewPat()" style="margin-top:8px;font-size:.77rem;color:var(--FL);font-weight:600;text-decoration:underline;cursor:pointer">+ Create new patient</button>'
+    +'</div>'
+    // Clinical
+    +'<div id="ap-clin" style="'+(f.patientId?'':'opacity:.4;pointer-events:none')+'">'
+    +'<div class="sbar">🦷 Visit Record</div>'
+    +'<div style="margin-bottom:10px"><label class="lbl">Chief Complaint</label>'
+    +'<input class="inp" id="ap-cc" value="'+esc(f.complaint)+'" placeholder="e.g. Pain upper right molar" oninput="_AF.complaint=this.value"></div>'
+    +'<div style="margin-bottom:14px"><label class="lbl">Diagnosis</label>'
+    +'<textarea class="inp" id="ap-dx" style="min-height:60px" oninput="_AF.diag=this.value">'+esc(f.diag)+'</textarea></div>'
+    // Treatments
+    +'<div style="margin-bottom:14px">'
+    +'<label class="lbl" style="margin-bottom:8px">Treatments Done</label>'
+    +'<div id="ap-tx-pick" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px">'+txPickerHTML()+'</div>'
+    +'<div id="ap-tx-rows">'+txRowsHTML()+'</div>'
+    +'</div>'
+    +'<div style="margin-bottom:10px"><label class="lbl">Visit Notes</label>'
+    +'<textarea class="inp" id="ap-vn" style="min-height:60px" oninput="_AF.vnotes=this.value">'+esc(f.vnotes)+'</textarea></div>'
+    // Photos
+    +'<div><div class="sbar">📷 Photos</div>'
+    +'<div onclick="document.getElementById(\'ap-pf\').click()" style="border:2px dashed var(--ln);border-radius:12px;padding:16px;text-align:center;background:var(--parch);cursor:pointer">'
+    +'<div style="font-size:1.5rem;margin-bottom:4px">🔬</div>'
+    +'<div style="font-size:.8rem;font-weight:600;color:var(--slate)">Upload Clinical Photos</div>'
+    +'<div style="font-size:.69rem;color:var(--mist);margin-top:2px">X-rays · Intraoral · Periapical</div></div>'
+    +'<input type="file" id="ap-pf" accept="image/*" multiple style="display:none" onchange="addPhotos(this)">'
+    +'<div id="ap-pg" style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:8px">'+phH+'</div>'
+    +'</div></div>'
+    +'</div>'
+    +'<div style="padding:'+(S.mob?'12px 18px':'12px 22px')+';padding-bottom:'+(S.mob?'max(12px,env(safe-area-inset-bottom))':'12px')+';border-top:1px solid var(--ln);display:flex;gap:9px;background:var(--cream);flex-shrink:0">'
+    +'<button class="bghost" onclick="closePanel()" style="padding:12px 18px;font-size:.88rem">Cancel</button>'
+    +'<button class="bgold" id="ap-save-btn" onclick="saveAppt()" style="flex:1;padding:12px;font-size:.88rem">Save</button>'
+    +'</div>';
+}
+
+function apPatChange(val){
+  _AF.patientId=val||null;
+  var clin=document.getElementById('ap-clin');
+  if(clin)clin.style.cssText=_AF.patientId?'':'opacity:.4;pointer-events:none';
+  updateHdrColor();
+}
+function updateHdrColor(){
+  var hdr=document.getElementById('ap-hdr');
+  if(hdr)hdr.style.background=_AF.txData&&_AF.txData.length?pc(_AF.txData[0].name):FOREST;
+}
+function toggleTx(t){
+  var idx=_AF.txData.findIndex(function(x){return x.name===t;});
+  if(idx>-1)_AF.txData.splice(idx,1);
+  else _AF.txData.push({name:t,visitNum:1,totalVisits:1,txNote:''});
+  var picker=document.getElementById('ap-tx-pick');if(picker)picker.innerHTML=txPickerHTML();
+  var rows=document.getElementById('ap-tx-rows');if(rows)rows.innerHTML=txRowsHTML();
+  updateHdrColor();
+}
+function adjVisit(idx,delta,field){
+  if(!_AF.txData[idx])return;
+  var item=_AF.txData[idx];
+  if(field==='num'){
+    item.visitNum=Math.max(1,Math.min(item.totalVisits,(item.visitNum||1)+delta));
+  } else {
+    item.totalVisits=Math.max(1,(item.totalVisits||1)+delta);
+    item.visitNum=Math.min(item.visitNum||1,item.totalVisits);
+  }
+  var rows=document.getElementById('ap-tx-rows');if(rows)rows.innerHTML=txRowsHTML();
+}
+function txNote(idx,val){if(_AF.txData[idx])_AF.txData[idx].txNote=val;}
+function removeTx(idx){
+  _AF.txData.splice(idx,1);
+  var picker=document.getElementById('ap-tx-pick');if(picker)picker.innerHTML=txPickerHTML();
+  var rows=document.getElementById('ap-tx-rows');if(rows)rows.innerHTML=txRowsHTML();
+  updateHdrColor();
+}
+function addPhotos(input){
+  var files=Array.from(input.files),pending=files.length;
+  files.forEach(function(f){
+    compress(f,function(data){
+      _AF.photos.push({id:uid(),data:data});
+      pending--;
+      if(!pending)refreshPhotos();
+    });
+  });
+  input.value='';
+}
+function rmPhoto(id){
+  _AF.photos=_AF.photos.filter(function(p){return p.id!==id;});
+  refreshPhotos();
+}
+function refreshPhotos(){
+  var pg=document.getElementById('ap-pg');if(!pg)return;
+  var h='';
+  (_AF.photos||[]).forEach(function(ph){
+    h+='<div style="position:relative;aspect-ratio:1;border-radius:9px;overflow:hidden;background:var(--ln)">'
+      +'<img src="'+ph.data+'" style="width:100%;height:100%;object-fit:cover" alt="">'
+      +'<button onclick="rmPhoto(\''+esc(ph.id)+'\')" style="position:absolute;top:3px;right:3px;width:20px;height:20px;background:rgba(0,0,0,.7);color:#fff;border-radius:50%;font-size:.72rem;display:flex;align-items:center;justify-content:center;cursor:pointer">×</button>'
+      +'</div>';
+  });
+  pg.innerHTML=h;
+}
+function quickNewPat(){
+  closePanel();
+  openPatPanel(null,function(newPat){_AF.patientId=newPat.id;buildApptPanel();});
+}
+function saveAppt(){
+  var btn=document.getElementById('ap-save-btn');
+  if(btn){btn.textContent='Saving…';btn.disabled=true;}
+  var appt={id:_AF.id,date:_AF.date,time:_AF.time,duration:_AF.dur,title:_AF.title,notes:_AF.notes,patientId:_AF.patientId||null};
+  if(!A[_AF.date])A[_AF.date]=[];
+  var idx=A[_AF.date].findIndex(function(a){return a.id===_AF.id;});
+  if(idx>-1)A[_AF.date][idx]=appt;else A[_AF.date].push(appt);
+  if(_AF.patientId&&(_AF.txData.length||_AF.diag||_AF.complaint||_AF.vnotes||_AF.photos.length)){
+    var pat=P[_AF.patientId];
+    if(pat){
+      if(!pat.visits)pat.visits=[];
+      var vi=pat.visits.findIndex(function(v){return v.apptId===_AF.id;});
+      var visit={
+        id:_AF.visitId,apptId:_AF.id,date:_AF.date,
+        txData:_AF.txData,
+        treatments:_AF.txData.map(function(x){return x.name;}),
+        diagnosis:_AF.diag,complaint:_AF.complaint,
+        notes:_AF.vnotes,photos:_AF.photos,
+        createdAt:new Date().toISOString()
+      };
+      if(vi>-1)pat.visits[vi]=visit;else pat.visits.push(visit);
+    }
+  }
+  saveAll();
+  toast('✓ Saved');
+  setTimeout(function(){closePanel();R();},400);
+}
+
+/* ══════════════════════════════════════
+   PATIENT PANEL
+══════════════════════════════════════ */
+var _PF={},_PF_cb=null;
+
 function openPatPanel(patId,cb){
-  var pat=P[patId];
+  var pat=patId?P[patId]:null;
   _PF=pat?JSON.parse(JSON.stringify(pat)):{id:uid(),name:'',age:'',gender:'',phone:'',email:'',emoji:null,note:'',visits:[]};
   _PF_cb=cb||null;
   buildPatPanel();
@@ -517,11 +1115,24 @@ function buildPatPanel(){
       +'<button onclick="delVisit(\''+esc(v.id)+'\')" style="font-size:.7rem;color:var(--red);cursor:pointer;font-weight:600;padding:2px 8px;border-radius:6px;background:rgba(192,57,43,.08)">Remove</button>'
       +'</div>'
       +'<div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:4px">'+txBadges(v.txData,v.treatments,4)+'</div>'
+      // per-treatment notes
+      +(v.txData&&v.txData.some(function(x){return x.txNote;})?
+        '<div style="display:flex;flex-direction:column;gap:3px;margin-top:4px">'
+        +v.txData.filter(function(x){return x.txNote;}).map(function(x){
+          var c=pc(x.name);
+          return '<div style="font-size:.7rem;padding:3px 8px;background:'+c+'10;border-radius:6px;border-left:2px solid '+c+'">'
+            +'<span style="font-weight:600;color:'+c+'">'+esc(x.name)+(x.totalVisits>1?' ('+x.visitNum+'/'+x.totalVisits+')':'')+':</span> '+esc(x.txNote)
+            +'</div>';
+        }).join('')
+        +'</div>':'')
       +(v.diagnosis?'<div style="font-size:.73rem;color:var(--slate);margin-top:4px"><strong>Dx:</strong> '+esc(v.diagnosis)+'</div>':'')
       +(v.notes?'<div style="font-size:.72rem;color:var(--mist);margin-top:2px">'+esc(v.notes)+'</div>':'')
+      +(v.photos&&v.photos.length?'<div style="display:flex;gap:4px;margin-top:6px">'+v.photos.slice(0,4).map(function(ph){return '<img src="'+ph.data+'" style="width:36px;height:36px;border-radius:6px;object-fit:cover" alt="">';}).join('')+'</div>':'')
       +'</div>';
   });
   var epH='';
+  EMOJIS.forEach(function(em){epH+='<button class="epbtn'+(f.emoji===em?' sel':'')+'" onclick="pickEmoji(\''+esc(em)+'\')">'+esc(em)+'</button>';});
+  epH+='<button class="epbtn'+(f.emoji===null?' sel':'')+'" onclick="pickEmoji(null)" style="font-size:.64rem;font-weight:700;color:var(--slate)">ABC</button>';
   var pad=S.mob?'18px':'18px 22px';
   document.getElementById('RP').innerHTML=
     '<div style="background:'+FOREST+';padding:'+(S.mob?'max(18px,env(safe-area-inset-top)) 18px 16px':'18px 22px')+';flex-shrink:0;display:flex;justify-content:space-between;align-items:flex-start">'
@@ -558,6 +1169,8 @@ function buildPatPanel(){
     +'<button class="bgold" onclick="savePat()" style="flex:1;padding:12px;font-size:.88rem">Save Patient</button>'
     +'</div>';
 
+  // emoji handled by modal
+  // chart button listener
   setTimeout(function(){
     var cb=document.getElementById('open-chart-btn');
     if(cb){cb.addEventListener('click',function(){openChartPanel(cb.dataset.patid);});}
@@ -600,6 +1213,11 @@ function pickEmoji(em){
     av.appendChild(badge);
   }
   closeEpModal();
+  document.querySelectorAll('.epbtn').forEach(function(b){b.classList.remove('sel');});
+  document.querySelectorAll('.epbtn').forEach(function(b){
+    if(em&&b.textContent===em)b.classList.add('sel');
+    else if(!em&&b.textContent==='ABC')b.classList.add('sel');
+  });
 }
 function delVisit(vid){
   _PF.visits=(_PF.visits||[]).filter(function(v){return v.id!==vid;});
@@ -649,6 +1267,37 @@ function restoreBackup(){
   };
   input.click();
 }
+window.exportDentaLog=function(){
+  var data=JSON.stringify({patients:P,appointments:A,exported:new Date().toISOString()},null,2);
+  var blob=new Blob([data],{type:'application/json'});
+  var a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download='dentalog_backup_'+today()+'.json';a.click();
+  toast('Backup downloaded');
+};
+window.importDentaLog=function(){
+  var input=document.createElement('input');input.type='file';input.accept='.json';
+  input.onchange=function(e){
+    var r=new FileReader();
+    r.onload=function(ev){
+      try{
+        var d=JSON.parse(ev.target.result);
+        if(d.patients)Object.assign(P,d.patients);
+        if(d.appointments)Object.assign(A,d.appointments);
+        saveAll();toast('Data imported');R();
+      }catch(e2){toast('Invalid file');}
+    };
+    r.readAsText(e.target.files[0]);
+  };
+  input.click();
+};
+
+/* ── SERVICE WORKER ───────────────────── */
+// Unregister any old service workers that may be serving stale cache
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.getRegistrations().then(function(regs){
+    regs.forEach(function(r){r.unregister();});
+  });
+}
 
 /* ── EMOJI MODAL ──────────────────────── */
 function openEpModal(){
@@ -658,7 +1307,7 @@ function openEpModal(){
   var h='';
   EMOJI_CATS.forEach(function(cat){
     h+='<div style="margin-bottom:14px">';
-    h+='<div style="font-size:.64rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--slate);margin-bottom:8px">'+esc(cat.l) + '</div>';
+    h+='<div style="font-size:.64rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--slate);margin-bottom:8px">'+esc(cat.l)+'</div>';
     h+='<div style="display:grid;grid-template-columns:repeat(6,1fr);gap:6px">';
     cat.e.forEach(function(em){
       var sel=_PF.emoji===em?' sel':'';
@@ -678,7 +1327,14 @@ function closeEpModal(){
   if(m)m.className='';
 }
 
-/* ── ODONTOGRAM ── */
+
+/* ══════════════════════════════════════
+   ODONTOGRAM v4  –  Professional SVG design
+   Modes (correct clinical order):
+     adult | primary | mixed | immature
+══════════════════════════════════════ */
+
+/* ── Conditions ── */
 var COND_BASE={
   '':        {label:'Clear',             color:'#fff',    border:'#E4DDD4', text:'#94A3B8'},
   'caries':  {label:'Caries',            color:'#EF4444', border:'#DC2626', text:'#fff'},
@@ -705,6 +1361,7 @@ function getCOND(mode){
   return COND_BASE;
 }
 
+/* ── Arches (FDI) ── */
 var A_U  =['1.8','1.7','1.6','1.5','1.4','1.3','1.2','1.1','2.1','2.2','2.3','2.4','2.5','2.6','2.7','2.8'];
 var A_L  =['4.8','4.7','4.6','4.5','4.4','4.3','4.2','4.1','3.1','3.2','3.3','3.4','3.5','3.6','3.7','3.8'];
 var P_U  =['5.5','5.4','5.3','5.2','5.1','6.1','6.2','6.3','6.4','6.5'];
@@ -712,11 +1369,30 @@ var P_L  =['8.5','8.4','8.3','8.2','8.1','7.1','7.2','7.3','7.4','7.5'];
 var MX_U =['1.7','1.6','1.5','1.4','1.3','1.2','1.1','2.1','2.2','2.3','2.4','2.5','2.6','2.7'];
 var MX_L =['4.7','4.6','4.5','4.4','4.3','4.2','4.1','3.1','3.2','3.3','3.4','3.5','3.6','3.7'];
 
+/* ── Surface labels per tooth ── */
 function twSurfs(tooth){
   var n=parseInt(tooth.split('.')[1]);
   return n<=3?{top:'La',mid:'I',bot:'Pa'}:{top:'B',mid:'O',bot:'L'};
 }
 
+/* ── Tooth shape type (for SVG) ──
+   0=central incisor, 1=lateral incisor, 2=canine,
+   3=1st premolar, 4=2nd premolar, 5=molar, 6=wisdom molar */
+function toothType(tooth){
+  var n=parseInt(tooth.split('.')[1]);
+  if(n===1)return 0; if(n===2)return 1; if(n===3)return 2;
+  if(n===4)return 3; if(n===5)return 4;
+  if(n===8)return 6; return 5;
+}
+/* Deciduous type */
+function toothTypeP(tooth){
+  var n=parseInt(tooth.split('.')[1]);
+  if(n===1)return 0; if(n===2)return 1; if(n===3)return 2;
+  return 5; // deciduous molars
+}
+
+/* ── SVG tooth tile (occlusal view) 24×26px ──
+   Draws a proper occlusal outline with 5 coloured surface zones */
 function toothSVG(tooth,data,mode,size){
   size=size||24;
   var C=getCOND(mode);
@@ -734,6 +1410,7 @@ function toothSVG(tooth,data,mode,size){
   }
   var n=parseInt(tooth.split('.')[1]);
   var isMolar=(n>=4&&n<=8)||(n>=4&&n<=5&&tooth.indexOf('.')>-1&&parseInt(tooth.split('.')[0])>=5);
+  // For deciduous check
   var quad=parseInt(tooth.split('.')[0]);
   if(quad>=5)isMolar=(n>=4);
 
@@ -742,6 +1419,7 @@ function toothSVG(tooth,data,mode,size){
   var h='<svg width="'+size+'" height="'+size+'" viewBox="0 0 '+size+' '+size+'" xmlns="http://www.w3.org/2000/svg">';
 
   if(miss){
+    // Grey circle with X
     h+='<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="'+sw+'"/>';
     h+='<line x1="'+(cx-r*0.5)+'" y1="'+(cy-r*0.5)+'" x2="'+(cx+r*0.5)+'" y2="'+(cy+r*0.5)+'" stroke="#9CA3AF" stroke-width="'+(sw*1.5)+'" stroke-linecap="round"/>';
     h+='<line x1="'+(cx+r*0.5)+'" y1="'+(cy-r*0.5)+'" x2="'+(cx-r*0.5)+'" y2="'+(cy+r*0.5)+'" stroke="#9CA3AF" stroke-width="'+(sw*1.5)+'" stroke-linecap="round"/>';
@@ -749,40 +1427,52 @@ function toothSVG(tooth,data,mode,size){
     return h;
   }
 
+  // Outer tooth shape
   var ow=size*0.88, oh=size*(isMolar?0.88:0.92);
   var ox=(size-ow)/2, oy=(size-oh)/2;
+  var rx=ow*0.42, ry=oh*0.42;
   h+='<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+(ow/2)+'" ry="'+(oh/2)+'" fill="white" stroke="#CBD5E1" stroke-width="'+sw+'"/>';
+
+  // 5 surface zones using SVG paths
+  // Center (O/I surface)
   var ir=r*0.38;
   h+='<circle cx="'+cx+'" cy="'+cy+'" r="'+ir+'" fill="'+(col(surfs.mid)||'#F9FAFB')+'" stroke="'+(str(surfs.mid))+'" stroke-width="'+(sw*0.8)+'"/>';
+
+  // Top (B/La)
   var bFill=col(surfs.top);
   if(bFill&&bFill!=='none'){
     h+='<ellipse cx="'+cx+'" cy="'+(oy+oh*0.12)+'" rx="'+(ow*0.28)+'" ry="'+(oh*0.14)+'" fill="'+bFill+'" stroke="'+str(surfs.top)+'" stroke-width="'+(sw*0.7)+'"/>';
   } else {
     h+='<ellipse cx="'+cx+'" cy="'+(oy+oh*0.12)+'" rx="'+(ow*0.26)+'" ry="'+(oh*0.12)+'" fill="#F9FAFB" stroke="#E5E7EB" stroke-width="'+(sw*0.6)+'"/>';
   }
+  // Bottom (L/Pa)
   var lFill=col(surfs.bot);
   if(lFill&&lFill!=='none'){
     h+='<ellipse cx="'+cx+'" cy="'+(oy+oh*0.88)+'" rx="'+(ow*0.28)+'" ry="'+(oh*0.14)+'" fill="'+lFill+'" stroke="'+str(surfs.bot)+'" stroke-width="'+(sw*0.7)+'"/>';
   } else {
     h+='<ellipse cx="'+cx+'" cy="'+(oy+oh*0.88)+'" rx="'+(ow*0.26)+'" ry="'+(oh*0.12)+'" fill="#F9FAFB" stroke="#E5E7EB" stroke-width="'+(sw*0.6)+'"/>';
   }
+  // Left (M)
   var mFill=col('M');
   if(mFill&&mFill!=='none'){
     h+='<ellipse cx="'+(ox+ow*0.12)+'" cy="'+cy+'" rx="'+(ow*0.14)+'" ry="'+(oh*0.28)+'" fill="'+mFill+'" stroke="'+str('M')+'" stroke-width="'+(sw*0.7)+'"/>';
   } else {
     h+='<ellipse cx="'+(ox+ow*0.12)+'" cy="'+cy+'" rx="'+(ow*0.12)+'" ry="'+(oh*0.26)+'" fill="#F9FAFB" stroke="#E5E7EB" stroke-width="'+(sw*0.6)+'"/>';
   }
+  // Right (D)
   var dFill=col('D');
   if(dFill&&dFill!=='none'){
     h+='<ellipse cx="'+(ox+ow*0.88)+'" cy="'+cy+'" rx="'+(ow*0.14)+'" ry="'+(oh*0.28)+'" fill="'+dFill+'" stroke="'+str('D')+'" stroke-width="'+(sw*0.7)+'"/>';
   } else {
     h+='<ellipse cx="'+(ox+ow*0.88)+'" cy="'+cy+'" rx="'+(ow*0.12)+'" ry="'+(oh*0.26)+'" fill="#F9FAFB" stroke="#E5E7EB" stroke-width="'+(sw*0.6)+'"/>';
   }
+  // Outer border on top
   h+='<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+(ow/2)+'" ry="'+(oh/2)+'" fill="none" stroke="#CBD5E1" stroke-width="'+sw+'"/>';
   h+='</svg>';
   return h;
 }
 
+/* ── State ── */
 var _chartPatId=null, _chartMode='adult', _selCond='caries';
 var MODES=['adult','primary','mixed'];
 var MODE_LABELS={adult:'Adult',primary:'Primary',mixed:'Mixed'};
@@ -810,11 +1500,7 @@ function toggleChartMode(){
   var ni=(MODES.indexOf(_chartMode)+1)%MODES.length;
   _chartMode=MODES[ni];
   var pat=P[_chartPatId]; if(pat&&pat.chart)pat.chart.mode=_chartMode;
-  _selCond='caries'; 
-  saveQuiet(); 
-  refreshModeBtn(); 
-  // FIX: Redundant call fix - ensure we only render once and correctly
-  renderChart();
+  _selCond='caries'; saveQuiet(); refreshModeBtn(); renderChart();
 }
 
 function getTC(tooth){
@@ -827,6 +1513,7 @@ function isImmature(tooth){
   return !!(pat&&pat.chart&&pat.chart.immature&&pat.chart.immature[tooth]);
 }
 
+/* ── Arch HTML ── */
 function archGrid(teeth,jaw){
   var mid=Math.floor(teeth.length/2);
   var cols='repeat('+mid+',1fr) 4px repeat('+(teeth.length-mid)+',1fr)';
@@ -841,9 +1528,9 @@ function archGrid(teeth,jaw){
       h+='<div style="width:4px;background:rgba(15,35,24,.15);border-radius:2px;align-self:stretch"></div>';
     }
     h+='<div data-tooth="'+esc(tooth)+'" style="display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;-webkit-tap-highlight-color:transparent">';
-    if(jaw==='lower')h+='<div data-num="'+esc(tooth)+'" style="font-size:.45rem;font-weight:700;color:'+numCol+';line-height:1;text-align:center;white-space:nowrap">'+numLbl+'</div>';
+    if(jaw==='lower')h+='<div style="font-size:.45rem;font-weight:700;color:'+numCol+';line-height:1;text-align:center;white-space:nowrap">'+numLbl+'</div>';
     h+=toothSVG(tooth,data,_chartMode,26);
-    if(jaw==='upper')h+='<div data-num="'+esc(tooth)+'" style="font-size:.45rem;font-weight:700;color:'+numCol+';line-height:1;text-align:center;white-space:nowrap">'+numLbl+'</div>';
+    if(jaw==='upper')h+='<div style="font-size:.45rem;font-weight:700;color:'+numCol+';line-height:1;text-align:center;white-space:nowrap">'+numLbl+'</div>';
     h+='</div>';
   });
   h+='</div>';
@@ -877,23 +1564,20 @@ function renderChart(){
   }
   b.innerHTML=h;
   buildCondSelector();
-  
-  // FIX: Stacking listeners fix
-  if(b._h) b.removeEventListener('click', b._h);
-  b._h = function(e){
+  // Event delegation
+  b.addEventListener('click',function(e){
     var tw=e.target.closest('[data-tooth]');
     if(!tw)return;
     var tooth=tw.dataset.tooth;
-    
-    // FIX: Immature toggle fix - use data-num instead of style color
-    if(_chartMode==='mixed' && e.target.hasAttribute('data-num')){
-      toggleImmature(tooth); return;
+    // In mixed mode, tap on the number label (blue colored) to toggle immature
+    if(_chartMode==='mixed'&&e.target.style&&e.target.style.color==='#60A5FA'){
+      toggleImmature(tooth);return;
     }
     openToothDetail(tooth);
-  };
-  b.addEventListener('click', b._h);
+  });
 }
 
+/* ── Condition selector ── */
 function selCond(cond){_selCond=cond;buildCondSelector();}
 function buildCondSelector(){
   var COND=getCOND(_chartMode);
@@ -910,11 +1594,13 @@ function buildCondSelector(){
   h+='</div>';
   if(_chartMode!=='adult')h+='<div style="font-size:.58rem;color:var(--mist);margin-top:5px;font-style:italic">Pink tones = paediatric procedures</div>';
   var el=document.getElementById('cond-legend'); if(el)el.innerHTML=h;
+  // Attach handlers
   document.querySelectorAll('#cond-legend .csel').forEach(function(el){
     el.addEventListener('click',function(){selCond(this.dataset.cond);});
   });
 }
 
+/* ── Tooth detail modal ── */
 var _detailTooth=null;
 function openToothDetail(tooth){
   _detailTooth=tooth;
@@ -927,7 +1613,9 @@ function openToothDetail(tooth){
     4:'1st Premolar',5:'2nd Premolar',6:'1st Molar',7:'2nd Molar',8:'3rd Molar'};
   document.getElementById('td-title').textContent='Tooth '+tooth;
   document.getElementById('td-sub').textContent=(names[n]||'Tooth')+' — selected: '+(COND[_selCond]||COND['']).label;
+  // Large SVG preview
   var prev='<div style="display:flex;justify-content:center;margin-bottom:12px">'+toothSVG(tooth,data,_chartMode,80)+'</div>';
+  // 3×3 surface grid
   function tdCell(surf,label,extraStyle){
     var cond=miss?'missing':(data[surf]||'');
     var c=COND[cond]||COND[''];
@@ -940,11 +1628,13 @@ function openToothDetail(tooth){
     +tdCell('M','M')+tdCell(surfs.mid,surfs.mid)+tdCell('D','D')
     +'<div class="td-cell td-empty"></div>'+tdCell(surfs.bot,surfs.bot)+'<div class="td-cell td-empty"></div>'
     +'</div>';
+  // Missing whole-tooth button
   var missBtn='<button data-surf="__miss" style="margin-top:12px;width:100%;padding:10px;border-radius:10px;background:'
     +(miss?'#6B7280':'var(--parch)')+';border:1.5px solid '+(miss?'#4B5563':'var(--ln)')+';color:'+(miss?'#fff':'var(--slate)')
     +';font-size:.78rem;font-weight:600;cursor:pointer;font-family:inherit">'
     +(miss?'✓ Tooth Missing — tap to restore':'Mark Whole Tooth Missing')+'</button>';
   document.getElementById('td-grid-wrap').innerHTML=prev+grid+missBtn;
+  // Info line
   var info=[];
   [surfs.top,'M',surfs.mid,'D',surfs.bot].forEach(function(s){
     if(data[s])info.push(s+': '+((COND[data[s]]||{}).label||data[s]));
@@ -952,6 +1642,7 @@ function openToothDetail(tooth){
   document.getElementById('td-cond-info').textContent=info.length?info.join(' · '):'All surfaces healthy';
   document.getElementById('tooth-detail-bg').className='on';
   document.getElementById('tooth-detail').className='on';
+  // Handlers
   document.querySelectorAll('#td-grid-wrap .td-cell[data-surf]').forEach(function(el){
     el.addEventListener('click',function(){
       tapSurf(_detailTooth,this.dataset.surf);
@@ -970,6 +1661,7 @@ function closeToothDetail(){
   _detailTooth=null;
 }
 
+/* ── Surface tap ── */
 function tapSurf(tooth,surf){
   var pat=P[_chartPatId]; if(!pat)return;
   if(!pat.chart)pat.chart={mode:_chartMode,teeth:{},immature:{}};
@@ -989,6 +1681,7 @@ function tapSurf(tooth,surf){
   saveQuiet(); renderChart();
 }
 
+/* ── Immature toggle ── */
 function toggleImmature(tooth){
   var pat=P[_chartPatId]; if(!pat)return;
   if(!pat.chart)pat.chart={mode:_chartMode,teeth:{},immature:{}};
@@ -997,7 +1690,10 @@ function toggleImmature(tooth){
   saveQuiet(); renderChart();
 }
 
+
+/* ── BACKUP ───────────────────────────── */
 var _bkTimer=null;
+
 function autoBackup(){
   clearTimeout(_bkTimer);
   _bkTimer=setTimeout(function(){
@@ -1006,6 +1702,8 @@ function autoBackup(){
       var data=JSON.stringify({patients:P,appointments:A,exported:new Date().toISOString(),version:3},null,2);
       var blob=new Blob([data],{type:'application/json'});
       var filename = 'DentaLog_backup.json';
+
+      // Fix for iOS Home Screen Apps: Pop open the Share/Save menu
       if (navigator.canShare && navigator.share) {
         var file = new File([blob], filename, { type: 'application/json' });
         if (navigator.canShare({ files: [file] })) {
@@ -1016,6 +1714,8 @@ function autoBackup(){
           return; 
         }
       }
+
+      // Fallback for regular browsers
       var a=document.createElement('a');
       a.href=URL.createObjectURL(blob);
       a.download=filename;
@@ -1028,6 +1728,12 @@ function autoBackup(){
   },800);
 }
 
+
+
+// saveAll is used for ALL saves - only trigger backup on explicit user actions
+// Chart taps use saveQuiet() instead - no backup triggered
+
+/* ── INIT ─────────────────────────────── */
 paint();
 </script>
 </body>
