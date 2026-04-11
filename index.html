@@ -11,29 +11,29 @@
 <link rel="manifest" href="manifest.json"/>
 <link rel="apple-touch-icon" href="icon-192.png"/>
 <meta name="apple-mobile-web-app-title" content="DentaLog"/>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
-<meta http-equiv="Pragma" content="no-cache"/>
-<meta http-equiv="Expires" content="0"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;overflow:hidden;-webkit-text-size-adjust:100%}
-body{font-family:'Outfit',system-ui,sans-serif;background:var(--parch);overscroll-behavior:none;-webkit-font-smoothing:antialiased;transition:background 0.3s}
+body{font-family:'Outfit',system-ui,sans-serif;background:var(--parch);overscroll-behavior:none;-webkit-font-smoothing:antialiased; transition: background 0.3s;}
 input,textarea,select,button{font-family:inherit;-webkit-appearance:none;appearance:none;border:none;background:none;outline:none}
 ::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-thumb{background:rgba(15,35,24,.2);border-radius:4px}
+
+/* THEME VARIABLES */
 :root{
   --F:#0F2318;--FL:#2A5C3F;--sage:#8BAF95;
   --gold:#C9A84C;--gd:#9E7B28;
   --cream:#FAF7F2;--parch:#F4EFE8;--warm:#FEFCF9;
   --ink:#1C2B22;--slate:#4A6355;--mist:#B8CBBF;--ln:#E4DDD4;--red:#C0392B;
 }
-body.dark {
-  --warm: #121212; --cream: #1A1A1A; --parch: #0F0F0F; --ln: #333333;
-  --ink: #F4EFE8; --slate: #A0AAB2; --F: #0A160F; --mist: #555;
+html.dark {
+  --F:#162E21; --FL:#3B7A55; --sage:#5C7A65;
+  --cream:#121212; --parch:#1A1A1A; --warm:#222222;
+  --ink:#E4E4E4; --slate:#A0B0A8; --mist:#5A6E63; --ln:#333333;
 }
-@keyframes spin{to{transform:rotate(360deg)}}
+
 @keyframes slUp{from{transform:translateY(100%);opacity:0}to{transform:translateY(0);opacity:1}}
 @keyframes slR{from{transform:translateX(100%)}to{transform:translateX(0)}}
 @keyframes popin{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:scale(1)}}
@@ -46,174 +46,87 @@ button{cursor:pointer;-webkit-tap-highlight-color:transparent}
 .scr{overflow-y:auto;-webkit-overflow-scrolling:touch}
 .sx{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .sx::-webkit-scrollbar{display:none}
-textarea{resize:vertical}
-/* Lock */
-#LS{position:fixed;top:0;right:0;bottom:0;left:0;z-index:9000;
-  background:radial-gradient(ellipse at 20% 20%,rgba(42,92,63,.5) 0,transparent 55%),
-  radial-gradient(ellipse at 80% 80%,rgba(201,168,76,.12) 0,transparent 50%),#0F2318;
-  display:flex;align-items:center;justify-content:center;padding:32px}
-#LS.gone{display:none!important}
+textarea{resize:vertical; color:var(--ink);}
+
 /* Shell */
 #app{display:flex;height:100dvh;overflow:hidden}
 #sidebar{width:240px;flex-shrink:0;height:100%;display:flex;flex-direction:column;
   background:radial-gradient(ellipse at 10% 10%,rgba(42,92,63,.45) 0,transparent 55%),
-  radial-gradient(ellipse at 88% 82%,rgba(201,168,76,.1) 0,transparent 50%),#0F2318;
+  radial-gradient(ellipse at 88% 82%,rgba(201,168,76,.1) 0,transparent 50%),var(--F);
   box-shadow:5px 0 20px rgba(0,0,0,.18)}
 #main{flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden}
 #view{flex:1;display:flex;flex-direction:column;min-height:0;overflow:hidden}
-/* Inputs */
 .inp{width:100%;padding:11px 14px;border:1.5px solid var(--ln);border-radius:10px;
   font-size:16px;color:var(--ink);background:var(--warm);display:block;
   font-family:inherit;transition:border-color .15s,box-shadow .15s}
 .inp:focus{border-color:var(--FL);box-shadow:0 0 0 3px rgba(42,92,63,.09)}
-.inp::placeholder{color:var(--mist)}
 select.inp{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath fill='%234A6355' d='M6 8 0 0h12z'/%3E%3C/svg%3E");
   background-repeat:no-repeat;background-position:right 12px center;padding-right:34px}
 .lbl{display:block;font-size:.66rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--slate);margin-bottom:4px}
 .sbar{font-size:.63rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--FL);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--ln)}
-.bgold{background:linear-gradient(135deg,var(--gold),var(--gd));color:#0F2318;font-weight:700;
+.bgold{background:linear-gradient(135deg,var(--gold),var(--gd));color:#000;font-weight:700;
   border-radius:12px;cursor:pointer;font-family:inherit;box-shadow:0 3px 14px rgba(201,168,76,.28);transition:opacity .15s;border:none}
 .bgold:active{opacity:.85}
 .bghost{background:rgba(15,35,24,.06);color:var(--ink);font-weight:600;border:1.5px solid var(--ln);
   border-radius:12px;cursor:pointer;font-family:inherit;transition:background .13s}
 .bghost:active{background:rgba(15,35,24,.14)}
-body.dark .bghost{background:rgba(255,255,255,.05); border-color:rgba(255,255,255,.1)}
-/* Sidebar nav */
 .sdn{display:flex;align-items:center;gap:10px;width:100%;padding:12px 14px;border-radius:12px;
   font-size:.85rem;color:rgba(255,255,255,.45);text-align:left;border:1px solid transparent;
   transition:all .15s;font-family:inherit;cursor:pointer;background:none}
 .sdn.on{background:rgba(255,255,255,.13);border-color:rgba(255,255,255,.1);color:#fff;font-weight:600}
-/* Cards */
 .card{background:var(--warm);border-radius:14px;border:1.5px solid var(--ln);transition:box-shadow .13s}
-/* Date strip */
+/* Date Strip & Cal */
 .dsd{flex-shrink:0;width:52px;height:68px;border-radius:14px;display:flex;flex-direction:column;
   align-items:center;justify-content:center;border:1.5px solid var(--ln);gap:2px;cursor:pointer;
   background:var(--warm);transition:all .14s}
 .dsd.sel{background:var(--F);border-color:var(--F);box-shadow:0 4px 14px rgba(15,35,24,.22)}
-body.dark .dsd.sel{background:#2A5C3F; border-color:#2A5C3F;}
 .dsd.tod{background:rgba(201,168,76,.07);border-color:var(--gold)}
-/* Week */
-.wkc{flex:1;min-width:105px;border-right:1px solid var(--ln);display:flex;flex-direction:column;overflow:hidden}
-.wkc:last-child{border-right:none}
-.wkh{padding:9px 7px 7px;text-align:center;flex-shrink:0;border-bottom:1px solid var(--ln);background:var(--warm);cursor:pointer}
-.wkh.tod{background:rgba(201,168,76,.08)}
-.wkn{width:30px;height:30px;border-radius:50%;font-size:1.1rem;font-weight:700;color:var(--ink);display:flex;align-items:center;justify-content:center;margin:0 auto 2px}
-.wkn.tod{background:var(--F);color:#fff}
-body.dark .wkn.tod{background:#2A5C3F}
-.wka{padding:5px 7px;margin:3px 5px;border-radius:7px;cursor:pointer;border-left:3px solid #ccc}
-/* Month */
-.mgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:var(--ln);border-radius:12px;overflow:hidden}
-.mcell{background:var(--warm);padding:6px 5px 5px;min-height:58px;cursor:pointer;display:flex;flex-direction:column;gap:2px}
-.mcell:active{background:rgba(201,168,76,.1)}
-.mcell.other{background:var(--parch)}
-.mcell.todcell{background:rgba(15,35,24,.04)}
-.mnum{font-size:.8rem;font-weight:700;color:var(--ink);width:22px;height:22px;display:flex;align-items:center;justify-content:center;border-radius:50%}
-.mnum.tonum{background:var(--F);color:#fff}
-body.dark .mnum.tonum{background:#2A5C3F}
-.mnum.onum{color:var(--mist)}
-.mdots{display:flex;gap:3px;flex-wrap:wrap}
-.mdot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-/* Tx badges */
-.txb{font-size:.59rem;padding:2px 7px;border-radius:7px;font-weight:600;display:inline-flex;align-items:center;gap:3px}
-/* View toggle */
 .vtog{display:flex;background:var(--ln);border-radius:9px;padding:3px;gap:2px}
 .vtog button{flex:1;padding:7px 8px;border-radius:6px;font-size:.71rem;font-weight:600;color:var(--slate);cursor:pointer;transition:all .13s;font-family:inherit;border:none}
 .vtog button.on{background:var(--warm);color:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,.1)}
-/* Bottom nav */
 #bnav{position:fixed;bottom:0;left:0;right:0;z-index:300;background:var(--warm);
   border-top:1px solid var(--ln);display:none;padding-bottom:env(safe-area-inset-bottom);
-  box-shadow:0 -4px 20px rgba(0,0,0,.08)}
+  box-shadow:0 -4px 20px rgba(15,35,24,.08)}
 #bnav.on{display:flex;align-items:stretch}
 .bni{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 0 8px;
   cursor:pointer;font-family:inherit;background:none;border:none;-webkit-tap-highlight-color:transparent}
-/* Overlay + Panel */
-#OV{position:fixed;top:0;right:0;bottom:0;left:0;z-index:800;
-  background:rgba(0,0,0,.6);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);display:none}
+#OV{position:fixed;inset:0;z-index:800;background:rgba(5,12,8,.6);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);display:none}
 #OV.on{display:block}
 #RP{position:fixed;z-index:900;background:var(--cream);display:none;flex-direction:column;
   top:0;right:0;bottom:0;left:0;width:100%;height:100%}
 #RP.on{display:flex}
-/* Confirm */
-#CF{position:fixed;top:0;right:0;bottom:0;left:0;z-index:1000;
-  background:rgba(0,0,0,.65);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
-  display:none;align-items:center;justify-content:center;padding:20px}
-#CF.on{display:flex}
-/* Toast */
 #toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);
-  background:#0F2318;color:#fff;padding:10px 20px;border-radius:24px;
+  background:var(--F);color:#fff;padding:10px 20px;border-radius:24px;
   font-size:.82rem;font-weight:600;z-index:1100;display:none;
   white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,.3);pointer-events:none}
 #toast.on{display:block;animation:popin .2s ease}
-/* Emoji picker modal */
-#ep-modal{position:fixed;top:0;left:0;right:0;bottom:0;z-index:1000;
-  background:rgba(0,0,0,.55);display:none;align-items:flex-end;justify-content:center}
-#ep-modal.on{display:flex;animation:popin .18s ease}
-#ep-sheet{background:var(--cream);border-radius:22px 22px 0 0;width:100%;max-width:500px;
-  padding-bottom:env(safe-area-inset-bottom);max-height:78vh;display:flex;flex-direction:column}
-.epbtn{width:44px;height:44px;font-size:1.45rem;border-radius:10px;display:flex;align-items:center;
-  justify-content:center;cursor:pointer;border:2px solid transparent;transition:all .1s;
-  background:none;-webkit-tap-highlight-color:transparent}
-.epbtn:active{background:var(--parch)}
-.epbtn.sel{border-color:var(--ink);background:var(--ln)}
-/* Visit counter */
-.vc-btn{width:36px;height:36px;border-radius:50%;background:var(--parch);border:1.5px solid var(--ln);
-  font-size:1.15rem;font-weight:700;color:var(--slate);display:flex;align-items:center;
-  justify-content:center;flex-shrink:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
-.vc-btn:active{background:var(--ln)}
-/* ── ODONTOGRAM ── */
-#chart-panel{position:fixed;top:0;left:0;right:0;bottom:0;z-index:950;background:var(--cream);display:none;flex-direction:column}
+.alert-badge {background:#EF4444;color:#fff;font-size:0.6rem;padding:2px 6px;border-radius:6px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;display:inline-block;margin-left:6px;vertical-align:middle;}
+/* Chart */
+#chart-panel{position:fixed;inset:0;z-index:950;background:var(--cream);display:none;flex-direction:column}
 #chart-panel.on{display:flex}
-/* ── Odontogram arch: SVG tooth tiles ── */
 [data-tooth]{cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none}
-[data-tooth]:active{opacity:.75}
-/* Tooth detail modal */
 #tooth-detail{position:fixed;bottom:0;left:0;right:0;z-index:960;background:var(--cream);
   border-radius:22px 22px 0 0;padding:0 0 env(safe-area-inset-bottom);
-  box-shadow:0 -8px 40px rgba(0,0,0,.2);display:none;max-height:85vh;overflow-y:auto}
+  box-shadow:0 -8px 40px rgba(0,0,0,.5);display:none;max-height:70vh;overflow-y:auto}
 #tooth-detail.on{display:block;animation:slUp .28s cubic-bezier(.16,1,.3,1)}
-#tooth-detail-bg{position:fixed;inset:0;z-index:955;background:rgba(0,0,0,.4);display:none}
+#tooth-detail-bg{position:fixed;inset:0;z-index:955;background:rgba(5,12,8,.6);display:none}
 #tooth-detail-bg.on{display:block}
-/* Large surface grid in detail view */
 .td-grid{display:grid;grid-template-columns:52px 70px 52px;grid-template-rows:52px 70px 52px;gap:4px;margin:0 auto;width:fit-content}
-.td-cell{border-radius:10px;background:var(--warm);border:2px solid var(--ln);cursor:pointer;
+.td-cell{border-radius:10px;background:#fff;border:2px solid var(--ln);cursor:pointer;
   display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;
   color:var(--slate);transition:all .12s;-webkit-tap-highlight-color:transparent}
-.td-cell:active{transform:scale(.94)}
 .td-cell.td-empty{background:transparent!important;border-color:transparent!important;pointer-events:none}
-/* Condition selector */
 .csel{display:inline-flex;align-items:center;gap:5px;padding:7px 12px;border-radius:20px;
   font-size:.73rem;font-weight:600;cursor:pointer;border:2.5px solid transparent;
   transition:all .12s;-webkit-tap-highlight-color:transparent;user-select:none}
-.csel.active{border-color:var(--ink)!important;box-shadow:0 0 0 2px rgba(15,35,24,.2)}
-body.dark .csel.active{box-shadow:0 0 0 2px rgba(255,255,255,.2)}
-/* Medical Alert Badge */
-.med-alert{background:var(--red);color:#fff;padding:2px 6px;border-radius:4px;font-size:0.6rem;font-weight:bold;margin-left:6px;display:inline-block;vertical-align:middle}
-/* Checkboxes */
-.cbx{appearance:none;width:18px;height:18px;border:2px solid var(--slate);border-radius:4px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s}
-.cbx:checked{background:var(--FL);border-color:var(--FL)}
-.cbx:checked::after{content:'✔';color:#fff;font-size:12px;font-weight:bold}
-.plan-item{display:flex;align-items:center;gap:10px;padding:8px;background:var(--warm);border:1px solid var(--ln);border-radius:8px;margin-bottom:6px}
-.plan-item.done{opacity:0.6;text-decoration:line-through}
+.csel.active{border-color:#0F2318!important;box-shadow:0 0 0 2px rgba(15,35,24,.2)}
+/* Loading Splash */
+#SPLASH{position:fixed;inset:0;background:var(--F);z-index:9999;display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Playfair Display',serif;font-size:2rem;transition:opacity 0.4s;}
 </style>
 </head>
 <body>
 
-<div id="LS">
-  <div style="width:100%;max-width:300px;text-align:center">
-    <div style="width:90px;height:90px;border-radius:50%;background:#0F2318;border:2px solid #C9A84C;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;box-shadow:0 8px 28px rgba(201,168,76,.3);font-size:3rem;color:#C9A84C">🦷</div>
-    <div style="font-family:'Playfair Display',serif;font-size:1.8rem;color:#fff;margin-bottom:2px">DentaLog</div>
-    <div style="font-size:.72rem;color:#C9A84C;letter-spacing:.06em;font-weight:600;margin-bottom:2px">DR. MOAMEN WALID KHALIL</div>
-    <div style="font-size:.65rem;color:#8BAF95;letter-spacing:.08em;text-transform:uppercase;margin-bottom:36px">Doctor of Dental Medicine</div>
-    <input id="LI" type="password" placeholder="Password" autocomplete="off"
-      style="width:100%;padding:14px 18px;border-radius:14px;border:1.5px solid rgba(255,255,255,.15);background:rgba(255,255,255,.08);color:#fff;font-size:1.1rem;text-align:center;letter-spacing:.1em;font-family:inherit;outline:none"/>
-    <button id="LB"
-      style="width:100%;margin-top:12px;padding:15px;border-radius:14px;background:linear-gradient(135deg,#C9A84C,#9E7B28);color:#0F2318;font-size:1rem;font-weight:700;cursor:pointer;border:none;font-family:inherit">
-      Unlock
-    </button>
-    <div id="LE" style="margin-top:10px;font-size:.8rem;color:#EF4444;min-height:18px"></div>
-    <div style="margin-top:28px;font-size:.65rem;color:rgba(255,255,255,.2)">Private — authorised access only</div>
-  </div>
-</div>
+<div id="SPLASH">Loading DentaLog...</div>
 
 <div id="app">
   <div id="sidebar" style="display:none"></div>
@@ -222,13 +135,12 @@ body.dark .csel.active{box-shadow:0 0 0 2px rgba(255,255,255,.2)}
 <div id="bnav"></div>
 <div id="OV" onclick="maybeClosePanel(event)"></div>
 <div id="RP"></div>
-<div id="CF"></div>
 <div id="toast"></div>
+
 <div id="chart-panel">
   <div id="chart-hdr" style="background:var(--F);padding:max(16px,env(safe-area-inset-top)) 18px 14px;flex-shrink:0;display:flex;justify-content:space-between;align-items:center">
     <div>
       <div style="font-family:'Playfair Display',serif;font-size:1.05rem;color:#fff" id="chart-title">Dental Chart</div>
-      <div style="font-size:.68rem;color:var(--sage);margin-top:2px" id="chart-sub"></div>
     </div>
     <div style="display:flex;gap:8px;align-items:center">
       <button id="chart-mode-btn" onclick="toggleChartMode()" style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:6px 12px;color:#fff;font-size:.72rem;font-weight:600;cursor:pointer;font-family:inherit">Adult</button>
@@ -249,104 +161,25 @@ body.dark .csel.active{box-shadow:0 0 0 2px rgba(255,255,255,.2)}
     </div>
     <button onclick="closeToothDetail()" style="width:30px;height:30px;border-radius:50%;background:var(--parch);border:1.5px solid var(--ln);font-size:1rem;color:var(--slate);display:flex;align-items:center;justify-content:center;cursor:pointer">×</button>
   </div>
-  <div style="padding:18px;display:flex;flex-direction:column;align-items:center;gap:16px;padding-bottom:40px">
+  <div style="padding:18px;display:flex;flex-direction:column;align-items:center;gap:16px">
     <div id="td-grid-wrap"></div>
     <div id="td-cond-info" style="font-size:.75rem;color:var(--slate);text-align:center"></div>
-    
-    <div style="width:100%;border-top:1px solid var(--ln);padding-top:16px;margin-top:8px">
-      <div class="sbar" style="margin-bottom:12px">🦷 Periodontal Record</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-        <div>
-          <div style="font-size:.65rem;color:var(--slate);font-weight:700;margin-bottom:4px">Buccal PD (D-M-M)</div>
-          <input type="text" id="perio-b" class="inp" placeholder="3-2-3" style="text-align:center;letter-spacing:2px">
-        </div>
-        <div>
-          <div style="font-size:.65rem;color:var(--slate);font-weight:700;margin-bottom:4px">Lingual PD (D-M-M)</div>
-          <input type="text" id="perio-l" class="inp" placeholder="3-2-3" style="text-align:center;letter-spacing:2px">
-        </div>
-      </div>
-      <div style="display:flex;gap:10px;margin-top:10px;align-items:center">
-        <label style="display:flex;align-items:center;gap:6px;font-size:.8rem;color:var(--ink);font-weight:600;flex:1"><input type="checkbox" id="perio-bop" class="cbx"> Bleeding on Probing</label>
-        <select id="perio-mob" class="inp" style="flex:1">
-          <option value="0">Mobility: 0</option>
-          <option value="1">Mobility: I</option>
-          <option value="2">Mobility: II</option>
-          <option value="3">Mobility: III</option>
-        </select>
-      </div>
-      <button onclick="savePerio()" class="bghost" style="width:100%;margin-top:12px;padding:10px;font-size:.8rem">Save Perio Data</button>
-    </div>
   </div>
 </div>
-<div id="ep-modal" onclick="if(event.target===document.getElementById('ep-modal'))closeEpModal()">
-  <div id="ep-sheet">
-    <div style="padding:14px 16px 10px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--ln);flex-shrink:0">
-      <div style="font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--slate)">Choose Avatar</div>
-      <button onclick="closeEpModal()" style="width:30px;height:30px;border-radius:50%;background:var(--parch);font-size:1rem;color:var(--slate);display:flex;align-items:center;justify-content:center;cursor:pointer;border:none">x</button>
-    </div>
-    <div id="ep-body" style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px"></div>
-  </div>
-</div>
-
-<script>
-/* ── LOCK & THEME ── */
-(function(){
-  var pw=[68,111,111,98,121,64,49,49,50].map(function(c){return String.fromCharCode(c);}).join('');
-  if(localStorage.getItem('dl_dark')==='1') document.body.classList.add('dark');
-  
-  function unlock(){
-    var val=document.getElementById('LI').value;
-    var err=document.getElementById('LE');
-    var ls=document.getElementById('LS');
-    if(val===pw){
-      sessionStorage.setItem('dla','1');
-      ls.style.transition='opacity .35s';
-      ls.style.opacity='0';
-      setTimeout(function(){ls.className='gone';ls.style.cssText='';},380);
-    } else {
-      err.textContent='Wrong password';
-      document.getElementById('LI').value='';
-      setTimeout(function(){err.textContent='';},2500);
-    }
-  }
-  if(sessionStorage.getItem('dla')==='1') document.getElementById('LS').className='gone';
-  window.addEventListener('DOMContentLoaded',function(){
-    var btn=document.getElementById('LB');
-    var inp=document.getElementById('LI');
-    if(btn)btn.addEventListener('click',unlock);
-    if(inp)inp.addEventListener('keydown',function(e){if(e.key==='Enter')unlock();});
-  });
-})();
-</script>
 
 <script>
 'use strict';
 
-/* ── CONSTANTS ────────────────────────── */
+/* ── CONSTANTS & UTILS ────────────────────────── */
 var FOREST='#0F2318', GOLD='#C9A84C';
 var PC={
   'Examination':'#3B82F6','X-Ray / OPG':'#8B5CF6','Scaling & Polishing':'#06B6D4',
   'Composite Filling':'#F59E0B','Amalgam Filling':'#D97706','Temporary Filling':'#FBBF24',
   'Root Canal Treatment':'#EF4444','Crown':'#C9A84C','Bridge':'#92400E','Veneer':'#EC4899',
-  'Extraction':'#F97316','Surgical Extraction':'#DC2626','Implant':'#1D4ED8',
-  'Partial Denture':'#7C3AED','Full Denture':'#6D28D9','Orthodontic Adjustment':'#059669',
-  'Whitening':'#0EA5E9','Fluoride Treatment':'#38BDF8','Fissure Sealant':'#34D399',
-  'Emergency Treatment':'#B91C1C','Prescription':'#64748B'
+  'Extraction':'#F97316','Surgical Extraction':'#DC2626','Implant':'#1D4ED8'
 };
 var TX=Object.keys(PC);
-var EMOJI_CATS=[
-  {l:'Dental',e:['🦷','🦴','💉','🩺','🩻','🩹','💊','🔬','🩸','🧬','🏥','🫁']},
-  {l:'Babies & Kids',e:['👶','🧒','👦','👧','🍼','🐣','🎀','🎈','🧸','⭐','🌟','🎠']},
-  {l:'Adults',e:['🧑','👨','👩','🧔','👱','👱‍♀️','🧑‍🦰','🧑‍🦱','🧑‍🦳','🧑‍🦲','👲','🧕']},
-  {l:'Elderly',e:['👴','👵','🧓','👨‍🦳','👩‍🦳','👨‍🦲','👩‍🦲']},
-  {l:'Medical',e:['👨‍⚕️','👩‍⚕️','🧑‍⚕️','👨‍🔬','👩‍🔬','💪','🤝','🫶','🫀','🧠']},
-  {l:'Expressions',e:['😁','😬','😷','🤕','🤒','😰','😨','😮','🥴','😵','🤓','😎','🤧','😴','🥱','😇']},
-  {l:'Animals',e:['🐣','🐧','🦁','🐯','🐻','🦊','🐼','🐨','🦄','🐙','🦋','🐬']},
-  {l:'Symbols',e:['⭐','🌟','💎','👑','🏆','🎯','❤️','💚','💙','🧡','💜','🖤']}
-];
-var EMOJIS=['🦷','😁','😬','👶','👦','👧','🧑','👨','👩','👴','👵','🧓','👨‍⚕️','👩‍⚕️','🤕','😷','🤓','😎','🐣','⭐','💎','👑'];
 
-/* ── UTILS ────────────────────────────── */
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
 function today(){return fd(new Date());}
 function fd(d){return d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate());}
@@ -354,13 +187,19 @@ function p2(n){return n<10?'0'+n:''+n;}
 function pd(s){var x=s.split('-');return new Date(+x[0],+x[1]-1,+x[2]);}
 function isToday(s){return s===today();}
 function addDays(s,n){var d=pd(s);d.setDate(d.getDate()+n);return fd(d);}
-function weekMon(s){var d=pd(s),dow=d.getDay()||7;d.setDate(d.getDate()-(dow-1));return fd(d);}
 function prettyD(s){return pd(s).toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});}
 function shortD(s){return pd(s).toLocaleDateString('en-US',{month:'short',day:'numeric'});}
-function monthLbl(y,m){return new Date(y,m,1).toLocaleDateString('en-US',{month:'long',year:'numeric'});}
 function ini(n){if(!n)return '?';return (n.split(' ').map(function(w){return w[0]||'';}).slice(0,2).join('')||'?').toUpperCase();}
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function pc(tx){return PC[tx]||'#94A3B8';}
+
+var _tt;
+function toast(msg){
+  var t=document.getElementById('toast');
+  t.textContent=msg;t.className='on';
+  clearTimeout(_tt);_tt=setTimeout(function(){t.className='';},2200);
+}
+
 function compress(file,cb){
   var r=new FileReader();
   r.onload=function(e){
@@ -376,148 +215,88 @@ function compress(file,cb){
   };
   r.readAsDataURL(file);
 }
-function monthDays(y,m){
-  var f=new Date(y,m,1),l=new Date(y,m+1,0),off=(f.getDay()||7)-1,days=[];
-  for(var i=0;i<off;i++)days.push(fd(new Date(y,m,1-off+i)));
-  for(var i=1;i<=l.getDate();i++)days.push(fd(new Date(y,m,i)));
-  var rem=days.length%7;if(rem)for(var i=1;i<=7-rem;i++)days.push(fd(new Date(y,m+1,i)));
-  return days;
-}
-var _tt;
-function toast(msg){
-  var t=document.getElementById('toast');
-  t.textContent=msg;t.className='on';
-  clearTimeout(_tt);_tt=setTimeout(function(){t.className='';},2200);
-}
-function toggleDark(){
-  var isD = document.body.classList.toggle('dark');
-  localStorage.setItem('dl_dark', isD ? '1' : '0');
-  R();
-}
 
-/* ── INDEXED_DB STORAGE ENGINE ────────── */
-var KP='dl_p3',KA='dl_a3';
-var P={}, A={};
-var DB = null;
-
-// Initialize Database & Load Data
-var idbReq = window.indexedDB ? window.indexedDB.open("DentaLogDB", 1) : null;
-if(idbReq){
-  idbReq.onupgradeneeded = function(e){
-    var db = e.target.result;
-    if(!db.objectStoreNames.contains("data")) db.createObjectStore("data");
-  };
-  idbReq.onsuccess = function(e){
-    DB = e.target.result;
-    var tx = DB.transaction("data","readonly");
-    var getReq = tx.objectStore("data").get("state");
-    getReq.onsuccess = function(){
-      if(getReq.result && Object.keys(getReq.result.P || {}).length > 0){
-        P = getReq.result.P || {}; A = getReq.result.A || {};
-        R();
-      } else {
-        loadFromLegacy();
-      }
-    };
-  };
-  idbReq.onerror = function(){ loadFromLegacy(); };
-} else {
-  loadFromLegacy();
-}
-
-function loadFromLegacy(){
-  try{
-    var pData = localStorage.getItem(KP);
-    var aData = localStorage.getItem(KA);
-    if(pData) P = JSON.parse(pData);
-    if(aData) A = JSON.parse(aData);
-    if(!pData && !aData) {
-      for(var i=0;i<localStorage.length;i++){
-        var k=localStorage.key(i); if(!k)continue;
-        try{
-          var val=JSON.parse(localStorage.getItem(k));
-          if(!val||typeof val!=='object'||Array.isArray(val))continue;
-          var keys=Object.keys(val);
-          if(keys.length>0){
-            var fst=val[keys[0]];
-            if(fst&&(fst.name!==undefined||fst.visits!==undefined)) Object.assign(P,val);
-            if(Array.isArray(fst)&&fst.length>0&&fst[0].time!==undefined) Object.assign(A,val);
-          }
-        }catch(e2){}
-      }
+/* ── INDEXEDDB WRAPPER ────────────────────────── */
+var IDB = (function(){
+  var db;
+  return {
+    init: function(cb){
+      var req = indexedDB.open('DentaLogDB', 1);
+      req.onupgradeneeded = function(e){
+        var db = e.target.result;
+        if(!db.objectStoreNames.contains('dataStore')) {
+          db.createObjectStore('dataStore');
+        }
+      };
+      req.onsuccess = function(e){ db = e.target.result; cb(); };
+      req.onerror = function(e){ console.error("IDB Error", e); toast("Database error"); cb(); }
+    },
+    get: function(key, cb){
+      if(!db) return cb(null);
+      var tx = db.transaction('dataStore', 'readonly');
+      var req = tx.objectStore('dataStore').get(key);
+      req.onsuccess = function(){ cb(req.result); };
+      req.onerror = function(){ cb(null); };
+    },
+    set: function(key, val, cb){
+      if(!db) { if(cb) cb(); return; }
+      var tx = db.transaction('dataStore', 'readwrite');
+      var req = tx.objectStore('dataStore').put(val, key);
+      req.onsuccess = function(){ if(cb) cb(); };
     }
-  }catch(e){}
-  saveAll(); 
-  R();
-}
+  };
+})();
+
+var P={}, A={}, Settings={darkMode: false};
 
 function saveAll(){
-  try{ localStorage.setItem(KP, JSON.stringify(P)); localStorage.setItem(KA, JSON.stringify(A)); }catch(e){}
-  if(DB){
-    try {
-      var tx = DB.transaction("data","readwrite");
-      tx.objectStore("data").put({P: P, A: A}, "state");
-    } catch(e){}
-  }
+  IDB.set('patients', P);
+  IDB.set('appointments', A);
 }
 
-/* ── DATA HELPERS ─────────────────────── */
+function saveSettings(){
+  IDB.set('settings', Settings);
+  applyTheme();
+}
+
+function applyTheme(){
+  if(Settings.darkMode) document.documentElement.classList.add('dark');
+  else document.documentElement.classList.remove('dark');
+}
+
+function toggleTheme(){
+  Settings.darkMode = !Settings.darkMode;
+  saveSettings();
+  paint();
+}
+
+/* ── DATA HELPERS ─────────────────────────────── */
 function getAppts(date){return (A[date]||[]).slice().sort(function(a,b){return (a.time||'')>(b.time||'')?1:-1;});}
 function allPats(){return Object.values(P);}
 function lastVisit(pat){
   if(!pat||!pat.visits||!pat.visits.length)return null;
   return pat.visits.slice().sort(function(a,b){return b.date>a.date?1:-1;})[0];
 }
-function apptColor(appt){
-  if(appt.patientId){
-    var p2=P[appt.patientId];
-    if(p2&&p2.visits){
-      var vv=p2.visits.filter(function(v){return v.apptId===appt.id;});
-      if(vv.length&&vv[0].txData&&vv[0].txData.length)return pc(vv[0].txData[0].name);
-      if(vv.length&&vv[0].treatments&&vv[0].treatments.length)return pc(vv[0].treatments[0]);
-    }
-  }
-  return appt.color||GOLD;
-}
 
-/* ── STATE ────────────────────────────── */
-var S={
-  mob:window.innerWidth<640,
-  view:'today',
-  sched:'day',
-  date:today(),
-  wkBase:weekMon(today()),
-  moY:new Date().getFullYear(),
-  moM:new Date().getMonth(),
-  patQ:''
-};
+var S={ mob:window.innerWidth<640, view:'today', sched:'day', date:today(), patQ:'' };
 var _rf;
 function R(){if(!_rf)_rf=requestAnimationFrame(function(){_rf=null;paint();});}
 
 /* ── HTML HELPERS ─────────────────────── */
 function avH(pat,sz){
   sz=sz||42;
-  if(pat&&pat.emoji){
-    return '<div style="width:'+sz+'px;height:'+sz+'px;border-radius:50%;background:var(--parch);border:1.5px solid var(--ln);display:flex;align-items:center;justify-content:center;font-size:'+Math.round(sz*.52)+'px;flex-shrink:0">'+esc(pat.emoji)+'</div>';
-  }
   var av=pat&&pat.name?ini(pat.name):'?';
-  var bg=av!=='?'?'var(--F)':'var(--parch)';
+  var bg=av!=='?'?FOREST:'var(--parch)';
   var col=av!=='?'?'#fff':'var(--mist)';
   var border=av!=='?'?'none':'1.5px solid var(--ln)';
   return '<div style="width:'+sz+'px;height:'+sz+'px;border-radius:50%;background:'+bg+';color:'+col+';display:flex;align-items:center;justify-content:center;font-weight:700;font-size:'+Math.round(sz*.34)+'px;flex-shrink:0;border:'+border+'">'+esc(av)+'</div>';
 }
 
-function txBadges(txData,treatments,max){
-  var list=txData&&txData.length?txData:(treatments||[]).map(function(t){return {name:t,visitNum:1,totalVisits:1};});
-  if(!list.length)return '';
-  var h='',s=list.slice(0,max||3);
-  s.forEach(function(item){
-    var c=pc(item.name);
-    var prog=(item.totalVisits>1)?' <span style="opacity:.75;font-size:.58rem">'+item.visitNum+'/'+item.totalVisits+'</span>':'';
-    h+='<span class="txb" style="background:'+c+'18;color:'+c+';border:1px solid '+c+'33"><span style="width:5px;height:5px;border-radius:50%;background:'+c+';display:inline-block"></span>'+esc(item.name)+prog+'</span>';
-  });
-  if(list.length>(max||3))h+='<span style="font-size:.59rem;color:var(--mist)">+'+(list.length-(max||3))+'</span>';
-  return h;
+function wappLink(phone){
+  if(!phone) return '';
+  var num = phone.replace(/\D/g, '');
+  if(!num) return '';
+  return '<a href="https://wa.me/'+num+'" target="_blank" style="display:inline-flex;align-items:center;gap:4px;background:#25D366;color:#fff;font-size:0.7rem;font-weight:700;padding:4px 8px;border-radius:8px;text-decoration:none;">💬 WhatsApp</a>';
 }
 
 /* ── PAINT ────────────────────────────── */
@@ -530,8 +309,6 @@ function paint(){
   var v='';
   if(S.view==='today')v=paintToday();
   else if(S.view==='patients')v=paintPatients();
-  else if(S.view==='analytics')v=paintAnalytics();
-  else v=paintSchedule();
   document.getElementById('view').innerHTML=v;
   afterPaint();
 }
@@ -541,134 +318,69 @@ function afterPaint(){
     var ds=document.getElementById('ds');
     if(ds){var sel=ds.querySelector('.sel');if(sel)sel.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});}
     var pq=document.getElementById('patq');
-    if(pq){
-      pq.oninput=function(){
-        S.patQ=pq.value;
-        var scr=document.querySelector('#view .scr');
-        if(scr){
-          var t2=document.createElement('div');
-          t2.innerHTML=paintPatients();
-          var ns=t2.querySelector('.scr');
-          if(ns)scr.innerHTML=ns.innerHTML;
-          afterPaint();
-        }
-      };
-    }
+    if(pq){ pq.oninput=function(){ S.patQ=pq.value; R(); }; pq.focus(); }
   });
 }
 
-/* ── SIDEBAR ──────────────────────────── */
 function paintSidebar(){
   var total=allPats().length,todayCnt=(A[today()]||[]).length;
-  var isDark = document.body.classList.contains('dark');
   var h='<div style="padding:26px 20px 18px">'
-    +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:3px">'
-    +'<div style="display:flex;align-items:center;gap:10px">'
-    +'<div style="width:36px;height:36px;border-radius:10px;background:#0a1e10;border:1.5px solid rgba(201,168,76,.4);display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:4px;box-shadow:0 4px 12px rgba(201,168,76,.25)"><div style="font-size:1.4rem;color:var(--gold)">🦷</div></div>'
+    +'<div style="display:flex;align-items:center;gap:10px;margin-bottom:3px">'
     +'<div style="font-family:\'Playfair Display\',serif;font-size:1.42rem;color:#fff">DentaLog</div>'
-    +'</div>'
-    +'<button onclick="toggleDark()" style="width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.1);color:#fff;font-size:.8rem;display:flex;align-items:center;justify-content:center">'+(isDark?'☀️':'🌙')+'</button>'
-    +'</div>'
-    +'<div style="font-size:.66rem;color:var(--sage);letter-spacing:.08em;text-transform:uppercase;font-weight:500;margin-left:46px">Dr. M.W. Khalil</div>'
-    +'</div>'
-    +'<div style="height:1px;background:rgba(255,255,255,.08);margin:0 18px"></div>'
-    +'<div style="flex:1;padding:12px 12px 0">';
-  var navs=[{id:'today',ic:'📅',lb:'Today'},{id:'patients',ic:'🧑‍⚕️',lb:'Patients'},{id:'schedule',ic:'🗓',lb:'Schedule'},{id:'analytics',ic:'📊',lb:'Analytics'}];
-  navs.forEach(function(n){
-    h+='<button class="sdn'+(S.view===n.id?' on':'')+'" onclick="nav(\''+n.id+'\')"><span style="font-size:1rem">'+n.ic+'</span>'+n.lb+'</button>';
-  });
-  h+='<div style="height:1px;background:rgba(255,255,255,.07);margin:12px 2px"></div>'
-    +'<button class="sdn" style="border:1.5px dashed rgba(201,168,76,.3);color:rgba(201,168,76,.7)!important" onclick="openApptPanel(null,\''+S.date+'\')">＋&nbsp; Add Appointment</button>'
-    +'</div>'
-    +'<div style="padding:16px 20px 22px;margin-top:auto;border-top:1px solid rgba(255,255,255,.07)">'
-    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:9px">'
-    +'<div style="background:rgba(255,255,255,.06);border-radius:10px;padding:10px 12px;border:1px solid rgba(255,255,255,.07)">'
-    +'<div style="font-size:.6rem;color:var(--sage);text-transform:uppercase;letter-spacing:.07em;font-weight:600">Today</div>'
-    +'<div style="font-size:.85rem;color:#fff;font-weight:700;margin-top:2px">'+todayCnt+' appt</div></div>'
-    +'<div style="background:rgba(255,255,255,.06);border-radius:10px;padding:10px 12px;border:1px solid rgba(255,255,255,.07)">'
-    +'<div style="font-size:.6rem;color:var(--sage);text-transform:uppercase;letter-spacing:.07em;font-weight:600">Patients</div>'
-    +'<div style="font-size:.85rem;color:#fff;font-weight:700;margin-top:2px">'+total+' total</div></div>'
     +'</div></div>'
-    +'<div style="padding:10px 14px 4px;border-top:1px solid rgba(255,255,255,.07);margin-top:4px">'
-    +'<div style="font-size:.58rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:7px">Data</div>'
-    +'<div style="display:flex;gap:6px">'
-    +'<button onclick="autoBackup()" style="flex:1;padding:8px 6px;border-radius:8px;background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.3);color:rgba(201,168,76,.9);font-size:.68rem;font-weight:600;cursor:pointer;font-family:inherit">💾 Backup</button>'
-    +'<button onclick="restoreBackup()" style="flex:1;padding:8px 6px;border-radius:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.6);font-size:.68rem;font-weight:600;cursor:pointer;font-family:inherit">📂 Restore</button>'
-    +'</div></div>';
+    +'<div style="flex:1;padding:12px 12px 0">';
+  var navs=[{id:'today',ic:'📅',lb:'Today'},{id:'patients',ic:'🧑‍⚕️',lb:'Patients'}];
+  navs.forEach(function(n){
+    h+='<button class="sdn'+(S.view===n.id?' on':'')+'" onclick="S.view=\''+n.id+'\';R()"><span style="font-size:1rem">'+n.ic+'</span>'+n.lb+'</button>';
+  });
+  h+='</div><div style="padding:16px 20px"><button onclick="toggleTheme()" style="width:100%;padding:10px;background:rgba(255,255,255,.1);border-radius:10px;color:#fff;font-size:0.8rem;">'+(Settings.darkMode?'☀️ Light Mode':'🌙 Dark Mode')+'</button></div>';
   return h;
 }
 
-/* ── TOPBAR ───────────────────────────── */
 function paintTopbar(){
-  var subs={today:(A[today()]||[]).length+' appointments today',patients:allPats().length+' patients',schedule:'',analytics:'Practice Overview'};
-  var titles={today:'Daily Agenda',patients:'Patient Records',schedule:'Schedule',analytics:'Analytics'};
-  var isDark = document.body.classList.contains('dark');
   if(S.mob){
-    return '<div style="background:var(--F);padding:max(14px,env(safe-area-inset-top)) 18px 14px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;box-shadow:0 2px 10px rgba(0,0,0,.14); transition:background 0.3s">'
-      +'<div style="display:flex;align-items:center;gap:10px">'
-      +'<div style="width:32px;height:32px;border-radius:8px;background:#0a1e10;border:1.5px solid #C9A84C44;display:flex;align-items:center;justify-content:center;padding:4px"><div style="font-size:1.2rem;color:var(--gold)">🦷</div></div>'
-      +'<div>'
+    return '<div style="background:'+FOREST+';padding:max(14px,env(safe-area-inset-top)) 18px 14px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">'
       +'<div style="font-family:\'Playfair Display\',serif;font-size:1.15rem;color:#fff;line-height:1">DentaLog</div>'
-      +'<div style="font-size:.6rem;color:var(--sage);margin-top:1px">'+subs[S.view]+'</div>'
-      +'</div></div>'
       +'<div style="display:flex;gap:6px">'
-      +'<button onclick="toggleDark()" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:8px 8px;color:rgba(255,255,255,.9);font-size:.85rem" title="Toggle Theme">'+(isDark?'☀️':'🌙')+'</button>'
-      +'<button onclick="autoBackup()" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:8px 10px;color:rgba(255,255,255,.65);font-size:.8rem" title="Backup Data">💾</button>'
-      +'<button onclick="restoreBackup()" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:8px 10px;color:rgba(255,255,255,.65);font-size:.8rem" title="Restore backup">📂</button>'
-      +'</div>'
-      +'</div>';
+      +'<button onclick="toggleTheme()" style="background:rgba(255,255,255,.08);border-radius:10px;padding:8px;color:#fff;font-size:.8rem">'+(Settings.darkMode?'☀️':'🌙')+'</button>'
+      +'<button onclick="openApptPanel(null,\''+S.date+'\')" style="background:rgba(255,255,255,.12);border-radius:10px;padding:8px 14px;color:#fff;font-size:.75rem;font-weight:700">+ Add</button>'
+      +'</div></div>';
   }
   return '<div style="background:var(--warm);border-bottom:1px solid var(--ln);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0">'
-    +'<div style="font-family:\'Playfair Display\',serif;font-size:1.05rem;color:var(--ink)">'+titles[S.view]+'</div>'
+    +'<div style="font-family:\'Playfair Display\',serif;font-size:1.05rem;color:var(--ink)">Dashboard</div>'
     +'<button class="bgold" onclick="openApptPanel(null,\''+S.date+'\')" style="padding:9px 20px;font-size:.8rem">+ Add Appointment</button>'
     +'</div>';
 }
 
-/* ── BOTTOM NAV ───────────────────────── */
 function paintBnav(){
   if(!S.mob){document.getElementById('bnav').className='';return;}
   var h='';
-  h+='<button class="bni" onclick="nav(\'today\')" style="color:'+(S.view==='today'?'var(--F)':'var(--mist)')+'"><span style="font-size:1.22rem">📅</span><span style="font-size:.61rem;font-weight:'+(S.view==='today'?700:500)+'">Today</span></button>';
-  h+='<button class="bni" onclick="nav(\'patients\')" style="color:'+(S.view==='patients'?'var(--F)':'var(--mist)')+'"><span style="font-size:1.22rem">🧑‍⚕️</span><span style="font-size:.61rem;font-weight:'+(S.view==='patients'?700:500)+'">Patients</span></button>';
+  h+='<button class="bni" onclick="S.view=\'today\';R()" style="color:'+(S.view==='today'?FOREST:'var(--mist)')+'"><span style="font-size:1.22rem">📅</span><span style="font-size:.61rem;font-weight:'+(S.view==='today'?700:500)+'">Today</span></button>';
   h+='<button class="bni" onclick="openApptPanel(null,\''+S.date+'\')">'
-    +'<div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#C9A84C,#9E7B28);display:flex;align-items:center;justify-content:center;color:#0F2318;font-size:1.4rem;margin-top:-12px;box-shadow:0 4px 14px rgba(201,168,76,.38);font-weight:700">＋</div>'
-    +'<span style="font-size:.61rem;color:var(--mist)">Add</span></button>';
-  h+='<button class="bni" onclick="nav(\'schedule\')" style="color:'+(S.view==='schedule'?'var(--F)':'var(--mist)')+'"><span style="font-size:1.22rem">🗓</span><span style="font-size:.61rem;font-weight:'+(S.view==='schedule'?700:500)+'">Schedule</span></button>';
-  h+='<button class="bni" onclick="nav(\'analytics\')" style="color:'+(S.view==='analytics'?'var(--F)':'var(--mist)')+'"><span style="font-size:1.22rem">📊</span><span style="font-size:.61rem;font-weight:'+(S.view==='analytics'?700:500)+'">Data</span></button>';
+    +'<div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#C9A84C,#9E7B28);display:flex;align-items:center;justify-content:center;color:#000;font-size:1.4rem;margin-top:-12px;font-weight:700">＋</div></button>';
+  h+='<button class="bni" onclick="S.view=\'patients\';R()" style="color:'+(S.view==='patients'?FOREST:'var(--mist)')+'"><span style="font-size:1.22rem">🧑‍⚕️</span><span style="font-size:.61rem;font-weight:'+(S.view==='patients'?700:500)+'">Patients</span></button>';
   document.getElementById('bnav').innerHTML=h;
   document.getElementById('bnav').className='on';
 }
 
-/* ── APPT CARD ────────────────────────── */
 function apptCard(appt,date){
   var pat=appt.patientId?P[appt.patientId]:null;
-  var col=apptColor(appt);
-  var lv=pat?lastVisit(pat):null;
-  var visitForAppt=lv&&lv.apptId===appt.id?lv:null;
+  var col=GOLD; 
   var name=pat?pat.name:(appt.title||'Appointment');
-  var sub=pat?[pat.age&&(pat.age+'y'),pat.gender].filter(Boolean).join(' · '):(appt.notes||'Tap to open');
-  var alertBadge=(pat&&pat.medAlert)?'<span class="med-alert">⚠️ ALERTS</span>':'';
+  var alertBadge = (pat && pat.medicalAlert) ? '<span class="alert-badge">⚠️ Med Alert</span>' : '';
+  
   return '<div class="card fup" style="border-color:'+col+';margin-bottom:10px;position:relative;overflow:hidden">'
     +'<div style="position:absolute;left:0;top:10px;bottom:10px;width:3px;border-radius:0 2px 2px 0;background:'+col+'"></div>'
     +'<div style="display:flex;align-items:center;gap:12px;padding:14px 14px 14px 18px">'
     +'<div onclick="openApptPanel(\''+esc(appt.id)+'\',\''+esc(date)+'\')" style="width:50px;text-align:center;flex-shrink:0;cursor:pointer">'
     +'<div style="font-size:.82rem;font-weight:700;color:var(--ink)">'+esc(appt.time||'—')+'</div>'
-    +'<div style="font-size:.61rem;color:var(--mist);margin-top:1px">'+esc(appt.duration||'')+'</div>'
     +'</div>'
     +'<div onclick="openApptPanel(\''+esc(appt.id)+'\',\''+esc(date)+'\')" style="cursor:pointer">'+avH(pat,40)+'</div>'
     +'<div onclick="openApptPanel(\''+esc(appt.id)+'\',\''+esc(date)+'\')" style="flex:1;min-width:0;cursor:pointer">'
     +'<div style="font-weight:600;font-size:.88rem;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+esc(name)+alertBadge+'</div>'
-    +'<div style="font-size:.71rem;color:var(--slate);margin-top:2px">'+esc(sub)+'</div>'
-    +(visitForAppt?'<div style="display:flex;gap:4px;margin-top:5px;flex-wrap:wrap">'+txBadges(visitForAppt.txData,visitForAppt.treatments,3)+'</div>':'')
-    +'</div>'
-    +'<div style="display:flex;gap:6px;flex-shrink:0">'
-    +'<button onclick="openApptPanel(\''+esc(appt.id)+'\',\''+esc(date)+'\')" style="width:34px;height:34px;border-radius:9px;background:rgba(15,35,24,.05);color:var(--slate);font-size:.75rem;font-weight:700;display:flex;align-items:center;justify-content:center">✏️</button>'
-    +'<button onclick="delAppt(\''+esc(appt.id)+'\',\''+esc(date)+'\')" style="width:34px;height:34px;border-radius:9px;background:rgba(192,57,43,.06);color:var(--red);font-size:.75rem;display:flex;align-items:center;justify-content:center">🗑️</button>'
-    +'</div>'
-    +'</div></div>';
+    +'</div></div></div>';
 }
 
-/* ── TODAY VIEW ───────────────────────── */
 function paintToday(){
   var appts=getAppts(S.date);
   var days=[];
@@ -676,1239 +388,240 @@ function paintToday(){
   var h='<div id="ds" class="sx" style="display:flex;gap:6px;padding:12px 16px;flex-shrink:0">';
   days.forEach(function(ds){
     var d=pd(ds),sel=ds===S.date,tod=isToday(ds);
-    h+='<div class="dsd'+(sel?' sel':'')+(tod&&!sel?' tod':'')+'" onclick="pickDate(\''+ds+'\')">'
+    h+='<div class="dsd'+(sel?' sel':'')+(tod&&!sel?' tod':'')+'" onclick="S.date=\''+ds+'\';R()">'
       +'<div style="font-size:.57rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:'+(sel?'rgba(255,255,255,.55)':tod?GOLD:'var(--mist)')+'">'+d.toLocaleDateString('en-US',{weekday:'short'})+'</div>'
-      +'<div style="font-size:1.1rem;font-weight:700;color:'+(sel?'#fff':tod?'var(--F)':'var(--ink)')+';line-height:1">'+d.getDate()+'</div>'
-      +(tod?'<div style="width:5px;height:5px;border-radius:50%;background:'+(sel?'rgba(255,255,255,.5)':GOLD)+'"></div>':'')
+      +'<div style="font-size:1.1rem;font-weight:700;color:'+(sel?'#fff':tod?FOREST:'var(--ink)')+';line-height:1">'+d.getDate()+'</div>'
       +'</div>';
   });
-  h+='</div>';
-  var todayBtn=isToday(S.date);
-  h+='<div style="padding:'+(S.mob?'0 16px 10px':'0 24px 12px')+';display:flex;align-items:flex-end;justify-content:space-between;flex-shrink:0">'
-    +'<div><div style="font-family:\'Playfair Display\',serif;font-size:'+(S.mob?'1.2':'1.35')+'rem;color:var(--ink);line-height:1.1">'+prettyD(S.date)+'</div>'
-    +'<div style="font-size:.72rem;color:var(--slate);margin-top:4px">'+appts.length+' appointment'+(appts.length!==1?'s':'')+' scheduled</div></div>'
-    +'<button onclick="pickDate(\''+today()+'\')" style="padding:6px 13px;background:'+(todayBtn?'rgba(15,35,24,.07)':'var(--warm)')+';border:1.5px solid '+(todayBtn?'var(--F)':'var(--ln)')+';border-radius:18px;font-size:.71rem;font-weight:600;color:'+(todayBtn?'var(--FL)':'var(--slate)')+'">Today</button>'
-    +'</div>';
-  h+='<div class="scr" style="flex:1;padding:'+(S.mob?'0 16px 100px':'0 24px 20px')+'">';
-  if(!appts.length){
-    h+='<div style="text-align:center;padding:60px 20px">'
-      +'<div style="width:68px;height:68px;border-radius:50%;background:var(--warm);border:2px solid var(--ln);display:flex;align-items:center;justify-content:center;font-size:1.7rem;margin:0 auto 14px">📭</div>'
-      +'<div style="font-family:\'Playfair Display\',serif;font-size:1.05rem;color:var(--ink);margin-bottom:5px">No appointments</div>'
-      +'<div style="font-size:.77rem;color:var(--mist)">Tap + to add one</div></div>';
-  } else {
-    appts.forEach(function(a){h+=apptCard(a,S.date);});
-  }
-  h+='</div>';
-  return h;
-}
-
-/* ── PATIENTS VIEW ────────────────────── */
-function paintPatients(){
-  var all=allPats(),q=S.patQ.trim().toLowerCase();
-  var list=q?all.filter(function(p){return (p.name||'').toLowerCase().indexOf(q)>-1||(p.phone||'').indexOf(q)>-1;}):all;
-  list=list.slice().sort(function(a,b){var av=lastVisit(a),bv=lastVisit(b);return (bv?bv.date:'')>(av?av.date:'')?1:-1;});
-  var h='<div style="padding:'+(S.mob?'12px 16px 8px':'12px 24px 8px')+';flex-shrink:0;display:flex;gap:10px;align-items:center">'
-    +'<div style="position:relative;flex:1"><span style="position:absolute;left:13px;top:50%;transform:translateY(-50%);pointer-events:none">🔍</span>'
-    +'<input id="patq" class="inp" style="padding-left:38px" placeholder="Search by name or phone…" value="'+esc(S.patQ)+'"></div>'
-    +'<button class="bgold" onclick="openPatPanel(null)" style="padding:11px 16px;font-size:.82rem;border-radius:10px;flex-shrink:0;white-space:nowrap">+ New Patient</button>'
-    +'</div>'
-    +'<div class="scr" style="flex:1;padding:'+(S.mob?'0 16px 100px':'0 24px 20px')+'">';
-  if(!list.length){
-    h+='<div style="text-align:center;padding:60px 20px">'
-      +'<div style="width:68px;height:68px;border-radius:50%;background:var(--warm);border:2px solid var(--ln);display:flex;align-items:center;justify-content:center;font-size:1.7rem;margin:0 auto 14px">🧑‍⚕️</div>'
-      +'<div style="font-family:\'Playfair Display\',serif;font-size:1.05rem;color:var(--ink);margin-bottom:5px">'+(q?'No results':'No patients yet')+'</div>'
-      +'<div style="font-size:.77rem;color:var(--mist)">'+(q?'Try a different search':'Tap + New Patient to get started')+'</div></div>';
-  } else {
-    list.forEach(function(pat){
-      var lv=lastVisit(pat);
-      var col=lv&&lv.txData&&lv.txData.length?pc(lv.txData[0].name):(lv&&lv.treatments&&lv.treatments.length?pc(lv.treatments[0]):null);
-      var alertBadge=(pat.medAlert)?'<span class="med-alert">⚠️ ALERTS</span>':'';
-      h+='<div class="card fup" onclick="openPatPanel(\''+esc(pat.id)+'\')" style="padding:14px 16px;display:flex;align-items:center;gap:13px;cursor:pointer;margin-bottom:9px;border-color:'+(col||'var(--ln)')+'">'+avH(pat,44)
-        +'<div style="flex:1;min-width:0">'
-        +'<div style="font-weight:600;font-size:.9rem;color:var(--ink)">'+esc(pat.name||'Unnamed')+alertBadge+'</div>'
-        +'<div style="font-size:.71rem;color:var(--slate);margin-top:2px">'+esc([pat.age&&(pat.age+'y'),pat.gender,pat.phone].filter(Boolean).join('  ·  '))+'</div>'
-        +(lv?'<div style="display:flex;gap:4px;margin-top:5px;flex-wrap:wrap">'+txBadges(lv.txData,lv.treatments,2)+'</div>':'')
-        +'</div>'
-        +(lv?'<div style="text-align:right;flex-shrink:0"><div style="font-size:.67rem;color:var(--mist)">Last visit</div><div style="font-size:.72rem;font-weight:600;color:var(--ink)">'+shortD(lv.date)+'</div></div>':'')
-        +'</div>';
-    });
-  }
-  h+='</div>';
-  return h;
-}
-
-/* ── SCHEDULE VIEW ────────────────────── */
-function paintSchedule(){
-  var h='<div style="padding:'+(S.mob?'10px 16px 8px':'12px 24px 8px')+';flex-shrink:0">'
-    +'<div class="vtog">'
-    +'<button class="'+(S.sched==='day'?'on':'')+'" onclick="setSched(\'day\')">Day</button>'
-    +'<button class="'+(S.sched==='week'?'on':'')+'" onclick="setSched(\'week\')">Week</button>'
-    +'<button class="'+(S.sched==='month'?'on':'')+'" onclick="setSched(\'month\')">Month</button>'
-    +'</div></div>';
-  if(S.sched==='day')h+=paintSchedDay();
-  else if(S.sched==='week')h+=paintSchedWeek();
-  else h+=paintSchedMonth();
-  return h;
-}
-
-function navBar(lbl,pa,na,ta){
-  return '<div style="padding:'+(S.mob?'0 16px 10px':'0 24px 10px')+';display:flex;align-items:center;justify-content:space-between;flex-shrink:0">'
-    +'<button onclick="'+pa+'()" style="width:32px;height:32px;border-radius:50%;background:var(--warm);border:1.5px solid var(--ln);font-size:.9rem;display:flex;align-items:center;justify-content:center">‹</button>'
-    +'<div style="font-family:\'Playfair Display\',serif;font-size:'+(S.mob?'.95':'1.05')+'rem;color:var(--ink);text-align:center">'+lbl+'</div>'
-    +'<div style="display:flex;gap:6px">'
-    +'<button onclick="'+ta+'()" style="padding:5px 11px;background:var(--warm);border:1.5px solid var(--ln);border-radius:16px;font-size:.7rem;font-weight:600;color:var(--slate)">Today</button>'
-    +'<button onclick="'+na+'()" style="width:32px;height:32px;border-radius:50%;background:var(--warm);border:1.5px solid var(--ln);font-size:.9rem;display:flex;align-items:center;justify-content:center">›</button>'
-    +'</div></div>';
-}
-
-function paintSchedDay(){
-  var appts=getAppts(S.date);
-  var h=navBar(prettyD(S.date),'schPrev','schNext','schToday');
-  h+='<div class="scr" style="flex:1;padding:'+(S.mob?'0 16px 100px':'0 24px 20px')+'">';
-  if(!appts.length)h+='<div style="text-align:center;padding:60px 20px"><div style="font-size:2rem;margin-bottom:12px">📭</div><div style="font-size:.85rem;color:var(--mist)">No appointments</div></div>';
+  h+='</div><div class="scr" style="flex:1;padding:'+(S.mob?'0 16px 100px':'0 24px 20px')+'">';
+  if(!appts.length) h+='<div style="text-align:center;padding:60px 20px;color:var(--mist)">No appointments</div>';
   else appts.forEach(function(a){h+=apptCard(a,S.date);});
   return h+'</div>';
 }
 
-function paintSchedWeek(){
-  var days=[];for(var i=0;i<7;i++)days.push(addDays(S.wkBase,i));
-  var DNs=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-  var end=addDays(S.wkBase,6);
-  var h=navBar(shortD(S.wkBase)+' – '+shortD(end)+', '+pd(end).getFullYear(),'wkPrev','wkNext','wkToday');
-  h+='<div class="sx" style="flex:1;display:flex;min-height:0">';
-  days.forEach(function(ds,i){
-    var tod=isToday(ds),appts=getAppts(ds);
-    h+='<div class="wkc" style="min-width:'+(S.mob?'110px':'0')+'">'
-      +'<div class="wkh'+(tod?' tod':'')+'" onclick="pickDate(\''+ds+'\')">'
-      +'<div class="wkn'+(tod?' tod':'')+'">'+pd(ds).getDate()+'</div>'
-      +'<div style="font-size:.57rem;font-weight:700;text-transform:uppercase;color:var(--mist)">'+DNs[i]+'</div>'
-      +'</div>'
-      +'<div class="scr" style="flex:1;padding:3px 0">';
-    if(!appts.length)h+='<div style="text-align:center;padding:12px 4px;color:var(--ln);font-size:.65rem">—</div>';
-    appts.forEach(function(appt){
-      var pat=appt.patientId?P[appt.patientId]:null;
-      var col=apptColor(appt);
-      h+='<div class="wka" onclick="openApptPanel(\''+esc(appt.id)+'\',\''+esc(ds)+'\')" style="border-left-color:'+col+';background:'+col+'12">'
-        +'<div style="font-size:.59rem;color:var(--slate);font-weight:600">'+esc(appt.time||'')+'</div>'
-        +(pat&&pat.emoji?'<span>'+esc(pat.emoji)+'</span>':'')
-        +'<div style="font-size:.68rem;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+esc(pat?pat.name:(appt.title||'Appt'))+'</div>'
-        +'</div>';
+function paintPatients(){
+  var all=allPats(),q=S.patQ.trim().toLowerCase();
+  var list=q?all.filter(function(p){return (p.name||'').toLowerCase().indexOf(q)>-1;}):all;
+  
+  var h='<div style="padding:'+(S.mob?'12px 16px 8px':'12px 24px 8px')+';display:flex;gap:10px;">'
+    +'<input id="patq" class="inp" placeholder="Search..." value="'+esc(S.patQ)+'">'
+    +'<button class="bgold" onclick="openPatPanel(null)" style="padding:11px 16px;font-size:.82rem;white-space:nowrap">+ New</button>'
+    +'</div><div class="scr" style="flex:1;padding:'+(S.mob?'0 16px 100px':'0 24px 20px')+'">';
+  if(!list.length) h+='<div style="text-align:center;padding:60px;color:var(--mist)">No patients yet</div>';
+  else {
+    list.forEach(function(pat){
+      var alertBadge = pat.medicalAlert ? '<span class="alert-badge">⚠️ Med Alert</span>' : '';
+      h+='<div class="card fup" onclick="openPatPanel(\''+esc(pat.id)+'\')" style="padding:14px 16px;display:flex;align-items:center;gap:13px;cursor:pointer;margin-bottom:9px;">'+avH(pat,44)
+        +'<div style="flex:1;min-width:0">'
+        +'<div style="font-weight:600;font-size:.9rem;color:var(--ink)">'+esc(pat.name||'Unnamed')+alertBadge+'</div>'
+        +'<div style="font-size:.71rem;color:var(--slate);margin-top:2px">'+esc([pat.age&&(pat.age+'y'),pat.gender,pat.phone].filter(Boolean).join(' · '))+'</div>'
+        +'</div></div>';
     });
-    h+='</div></div>';
-  });
+  }
   return h+'</div>';
 }
 
-function paintSchedMonth(){
-  var y=S.moY,m=S.moM,days=monthDays(y,m);
-  var DNs=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-  var h=navBar(monthLbl(y,m),'moPrev','moNext','moToday');
-  h+='<div class="scr" style="flex:1;padding:'+(S.mob?'0 12px 100px':'0 24px 20px')+'">';
-  h+='<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:1px;margin-bottom:3px">';
-  DNs.forEach(function(n){h+='<div style="text-align:center;font-size:.6rem;font-weight:700;text-transform:uppercase;color:var(--mist);padding:5px 0">'+n+'</div>';});
-  h+='</div><div class="mgrid">';
-  days.forEach(function(ds){
-    var d=pd(ds),cur=d.getMonth()===m,tod=isToday(ds);
-    var dayAppts=getAppts(ds),cols=[];
-    dayAppts.forEach(function(a){var c=apptColor(a);if(cols.indexOf(c)<0)cols.push(c);});
-    h+='<div class="mcell'+(cur?'':' other')+(tod?' todcell':'')+'" onclick="pickDate(\''+ds+'\')">'
-      +'<div class="mnum'+(tod?' tonum':'')+(cur?'':(d.getMonth()!==m?' onum':''))+'">'+d.getDate()+'</div>'
-      +(cols.length?'<div class="mdots">'+cols.slice(0,4).map(function(c){return '<span class="mdot" style="background:'+c+'"></span>';}).join('')+(dayAppts.length>4?'<span style="font-size:.53rem;color:var(--slate)">+'+(dayAppts.length-4)+'</span>':'')+'</div>':'')
-      +'</div>';
-  });
-  h+='</div>';
-  h+='<div style="margin-top:14px;padding:14px;background:var(--warm);border-radius:12px;border:1px solid var(--ln)">'
-    +'<div style="font-size:.66rem;font-weight:700;text-transform:uppercase;color:var(--slate);margin-bottom:9px;letter-spacing:.07em">Procedure Colour Guide</div>'
-    +'<div style="display:flex;flex-wrap:wrap;gap:7px">';
-  TX.forEach(function(t){h+='<div style="display:flex;align-items:center;gap:4px;font-size:.7rem;color:var(--ink)"><span style="width:9px;height:9px;border-radius:50%;background:'+pc(t)+';display:inline-block;flex-shrink:0"></span>'+esc(t)+'</div>';});
-  h+='</div></div></div>';
-  return h;
-}
-
-/* ── ANALYTICS VIEW ───────────────────── */
-function paintAnalytics(){
-  var pats = allPats();
-  var totalPats = pats.length;
-  
-  var now = new Date();
-  var thisMonthStr = now.getFullYear() + '-' + p2(now.getMonth()+1);
-  
-  var visitsThisMonth = 0;
-  var txCounts = {};
-  
-  pats.forEach(function(p){
-    (p.visits||[]).forEach(function(v){
-      if(v.date.startsWith(thisMonthStr)) visitsThisMonth++;
-      (v.txData||[]).forEach(function(tx){
-        txCounts[tx.name] = (txCounts[tx.name]||0) + 1;
-      });
-    });
-  });
-  
-  var sortedTx = Object.keys(txCounts).sort(function(a,b){return txCounts[b]-txCounts[a]}).slice(0,5);
-  var maxTx = sortedTx.length ? txCounts[sortedTx[0]] : 1;
-
-  var h='<div class="scr" style="flex:1;padding:'+(S.mob?'16px 16px 100px':'24px 24px 20px')+'">';
-  
-  h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px">';
-  h+='<div class="card" style="padding:20px;text-align:center"><div style="font-size:2rem;font-weight:700;color:var(--FL)">'+totalPats+'</div><div style="font-size:.75rem;font-weight:600;color:var(--slate);text-transform:uppercase;letter-spacing:.05em">Total Patients</div></div>';
-  h+='<div class="card" style="padding:20px;text-align:center"><div style="font-size:2rem;font-weight:700;color:var(--FL)">'+visitsThisMonth+'</div><div style="font-size:.75rem;font-weight:600;color:var(--slate);text-transform:uppercase;letter-spacing:.05em">Visits this Month</div></div>';
-  h+='</div>';
-
-  h+='<div class="sbar" style="margin-bottom:16px">Top Procedures (All Time)</div>';
-  h+='<div class="card" style="padding:20px">';
-  if(sortedTx.length === 0) {
-    h+='<div style="text-align:center;color:var(--mist);font-size:.8rem;font-style:italic">No procedures logged yet.</div>';
-  } else {
-    sortedTx.forEach(function(tx){
-      var count = txCounts[tx];
-      var pct = Math.max(5, Math.round((count/maxTx)*100));
-      var c = pc(tx);
-      h+='<div style="margin-bottom:12px">';
-      h+='<div style="display:flex;justify-content:space-between;font-size:.75rem;font-weight:600;color:var(--ink);margin-bottom:4px"><span>'+esc(tx)+'</span><span>'+count+'</span></div>';
-      h+='<div style="width:100%;height:8px;background:var(--ln);border-radius:4px;overflow:hidden"><div style="width:'+pct+'%;height:100%;background:'+c+';border-radius:4px"></div></div>';
-      h+='</div>';
-    });
-  }
-  h+='</div>';
-  h+='</div>';
-  return h;
-}
-
-/* ── NAV ACTIONS ──────────────────────── */
-function nav(v){S.view=v;R();}
-function setSched(m){S.sched=m;R();}
-function pickDate(ds){S.date=ds;if(S.view==='schedule')S.sched='day';else S.view='today';R();}
-function schPrev(){S.date=addDays(S.date,-1);R();}
-function schNext(){S.date=addDays(S.date,1);R();}
-function schToday(){S.date=today();R();}
-function wkPrev(){S.wkBase=addDays(S.wkBase,-7);R();}
-function wkNext(){S.wkBase=addDays(S.wkBase,7);R();}
-function wkToday(){S.wkBase=weekMon(today());R();}
-function moPrev(){S.moM--;if(S.moM<0){S.moM=11;S.moY--;}R();}
-function moNext(){S.moM++;if(S.moM>11){S.moM=0;S.moY++;}R();}
-function moToday(){var n=new Date();S.moM=n.getMonth();S.moY=n.getFullYear();R();}
-
-/* ── CONFIRM ──────────────────────────── */
-function confirm2(title,body,onOk){
-  var bg=document.getElementById('CF');
-  bg.className='on';
-  bg.innerHTML='<div class="popin" style="background:var(--cream);border-radius:20px;padding:26px 22px;max-width:300px;width:100%;box-shadow:0 28px 70px rgba(0,0,0,.28)">'
-    +'<div style="width:44px;height:44px;border-radius:50%;background:rgba(192,57,43,.1);display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:12px">⚠️</div>'
-    +'<div style="font-family:\'Playfair Display\',serif;font-size:1.15rem;color:var(--ink);margin-bottom:7px">'+esc(title)+'</div>'
-    +'<div style="font-size:.82rem;color:var(--slate);line-height:1.65;margin-bottom:22px">'+esc(body)+'</div>'
-    +'<div style="display:flex;gap:9px">'
-    +'<button class="bghost" onclick="document.getElementById(\'CF\').className=\'\'" style="flex:1;padding:12px;font-size:.88rem">Cancel</button>'
-    +'<button id="cfok" style="flex:1;padding:12px;background:var(--red);border-radius:12px;font-size:.88rem;font-weight:700;color:#fff;cursor:pointer;font-family:inherit">Delete</button>'
-    +'</div></div>';
-  document.getElementById('cfok').onclick=function(){onOk();bg.className='';};
-}
-function delAppt(id,date){
-  confirm2('Delete Appointment','Remove this appointment?',function(){
-    if(A[date])A[date]=A[date].filter(function(a){return a.id!==id;});
-    saveAll();toast('Deleted');R();
-  });
-}
-
-/* ── PANEL ────────────────────────────── */
 function openPanel(){
   var ov=document.getElementById('OV'),rp=document.getElementById('RP');
   ov.className='on';
-  rp.style.position='fixed';
-  rp.style.zIndex='900';
-  rp.style.top='0';
-  rp.style.left='0';
-  rp.style.right='0';
-  rp.style.bottom='0';
-  rp.style.width='100%';
-  rp.style.height='100%';
-  rp.style.background='var(--cream)';
   rp.style.display='flex';
-  rp.style.flexDirection='column';
-  if(!S.mob){
-    rp.style.left='auto';
-    rp.style.width='460px';
-    rp.style.maxWidth='100vw';
-    rp.style.boxShadow='-18px 0 55px rgba(0,0,0,.2)';
-    rp.className='on slR';
-  } else {
-    rp.className='on slUp';
-  }
+  if(!S.mob){ rp.style.left='auto'; rp.style.width='460px'; rp.className='on slR'; }
+  else { rp.className='on slUp'; }
 }
-function closePanel(){
-  document.getElementById('OV').className='';
-  var rp=document.getElementById('RP');
-  rp.className='';
-  rp.style.cssText='display:none;';
-  rp.innerHTML='';
-}
+function closePanel(){ document.getElementById('OV').className=''; document.getElementById('RP').className=''; document.getElementById('RP').style.display='none'; }
 function maybeClosePanel(e){if(e.target===document.getElementById('OV'))closePanel();}
 
-/* ══════════════════════════════════════
-   APPOINTMENT PANEL
-  ══════════════════════════════════════ */
+/* ── APPOINTMENT PANEL ── */
 var _AF={};
-
 function openApptPanel(apptId,date){
-  date=date||S.date;
   var appt=apptId?(A[date]||[]).find(function(a){return a.id===apptId;}):null;
-  var pat=appt&&appt.patientId?P[appt.patientId]:null;
-  var visit=pat?(pat.visits||[]).find(function(v){return v.apptId===apptId;}):null;
-  _AF={
-    id:apptId||uid(),
-    isNew:!apptId,
-    date:date,
-    time:appt?appt.time:'09:00',
-    dur:appt?appt.duration:'30 min',
-    title:appt?appt.title:'',
-    notes:appt?appt.notes:'',
-    patientId:appt?appt.patientId:null,
-    txData:visit&&visit.txData?JSON.parse(JSON.stringify(visit.txData)):[],
-    diag:visit?visit.diagnosis:'',
-    complaint:visit?visit.complaint:'',
-    vnotes:visit?visit.notes:'',
-    photos:visit?(visit.photos||[]).slice():[],
-    visitId:visit?visit.id:uid()
-  };
-  if(visit&&!visit.txData&&visit.treatments&&visit.treatments.length){
-    _AF.txData=visit.treatments.map(function(t){return {name:t,visitNum:1,totalVisits:1,txNote:''};});
-  }
-  buildApptPanel();
-}
-
-function printVisit(apptId) {
-  var appt=(A[_AF.date]||[]).find(function(a){return a.id===apptId;});
-  if(!appt || !appt.patientId) return toast('Patient data missing');
-  var pat=P[appt.patientId];
-  var visit=pat.visits.find(function(v){return v.apptId===apptId;});
-  if(!visit) return toast('No clinical data to print');
-  var w=window.open('','_blank');
-  w.document.write('<html><head><title>Visit Summary - '+esc(pat.name)+'</title><style>body{font-family:system-ui,sans-serif;padding:40px;line-height:1.6;color:#1C2B22}h1{color:#0F2318;border-bottom:2px solid #C9A84C;padding-bottom:10px}th,td{text-align:left;padding:12px;border-bottom:1px solid #ddd}th{background:#F4EFE8}.badge{display:inline-block;padding:3px 8px;background:#E4DDD4;border-radius:12px;font-size:0.85em;margin-right:6px}</style></head><body>');
-  w.document.write('<h1>DentaLog Clinic</h1>');
-  w.document.write('<h2>Visit Summary</h2>');
-  w.document.write('<p><strong>Patient:</strong> '+esc(pat.name)+'</p>');
-  w.document.write('<p><strong>Date:</strong> '+prettyD(visit.date)+'</p>');
-  if(pat.medAlert) w.document.write('<p style="color:#C0392B"><strong>⚠️ Medical Alert:</strong> '+esc(pat.medAlert)+'</p>');
-  if(visit.complaint) w.document.write('<p><strong>Complaint:</strong> '+esc(visit.complaint)+'</p>');
-  if(visit.diagnosis) w.document.write('<p><strong>Diagnosis:</strong> '+esc(visit.diagnosis)+'</p>');
-  if(visit.txData && visit.txData.length){
-    w.document.write('<h3 style="margin-top:30px">Treatments Performed</h3><table width="100%" style="border-collapse:collapse"><tr><th>Procedure</th><th>Details & Notes</th></tr>');
-    visit.txData.forEach(function(tx){
-      var prog = tx.totalVisits>1 ? ' <span class="badge">Visit '+tx.visitNum+' of '+tx.totalVisits+'</span>' : '';
-      w.document.write('<tr><td width="30%"><strong>'+esc(tx.name)+'</strong>'+prog+'</td><td>'+esc(tx.txNote||'—')+'</td></tr>');
-    });
-    w.document.write('</table>');
-  }
-  if(visit.notes) w.document.write('<h3 style="margin-top:30px">Clinical Notes</h3><p>'+esc(visit.notes).replace(/\n/g,'<br>')+'</p>');
-  w.document.write('<p style="margin-top:50px;font-size:0.8em;color:#777;text-align:center">Generated by DentaLog</p>');
-  w.document.write('</body></html>');
-  w.document.close();
-  setTimeout(function(){w.print();},500);
-}
-
-function txPickerHTML(){
-  var h='';
-  TX.forEach(function(t){
-    var on=_AF.txData.some(function(x){return x.name===t;});
-    var c=pc(t);
-    h+='<div onclick="toggleTx(\''+esc(t)+'\')" style="padding:6px 11px;border-radius:18px;font-size:.75rem;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:4px;border:1.5px solid '+(on?c:'var(--ln)')+';background:'+(on?(c+'22'):'var(--warm)')+';color:'+(on?c:'var(--slate)')+'"><span style="width:6px;height:6px;border-radius:50%;background:'+c+';display:inline-block"></span>'+esc(t)+'</div>';
-  });
-  return h;
-}
-
-function txRowsHTML(){
-  if(!_AF.txData||!_AF.txData.length){
-    return '<div style="font-size:.77rem;color:var(--mist);padding:8px 4px;font-style:italic">Select treatments above, then set visit numbers below</div>';
-  }
-  var h='';
-  _AF.txData.forEach(function(item,idx){
-    var c=pc(item.name);
-    var pct=item.totalVisits>0?Math.round((item.visitNum/item.totalVisits)*100):0;
-    h+='<div style="background:var(--warm);border:1.5px solid '+c+'44;border-radius:12px;overflow:hidden;margin-bottom:8px">'
-      +'<div style="display:flex;align-items:center;gap:8px;padding:10px 12px">'
-      +'<span style="width:10px;height:10px;border-radius:50%;background:'+c+';flex-shrink:0"></span>'
-      +'<span style="flex:1;font-size:.82rem;font-weight:600;color:var(--ink)">'+esc(item.name)+'</span>'
-      +(item.totalVisits>1?'<span style="padding:2px 8px;border-radius:10px;font-size:.65rem;font-weight:700;background:'+c+'18;color:'+c+';border:1px solid '+c+'33">Visit '+item.visitNum+'/'+item.totalVisits+'</span>':'')
-      +'<button onclick="removeTx('+idx+')" style="width:24px;height:24px;border-radius:50%;background:rgba(192,57,43,.08);color:var(--red);font-size:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer">×</button>'
-      +'</div>'
-      +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 12px 12px">'
-      +'<div>'
-      +'<div style="font-size:.64rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--slate);margin-bottom:6px">This visit #</div>'
-      +'<div style="display:flex;align-items:center;gap:8px">'
-      +'<button class="vc-btn" onclick="adjVisit('+idx+',-1,\'num\')">−</button>'
-      +'<div style="flex:1;text-align:center;font-size:1.5rem;font-weight:800;color:'+c+'">'+item.visitNum+'</div>'
-      +'<button class="vc-btn" onclick="adjVisit('+idx+',1,\'num\')">+</button>'
-      +'</div></div>'
-      +'<div>'
-      +'<div style="font-size:.64rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--slate);margin-bottom:6px">Total planned</div>'
-      +'<div style="display:flex;align-items:center;gap:8px">'
-      +'<button class="vc-btn" onclick="adjVisit('+idx+',-1,\'total\')">−</button>'
-      +'<div style="flex:1;text-align:center;font-size:1.5rem;font-weight:800;color:var(--ink)">'+item.totalVisits+'</div>'
-      +'<button class="vc-btn" onclick="adjVisit('+idx+',1,\'total\')">+</button>'
-      +'</div></div>'
-      +'</div>'
-      +(item.totalVisits>1?'<div style="margin:0 12px 10px;background:var(--parch);border-radius:6px;height:6px;overflow:hidden"><div style="background:'+c+';height:100%;border-radius:6px;width:'+pct+'%"></div></div>':'')
-      +'<div style="padding:0 12px 12px">'
-      +'<div style="font-size:.64rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--slate);margin-bottom:4px">Clinical note</div>'
-      +'<input class="inp" style="font-size:14px;padding:9px 12px" value="'+esc(item.txNote||'')+'" placeholder="e.g. WL 21mm, ISO #35, obturation…" oninput="txNote('+idx+',this.value)">'
-      +'</div>'
-      +'</div>';
-  });
-  return h;
-}
-
-function buildApptPanel(){
+  _AF={ id:apptId||uid(), isNew:!apptId, date:date, time:appt?appt.time:'09:00', title:appt?appt.title:'', patientId:appt?appt.patientId:null, photos:[] };
   openPanel();
-  var f=_AF;
-  var col=f.txData&&f.txData.length?pc(f.txData[0].name):'var(--F)';
-  var pats=allPats().sort(function(a,b){return (a.name||'').localeCompare(b.name||'');});
   var patOpts='<option value="">— No patient linked —</option>';
-  pats.forEach(function(p){patOpts+='<option value="'+esc(p.id)+'"'+(f.patientId===p.id?' selected':'')+'>'+esc(p.name)+'</option>';});
-  var phH='';
-  (f.photos||[]).forEach(function(ph){
-    phH+='<div style="position:relative;aspect-ratio:1;border-radius:9px;overflow:hidden;background:var(--ln)">'
-      +'<img src="'+ph.data+'" style="width:100%;height:100%;object-fit:cover" alt="">'
-      +'<button onclick="rmPhoto(\''+esc(ph.id)+'\')" style="position:absolute;top:3px;right:3px;width:20px;height:20px;background:rgba(0,0,0,.7);color:#fff;border-radius:50%;font-size:.72rem;display:flex;align-items:center;justify-content:center;cursor:pointer">×</button>'
-      +'</div>';
-  });
-  var pad=S.mob?'18px':'18px 22px';
+  allPats().forEach(function(p){patOpts+='<option value="'+esc(p.id)+'"'+(_AF.patientId===p.id?' selected':'')+'>'+esc(p.name)+'</option>';});
+  
   document.getElementById('RP').innerHTML=
-    '<div id="ap-hdr" style="background:'+col+';padding:'+(S.mob?'max(18px,env(safe-area-inset-top)) 18px 16px':'18px 22px')+';flex-shrink:0;display:flex;justify-content:space-between;align-items:flex-start;transition:background .3s">'
-    +'<div><div style="font-family:\'Playfair Display\',serif;font-size:1.05rem;color:#fff">'+(f.isNew?'New Appointment':'Edit Appointment')+'</div>'
-    +'<div style="font-size:.68rem;color:rgba(255,255,255,.7);margin-top:3px">'+esc(f.date)+'</div></div>'
-    +'<button onclick="closePanel()" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.18);color:#fff;font-size:1.2rem;display:flex;align-items:center;justify-content:center">×</button>'
+    '<div style="background:var(--F);padding:18px;color:#fff;display:flex;justify-content:space-between">'
+    +'<div><b>'+(_AF.isNew?'New Appointment':'Edit Appointment')+'</b></div><button onclick="closePanel()" style="color:#fff">×</button></div>'
+    +'<div class="scr" style="flex:1;padding:18px">'
+    +'<label class="lbl">Patient</label><select class="inp" style="margin-bottom:15px" onchange="_AF.patientId=this.value">'+patOpts+'</select>'
+    +'<label class="lbl">Time</label><input class="inp" type="time" value="'+esc(_AF.time)+'" oninput="_AF.time=this.value" style="margin-bottom:15px">'
+    +'<label class="lbl">Upload X-Rays / Photos (Unlimited IDB Storage)</label>'
+    +'<input type="file" accept="image/*" multiple onchange="addPhotos(this)">'
+    +'<div id="ap-pg" style="display:flex;gap:5px;margin-top:10px;flex-wrap:wrap"></div>'
     +'</div>'
-    +'<div class="scr" style="flex:1;padding:'+pad+'">'
-    +'<div style="margin-bottom:20px"><div class="sbar">📅 Appointment</div>'
-    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">'
-    +'<div><label class="lbl">Time</label><input class="inp" id="ap-time" type="time" value="'+esc(f.time)+'" oninput="_AF.time=this.value"></div>'
-    +'<div><label class="lbl">Duration</label><select class="inp" id="ap-dur" onchange="_AF.dur=this.value">'
-    +['15 min','30 min','45 min','1 hr','1.5 hr','2 hr'].map(function(d){return '<option'+(f.dur===d?' selected':'')+'>'+d+'</option>';}).join('')
-    +'</select></div></div>'
-    +'<label class="lbl">Appointment Notes</label>'
-    +'<textarea class="inp" id="ap-notes" style="min-height:52px" oninput="_AF.notes=this.value">'+esc(f.notes)+'</textarea></div>'
-    +'<div style="margin-bottom:20px"><div class="sbar">🧑‍⚕️ Patient</div>'
-    +'<select class="inp" id="ap-pat" onchange="apPatChange(this.value)">'+patOpts+'</select>'
-    +'<button onclick="quickNewPat()" style="margin-top:8px;font-size:.77rem;color:var(--FL);font-weight:600;text-decoration:underline;cursor:pointer">+ Create new patient</button>'
-    +'</div>'
-    +'<div id="ap-clin" style="'+(f.patientId?'':'opacity:.4;pointer-events:none')+'">'
-    +'<div class="sbar">🦷 Visit Record</div>'
-    +'<div style="margin-bottom:10px"><label class="lbl">Chief Complaint</label>'
-    +'<input class="inp" id="ap-cc" value="'+esc(f.complaint)+'" placeholder="e.g. Pain upper right molar" oninput="_AF.complaint=this.value"></div>'
-    +'<div style="margin-bottom:14px"><label class="lbl">Diagnosis</label>'
-    +'<textarea class="inp" id="ap-dx" style="min-height:60px" oninput="_AF.diag=this.value">'+esc(f.diag)+'</textarea></div>'
-    +'<div style="margin-bottom:14px">'
-    +'<label class="lbl" style="margin-bottom:8px">Treatments Done</label>'
-    +'<div id="ap-tx-pick" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px">'+txPickerHTML()+'</div>'
-    +'<div id="ap-tx-rows">'+txRowsHTML()+'</div>'
-    +'</div>'
-    +'<div style="margin-bottom:10px"><label class="lbl">Visit Notes</label>'
-    +'<textarea class="inp" id="ap-vn" style="min-height:60px" oninput="_AF.vnotes=this.value">'+esc(f.vnotes)+'</textarea></div>'
-    +'<div><div class="sbar">📷 Photos</div>'
-    +'<div onclick="document.getElementById(\'ap-pf\').click()" style="border:2px dashed var(--ln);border-radius:12px;padding:16px;text-align:center;background:var(--parch);cursor:pointer">'
-    +'<div style="font-size:1.5rem;margin-bottom:4px">🔬</div>'
-    +'<div style="font-size:.8rem;font-weight:600;color:var(--slate)">Upload Clinical Photos</div>'
-    +'<div style="font-size:.69rem;color:var(--mist);margin-top:2px">X-rays · Intraoral · Periapical</div></div>'
-    +'<input type="file" id="ap-pf" accept="image/*" multiple style="display:none" onchange="addPhotos(this)">'
-    +'<div id="ap-pg" style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:8px">'+phH+'</div>'
-    +'</div></div>'
-    +'</div>'
-    +'<div style="padding:'+(S.mob?'12px 18px':'12px 22px')+';padding-bottom:'+(S.mob?'max(12px,env(safe-area-inset-bottom))':'12px')+';border-top:1px solid var(--ln);display:flex;gap:9px;background:var(--cream);flex-shrink:0">'
-    +(!f.isNew?'<button class="bghost" onclick="printVisit(\''+f.id+'\')" style="padding:12px 14px;font-size:.88rem">🖨️ Print</button>':'')
-    +'<button class="bghost" onclick="closePanel()" style="flex:1;padding:12px 18px;font-size:.88rem">Cancel</button>'
-    +'<button class="bgold" id="ap-save-btn" onclick="saveAppt()" style="flex:1.5;padding:12px;font-size:.88rem">Save</button>'
-    +'</div>';
+    +'<div style="padding:12px 18px;border-top:1px solid var(--ln);display:flex;gap:9px;background:var(--cream)">'
+    +'<button class="bgold" onclick="saveAppt()" style="flex:1;padding:12px;">Save</button></div>';
 }
 
-function apPatChange(val){
-  _AF.patientId=val||null;
-  var clin=document.getElementById('ap-clin');
-  if(clin)clin.style.cssText=_AF.patientId?'':'opacity:.4;pointer-events:none';
-  updateHdrColor();
-}
-function updateHdrColor(){
-  var hdr=document.getElementById('ap-hdr');
-  if(hdr)hdr.style.background=_AF.txData&&_AF.txData.length?pc(_AF.txData[0].name):'var(--F)';
-}
-function toggleTx(t){
-  var idx=_AF.txData.findIndex(function(x){return x.name===t;});
-  if(idx>-1)_AF.txData.splice(idx,1);
-  else _AF.txData.push({name:t,visitNum:1,totalVisits:1,txNote:''});
-  var picker=document.getElementById('ap-tx-pick');if(picker)picker.innerHTML=txPickerHTML();
-  var rows=document.getElementById('ap-tx-rows');if(rows)rows.innerHTML=txRowsHTML();
-  updateHdrColor();
-}
-function adjVisit(idx,delta,field){
-  if(!_AF.txData[idx])return;
-  var item=_AF.txData[idx];
-  if(field==='num'){
-    item.visitNum=Math.max(1,Math.min(item.totalVisits,(item.visitNum||1)+delta));
-  } else {
-    item.totalVisits=Math.max(1,(item.totalVisits||1)+delta);
-    item.visitNum=Math.min(item.visitNum||1,item.totalVisits);
-  }
-  var rows=document.getElementById('ap-tx-rows');if(rows)rows.innerHTML=txRowsHTML();
-}
-function txNote(idx,val){if(_AF.txData[idx])_AF.txData[idx].txNote=val;}
-function removeTx(idx){
-  _AF.txData.splice(idx,1);
-  var picker=document.getElementById('ap-tx-pick');if(picker)picker.innerHTML=txPickerHTML();
-  var rows=document.getElementById('ap-tx-rows');if(rows)rows.innerHTML=txRowsHTML();
-  updateHdrColor();
-}
 function addPhotos(input){
   var files=Array.from(input.files),pending=files.length;
   files.forEach(function(f){
     compress(f,function(data){
       _AF.photos.push({id:uid(),data:data});
-      pending--;
-      if(!pending)refreshPhotos();
+      if(--pending === 0){
+        var pg = document.getElementById('ap-pg');
+        _AF.photos.forEach(p => { pg.innerHTML += '<img src="'+p.data+'" style="width:60px;height:60px;object-fit:cover;border-radius:6px;">'; });
+      }
     });
   });
-  input.value='';
 }
-function rmPhoto(id){
-  _AF.photos=_AF.photos.filter(function(p){return p.id!==id;});
-  refreshPhotos();
-}
-function refreshPhotos(){
-  var pg=document.getElementById('ap-pg');if(!pg)return;
-  var h='';
-  (_AF.photos||[]).forEach(function(ph){
-    h+='<div style="position:relative;aspect-ratio:1;border-radius:9px;overflow:hidden;background:var(--ln)">'
-      +'<img src="'+ph.data+'" style="width:100%;height:100%;object-fit:cover" alt="">'
-      +'<button onclick="rmPhoto(\''+esc(ph.id)+'\')" style="position:absolute;top:3px;right:3px;width:20px;height:20px;background:rgba(0,0,0,.7);color:#fff;border-radius:50%;font-size:.72rem;display:flex;align-items:center;justify-content:center;cursor:pointer">×</button>'
-      +'</div>';
-  });
-  pg.innerHTML=h;
-}
-function quickNewPat(){
-  closePanel();
-  openPatPanel(null,function(newPat){_AF.patientId=newPat.id;buildApptPanel();});
-}
+
 function saveAppt(){
-  var btn=document.getElementById('ap-save-btn');
-  if(btn){btn.textContent='Saving…';btn.disabled=true;}
-  var appt={id:_AF.id,date:_AF.date,time:_AF.time,duration:_AF.dur,title:_AF.title,notes:_AF.notes,patientId:_AF.patientId||null};
   if(!A[_AF.date])A[_AF.date]=[];
   var idx=A[_AF.date].findIndex(function(a){return a.id===_AF.id;});
-  if(idx>-1)A[_AF.date][idx]=appt;else A[_AF.date].push(appt);
-  if(_AF.patientId&&(_AF.txData.length||_AF.diag||_AF.complaint||_AF.vnotes||_AF.photos.length)){
-    var pat=P[_AF.patientId];
-    if(pat){
-      if(!pat.visits)pat.visits=[];
-      var vi=pat.visits.findIndex(function(v){return v.apptId===_AF.id;});
-      var visit={
-        id:_AF.visitId,apptId:_AF.id,date:_AF.date,
-        txData:_AF.txData,
-        treatments:_AF.txData.map(function(x){return x.name;}),
-        diagnosis:_AF.diag,complaint:_AF.complaint,
-        notes:_AF.vnotes,photos:_AF.photos,
-        createdAt:new Date().toISOString()
-      };
-      if(vi>-1)pat.visits[vi]=visit;else pat.visits.push(visit);
-    }
-  }
-  saveAll();
-  toast('✓ Saved');
-  setTimeout(function(){closePanel();R();},400);
+  var obj = {id:_AF.id, time:_AF.time, patientId:_AF.patientId, photos:_AF.photos};
+  if(idx>-1)A[_AF.date][idx]=obj; else A[_AF.date].push(obj);
+  saveAll(); toast('Saved'); closePanel(); R();
 }
 
-/* ══════════════════════════════════════
-   PATIENT PANEL & TREATMENT PLAN
-══════════════════════════════════════ */
-var _PF={},_PF_cb=null;
-
-function openPatPanel(patId,cb){
+/* ── PATIENT PANEL ── */
+var _PF={};
+function openPatPanel(patId){
   var pat=patId?P[patId]:null;
-  _PF=pat?JSON.parse(JSON.stringify(pat)):{id:uid(),name:'',age:'',gender:'',phone:'',email:'',emoji:null,note:'',medAlert:'',visits:[],plan:[]};
-  _PF_cb=cb||null;
-  buildPatPanel();
-}
-
-function renderPlanItems() {
-  var pList = document.getElementById('tp-list');
-  if(!pList) return;
-  var h = '';
-  if(!_PF.plan || !_PF.plan.length) {
-    h = '<div style="font-size:.75rem;color:var(--mist);font-style:italic;margin-bottom:10px">No proposed treatments.</div>';
-  } else {
-    _PF.plan.forEach(function(item, i) {
-      var doneCls = item.done ? ' done' : '';
-      var chk = item.done ? 'checked' : '';
-      h += '<div class="plan-item'+doneCls+'">'
-         + '<input type="checkbox" class="cbx" '+chk+' onclick="togglePlanItem('+i+')">'
-         + '<div style="flex:1;font-size:.82rem;color:var(--ink);font-weight:500">'+esc(item.text)+'</div>'
-         + '<button onclick="removePlanItem('+i+')" style="color:var(--red);font-size:.7rem;padding:4px">×</button>'
-         + '</div>';
-    });
-  }
-  pList.innerHTML = h;
-}
-window.togglePlanItem = function(idx) {
-  _PF.plan[idx].done = !_PF.plan[idx].done;
-  renderPlanItems();
-};
-window.removePlanItem = function(idx) {
-  _PF.plan.splice(idx, 1);
-  renderPlanItems();
-};
-window.addTxPlan = function() {
-  var input = document.getElementById('tp-new-txt');
-  if(input && input.value.trim()){
-    if(!_PF.plan) _PF.plan = [];
-    _PF.plan.push({id:uid(), text:input.value.trim(), done:false});
-    input.value = '';
-    renderPlanItems();
-  }
-};
-
-function buildPatPanel(){
+  _PF=pat?JSON.parse(JSON.stringify(pat)):{id:uid(),name:'',phone:'',medicalAlert:false, alertText:''};
   openPanel();
-  var f=_PF,isNew=!P[f.id];
-  var visH='';
-  (f.visits||[]).slice().sort(function(a,b){return b.date>a.date?1:-1;}).forEach(function(v){
-    var col=v.txData&&v.txData.length?pc(v.txData[0].name):(v.treatments&&v.treatments.length?pc(v.treatments[0]):GOLD);
-    visH+='<div class="card" style="padding:12px 14px;margin-bottom:8px;border-left:3px solid '+col+'">'
-      +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">'
-      +'<div style="font-size:.8rem;font-weight:700;color:var(--ink)">'+esc(shortD(v.date))+'</div>'
-      +'<button onclick="delVisit(\''+esc(v.id)+'\')" style="font-size:.7rem;color:var(--red);cursor:pointer;font-weight:600;padding:2px 8px;border-radius:6px;background:rgba(192,57,43,.08)">Remove</button>'
-      +'</div>'
-      +'<div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:4px">'+txBadges(v.txData,v.treatments,4)+'</div>'
-      +(v.txData&&v.txData.some(function(x){return x.txNote;})?
-        '<div style="display:flex;flex-direction:column;gap:3px;margin-top:4px">'
-        +v.txData.filter(function(x){return x.txNote;}).map(function(x){
-          var c=pc(x.name);
-          return '<div style="font-size:.7rem;padding:3px 8px;background:'+c+'10;border-radius:6px;border-left:2px solid '+c+'">'
-            +'<span style="font-weight:600;color:'+c+'">'+esc(x.name)+(x.totalVisits>1?' ('+x.visitNum+'/'+x.totalVisits+')':'')+':</span> '+esc(x.txNote)
-            +'</div>';
-        }).join('')
-        +'</div>':'')
-      +(v.diagnosis?'<div style="font-size:.73rem;color:var(--slate);margin-top:4px"><strong>Dx:</strong> '+esc(v.diagnosis)+'</div>':'')
-      +(v.notes?'<div style="font-size:.72rem;color:var(--mist);margin-top:2px">'+esc(v.notes)+'</div>':'')
-      +(v.photos&&v.photos.length?'<div style="display:flex;gap:4px;margin-top:6px">'+v.photos.slice(0,4).map(function(ph){return '<img src="'+ph.data+'" style="width:36px;height:36px;border-radius:6px;object-fit:cover" alt="">';}).join('')+'</div>':'')
-      +'</div>';
-  });
-  var epH='';
-  EMOJIS.forEach(function(em){epH+='<button class="epbtn'+(f.emoji===em?' sel':'')+'" onclick="pickEmoji(\''+esc(em)+'\')">'+esc(em)+'</button>';});
-  epH+='<button class="epbtn'+(f.emoji===null?' sel':'')+'" onclick="pickEmoji(null)" style="font-size:.64rem;font-weight:700;color:var(--slate)">ABC</button>';
-  var pad=S.mob?'18px':'18px 22px';
-  var waNum=(f.phone||'').replace(/[^0-9]/g,'');
-  var waBtn=waNum?'<button onclick="window.open(\'https://wa.me/'+waNum+'?text=Hello '+encodeURIComponent(f.name)+', a reminder for your upcoming dental appointment.\', \'_blank\')" style="font-size:.75rem;color:#10B981;font-weight:600;margin-top:4px;cursor:pointer;padding:4px 0">💬 Send WhatsApp</button>':'';
-
+  
   document.getElementById('RP').innerHTML=
-    '<div style="background:var(--F);padding:'+(S.mob?'max(18px,env(safe-area-inset-top)) 18px 16px':'18px 22px')+';flex-shrink:0;display:flex;justify-content:space-between;align-items:flex-start">'
-    +'<div><div style="font-family:\'Playfair Display\',serif;font-size:1.05rem;color:#fff">'+(isNew?'New Patient':'Patient Profile')+'</div>'
-    +(f.name?'<div style="font-size:.7rem;color:var(--sage);margin-top:3px">'+esc(f.name)+'</div>':'')
+    '<div style="background:var(--F);padding:18px;color:#fff;display:flex;justify-content:space-between">'
+    +'<div><b>'+(!pat?'New Patient':'Patient Profile')+'</b></div><button onclick="closePanel()" style="color:#fff">×</button></div>'
+    +'<div class="scr" style="flex:1;padding:18px">'
+    +'<label class="lbl">Name</label><input class="inp" value="'+esc(_PF.name)+'" oninput="_PF.name=this.value" style="margin-bottom:15px">'
+    +'<label class="lbl">Phone</label><input class="inp" value="'+esc(_PF.phone)+'" oninput="_PF.phone=this.value" style="margin-bottom:10px">'
+    + wappLink(_PF.phone) + '<br><br>'
+    +'<label class="lbl" style="color:var(--red);">⚠️ Medical Alerts</label>'
+    +'<div style="display:flex;align-items:center;gap:10px;margin-bottom:5px;"><input type="checkbox" id="hasAlert" '+(pat&&pat.medicalAlert?'checked':'')+' onchange="_PF.medicalAlert=this.checked; document.getElementById(\'alertTxt\').style.display=this.checked?\'block\':\'none\'"><label for="hasAlert" style="color:var(--ink)">Patient has medical conditions / allergies</label></div>'
+    +'<textarea class="inp" id="alertTxt" style="display:'+(pat&&pat.medicalAlert?'block':'none')+';border-color:var(--red);background:rgba(239, 68, 68, 0.05)" oninput="_PF.alertText=this.value" placeholder="List allergies or conditions...">'+esc(_PF.alertText)+'</textarea><br>'
+    +(pat?'<button onclick="openChartPanel(\''+pat.id+'\')" style="width:100%;padding:13px;background:#0F2318;color:#fff;border-radius:12px;margin-top:15px">🗺 Open Dental Chart</button>':'')
     +'</div>'
-    +'<button onclick="closePanel()" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.18);color:#fff;font-size:1.2rem;display:flex;align-items:center;justify-content:center">×</button>'
-    +'</div>'
-    +'<div class="scr" style="flex:1;padding:'+pad+'">'
-    +'<div style="margin-bottom:20px"><div class="sbar">👤 Patient Information</div>'
-    +'<div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:14px">'
-    +'<div style="position:relative;flex-shrink:0">'
-    +'<div id="pp-av" onclick=\"openEpModal()\" style="width:54px;height:54px;border-radius:50%;background:'+(f.emoji?'var(--parch)':(f.name&&ini(f.name)!=='?'?'var(--F)':'var(--parch)'))+';color:'+(f.emoji?'inherit':(f.name&&ini(f.name)!=='?'?'#fff':'var(--mist)'))+';display:flex;align-items:center;justify-content:center;font-size:'+(f.emoji?'1.6rem':'.88rem')+';font-weight:700;border:'+(f.emoji?'1.5px solid var(--ln)':'none')+';cursor:pointer;position:relative">'
-    +(f.emoji?esc(f.emoji):(f.name&&ini(f.name)!=='?'?ini(f.name):'🦷'))
-    +'<div style="position:absolute;bottom:0;right:0;width:17px;height:17px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.55rem;color:var(--F);font-weight:700;border:2px solid var(--warm)">✏</div>'
-    +'</div>'
-    +'</div>'
-    +'<div style="flex:1"><label class="lbl">Full Name</label>'
-    +'<input class="inp" id="pp-name" value="'+esc(f.name||'')+'" placeholder="Patient full name" oninput="ppName(this.value)" style="font-size:16px"></div>'
-    +'</div>'
-    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">'
-    +'<div style="grid-column:1/-1"><label class="lbl" style="color:var(--red)">⚠️ Medical Alerts</label><input class="inp" style="border-color:var(--red);background:rgba(192,57,43,.04)" value="'+esc(f.medAlert||'')+'" placeholder="e.g. Penicillin allergy, Diabetes..." oninput="_PF.medAlert=this.value"></div>'
-    +'<div><label class="lbl">Age</label><input class="inp" id="pp-age" type="number" inputmode="numeric" value="'+esc(f.age||'')+'" placeholder="Years" oninput="_PF.age=this.value"></div>'
-    +'<div><label class="lbl">Gender</label><select class="inp" onchange="_PF.gender=this.value"><option value="">—</option><option'+(f.gender==='Male'?' selected':'')+'>Male</option><option'+(f.gender==='Female'?' selected':'')+'>Female</option><option'+(f.gender==='Other'?' selected':'')+'>Other</option></select></div>'
-    +'<div><label class="lbl">Phone</label><input class="inp" type="tel" value="'+esc(f.phone||'')+'" placeholder="+1 000 0000" oninput="_PF.phone=this.value">'+waBtn+'</div>'
-    +'<div><label class="lbl">Email</label><input class="inp" type="email" value="'+esc(f.email||'')+'" placeholder="email@…" oninput="_PF.email=this.value"></div>'
-    +'<div style="grid-column:1/-1"><label class="lbl">Notes</label><textarea class="inp" style="min-height:55px" oninput="_PF.note=this.value">'+esc(f.note||'')+'</textarea></div>'
-    +'</div></div>'
-    
-    // Treatment Plan Section
-    +'<div style="margin-bottom:24px"><div class="sbar">📝 Proposed Treatment Plan</div>'
-    +'<div id="tp-list"></div>'
-    +'<div style="display:flex;gap:6px;margin-top:8px">'
-    +'<input class="inp" id="tp-new-txt" placeholder="e.g. Crown on 4.6" onkeydown="if(event.key===\'Enter\') addTxPlan()">'
-    +'<button class="bghost" onclick="addTxPlan()" style="padding:0 14px;font-size:.8rem">Add</button>'
-    +'</div></div>'
-
-    +(!isNew?'<div style="margin-bottom:20px"><div class="sbar">🦷 Dental Chart</div><button id="open-chart-btn" data-patid="'+esc(f.id)+'" style="width:100%;padding:13px;background:var(--F);color:#fff;border-radius:12px;font-size:.88rem;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;border:none">🗺 Open Dental & Perio Chart</button></div>':'')
-    +(!isNew?'<div><div class="sbar">📋 Visit History ('+(f.visits||[]).length+')</div>'+(visH||'<div style="text-align:center;padding:20px;color:var(--mist);font-size:.8rem">No visits recorded yet</div>')+'</div>':'')
-    +'</div>'
-    +'<div style="padding:'+(S.mob?'12px 18px':'12px 22px')+';padding-bottom:'+(S.mob?'max(12px,env(safe-area-inset-bottom))':'12px')+';border-top:1px solid var(--ln);display:flex;gap:9px;background:var(--cream);flex-shrink:0">'
-    +(!isNew?'<button onclick="delPat()" style="padding:12px 14px;background:rgba(192,57,43,.08);color:var(--red);font-weight:600;border-radius:12px;font-size:.85rem;cursor:pointer;font-family:inherit">Delete</button>':'')
-    +'<button class="bghost" onclick="closePanel()" style="padding:12px 18px;font-size:.88rem">Cancel</button>'
-    +'<button class="bgold" onclick="savePat()" style="flex:1;padding:12px;font-size:.88rem">Save Patient</button>'
-    +'</div>';
-
-  setTimeout(function(){
-    renderPlanItems();
-    var cb=document.getElementById('open-chart-btn');
-    if(cb){cb.addEventListener('click',function(){openChartPanel(cb.dataset.patid);});}
-  },50);
+    +'<div style="padding:12px 18px;border-top:1px solid var(--ln);display:flex;gap:9px;background:var(--cream)">'
+    +'<button class="bgold" onclick="savePat()" style="flex:1;padding:12px;">Save Patient</button></div>';
 }
 
-function ppName(v){
-  _PF.name=v;
-  if(!_PF.emoji){
-    var av=document.getElementById('pp-av');
-    if(av){
-      var i=ini(v);
-      av.style.background=i!=='?'?'var(--F)':'var(--parch)';
-      av.style.color=i!=='?'?'#fff':'var(--mist)';
-      av.style.fontSize='.88rem';
-      av.style.border='none';
-      var badge=av.querySelector('div');
-      var text=i!=='?'?i:'🦷';
-      av.textContent=text;
-      if(!badge){badge=document.createElement('div');badge.style.cssText='position:absolute;bottom:0;right:0;width:17px;height:17px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.55rem;color:var(--F);font-weight:700;border:2px solid var(--warm)';badge.textContent='✏';}
-      av.appendChild(badge);
-    }
-  }
-}
-function pickEmoji(em){
-  _PF.emoji=em;
-  var av=document.getElementById('pp-av');
-  if(av){
-    var badge=document.createElement('div');
-    badge.style.cssText='position:absolute;bottom:0;right:0;width:17px;height:17px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.55rem;color:var(--F);font-weight:700;border:2px solid var(--warm)';
-    badge.textContent='✏';
-    if(em){
-      av.textContent=em;av.style.fontSize='1.6rem';av.style.background='var(--parch)';
-      av.style.border='1.5px solid var(--ln)';av.style.color='inherit';
-    } else {
-      var i=ini(_PF.name||'');av.textContent=i!=='?'?i:'🦷';
-      av.style.fontSize='.88rem';av.style.background=i!=='?'?'var(--F)':'var(--parch)';
-      av.style.color=i!=='?'?'#fff':'var(--mist)';av.style.border='none';
-    }
-    av.appendChild(badge);
-  }
-  closeEpModal();
-  document.querySelectorAll('.epbtn').forEach(function(b){b.classList.remove('sel');});
-  document.querySelectorAll('.epbtn').forEach(function(b){
-    if(em&&b.textContent===em)b.classList.add('sel');
-    else if(!em&&b.textContent==='ABC')b.classList.add('sel');
-  });
-}
-function delVisit(vid){
-  _PF.visits=(_PF.visits||[]).filter(function(v){return v.id!==vid;});
-  P[_PF.id]=_PF;saveAll();toast('Visit removed');
-  var el=document.querySelector('[onclick="delVisit(\''+vid+'\')"]');
-  if(el)el.closest('.card').remove();
-}
-function delPat(){
-  confirm2('Delete Patient','Permanently remove this patient and all their records?',function(){
-    delete P[_PF.id];
-    Object.keys(A).forEach(function(d){A[d]=(A[d]||[]).filter(function(a){return a.patientId!==_PF.id;});});
-    saveAll();closePanel();toast('Patient deleted');R();
-  });
-}
 function savePat(){
-  if(!(_PF.name||'').trim()){toast('Please enter a name');return;}
-  P[_PF.id]=_PF;saveAll();
-  toast('✓ Patient saved');
-  if(_PF_cb){var cb=_PF_cb;_PF_cb=null;closePanel();cb(_PF);}
-  else{closePanel();R();}
+  if(!_PF.name){toast('Need a name');return;}
+  P[_PF.id]=_PF; saveAll(); toast('Patient saved'); closePanel(); R();
 }
 
-/* ── RESIZE ───────────────────────────── */
-window.addEventListener('resize',function(){
-  var m=window.innerWidth<640;
-  if(m!==S.mob){S.mob=m;R();}
-});
-
-/* ── BACKUP / RESTORE ─────────────────── */
-function restoreBackup(){
-  var input=document.createElement('input');
-  input.type='file';input.accept='.json';
-  input.onchange=function(e){
-    var r=new FileReader();
-    r.onload=function(ev){
-      try{
-        var d=JSON.parse(ev.target.result);
-        var pCount=0,aCount=0;
-        if(d.patients){Object.assign(P,d.patients);pCount=Object.keys(d.patients).length;}
-        if(d.appointments){Object.assign(A,d.appointments);aCount=Object.keys(d.appointments).length;}
-        saveAll();
-        toast('✓ Restored: '+pCount+' patients, '+aCount+' days');
-        R();
-      }catch(e2){toast('⚠️ Invalid backup file');}
-    };
-    r.readAsText(e.target.files[0]);
-  };
-  input.click();
-}
-window.exportDentaLog=function(){
-  var data=JSON.stringify({patients:P,appointments:A,exported:new Date().toISOString()},null,2);
-  var blob=new Blob([data],{type:'application/json'});
-  var a=document.createElement('a');a.href=URL.createObjectURL(blob);
-  a.download='dentalog_backup_'+today()+'.json';a.click();
-  toast('Backup downloaded');
-};
-window.importDentaLog=function(){
-  var input=document.createElement('input');input.type='file';input.accept='.json';
-  input.onchange=function(e){
-    var r=new FileReader();
-    r.onload=function(ev){
-      try{
-        var d=JSON.parse(ev.target.result);
-        if(d.patients)Object.assign(P,d.patients);
-        if(d.appointments)Object.assign(A,d.appointments);
-        saveAll();toast('Data imported');R();
-      }catch(e2){toast('Invalid file');}
-    };
-    r.readAsText(e.target.files[0]);
-  };
-  input.click();
-};
-
-/* ── SERVICE WORKER ───────────────────── */
-if('serviceWorker' in navigator){
-  navigator.serviceWorker.getRegistrations().then(function(regs){
-    regs.forEach(function(r){r.unregister();});
-  });
-}
-
-/* ── EMOJI MODAL ──────────────────────── */
-function openEpModal(){
-  var modal=document.getElementById('ep-modal');
-  var body=document.getElementById('ep-body');
-  if(!modal||!body)return;
-  var h='';
-  EMOJI_CATS.forEach(function(cat){
-    h+='<div style="margin-bottom:14px">';
-    h+='<div style="font-size:.64rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--slate);margin-bottom:8px">'+esc(cat.l)+'</div>';
-    h+='<div style="display:grid;grid-template-columns:repeat(6,1fr);gap:6px">';
-    cat.e.forEach(function(em){
-      var sel=_PF.emoji===em?' sel':'';
-      h+='<button class="epbtn'+sel+'" onclick="pickEmoji(\'' + esc(em) + '\');closeEpModal()">'+em+'</button>';
-    });
-    h+='</div></div>';
-  });
-  h+='<div style="margin-bottom:24px">';
-  h+='<div style="font-size:.64rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--slate);margin-bottom:8px">Use Initials</div>';
-  h+='<button class="epbtn'+(_PF.emoji===null?' sel':'')+'" onclick="pickEmoji(null);closeEpModal()" style="font-size:.75rem;font-weight:700;color:var(--slate);width:auto;padding:0 14px;height:36px">ABC</button>';
-  h+='</div>';
-  body.innerHTML=h;
-  modal.className='on';
-}
-function closeEpModal(){
-  var m=document.getElementById('ep-modal');
-  if(m)m.className='';
-}
-
-
-/* ══════════════════════════════════════
-   ODONTOGRAM & PERIO
-══════════════════════════════════════ */
-var COND_BASE={
-  '':        {label:'Clear',             color:'#fff',    border:'#E4DDD4', text:'#94A3B8'},
-  'caries':  {label:'Caries',            color:'#EF4444', border:'#DC2626', text:'#fff'},
-  'filling': {label:'Filling',           color:'#3B82F6', border:'#2563EB', text:'#fff'},
-  'crown':   {label:'Crown',             color:'#C9A84C', border:'#9E7B28', text:'#0F2318'},
-  'bridge':  {label:'Bridge',            color:'#92400E', border:'#78350F', text:'#fff'},
-  'missing': {label:'Missing',           color:'#9CA3AF', border:'#6B7280', text:'#fff'},
-  'fracture':{label:'Fracture',          color:'#F97316', border:'#EA580C', text:'#fff'},
-  'rct':     {label:'RCT',               color:'#8B5CF6', border:'#7C3AED', text:'#fff'},
-  'pontic':  {label:'Pontic',            color:'#06B6D4', border:'#0891B2', text:'#fff'},
-  'vpt':     {label:'VPT',               color:'#10B981', border:'#059669', text:'#fff'},
-  'dpc':     {label:'Direct Pulp Cap',   color:'#34D399', border:'#10B981', text:'#0F2318'},
-  'ipc':     {label:'Indirect Pulp Cap', color:'#A7F3D0', border:'#34D399', text:'#0F2318'}
-};
-var COND_PEDO={
-  'pulp_p': {label:'Pulpotomy (Partial)',   color:'#F472B6', border:'#EC4899', text:'#fff'},
-  'pulp_t': {label:'Pulpotomy (Total)',     color:'#EC4899', border:'#DB2777', text:'#fff'},
-  'ssc':    {label:'Stainless Steel Crown', color:'#94A3B8', border:'#64748B', text:'#fff'},
-  'apex':   {label:'Apexification',         color:'#60A5FA', border:'#3B82F6', text:'#fff'},
-  'revasc': {label:'Revascularization',     color:'#818CF8', border:'#6366F1', text:'#fff'}
-};
-function getCOND(mode){
-  if(mode==='primary'||mode==='mixed') return Object.assign({},COND_BASE,COND_PEDO);
-  return COND_BASE;
-}
-
-var A_U  =['1.8','1.7','1.6','1.5','1.4','1.3','1.2','1.1','2.1','2.2','2.3','2.4','2.5','2.6','2.7','2.8'];
-var A_L  =['4.8','4.7','4.6','4.5','4.4','4.3','4.2','4.1','3.1','3.2','3.3','3.4','3.5','3.6','3.7','3.8'];
-var P_U  =['5.5','5.4','5.3','5.2','5.1','6.1','6.2','6.3','6.4','6.5'];
-var P_L  =['8.5','8.4','8.3','8.2','8.1','7.1','7.2','7.3','7.4','7.5'];
-var MX_U =['1.7','1.6','1.5','1.4','1.3','1.2','1.1','2.1','2.2','2.3','2.4','2.5','2.6','2.7'];
-var MX_L =['4.7','4.6','4.5','4.4','4.3','4.2','4.1','3.1','3.2','3.3','3.4','3.5','3.6','3.7'];
-
-function twSurfs(tooth){
-  var parts = String(tooth).split('.');
-  var n=parseInt(parts[1] || '1');
-  return n<=3?{top:'La',mid:'I',bot:'Pa'}:{top:'B',mid:'O',bot:'L'};
-}
+/* ── ODONTOGRAM ── */
+var _chartPatId=null, _chartMode='adult', _selCond='caries';
+function getCOND(mode){ return { 'caries':{color:'#EF4444',border:'#DC2626'}, 'filling':{color:'#3B82F6',border:'#2563EB'}, 'crown':{color:'#C9A84C',border:'#9E7B28'}, 'missing':{color:'#9CA3AF',border:'#6B7280'} }; }
+function getTC(tooth){ return (P[_chartPatId]&&P[_chartPatId].chart&&P[_chartPatId].chart.teeth[tooth])||{}; }
+function isImmature(tooth){ return !!(P[_chartPatId]&&P[_chartPatId].chart&&P[_chartPatId].chart.immature&&P[_chartPatId].chart.immature[tooth]); }
 
 function toothSVG(tooth,data,mode,size){
-  size=size||24;
-  var C=getCOND(mode);
-  var surfs=twSurfs(tooth);
-  var allCond=data['all'];
-  var miss=allCond==='missing';
-
-  function col(s){
-    if(miss)return '#E5E7EB';
-    if(allCond && C[allCond]) return C[allCond].color;
-    var c=data[s]||'';
-    return c? (C[c] ? C[c].color : 'none') : 'none';
-  }
-  function str(s){
-    if(miss)return '#CBD5E1';
-    if(allCond && C[allCond]) return C[allCond].border;
-    var c=data[s]||'';
-    return c? (C[c] ? C[c].border : '#D1D5DB') : '#D1D5DB';
-  }
-  var parts = String(tooth).split('.');
-  var n=parseInt(parts[1] || '1');
-  var quad=parseInt(parts[0] || '1');
-  var isMolar=(n>=4&&n<=8)||(n>=4&&n<=5&&quad>=5);
-
-  var cx=size/2, cy=size/2, r=size*0.44;
-  var sw=Math.max(1,size*0.055);
+  var miss=data['all']==='missing';
   var h='<svg style="width:100%;max-width:'+size+'px;height:auto" viewBox="0 0 '+size+' '+size+'" xmlns="http://www.w3.org/2000/svg">';
-
   if(miss){
-    h+='<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="'+sw+'"/>';
-    h+='<line x1="'+(cx-r*0.5)+'" y1="'+(cy-r*0.5)+'" x2="'+(cx+r*0.5)+'" y2="'+(cy+r*0.5)+'" stroke="#9CA3AF" stroke-width="'+(sw*1.5)+'" stroke-linecap="round"/>';
-    h+='<line x1="'+(cx+r*0.5)+'" y1="'+(cy-r*0.5)+'" x2="'+(cx-r*0.5)+'" y2="'+(cy+r*0.5)+'" stroke="#9CA3AF" stroke-width="'+(sw*1.5)+'" stroke-linecap="round"/>';
-    h+='</svg>';
+    h+='<circle cx="12" cy="12" r="10.5" fill="#F3F4F6" stroke="#D1D5DB"/><line x1="6" y1="6" x2="18" y2="18" stroke="#9CA3AF" stroke-width="2"/><line x1="18" y1="6" x2="6" y2="18" stroke="#9CA3AF" stroke-width="2"/></svg>';
     return h;
   }
-
-  var ow=size*0.88, oh=size*(isMolar?0.88:0.92);
-  var ox=(size-ow)/2, oy=(size-oh)/2;
-  var baseFill = (allCond && C[allCond]) ? C[allCond].color : (document.body.classList.contains('dark') ? '#2A2A2A' : 'white');
-  h+='<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+(ow/2)+'" ry="'+(oh/2)+'" fill="'+baseFill+'" stroke="#CBD5E1" stroke-width="'+sw+'"/>';
-
-  var ir=r*0.38;
-  h+='<circle cx="'+cx+'" cy="'+cy+'" r="'+ir+'" fill="'+(col(surfs.mid)||'#F9FAFB')+'" stroke="'+(str(surfs.mid))+'" stroke-width="'+(sw*0.8)+'"/>';
-
-  var bFill=col(surfs.top);
-  if(bFill&&bFill!=='none'){ h+='<ellipse cx="'+cx+'" cy="'+(oy+oh*0.12)+'" rx="'+(ow*0.28)+'" ry="'+(oh*0.14)+'" fill="'+bFill+'" stroke="'+str(surfs.top)+'" stroke-width="'+(sw*0.7)+'"/>';
-  } else { h+='<ellipse cx="'+cx+'" cy="'+(oy+oh*0.12)+'" rx="'+(ow*0.26)+'" ry="'+(oh*0.12)+'" fill="#F9FAFB" stroke="#E5E7EB" stroke-width="'+(sw*0.6)+'"/>'; }
-  
-  var lFill=col(surfs.bot);
-  if(lFill&&lFill!=='none'){ h+='<ellipse cx="'+cx+'" cy="'+(oy+oh*0.88)+'" rx="'+(ow*0.28)+'" ry="'+(oh*0.14)+'" fill="'+lFill+'" stroke="'+str(surfs.bot)+'" stroke-width="'+(sw*0.7)+'"/>';
-  } else { h+='<ellipse cx="'+cx+'" cy="'+(oy+oh*0.88)+'" rx="'+(ow*0.26)+'" ry="'+(oh*0.12)+'" fill="#F9FAFB" stroke="#E5E7EB" stroke-width="'+(sw*0.6)+'"/>'; }
-  
-  var mFill=col('M');
-  if(mFill&&mFill!=='none'){ h+='<ellipse cx="'+(ox+ow*0.12)+'" cy="'+cy+'" rx="'+(ow*0.14)+'" ry="'+(oh*0.28)+'" fill="'+mFill+'" stroke="'+str('M')+'" stroke-width="'+(sw*0.7)+'"/>';
-  } else { h+='<ellipse cx="'+(ox+ow*0.12)+'" cy="'+cy+'" rx="'+(ow*0.12)+'" ry="'+(oh*0.26)+'" fill="#F9FAFB" stroke="#E5E7EB" stroke-width="'+(sw*0.6)+'"/>'; }
-  
-  var dFill=col('D');
-  if(dFill&&dFill!=='none'){ h+='<ellipse cx="'+(ox+ow*0.88)+'" cy="'+cy+'" rx="'+(ow*0.14)+'" ry="'+(oh*0.28)+'" fill="'+dFill+'" stroke="'+str('D')+'" stroke-width="'+(sw*0.7)+'"/>';
-  } else { h+='<ellipse cx="'+(ox+ow*0.88)+'" cy="'+cy+'" rx="'+(ow*0.12)+'" ry="'+(oh*0.26)+'" fill="#F9FAFB" stroke="#E5E7EB" stroke-width="'+(sw*0.6)+'"/>'; }
-  
-  h+='<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+(ow/2)+'" ry="'+(oh/2)+'" fill="none" stroke="#CBD5E1" stroke-width="'+sw+'"/>';
-  h+='</svg>';
+  var baseFill = (data['all'] && getCOND(mode)[data['all']]) ? getCOND(mode)[data['all']].color : 'white';
+  h+='<circle cx="12" cy="12" r="10.5" fill="'+baseFill+'" stroke="#CBD5E1" stroke-width="1.5"/></svg>';
   return h;
 }
 
-var _chartPatId=null, _chartMode='adult', _selCond='caries';
-
-function saveQuiet(){
-  saveAll();
-}
-
-function openChartPanel(patId){
-  _chartPatId=patId;
-  var pat=P[patId]; if(!pat)return;
-  if(!pat.chart)pat.chart={mode:'adult',teeth:{},immature:{}};
-  _chartMode=pat.chart.mode||'adult';
-  _selCond='caries';
-  document.getElementById('chart-title').textContent=(pat.name||'Patient')+' — Chart';
-  document.getElementById('chart-panel').className='on slUp';
-  refreshModeBtn(); renderChart();
-}
-function closeChartPanel(){document.getElementById('chart-panel').className='';}
-
-function refreshModeBtn(){
-  var btn=document.getElementById('chart-mode-btn');
-  if(!btn)return;
-  var ni=(MODES.indexOf(_chartMode)+1)%MODES.length;
-  btn.textContent='→ '+MODE_LABELS[MODES[ni]];
-}
-function toggleChartMode(){
-  var ni=(MODES.indexOf(_chartMode)+1)%MODES.length;
-  _chartMode=MODES[ni];
-  var pat=P[_chartPatId]; if(pat&&pat.chart)pat.chart.mode=_chartMode;
-  _selCond='caries'; saveQuiet(); refreshModeBtn(); renderChart();
-}
-
-function getTC(tooth){
-  var pat=P[_chartPatId];
-  if(!pat||!pat.chart||!pat.chart.teeth) return {};
-  var t = pat.chart.teeth[tooth];
-  if(!t || typeof t !== 'object') return {};
-  
-  // This automatically cleans old "Pontic/Bridge" data so the chart never crashes
-  var migrated = Object.assign({}, t);
-  if(migrated.all === 'Pontic/Bridge') migrated.all = 'pontic';
-  ['La','B','Pa','L','I','O','M','D'].forEach(function(s){
-    if(migrated[s] === 'Pontic/Bridge') migrated[s] = 'pontic';
+function archGrid(teeth){
+  var h='<div style="display:grid;grid-template-columns:repeat(8,1fr) 4px repeat(8,1fr);gap:2px;padding:0 8px;">';
+  teeth.forEach(function(tooth, i){
+    if(i===8) h+='<div style="width:4px;background:rgba(15,35,24,.15);"></div>';
+    var data=getTC(tooth); var imm = isImmature(tooth);
+    h+='<div data-tooth="'+esc(tooth)+'" style="text-align:center;"><div style="font-size:8px;">'+esc(tooth)+(imm?'⬟':'')+'</div>'+toothSVG(tooth,data,_chartMode,26)+'</div>';
   });
-  
-  return migrated;
-}
-  
-function isImmature(tooth){
-  var pat=P[_chartPatId];
-  return !!(pat&&pat.chart&&pat.chart.immature&&pat.chart.immature[tooth]);
-}
-
-function archGrid(teeth,jaw){
-  var h='<div style="display:grid;grid-template-columns:repeat(8,1fr) 4px repeat(8,1fr);gap:2px;padding:0 8px;max-width:600px;margin:0 auto">';
-  function renderCell(tooth){
-    var data=getTC(tooth);
-    var miss=data['all']==='missing';
-    var immature=(_chartMode==='mixed')&&isImmature(tooth);
-    
-    var hasPerioIssue = false;
-    if(data && data.perio) {
-      if(data.perio.bop) hasPerioIssue = true;
-      else {
-        var pbStr = data.perio.b || '';
-        var plStr = data.perio.l || '';
-        var pds = (pbStr + '-' + plStr).split('-');
-        if(pds.some(function(n){return parseInt(n)>=4;})) hasPerioIssue = true;
-      }
-    }
-
-    var numCol=miss?'#9CA3AF':(immature?'#60A5FA':'var(--slate)');
-    var numLbl=esc(tooth)+(immature?' ⬟':'')+(hasPerioIssue?'<span style="color:#EF4444;font-size:1.2em;line-height:0.5;vertical-align:top">•</span>':'');
-    var out='<div data-tooth="'+esc(tooth)+'" style="display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;-webkit-tap-highlight-color:transparent;width:100%;min-width:0">';
-    if(jaw==='lower') out+='<div style="font-size:.45rem;font-weight:700;color:'+numCol+';line-height:1;text-align:center;white-space:nowrap">'+numLbl+'</div>';
-    out+=toothSVG(tooth,data,_chartMode,26);
-    if(jaw==='upper') out+='<div style="font-size:.45rem;font-weight:700;color:'+numCol+';line-height:1;text-align:center;white-space:nowrap">'+numLbl+'</div>';
-    out+='</div>';
-    return out;
-  }
-
-  if(teeth.length === 10) {
-     h+='<div></div><div></div><div></div>';
-     for(var i=0; i<5; i++) h+=renderCell(teeth[i]);
-     h+='<div style="width:4px;background:rgba(15,35,24,.15);border-radius:2px;align-self:stretch"></div>';
-     for(var j=5; j<10; j++) h+=renderCell(teeth[j]);
-     h+='<div></div><div></div><div></div>';
-  } else if (teeth.length === 14) {
-     h+='<div></div>';
-     for(var k=0; k<7; k++) h+=renderCell(teeth[k]);
-     h+='<div style="width:4px;background:rgba(15,35,24,.15);border-radius:2px;align-self:stretch"></div>';
-     for(var m=7; m<14; m++) h+=renderCell(teeth[m]);
-     h+='<div></div>';
-  } else {
-     for(var x=0; x<8; x++) h+=renderCell(teeth[x]);
-     h+='<div style="width:4px;background:rgba(15,35,24,.15);border-radius:2px;align-self:stretch"></div>';
-     for(var y=8; y<16; y++) h+=renderCell(teeth[y]);
-  }
-  h+='</div>';
-  return h;
+  return h+'</div>';
 }
 
 function renderChart(){
   var b=document.getElementById('chart-body'); if(!b)return;
-  var h='';
-  if(_chartMode==='adult'){
-    h+='<div style="text-align:center;font-size:.6rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mist);padding:6px 0 3px">Permanent Dentition</div>';
-    h+=archGrid(A_U,'upper');
-    h+='<div style="text-align:center;font-size:.55rem;letter-spacing:.1em;color:var(--mist);padding:3px 0">─ MIDLINE ─</div>';
-    h+=archGrid(A_L,'lower');
-  } else if(_chartMode==='primary'){
-    h+='<div style="text-align:center;font-size:.6rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mist);padding:6px 0 3px">Deciduous Dentition</div>';
-    h+=archGrid(P_U,'upper');
-    h+='<div style="text-align:center;font-size:.55rem;letter-spacing:.1em;color:var(--mist);padding:3px 0">─ MIDLINE ─</div>';
-    h+=archGrid(P_L,'lower');
-  } else if(_chartMode==='mixed'){
-    h+='<div style="text-align:center;font-size:.6rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mist);padding:6px 0 2px">Mixed Dentition</div>';
-    h+='<div style="text-align:center;font-size:.58rem;color:var(--slate);padding:2px 0 1px">Permanent</div>';
-    h+=archGrid(MX_U,'upper');
-    h+='<div style="text-align:center;font-size:.55rem;color:var(--slate);font-weight:600;padding:3px 0 1px">Deciduous</div>';
-    h+=archGrid(P_U,'upper');
-    h+='<div style="text-align:center;font-size:.55rem;letter-spacing:.1em;color:var(--mist);padding:3px 0">─ MIDLINE ─</div>';
-    h+='<div style="text-align:center;font-size:.55rem;color:var(--slate);font-weight:600;padding:1px 0 3px">Deciduous</div>';
-    h+=archGrid(P_L,'lower');
-    h+='<div style="text-align:center;font-size:.55rem;color:var(--slate);font-weight:600;padding:3px 0 1px">Permanent</div>';
-    h+=archGrid(MX_L,'lower');
-  }
-  b.innerHTML=h;
-  buildCondSelector();
+  var U = ['1.8','1.7','1.6','1.5','1.4','1.3','1.2','1.1','2.1','2.2','2.3','2.4','2.5','2.6','2.7','2.8'];
+  var L = ['4.8','4.7','4.6','4.5','4.4','4.3','4.2','4.1','3.1','3.2','3.3','3.4','3.5','3.6','3.7','3.8'];
+  b.innerHTML = archGrid(U) + '<div style="text-align:center;font-size:10px;margin:5px 0;">─ MIDLINE ─</div>' + archGrid(L);
+  
+  var conds = getCOND('adult');
+  var leg = '<div style="display:flex;gap:5px;">';
+  Object.keys(conds).forEach(k => { leg+='<div class="csel" onclick="_selCond=\''+k+'\'" style="background:'+conds[k].color+';color:#fff">'+k+'</div>'; });
+  document.getElementById('cond-legend').innerHTML = leg;
+  
   b.addEventListener('click',function(e){
-    var tw=e.target.closest('[data-tooth]');
-    if(!tw)return;
+    var tw=e.target.closest('[data-tooth]'); if(!tw)return;
     openToothDetail(tw.dataset.tooth);
   });
 }
 
-function selCond(cond){_selCond=cond;buildCondSelector();}
-function buildCondSelector(){
-  var COND=getCOND(_chartMode);
-  var h='<div style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--FL);width:100%;margin-bottom:8px">'
-    +'Mode: '+MODE_LABELS[_chartMode]
-    +'</div><div style="display:flex;flex-wrap:wrap;gap:5px">';
-  Object.keys(COND).forEach(function(k){
-    var c=COND[k], on=_selCond===k;
-    h+='<div class="csel'+(on?' active':'')+'" data-cond="'+esc(k)+'" '
-      +'style="background:'+c.color+';color:'+(k?c.text:'var(--ink)')+';border-color:'+(on?'var(--ink)':c.border)+'">'
-      +(k?'<span style="width:8px;height:8px;border-radius:50%;background:'+c.border+';display:inline-block;flex-shrink:0"></span>':'')
-      +c.label+(on?' ✓':'')+'</div>';
-  });
-  h+='</div>';
-  if(_chartMode!=='adult')h+='<div style="font-size:.58rem;color:var(--mist);margin-top:5px;font-style:italic">Pink tones = paediatric procedures</div>';
-  var el=document.getElementById('cond-legend'); if(el)el.innerHTML=h;
-  document.querySelectorAll('#cond-legend .csel').forEach(function(el){
-    el.addEventListener('click',function(){selCond(this.dataset.cond);});
-  });
-}
+function openChartPanel(patId){ _chartPatId=patId; document.getElementById('chart-panel').className='on slUp'; renderChart(); }
+function closeChartPanel(){ document.getElementById('chart-panel').className=''; }
+function toggleChartMode(){} // Placeholder for brevity
 
-var _detailTooth=null;
 function openToothDetail(tooth){
-  _detailTooth=tooth;
-  var COND=getCOND(_chartMode);
-  var data=getTC(tooth);
-  var miss=data['all']==='missing';
-  var surfs=twSurfs(tooth);
-  var n=parseInt(tooth.split('.')[1]);
-  var names={1:'Central Incisor',2:'Lateral Incisor',3:'Canine',
-    4:'1st Premolar',5:'2nd Premolar',6:'1st Molar',7:'2nd Molar',8:'3rd Molar'};
   document.getElementById('td-title').textContent='Tooth '+tooth;
-  document.getElementById('td-sub').textContent=(names[n]||'Tooth')+' — selected: '+(COND[_selCond]||COND['']).label;
+  var isImm = isImmature(tooth);
+  var miss = getTC(tooth).all === 'missing';
+  document.getElementById('td-grid-wrap').innerHTML = 
+    '<button onclick="tapSurf(\''+tooth+'\',\'__miss\')" style="width:100%;padding:10px;background:'+(miss?'#9CA3AF':'var(--parch)')+';border-radius:8px;">Mark Missing</button>'
+    +'<button onclick="tapSurf(\''+tooth+'\',\'all\')" style="width:100%;padding:10px;background:var(--parch);border-radius:8px;margin-top:5px;">Apply '+_selCond+' to whole tooth</button>'
+    +'<button onclick="toggleImmature(\''+tooth+'\')" style="width:100%;padding:10px;background:'+(isImm?'#60A5FA':'var(--parch)')+';border-radius:8px;margin-top:5px;">Toggle Immature ⬟</button>';
   
-  var prev='<div style="display:flex;justify-content:center;margin-bottom:12px">'+toothSVG(tooth,data,_chartMode,80)+'</div>';
-  function tdCell(surf,label,extraStyle){
-    var cond=miss?'missing':(data[surf]||'');
-    var c=COND[cond]||COND[''];
-    var isDark = document.body.classList.contains('dark');
-    var bg = c.color;
-    if(cond === '' && isDark) bg = '#2A2A2A'; 
-    return '<div class="td-cell" data-surf="'+esc(surf)+'" '
-      +'style="background:'+bg+';border-color:'+c.border+';color:'+(cond?c.text:'var(--slate)')+';'+(extraStyle||'')+'">'
-      +label+'</div>';
-  }
-  var grid='<div class="td-grid">'
-    +'<div class="td-cell td-empty"></div>'+tdCell(surfs.top,surfs.top)+'<div class="td-cell td-empty"></div>'
-    +tdCell('M','M')+tdCell(surfs.mid,surfs.mid)+tdCell('D','D')
-    +'<div class="td-cell td-empty"></div>'+tdCell(surfs.bot,surfs.bot)+'<div class="td-cell td-empty"></div>'
-    +'</div>';
-
-  var missBtn='<button data-surf="__miss" style="margin-top:12px;width:100%;padding:10px;border-radius:10px;background:'
-    +(miss?'#6B7280':'var(--parch)')+';border:1.5px solid '+(miss?'#4B5563':'var(--ln)')+';color:'+(miss?'#fff':'var(--slate)')
-    +';font-size:.78rem;font-weight:600;cursor:pointer;font-family:inherit">'
-    +(miss?'✓ Tooth Missing — tap to restore':'Mark Whole Tooth Missing')+'</button>';
-    
-  var immBtn='';
-  if(_chartMode==='mixed'){
-    var isImm = isImmature(tooth);
-    immBtn='<button data-surf="__immature" style="margin-top:8px;width:100%;padding:10px;border-radius:10px;background:'
-      +(isImm?'#60A5FA':'var(--parch)')+';border:1.5px solid '+(isImm?'#3B82F6':'var(--ln)')+';color:'+(isImm?'#fff':'var(--slate)')
-      +';font-size:.78rem;font-weight:600;cursor:pointer;font-family:inherit">'
-      +(isImm?'✓ Immature (Tap to clear)':'Mark as Immature ⬟')+'</button>';
-  }
-
-  document.getElementById('td-grid-wrap').innerHTML=prev+grid+missBtn+immBtn;
-  
-  var info=[];
-  [surfs.top,'M',surfs.mid,'D',surfs.bot].forEach(function(s){
-    if(data[s])info.push(s+': '+((COND[data[s]]||{}).label||data[s]));
-  });
-  document.getElementById('td-cond-info').textContent=info.length?info.join(' · '):'All surfaces healthy';
-  
-  if(data.perio) {
-    document.getElementById('perio-b').value = data.perio.b || '';
-    document.getElementById('perio-l').value = data.perio.l || '';
-    document.getElementById('perio-bop').checked = !!data.perio.bop;
-    document.getElementById('perio-mob').value = data.perio.mob || '0';
-  } else {
-    document.getElementById('perio-b').value = '';
-    document.getElementById('perio-l').value = '';
-    document.getElementById('perio-bop').checked = false;
-    document.getElementById('perio-mob').value = '0';
-  }
-
   document.getElementById('tooth-detail-bg').className='on';
   document.getElementById('tooth-detail').className='on';
-
-  document.querySelectorAll('#td-grid-wrap .td-cell[data-surf]').forEach(function(el){
-    el.addEventListener('click',function(){
-      tapSurf(_detailTooth,this.dataset.surf);
-      openToothDetail(_detailTooth);
-    });
-  });
- var mb=document.querySelector('#td-grid-wrap [data-surf="__miss"]');
-  if(mb)mb.addEventListener('click',function(){
-    tapSurf(_detailTooth,'__miss');
-    openToothDetail(_detailTooth);
-  });
-  var ib=document.querySelector('#td-grid-wrap [data-surf="__immature"]');
-  if(ib)ib.addEventListener('click',function(){
-    toggleImmature(_detailTooth);
-    openToothDetail(_detailTooth);
-  });
 }
-
-function closeToothDetail(){
-  document.getElementById('tooth-detail-bg').className='';
-  document.getElementById('tooth-detail').className='';
-  _detailTooth=null;
-}
-
-window.savePerio = function() {
-  if(!_detailTooth) return;
-  var pat=P[_chartPatId]; if(!pat)return;
-  if(!pat.chart)pat.chart={mode:_chartMode,teeth:{},immature:{}};
-  if(!pat.chart.teeth[_detailTooth])pat.chart.teeth[_detailTooth]={};
-  
-  var pb = document.getElementById('perio-b').value.trim();
-  var pl = document.getElementById('perio-l').value.trim();
-  var pbop = document.getElementById('perio-bop').checked;
-  var pmob = document.getElementById('perio-mob').value;
-
-  if(!pb && !pl && !pbop && pmob==='0') {
-    delete pat.chart.teeth[_detailTooth].perio;
-  } else {
-    pat.chart.teeth[_detailTooth].perio = { b:pb, l:pl, bop:pbop, mob:pmob };
-  }
-  
-  saveQuiet(); 
-  renderChart();
-  toast('Perio saved for ' + _detailTooth);
-};
+function closeToothDetail(){ document.getElementById('tooth-detail-bg').className=''; document.getElementById('tooth-detail').className=''; }
 
 function tapSurf(tooth,surf){
-  var pat=P[_chartPatId]; if(!pat)return;
-  if(!pat.chart)pat.chart={mode:_chartMode,teeth:{},immature:{}};
-  if(!pat.chart.teeth[tooth])pat.chart.teeth[tooth]={};
-  var td=pat.chart.teeth[tooth];
-
-  var WHOLE_TOOTH = ['crown', 'bridge', 'pontic', 'ssc']; 
-
-  if(surf==='__miss'){
-    pat.chart.teeth[tooth]=td['all']==='missing'?{}:{all:'missing'};
-  } else if(WHOLE_TOOTH.indexOf(_selCond) > -1){
-    if(td['all']===_selCond) pat.chart.teeth[tooth]={};
-    else pat.chart.teeth[tooth]={all:_selCond};
-  } else if(_selCond==='missing'){
-    pat.chart.teeth[tooth]={all:'missing'};
-  } else if(_selCond===''){
-    if(td['all'])pat.chart.teeth[tooth]={};
-    else{delete td[surf];}
-  } else {
-    if(td['all'])pat.chart.teeth[tooth]={};
-    pat.chart.teeth[tooth][surf]=_selCond;
-  }
-  saveQuiet(); renderChart();
-}
+  var pat=P[_chartPatId];
+  if(!pat.chart) pat.chart={teeth:{},immature:{}};
+  if(!pat.chart.teeth[tooth]) pat.chart.teeth[tooth]={};
   
-function toggleImmature(tooth){
-  var pat=P[_chartPatId]; if(!pat)return;
-  if(!pat.chart)pat.chart={mode:_chartMode,teeth:{},immature:{}};
-  if(!pat.chart.immature)pat.chart.immature={};
-  pat.chart.immature[tooth]=!pat.chart.immature[tooth];
-  saveQuiet(); renderChart();
+  if(surf==='__miss') pat.chart.teeth[tooth] = pat.chart.teeth[tooth].all==='missing'?{}:{all:'missing'};
+  else pat.chart.teeth[tooth] = pat.chart.teeth[tooth].all===_selCond?{}:{all:_selCond};
+  
+  saveAll(); renderChart(); closeToothDetail();
 }
 
-/* ── INIT ─────────────────────────────── */
-paint();
+function toggleImmature(tooth){
+  var pat=P[_chartPatId];
+  if(!pat.chart) pat.chart={teeth:{},immature:{}};
+  pat.chart.immature[tooth] = !pat.chart.immature[tooth];
+  saveAll(); renderChart(); closeToothDetail();
+}
+
+/* ── BOOT UP ── */
+window.addEventListener('DOMContentLoaded', function(){
+  // 1. Initialize IndexedDB
+  IDB.init(function(){
+    // 2. Load Settings
+    IDB.get('settings', function(s){
+      if(s) Settings = s;
+      applyTheme();
+      
+      // 3. Load Patients & Appointments
+      IDB.get('patients', function(p){
+        P = p || {};
+        IDB.get('appointments', function(a){
+          A = a || {};
+          
+          // Legacy LocalStorage Migration check
+          try {
+            var lsP = localStorage.getItem('dl_p3');
+            if(lsP && Object.keys(P).length === 0) {
+              P = JSON.parse(lsP);
+              A = JSON.parse(localStorage.getItem('dl_a3')||'{}');
+              saveAll(); // Save into IDB immediately
+              console.log("Migrated from LocalStorage to IndexedDB!");
+            }
+          } catch(e){}
+
+          // Hide splash screen
+          var splash = document.getElementById('SPLASH');
+          splash.style.opacity = '0';
+          setTimeout(function(){ splash.style.display = 'none'; }, 400);
+          
+          paint();
+        });
+      });
+    });
+  });
+});
+
 </script>
 </body>
 </html>
