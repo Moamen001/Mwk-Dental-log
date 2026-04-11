@@ -19,7 +19,7 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;overflow:hidden;-webkit-text-size-adjust:100%}
-body{font-family:'Outfit',system-ui,sans-serif;background:#F4EFE8;overscroll-behavior:none;-webkit-font-smoothing:antialiased}
+body{font-family:'Outfit',system-ui,sans-serif;background:var(--parch);overscroll-behavior:none;-webkit-font-smoothing:antialiased;transition:background 0.3s}
 input,textarea,select,button{font-family:inherit;-webkit-appearance:none;appearance:none;border:none;background:none;outline:none}
 ::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-thumb{background:rgba(15,35,24,.2);border-radius:4px}
@@ -28,6 +28,10 @@ input,textarea,select,button{font-family:inherit;-webkit-appearance:none;appeara
   --gold:#C9A84C;--gd:#9E7B28;
   --cream:#FAF7F2;--parch:#F4EFE8;--warm:#FEFCF9;
   --ink:#1C2B22;--slate:#4A6355;--mist:#B8CBBF;--ln:#E4DDD4;--red:#C0392B;
+}
+body.dark {
+  --warm: #121212; --cream: #1A1A1A; --parch: #0F0F0F; --ln: #333333;
+  --ink: #F4EFE8; --slate: #A0AAB2; --F: #0A160F; --mist: #555;
 }
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes slUp{from{transform:translateY(100%);opacity:0}to{transform:translateY(0);opacity:1}}
@@ -53,7 +57,7 @@ textarea{resize:vertical}
 #app{display:flex;height:100dvh;overflow:hidden}
 #sidebar{width:240px;flex-shrink:0;height:100%;display:flex;flex-direction:column;
   background:radial-gradient(ellipse at 10% 10%,rgba(42,92,63,.45) 0,transparent 55%),
-  radial-gradient(ellipse at 88% 82%,rgba(201,168,76,.1) 0,transparent 50%),var(--F);
+  radial-gradient(ellipse at 88% 82%,rgba(201,168,76,.1) 0,transparent 50%),#0F2318;
   box-shadow:5px 0 20px rgba(0,0,0,.18)}
 #main{flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden}
 #view{flex:1;display:flex;flex-direction:column;min-height:0;overflow:hidden}
@@ -67,12 +71,13 @@ select.inp{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.
   background-repeat:no-repeat;background-position:right 12px center;padding-right:34px}
 .lbl{display:block;font-size:.66rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--slate);margin-bottom:4px}
 .sbar{font-size:.63rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--FL);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--ln)}
-.bgold{background:linear-gradient(135deg,var(--gold),var(--gd));color:var(--F);font-weight:700;
+.bgold{background:linear-gradient(135deg,var(--gold),var(--gd));color:#0F2318;font-weight:700;
   border-radius:12px;cursor:pointer;font-family:inherit;box-shadow:0 3px 14px rgba(201,168,76,.28);transition:opacity .15s;border:none}
 .bgold:active{opacity:.85}
 .bghost{background:rgba(15,35,24,.06);color:var(--ink);font-weight:600;border:1.5px solid var(--ln);
   border-radius:12px;cursor:pointer;font-family:inherit;transition:background .13s}
 .bghost:active{background:rgba(15,35,24,.14)}
+body.dark .bghost{background:rgba(255,255,255,.05); border-color:rgba(255,255,255,.1)}
 /* Sidebar nav */
 .sdn{display:flex;align-items:center;gap:10px;width:100%;padding:12px 14px;border-radius:12px;
   font-size:.85rem;color:rgba(255,255,255,.45);text-align:left;border:1px solid transparent;
@@ -85,6 +90,7 @@ select.inp{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.
   align-items:center;justify-content:center;border:1.5px solid var(--ln);gap:2px;cursor:pointer;
   background:var(--warm);transition:all .14s}
 .dsd.sel{background:var(--F);border-color:var(--F);box-shadow:0 4px 14px rgba(15,35,24,.22)}
+body.dark .dsd.sel{background:#2A5C3F; border-color:#2A5C3F;}
 .dsd.tod{background:rgba(201,168,76,.07);border-color:var(--gold)}
 /* Week */
 .wkc{flex:1;min-width:105px;border-right:1px solid var(--ln);display:flex;flex-direction:column;overflow:hidden}
@@ -93,6 +99,7 @@ select.inp{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.
 .wkh.tod{background:rgba(201,168,76,.08)}
 .wkn{width:30px;height:30px;border-radius:50%;font-size:1.1rem;font-weight:700;color:var(--ink);display:flex;align-items:center;justify-content:center;margin:0 auto 2px}
 .wkn.tod{background:var(--F);color:#fff}
+body.dark .wkn.tod{background:#2A5C3F}
 .wka{padding:5px 7px;margin:3px 5px;border-radius:7px;cursor:pointer;border-left:3px solid #ccc}
 /* Month */
 .mgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:var(--ln);border-radius:12px;overflow:hidden}
@@ -102,6 +109,7 @@ select.inp{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.
 .mcell.todcell{background:rgba(15,35,24,.04)}
 .mnum{font-size:.8rem;font-weight:700;color:var(--ink);width:22px;height:22px;display:flex;align-items:center;justify-content:center;border-radius:50%}
 .mnum.tonum{background:var(--F);color:#fff}
+body.dark .mnum.tonum{background:#2A5C3F}
 .mnum.onum{color:var(--mist)}
 .mdots{display:flex;gap:3px;flex-wrap:wrap}
 .mdot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
@@ -110,35 +118,35 @@ select.inp{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.
 /* View toggle */
 .vtog{display:flex;background:var(--ln);border-radius:9px;padding:3px;gap:2px}
 .vtog button{flex:1;padding:7px 8px;border-radius:6px;font-size:.71rem;font-weight:600;color:var(--slate);cursor:pointer;transition:all .13s;font-family:inherit;border:none}
-.vtog button.on{background:var(--warm);color:var(--F);box-shadow:0 1px 4px rgba(0,0,0,.1)}
+.vtog button.on{background:var(--warm);color:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,.1)}
 /* Bottom nav */
 #bnav{position:fixed;bottom:0;left:0;right:0;z-index:300;background:var(--warm);
   border-top:1px solid var(--ln);display:none;padding-bottom:env(safe-area-inset-bottom);
-  box-shadow:0 -4px 20px rgba(15,35,24,.08)}
+  box-shadow:0 -4px 20px rgba(0,0,0,.08)}
 #bnav.on{display:flex;align-items:stretch}
 .bni{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 0 8px;
   cursor:pointer;font-family:inherit;background:none;border:none;-webkit-tap-highlight-color:transparent}
 /* Overlay + Panel */
 #OV{position:fixed;top:0;right:0;bottom:0;left:0;z-index:800;
-  background:rgba(5,12,8,.52);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);display:none}
+  background:rgba(0,0,0,.6);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);display:none}
 #OV.on{display:block}
 #RP{position:fixed;z-index:900;background:var(--cream);display:none;flex-direction:column;
   top:0;right:0;bottom:0;left:0;width:100%;height:100%}
 #RP.on{display:flex}
 /* Confirm */
 #CF{position:fixed;top:0;right:0;bottom:0;left:0;z-index:1000;
-  background:rgba(5,12,8,.65);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
+  background:rgba(0,0,0,.65);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
   display:none;align-items:center;justify-content:center;padding:20px}
 #CF.on{display:flex}
 /* Toast */
 #toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);
-  background:var(--F);color:#fff;padding:10px 20px;border-radius:24px;
+  background:#0F2318;color:#fff;padding:10px 20px;border-radius:24px;
   font-size:.82rem;font-weight:600;z-index:1100;display:none;
   white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,.3);pointer-events:none}
 #toast.on{display:block;animation:popin .2s ease}
 /* Emoji picker modal */
 #ep-modal{position:fixed;top:0;left:0;right:0;bottom:0;z-index:1000;
-  background:rgba(5,12,8,.55);display:none;align-items:flex-end;justify-content:center}
+  background:rgba(0,0,0,.55);display:none;align-items:flex-end;justify-content:center}
 #ep-modal.on{display:flex;animation:popin .18s ease}
 #ep-sheet{background:var(--cream);border-radius:22px 22px 0 0;width:100%;max-width:500px;
   padding-bottom:env(safe-area-inset-bottom);max-height:78vh;display:flex;flex-direction:column}
@@ -146,7 +154,7 @@ select.inp{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.
   justify-content:center;cursor:pointer;border:2px solid transparent;transition:all .1s;
   background:none;-webkit-tap-highlight-color:transparent}
 .epbtn:active{background:var(--parch)}
-.epbtn.sel{border-color:var(--F);background:rgba(15,35,24,.08)}
+.epbtn.sel{border-color:var(--ink);background:var(--ln)}
 /* Visit counter */
 .vc-btn{width:36px;height:36px;border-radius:50%;background:var(--parch);border:1.5px solid var(--ln);
   font-size:1.15rem;font-weight:700;color:var(--slate);display:flex;align-items:center;
@@ -161,13 +169,13 @@ select.inp{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.
 /* Tooth detail modal */
 #tooth-detail{position:fixed;bottom:0;left:0;right:0;z-index:960;background:var(--cream);
   border-radius:22px 22px 0 0;padding:0 0 env(safe-area-inset-bottom);
-  box-shadow:0 -8px 40px rgba(0,0,0,.2);display:none;max-height:70vh;overflow-y:auto}
+  box-shadow:0 -8px 40px rgba(0,0,0,.2);display:none;max-height:85vh;overflow-y:auto}
 #tooth-detail.on{display:block;animation:slUp .28s cubic-bezier(.16,1,.3,1)}
-#tooth-detail-bg{position:fixed;inset:0;z-index:955;background:rgba(5,12,8,.4);display:none}
+#tooth-detail-bg{position:fixed;inset:0;z-index:955;background:rgba(0,0,0,.4);display:none}
 #tooth-detail-bg.on{display:block}
 /* Large surface grid in detail view */
 .td-grid{display:grid;grid-template-columns:52px 70px 52px;grid-template-rows:52px 70px 52px;gap:4px;margin:0 auto;width:fit-content}
-.td-cell{border-radius:10px;background:#fff;border:2px solid var(--ln);cursor:pointer;
+.td-cell{border-radius:10px;background:var(--warm);border:2px solid var(--ln);cursor:pointer;
   display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;
   color:var(--slate);transition:all .12s;-webkit-tap-highlight-color:transparent}
 .td-cell:active{transform:scale(.94)}
@@ -176,8 +184,16 @@ select.inp{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.
 .csel{display:inline-flex;align-items:center;gap:5px;padding:7px 12px;border-radius:20px;
   font-size:.73rem;font-weight:600;cursor:pointer;border:2.5px solid transparent;
   transition:all .12s;-webkit-tap-highlight-color:transparent;user-select:none}
-.csel.active{border-color:#0F2318!important;box-shadow:0 0 0 2px rgba(15,35,24,.2)}
-
+.csel.active{border-color:var(--ink)!important;box-shadow:0 0 0 2px rgba(15,35,24,.2)}
+body.dark .csel.active{box-shadow:0 0 0 2px rgba(255,255,255,.2)}
+/* Medical Alert Badge */
+.med-alert{background:var(--red);color:#fff;padding:2px 6px;border-radius:4px;font-size:0.6rem;font-weight:bold;margin-left:6px;display:inline-block;vertical-align:middle}
+/* Checkboxes */
+.cbx{appearance:none;width:18px;height:18px;border:2px solid var(--slate);border-radius:4px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s}
+.cbx:checked{background:var(--FL);border-color:var(--FL)}
+.cbx:checked::after{content:'✔';color:#fff;font-size:12px;font-weight:bold}
+.plan-item{display:flex;align-items:center;gap:10px;padding:8px;background:var(--warm);border:1px solid var(--ln);border-radius:8px;margin-bottom:6px}
+.plan-item.done{opacity:0.6;text-decoration:line-through}
 </style>
 </head>
 <body>
@@ -233,9 +249,33 @@ select.inp{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.
     </div>
     <button onclick="closeToothDetail()" style="width:30px;height:30px;border-radius:50%;background:var(--parch);border:1.5px solid var(--ln);font-size:1rem;color:var(--slate);display:flex;align-items:center;justify-content:center;cursor:pointer">×</button>
   </div>
-  <div style="padding:18px;display:flex;flex-direction:column;align-items:center;gap:16px">
+  <div style="padding:18px;display:flex;flex-direction:column;align-items:center;gap:16px;padding-bottom:40px">
     <div id="td-grid-wrap"></div>
     <div id="td-cond-info" style="font-size:.75rem;color:var(--slate);text-align:center"></div>
+    
+    <div style="width:100%;border-top:1px solid var(--ln);padding-top:16px;margin-top:8px">
+      <div class="sbar" style="margin-bottom:12px">🦷 Periodontal Record</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div>
+          <div style="font-size:.65rem;color:var(--slate);font-weight:700;margin-bottom:4px">Buccal PD (D-M-M)</div>
+          <input type="text" id="perio-b" class="inp" placeholder="3-2-3" style="text-align:center;letter-spacing:2px">
+        </div>
+        <div>
+          <div style="font-size:.65rem;color:var(--slate);font-weight:700;margin-bottom:4px">Lingual PD (D-M-M)</div>
+          <input type="text" id="perio-l" class="inp" placeholder="3-2-3" style="text-align:center;letter-spacing:2px">
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:10px;align-items:center">
+        <label style="display:flex;align-items:center;gap:6px;font-size:.8rem;color:var(--ink);font-weight:600;flex:1"><input type="checkbox" id="perio-bop" class="cbx"> Bleeding on Probing</label>
+        <select id="perio-mob" class="inp" style="flex:1">
+          <option value="0">Mobility: 0</option>
+          <option value="1">Mobility: I</option>
+          <option value="2">Mobility: II</option>
+          <option value="3">Mobility: III</option>
+        </select>
+      </div>
+      <button onclick="savePerio()" class="bghost" style="width:100%;margin-top:12px;padding:10px;font-size:.8rem">Save Perio Data</button>
+    </div>
   </div>
 </div>
 <div id="ep-modal" onclick="if(event.target===document.getElementById('ep-modal'))closeEpModal()">
@@ -248,11 +288,12 @@ select.inp{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.
   </div>
 </div>
 
-
 <script>
-/* ── LOCK — standalone, no dependency on app code ── */
+/* ── LOCK & THEME ── */
 (function(){
   var pw=[68,111,111,98,121,64,49,49,50].map(function(c){return String.fromCharCode(c);}).join('');
+  if(localStorage.getItem('dl_dark')==='1') document.body.classList.add('dark');
+  
   function unlock(){
     var val=document.getElementById('LI').value;
     var err=document.getElementById('LE');
@@ -268,11 +309,7 @@ select.inp{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.
       setTimeout(function(){err.textContent='';},2500);
     }
   }
-  // Check if already unlocked
-  if(sessionStorage.getItem('dla')==='1'){
-    document.getElementById('LS').className='gone';
-  }
-  // Attach listeners after DOM ready
+  if(sessionStorage.getItem('dla')==='1') document.getElementById('LS').className='gone';
   window.addEventListener('DOMContentLoaded',function(){
     var btn=document.getElementById('LB');
     var inp=document.getElementById('LI');
@@ -352,68 +389,85 @@ function toast(msg){
   t.textContent=msg;t.className='on';
   clearTimeout(_tt);_tt=setTimeout(function(){t.className='';},2200);
 }
+function toggleDark(){
+  var isD = document.body.classList.toggle('dark');
+  localStorage.setItem('dl_dark', isD ? '1' : '0');
+  R();
+}
 
-/* ── STORAGE ──────────────────────────── */
+/* ── INDEXED_DB STORAGE ENGINE ────────── */
 var KP='dl_p3',KA='dl_a3';
-function lsGet(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;}}
-function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){toast('Storage full');}}
-// Scan ALL localStorage keys to recover any patient/appointment data
-function recoverData(){
-  var patients={},appts={};
+var P={}, A={};
+var DB = null;
+
+// Initialize Database & Load Data
+var idbReq = window.indexedDB ? window.indexedDB.open("DentaLogDB", 1) : null;
+if(idbReq){
+  idbReq.onupgradeneeded = function(e){
+    var db = e.target.result;
+    if(!db.objectStoreNames.contains("data")) db.createObjectStore("data");
+  };
+  idbReq.onsuccess = function(e){
+    DB = e.target.result;
+    var tx = DB.transaction("data","readonly");
+    var getReq = tx.objectStore("data").get("state");
+    getReq.onsuccess = function(){
+      if(getReq.result && Object.keys(getReq.result.P || {}).length > 0){
+        // Load from robust IndexedDB
+        P = getReq.result.P || {}; A = getReq.result.A || {};
+        R();
+      } else {
+        // Migration: Load from LocalStorage if IndexedDB is empty
+        loadFromLegacy();
+      }
+    };
+  };
+  idbReq.onerror = function(){ loadFromLegacy(); };
+} else {
+  loadFromLegacy();
+}
+
+function loadFromLegacy(){
   try{
-    for(var i=0;i<localStorage.length;i++){
-      var k=localStorage.key(i);
-      if(!k)continue;
-      try{
-        var val=JSON.parse(localStorage.getItem(k));
-        if(!val||typeof val!=='object')continue;
-        // Detect patient maps: objects whose values have a 'name' and 'visits' field
-        if(!Array.isArray(val)){
+    var pData = localStorage.getItem(KP);
+    var aData = localStorage.getItem(KA);
+    if(pData) P = JSON.parse(pData);
+    if(aData) A = JSON.parse(aData);
+    if(!pData && !aData) {
+      // Deep scan fallback
+      for(var i=0;i<localStorage.length;i++){
+        var k=localStorage.key(i); if(!k)continue;
+        try{
+          var val=JSON.parse(localStorage.getItem(k));
+          if(!val||typeof val!=='object'||Array.isArray(val))continue;
           var keys=Object.keys(val);
           if(keys.length>0){
-            var first=val[keys[0]];
-            if(first&&(first.name!==undefined||first.visits!==undefined||first.patientName!==undefined)){
-              // looks like patients
-              Object.assign(patients,val);
-              continue;
-            }
-            // Detect appointment maps: objects whose values are arrays of appointment objects
-            var firstVal=val[keys[0]];
-            if(Array.isArray(firstVal)&&firstVal.length>0&&firstVal[0].time!==undefined){
-              Object.assign(appts,val);
-              continue;
-            }
+            var fst=val[keys[0]];
+            if(fst&&(fst.name!==undefined||fst.visits!==undefined)) Object.assign(P,val);
+            if(Array.isArray(fst)&&fst.length>0&&fst[0].time!==undefined) Object.assign(A,val);
           }
-        }
-      }catch(e2){}
+        }catch(e2){}
+      }
     }
   }catch(e){}
-  return {patients:patients,appts:appts};
+  saveAll(); // Flush legacy data into IndexedDB
+  R();
 }
-var P={},A={};
-// First try known keys
-var _knownPKeys=['dl_p3','dl_p2','dl_patients_v1','dl_patients'];
-var _knownAKeys=['dl_a3','dl_a2','dl_appts_v1','dl_appts'];
-var _foundP=false,_foundA=false;
-for(var _i=0;_i<_knownPKeys.length;_i++){
-  var _v=lsGet(_knownPKeys[_i],null);
-  if(_v&&Object.keys(_v).length>0){P=_v;_foundP=true;break;}
-}
-for(var _i=0;_i<_knownAKeys.length;_i++){
-  var _v=lsGet(_knownAKeys[_i],null);
-  if(_v&&Object.keys(_v).length>0){A=_v;_foundA=true;break;}
-}
-// If still empty, scan everything
-if(!_foundP||!_foundA){
-  var _recovered=recoverData();
-  if(!_foundP&&Object.keys(_recovered.patients).length>0){P=_recovered.patients;}
-  if(!_foundA&&Object.keys(_recovered.appts).length>0){A=_recovered.appts;}
-}
-// Always save under current key so future loads are instant
-lsSet(KP,P);lsSet(KA,A);
-function saveAll(){lsSet(KP,P);lsSet(KA,A);}
 
-/* ── DATA ─────────────────────────────── */
+// Universal Save Function
+function saveAll(){
+  // Save lightweight copy to LocalStorage as a fallback (will fail if photos too large)
+  try{ localStorage.setItem(KP, JSON.stringify(P)); localStorage.setItem(KA, JSON.stringify(A)); }catch(e){}
+  // Save full state (unlimited size) to IndexedDB
+  if(DB){
+    try {
+      var tx = DB.transaction("data","readwrite");
+      tx.objectStore("data").put({P: P, A: A}, "state");
+    } catch(e){}
+  }
+}
+
+/* ── DATA HELPERS ─────────────────────── */
 function getAppts(date){return (A[date]||[]).slice().sort(function(a,b){return (a.time||'')>(b.time||'')?1:-1;});}
 function allPats(){return Object.values(P);}
 function lastVisit(pat){
@@ -453,7 +507,7 @@ function avH(pat,sz){
     return '<div style="width:'+sz+'px;height:'+sz+'px;border-radius:50%;background:var(--parch);border:1.5px solid var(--ln);display:flex;align-items:center;justify-content:center;font-size:'+Math.round(sz*.52)+'px;flex-shrink:0">'+esc(pat.emoji)+'</div>';
   }
   var av=pat&&pat.name?ini(pat.name):'?';
-  var bg=av!=='?'?FOREST:'var(--parch)';
+  var bg=av!=='?'?'var(--F)':'var(--parch)';
   var col=av!=='?'?'#fff':'var(--mist)';
   var border=av!=='?'?'none':'1.5px solid var(--ln)';
   return '<div style="width:'+sz+'px;height:'+sz+'px;border-radius:50%;background:'+bg+';color:'+col+';display:flex;align-items:center;justify-content:center;font-weight:700;font-size:'+Math.round(sz*.34)+'px;flex-shrink:0;border:'+border+'">'+esc(av)+'</div>';
@@ -482,6 +536,7 @@ function paint(){
   var v='';
   if(S.view==='today')v=paintToday();
   else if(S.view==='patients')v=paintPatients();
+  else if(S.view==='analytics')v=paintAnalytics();
   else v=paintSchedule();
   document.getElementById('view').innerHTML=v;
   afterPaint();
@@ -511,16 +566,20 @@ function afterPaint(){
 /* ── SIDEBAR ──────────────────────────── */
 function paintSidebar(){
   var total=allPats().length,todayCnt=(A[today()]||[]).length;
+  var isDark = document.body.classList.contains('dark');
   var h='<div style="padding:26px 20px 18px">'
-    +'<div style="display:flex;align-items:center;gap:10px;margin-bottom:3px">'
+    +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:3px">'
+    +'<div style="display:flex;align-items:center;gap:10px">'
     +'<div style="width:36px;height:36px;border-radius:10px;background:#0a1e10;border:1.5px solid rgba(201,168,76,.4);display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:4px;box-shadow:0 4px 12px rgba(201,168,76,.25)"><img src="icon-192.png" style="width:100%;height:100%;object-fit:cover;border-radius:inherit" alt="Logo"></div>'
     +'<div style="font-family:\'Playfair Display\',serif;font-size:1.42rem;color:#fff">DentaLog</div>'
+    +'</div>'
+    +'<button onclick="toggleDark()" style="width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.1);color:#fff;font-size:.8rem;display:flex;align-items:center;justify-content:center">'+(isDark?'☀️':'🌙')+'</button>'
     +'</div>'
     +'<div style="font-size:.66rem;color:var(--sage);letter-spacing:.08em;text-transform:uppercase;font-weight:500;margin-left:46px">Dr. M.W. Khalil</div>'
     +'</div>'
     +'<div style="height:1px;background:rgba(255,255,255,.08);margin:0 18px"></div>'
     +'<div style="flex:1;padding:12px 12px 0">';
-  var navs=[{id:'today',ic:'📅',lb:'Today'},{id:'patients',ic:'🧑‍⚕️',lb:'Patients'},{id:'schedule',ic:'🗓',lb:'Schedule'}];
+  var navs=[{id:'today',ic:'📅',lb:'Today'},{id:'patients',ic:'🧑‍⚕️',lb:'Patients'},{id:'schedule',ic:'🗓',lb:'Schedule'},{id:'analytics',ic:'📊',lb:'Analytics'}];
   navs.forEach(function(n){
     h+='<button class="sdn'+(S.view===n.id?' on':'')+'" onclick="nav(\''+n.id+'\')"><span style="font-size:1rem">'+n.ic+'</span>'+n.lb+'</button>';
   });
@@ -547,10 +606,11 @@ function paintSidebar(){
 
 /* ── TOPBAR ───────────────────────────── */
 function paintTopbar(){
-  var subs={today:(A[today()]||[]).length+' appointments today',patients:allPats().length+' patients',schedule:''};
-  var titles={today:'Daily Agenda',patients:'Patient Records',schedule:'Schedule'};
+  var subs={today:(A[today()]||[]).length+' appointments today',patients:allPats().length+' patients',schedule:'',analytics:'Practice Overview'};
+  var titles={today:'Daily Agenda',patients:'Patient Records',schedule:'Schedule',analytics:'Analytics'};
+  var isDark = document.body.classList.contains('dark');
   if(S.mob){
-    return '<div style="background:'+FOREST+';padding:max(14px,env(safe-area-inset-top)) 18px 14px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;box-shadow:0 2px 10px rgba(0,0,0,.14)">'
+    return '<div style="background:var(--F);padding:max(14px,env(safe-area-inset-top)) 18px 14px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;box-shadow:0 2px 10px rgba(0,0,0,.14); transition:background 0.3s">'
       +'<div style="display:flex;align-items:center;gap:10px">'
       +'<div style="width:32px;height:32px;border-radius:8px;background:#0a1e10;border:1.5px solid #C9A84C44;display:flex;align-items:center;justify-content:center;padding:4px"><img src="icon-192.png" style="width:100%;height:100%;object-fit:cover;border-radius:inherit" alt="Logo"></div>'
       +'<div>'
@@ -558,9 +618,9 @@ function paintTopbar(){
       +'<div style="font-size:.6rem;color:var(--sage);margin-top:1px">'+subs[S.view]+'</div>'
       +'</div></div>'
       +'<div style="display:flex;gap:6px">'
+      +'<button onclick="toggleDark()" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:8px 8px;color:rgba(255,255,255,.9);font-size:.85rem" title="Toggle Theme">'+(isDark?'☀️':'🌙')+'</button>'
       +'<button onclick="autoBackup()" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:8px 10px;color:rgba(255,255,255,.65);font-size:.8rem" title="Backup Data">💾</button>'
       +'<button onclick="restoreBackup()" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:8px 10px;color:rgba(255,255,255,.65);font-size:.8rem" title="Restore backup">📂</button>'
-      +'<button onclick="openApptPanel(null,\''+S.date+'\')" style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);border-radius:10px;padding:8px 14px;color:#fff;font-size:.75rem;font-weight:700">+ Add</button>'
       +'</div>'
       +'</div>';
   }
@@ -574,12 +634,13 @@ function paintTopbar(){
 function paintBnav(){
   if(!S.mob){document.getElementById('bnav').className='';return;}
   var h='';
-  h+='<button class="bni" onclick="nav(\'today\')" style="color:'+(S.view==='today'?FOREST:'var(--mist)')+'"><span style="font-size:1.22rem">📅</span><span style="font-size:.61rem;font-weight:'+(S.view==='today'?700:500)+'">Today</span></button>';
-  h+='<button class="bni" onclick="nav(\'patients\')" style="color:'+(S.view==='patients'?FOREST:'var(--mist)')+'"><span style="font-size:1.22rem">🧑‍⚕️</span><span style="font-size:.61rem;font-weight:'+(S.view==='patients'?700:500)+'">Patients</span></button>';
+  h+='<button class="bni" onclick="nav(\'today\')" style="color:'+(S.view==='today'?'var(--F)':'var(--mist)')+'"><span style="font-size:1.22rem">📅</span><span style="font-size:.61rem;font-weight:'+(S.view==='today'?700:500)+'">Today</span></button>';
+  h+='<button class="bni" onclick="nav(\'patients\')" style="color:'+(S.view==='patients'?'var(--F)':'var(--mist)')+'"><span style="font-size:1.22rem">🧑‍⚕️</span><span style="font-size:.61rem;font-weight:'+(S.view==='patients'?700:500)+'">Patients</span></button>';
   h+='<button class="bni" onclick="openApptPanel(null,\''+S.date+'\')">'
-    +'<div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#C9A84C,#9E7B28);display:flex;align-items:center;justify-content:center;color:'+FOREST+';font-size:1.4rem;margin-top:-12px;box-shadow:0 4px 14px rgba(201,168,76,.38);font-weight:700">＋</div>'
+    +'<div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#C9A84C,#9E7B28);display:flex;align-items:center;justify-content:center;color:#0F2318;font-size:1.4rem;margin-top:-12px;box-shadow:0 4px 14px rgba(201,168,76,.38);font-weight:700">＋</div>'
     +'<span style="font-size:.61rem;color:var(--mist)">Add</span></button>';
-  h+='<button class="bni" onclick="nav(\'schedule\')" style="color:'+(S.view==='schedule'?FOREST:'var(--mist)')+'"><span style="font-size:1.22rem">🗓</span><span style="font-size:.61rem;font-weight:'+(S.view==='schedule'?700:500)+'">Schedule</span></button>';
+  h+='<button class="bni" onclick="nav(\'schedule\')" style="color:'+(S.view==='schedule'?'var(--F)':'var(--mist)')+'"><span style="font-size:1.22rem">🗓</span><span style="font-size:.61rem;font-weight:'+(S.view==='schedule'?700:500)+'">Schedule</span></button>';
+  h+='<button class="bni" onclick="nav(\'analytics\')" style="color:'+(S.view==='analytics'?'var(--F)':'var(--mist)')+'"><span style="font-size:1.22rem">📊</span><span style="font-size:.61rem;font-weight:'+(S.view==='analytics'?700:500)+'">Data</span></button>';
   document.getElementById('bnav').innerHTML=h;
   document.getElementById('bnav').className='on';
 }
@@ -592,6 +653,7 @@ function apptCard(appt,date){
   var visitForAppt=lv&&lv.apptId===appt.id?lv:null;
   var name=pat?pat.name:(appt.title||'Appointment');
   var sub=pat?[pat.age&&(pat.age+'y'),pat.gender].filter(Boolean).join(' · '):(appt.notes||'Tap to open');
+  var alertBadge=(pat&&pat.medAlert)?'<span class="med-alert">⚠️ ALERTS</span>':'';
   return '<div class="card fup" style="border-color:'+col+';margin-bottom:10px;position:relative;overflow:hidden">'
     +'<div style="position:absolute;left:0;top:10px;bottom:10px;width:3px;border-radius:0 2px 2px 0;background:'+col+'"></div>'
     +'<div style="display:flex;align-items:center;gap:12px;padding:14px 14px 14px 18px">'
@@ -601,7 +663,7 @@ function apptCard(appt,date){
     +'</div>'
     +'<div onclick="openApptPanel(\''+esc(appt.id)+'\',\''+esc(date)+'\')" style="cursor:pointer">'+avH(pat,40)+'</div>'
     +'<div onclick="openApptPanel(\''+esc(appt.id)+'\',\''+esc(date)+'\')" style="flex:1;min-width:0;cursor:pointer">'
-    +'<div style="font-weight:600;font-size:.88rem;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+esc(name)+'</div>'
+    +'<div style="font-weight:600;font-size:.88rem;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+esc(name)+alertBadge+'</div>'
     +'<div style="font-size:.71rem;color:var(--slate);margin-top:2px">'+esc(sub)+'</div>'
     +(visitForAppt?'<div style="display:flex;gap:4px;margin-top:5px;flex-wrap:wrap">'+txBadges(visitForAppt.txData,visitForAppt.treatments,3)+'</div>':'')
     +'</div>'
@@ -622,7 +684,7 @@ function paintToday(){
     var d=pd(ds),sel=ds===S.date,tod=isToday(ds);
     h+='<div class="dsd'+(sel?' sel':'')+(tod&&!sel?' tod':'')+'" onclick="pickDate(\''+ds+'\')">'
       +'<div style="font-size:.57rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:'+(sel?'rgba(255,255,255,.55)':tod?GOLD:'var(--mist)')+'">'+d.toLocaleDateString('en-US',{weekday:'short'})+'</div>'
-      +'<div style="font-size:1.1rem;font-weight:700;color:'+(sel?'#fff':tod?FOREST:'var(--ink)')+';line-height:1">'+d.getDate()+'</div>'
+      +'<div style="font-size:1.1rem;font-weight:700;color:'+(sel?'#fff':tod?'var(--F)':'var(--ink)')+';line-height:1">'+d.getDate()+'</div>'
       +(tod?'<div style="width:5px;height:5px;border-radius:50%;background:'+(sel?'rgba(255,255,255,.5)':GOLD)+'"></div>':'')
       +'</div>';
   });
@@ -631,7 +693,7 @@ function paintToday(){
   h+='<div style="padding:'+(S.mob?'0 16px 10px':'0 24px 12px')+';display:flex;align-items:flex-end;justify-content:space-between;flex-shrink:0">'
     +'<div><div style="font-family:\'Playfair Display\',serif;font-size:'+(S.mob?'1.2':'1.35')+'rem;color:var(--ink);line-height:1.1">'+prettyD(S.date)+'</div>'
     +'<div style="font-size:.72rem;color:var(--slate);margin-top:4px">'+appts.length+' appointment'+(appts.length!==1?'s':'')+' scheduled</div></div>'
-    +'<button onclick="pickDate(\''+today()+'\')" style="padding:6px 13px;background:'+(todayBtn?'rgba(15,35,24,.07)':'var(--warm)')+';border:1.5px solid '+(todayBtn?FOREST:'var(--ln)')+';border-radius:18px;font-size:.71rem;font-weight:600;color:'+(todayBtn?'var(--FL)':'var(--slate)')+'">Today</button>'
+    +'<button onclick="pickDate(\''+today()+'\')" style="padding:6px 13px;background:'+(todayBtn?'rgba(15,35,24,.07)':'var(--warm)')+';border:1.5px solid '+(todayBtn?'var(--F)':'var(--ln)')+';border-radius:18px;font-size:.71rem;font-weight:600;color:'+(todayBtn?'var(--FL)':'var(--slate)')+'">Today</button>'
     +'</div>';
   h+='<div class="scr" style="flex:1;padding:'+(S.mob?'0 16px 100px':'0 24px 20px')+'">';
   if(!appts.length){
@@ -666,9 +728,10 @@ function paintPatients(){
     list.forEach(function(pat){
       var lv=lastVisit(pat);
       var col=lv&&lv.txData&&lv.txData.length?pc(lv.txData[0].name):(lv&&lv.treatments&&lv.treatments.length?pc(lv.treatments[0]):null);
+      var alertBadge=(pat.medAlert)?'<span class="med-alert">⚠️ ALERTS</span>':'';
       h+='<div class="card fup" onclick="openPatPanel(\''+esc(pat.id)+'\')" style="padding:14px 16px;display:flex;align-items:center;gap:13px;cursor:pointer;margin-bottom:9px;border-color:'+(col||'var(--ln)')+'">'+avH(pat,44)
         +'<div style="flex:1;min-width:0">'
-        +'<div style="font-weight:600;font-size:.9rem;color:var(--ink)">'+esc(pat.name||'Unnamed')+'</div>'
+        +'<div style="font-weight:600;font-size:.9rem;color:var(--ink)">'+esc(pat.name||'Unnamed')+alertBadge+'</div>'
         +'<div style="font-size:.71rem;color:var(--slate);margin-top:2px">'+esc([pat.age&&(pat.age+'y'),pat.gender,pat.phone].filter(Boolean).join('  ·  '))+'</div>'
         +(lv?'<div style="display:flex;gap:4px;margin-top:5px;flex-wrap:wrap">'+txBadges(lv.txData,lv.treatments,2)+'</div>':'')
         +'</div>'
@@ -768,6 +831,56 @@ function paintSchedMonth(){
   return h;
 }
 
+/* ── ANALYTICS VIEW ───────────────────── */
+function paintAnalytics(){
+  var pats = allPats();
+  var totalPats = pats.length;
+  
+  var now = new Date();
+  var thisMonthStr = now.getFullYear() + '-' + p2(now.getMonth()+1);
+  
+  var visitsThisMonth = 0;
+  var txCounts = {};
+  
+  pats.forEach(function(p){
+    (p.visits||[]).forEach(function(v){
+      if(v.date.startsWith(thisMonthStr)) visitsThisMonth++;
+      (v.txData||[]).forEach(function(tx){
+        txCounts[tx.name] = (txCounts[tx.name]||0) + 1;
+      });
+    });
+  });
+  
+  var sortedTx = Object.keys(txCounts).sort(function(a,b){return txCounts[b]-txCounts[a]}).slice(0,5);
+  var maxTx = sortedTx.length ? txCounts[sortedTx[0]] : 1;
+
+  var h='<div class="scr" style="flex:1;padding:'+(S.mob?'16px 16px 100px':'24px 24px 20px')+'">';
+  
+  h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px">';
+  h+='<div class="card" style="padding:20px;text-align:center"><div style="font-size:2rem;font-weight:700;color:var(--FL)">'+totalPats+'</div><div style="font-size:.75rem;font-weight:600;color:var(--slate);text-transform:uppercase;letter-spacing:.05em">Total Patients</div></div>';
+  h+='<div class="card" style="padding:20px;text-align:center"><div style="font-size:2rem;font-weight:700;color:var(--FL)">'+visitsThisMonth+'</div><div style="font-size:.75rem;font-weight:600;color:var(--slate);text-transform:uppercase;letter-spacing:.05em">Visits this Month</div></div>';
+  h+='</div>';
+
+  h+='<div class="sbar" style="margin-bottom:16px">Top Procedures (All Time)</div>';
+  h+='<div class="card" style="padding:20px">';
+  if(sortedTx.length === 0) {
+    h+='<div style="text-align:center;color:var(--mist);font-size:.8rem;font-style:italic">No procedures logged yet.</div>';
+  } else {
+    sortedTx.forEach(function(tx){
+      var count = txCounts[tx];
+      var pct = Math.max(5, Math.round((count/maxTx)*100));
+      var c = pc(tx);
+      h+='<div style="margin-bottom:12px">';
+      h+='<div style="display:flex;justify-content:space-between;font-size:.75rem;font-weight:600;color:var(--ink);margin-bottom:4px"><span>'+esc(tx)+'</span><span>'+count+'</span></div>';
+      h+='<div style="width:100%;height:8px;background:var(--ln);border-radius:4px;overflow:hidden"><div style="width:'+pct+'%;height:100%;background:'+c+';border-radius:4px"></div></div>';
+      h+='</div>';
+    });
+  }
+  h+='</div>';
+  h+='</div>';
+  return h;
+}
+
 /* ── NAV ACTIONS ──────────────────────── */
 function nav(v){S.view=v;R();}
 function setSched(m){S.sched=m;R();}
@@ -863,14 +976,42 @@ function openApptPanel(apptId,date){
     photos:visit?(visit.photos||[]).slice():[],
     visitId:visit?visit.id:uid()
   };
-  // back-compat: old plain treatments
   if(visit&&!visit.txData&&visit.treatments&&visit.treatments.length){
     _AF.txData=visit.treatments.map(function(t){return {name:t,visitNum:1,totalVisits:1,txNote:''};});
   }
   buildApptPanel();
 }
 
-/* Build treatment picker HTML */
+function printVisit(apptId) {
+  var appt=(A[_AF.date]||[]).find(function(a){return a.id===apptId;});
+  if(!appt || !appt.patientId) return toast('Patient data missing');
+  var pat=P[appt.patientId];
+  var visit=pat.visits.find(function(v){return v.apptId===apptId;});
+  if(!visit) return toast('No clinical data to print');
+  var w=window.open('','_blank');
+  w.document.write('<html><head><title>Visit Summary - '+esc(pat.name)+'</title><style>body{font-family:system-ui,sans-serif;padding:40px;line-height:1.6;color:#1C2B22}h1{color:#0F2318;border-bottom:2px solid #C9A84C;padding-bottom:10px}th,td{text-align:left;padding:12px;border-bottom:1px solid #ddd}th{background:#F4EFE8}.badge{display:inline-block;padding:3px 8px;background:#E4DDD4;border-radius:12px;font-size:0.85em;margin-right:6px}</style></head><body>');
+  w.document.write('<h1>DentaLog Clinic</h1>');
+  w.document.write('<h2>Visit Summary</h2>');
+  w.document.write('<p><strong>Patient:</strong> '+esc(pat.name)+'</p>');
+  w.document.write('<p><strong>Date:</strong> '+prettyD(visit.date)+'</p>');
+  if(pat.medAlert) w.document.write('<p style="color:#C0392B"><strong>⚠️ Medical Alert:</strong> '+esc(pat.medAlert)+'</p>');
+  if(visit.complaint) w.document.write('<p><strong>Complaint:</strong> '+esc(visit.complaint)+'</p>');
+  if(visit.diagnosis) w.document.write('<p><strong>Diagnosis:</strong> '+esc(visit.diagnosis)+'</p>');
+  if(visit.txData && visit.txData.length){
+    w.document.write('<h3 style="margin-top:30px">Treatments Performed</h3><table width="100%" style="border-collapse:collapse"><tr><th>Procedure</th><th>Details & Notes</th></tr>');
+    visit.txData.forEach(function(tx){
+      var prog = tx.totalVisits>1 ? ' <span class="badge">Visit '+tx.visitNum+' of '+tx.totalVisits+'</span>' : '';
+      w.document.write('<tr><td width="30%"><strong>'+esc(tx.name)+'</strong>'+prog+'</td><td>'+esc(tx.txNote||'—')+'</td></tr>');
+    });
+    w.document.write('</table>');
+  }
+  if(visit.notes) w.document.write('<h3 style="margin-top:30px">Clinical Notes</h3><p>'+esc(visit.notes).replace(/\n/g,'<br>')+'</p>');
+  w.document.write('<p style="margin-top:50px;font-size:0.8em;color:#777;text-align:center">Generated by DentaLog</p>');
+  w.document.write('</body></html>');
+  w.document.close();
+  setTimeout(function(){w.print();},500);
+}
+
 function txPickerHTML(){
   var h='';
   TX.forEach(function(t){
@@ -881,7 +1022,6 @@ function txPickerHTML(){
   return h;
 }
 
-/* Build treatment rows (with visit counters) */
 function txRowsHTML(){
   if(!_AF.txData||!_AF.txData.length){
     return '<div style="font-size:.77rem;color:var(--mist);padding:8px 4px;font-style:italic">Select treatments above, then set visit numbers below</div>';
@@ -891,16 +1031,13 @@ function txRowsHTML(){
     var c=pc(item.name);
     var pct=item.totalVisits>0?Math.round((item.visitNum/item.totalVisits)*100):0;
     h+='<div style="background:var(--warm);border:1.5px solid '+c+'44;border-radius:12px;overflow:hidden;margin-bottom:8px">'
-      // header
       +'<div style="display:flex;align-items:center;gap:8px;padding:10px 12px">'
       +'<span style="width:10px;height:10px;border-radius:50%;background:'+c+';flex-shrink:0"></span>'
       +'<span style="flex:1;font-size:.82rem;font-weight:600;color:var(--ink)">'+esc(item.name)+'</span>'
       +(item.totalVisits>1?'<span style="padding:2px 8px;border-radius:10px;font-size:.65rem;font-weight:700;background:'+c+'18;color:'+c+';border:1px solid '+c+'33">Visit '+item.visitNum+'/'+item.totalVisits+'</span>':'')
       +'<button onclick="removeTx('+idx+')" style="width:24px;height:24px;border-radius:50%;background:rgba(192,57,43,.08);color:var(--red);font-size:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer">×</button>'
       +'</div>'
-      // counters
       +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 12px 12px">'
-      // visit num
       +'<div>'
       +'<div style="font-size:.64rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--slate);margin-bottom:6px">This visit #</div>'
       +'<div style="display:flex;align-items:center;gap:8px">'
@@ -908,7 +1045,6 @@ function txRowsHTML(){
       +'<div style="flex:1;text-align:center;font-size:1.5rem;font-weight:800;color:'+c+'">'+item.visitNum+'</div>'
       +'<button class="vc-btn" onclick="adjVisit('+idx+',1,\'num\')">+</button>'
       +'</div></div>'
-      // total
       +'<div>'
       +'<div style="font-size:.64rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--slate);margin-bottom:6px">Total planned</div>'
       +'<div style="display:flex;align-items:center;gap:8px">'
@@ -917,9 +1053,7 @@ function txRowsHTML(){
       +'<button class="vc-btn" onclick="adjVisit('+idx+',1,\'total\')">+</button>'
       +'</div></div>'
       +'</div>'
-      // progress bar
       +(item.totalVisits>1?'<div style="margin:0 12px 10px;background:var(--parch);border-radius:6px;height:6px;overflow:hidden"><div style="background:'+c+';height:100%;border-radius:6px;width:'+pct+'%"></div></div>':'')
-      // tx note
       +'<div style="padding:0 12px 12px">'
       +'<div style="font-size:.64rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--slate);margin-bottom:4px">Clinical note</div>'
       +'<input class="inp" style="font-size:14px;padding:9px 12px" value="'+esc(item.txNote||'')+'" placeholder="e.g. WL 21mm, ISO #35, obturation…" oninput="txNote('+idx+',this.value)">'
@@ -932,7 +1066,7 @@ function txRowsHTML(){
 function buildApptPanel(){
   openPanel();
   var f=_AF;
-  var col=f.txData&&f.txData.length?pc(f.txData[0].name):FOREST;
+  var col=f.txData&&f.txData.length?pc(f.txData[0].name):'var(--F)';
   var pats=allPats().sort(function(a,b){return (a.name||'').localeCompare(b.name||'');});
   var patOpts='<option value="">— No patient linked —</option>';
   pats.forEach(function(p){patOpts+='<option value="'+esc(p.id)+'"'+(f.patientId===p.id?' selected':'')+'>'+esc(p.name)+'</option>';});
@@ -951,7 +1085,6 @@ function buildApptPanel(){
     +'<button onclick="closePanel()" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.18);color:#fff;font-size:1.2rem;display:flex;align-items:center;justify-content:center">×</button>'
     +'</div>'
     +'<div class="scr" style="flex:1;padding:'+pad+'">'
-    // Appointment basics
     +'<div style="margin-bottom:20px"><div class="sbar">📅 Appointment</div>'
     +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">'
     +'<div><label class="lbl">Time</label><input class="inp" id="ap-time" type="time" value="'+esc(f.time)+'" oninput="_AF.time=this.value"></div>'
@@ -960,19 +1093,16 @@ function buildApptPanel(){
     +'</select></div></div>'
     +'<label class="lbl">Appointment Notes</label>'
     +'<textarea class="inp" id="ap-notes" style="min-height:52px" oninput="_AF.notes=this.value">'+esc(f.notes)+'</textarea></div>'
-    // Patient
     +'<div style="margin-bottom:20px"><div class="sbar">🧑‍⚕️ Patient</div>'
     +'<select class="inp" id="ap-pat" onchange="apPatChange(this.value)">'+patOpts+'</select>'
     +'<button onclick="quickNewPat()" style="margin-top:8px;font-size:.77rem;color:var(--FL);font-weight:600;text-decoration:underline;cursor:pointer">+ Create new patient</button>'
     +'</div>'
-    // Clinical
     +'<div id="ap-clin" style="'+(f.patientId?'':'opacity:.4;pointer-events:none')+'">'
     +'<div class="sbar">🦷 Visit Record</div>'
     +'<div style="margin-bottom:10px"><label class="lbl">Chief Complaint</label>'
     +'<input class="inp" id="ap-cc" value="'+esc(f.complaint)+'" placeholder="e.g. Pain upper right molar" oninput="_AF.complaint=this.value"></div>'
     +'<div style="margin-bottom:14px"><label class="lbl">Diagnosis</label>'
     +'<textarea class="inp" id="ap-dx" style="min-height:60px" oninput="_AF.diag=this.value">'+esc(f.diag)+'</textarea></div>'
-    // Treatments
     +'<div style="margin-bottom:14px">'
     +'<label class="lbl" style="margin-bottom:8px">Treatments Done</label>'
     +'<div id="ap-tx-pick" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px">'+txPickerHTML()+'</div>'
@@ -980,7 +1110,6 @@ function buildApptPanel(){
     +'</div>'
     +'<div style="margin-bottom:10px"><label class="lbl">Visit Notes</label>'
     +'<textarea class="inp" id="ap-vn" style="min-height:60px" oninput="_AF.vnotes=this.value">'+esc(f.vnotes)+'</textarea></div>'
-    // Photos
     +'<div><div class="sbar">📷 Photos</div>'
     +'<div onclick="document.getElementById(\'ap-pf\').click()" style="border:2px dashed var(--ln);border-radius:12px;padding:16px;text-align:center;background:var(--parch);cursor:pointer">'
     +'<div style="font-size:1.5rem;margin-bottom:4px">🔬</div>'
@@ -991,8 +1120,9 @@ function buildApptPanel(){
     +'</div></div>'
     +'</div>'
     +'<div style="padding:'+(S.mob?'12px 18px':'12px 22px')+';padding-bottom:'+(S.mob?'max(12px,env(safe-area-inset-bottom))':'12px')+';border-top:1px solid var(--ln);display:flex;gap:9px;background:var(--cream);flex-shrink:0">'
-    +'<button class="bghost" onclick="closePanel()" style="padding:12px 18px;font-size:.88rem">Cancel</button>'
-    +'<button class="bgold" id="ap-save-btn" onclick="saveAppt()" style="flex:1;padding:12px;font-size:.88rem">Save</button>'
+    +(!f.isNew?'<button class="bghost" onclick="printVisit(\''+f.id+'\')" style="padding:12px 14px;font-size:.88rem">🖨️ Print</button>':'')
+    +'<button class="bghost" onclick="closePanel()" style="flex:1;padding:12px 18px;font-size:.88rem">Cancel</button>'
+    +'<button class="bgold" id="ap-save-btn" onclick="saveAppt()" style="flex:1.5;padding:12px;font-size:.88rem">Save</button>'
     +'</div>';
 }
 
@@ -1004,7 +1134,7 @@ function apPatChange(val){
 }
 function updateHdrColor(){
   var hdr=document.getElementById('ap-hdr');
-  if(hdr)hdr.style.background=_AF.txData&&_AF.txData.length?pc(_AF.txData[0].name):FOREST;
+  if(hdr)hdr.style.background=_AF.txData&&_AF.txData.length?pc(_AF.txData[0].name):'var(--F)';
 }
 function toggleTx(t){
   var idx=_AF.txData.findIndex(function(x){return x.name===t;});
@@ -1091,16 +1221,53 @@ function saveAppt(){
 }
 
 /* ══════════════════════════════════════
-   PATIENT PANEL
+   PATIENT PANEL & TREATMENT PLAN
 ══════════════════════════════════════ */
 var _PF={},_PF_cb=null;
 
 function openPatPanel(patId,cb){
   var pat=patId?P[patId]:null;
-  _PF=pat?JSON.parse(JSON.stringify(pat)):{id:uid(),name:'',age:'',gender:'',phone:'',email:'',emoji:null,note:'',visits:[]};
+  _PF=pat?JSON.parse(JSON.stringify(pat)):{id:uid(),name:'',age:'',gender:'',phone:'',email:'',emoji:null,note:'',medAlert:'',visits:[],plan:[]};
   _PF_cb=cb||null;
   buildPatPanel();
 }
+
+function renderPlanItems() {
+  var pList = document.getElementById('tp-list');
+  if(!pList) return;
+  var h = '';
+  if(!_PF.plan || !_PF.plan.length) {
+    h = '<div style="font-size:.75rem;color:var(--mist);font-style:italic;margin-bottom:10px">No proposed treatments.</div>';
+  } else {
+    _PF.plan.forEach(function(item, i) {
+      var doneCls = item.done ? ' done' : '';
+      var chk = item.done ? 'checked' : '';
+      h += '<div class="plan-item'+doneCls+'">'
+         + '<input type="checkbox" class="cbx" '+chk+' onclick="togglePlanItem('+i+')">'
+         + '<div style="flex:1;font-size:.82rem;color:var(--ink);font-weight:500">'+esc(item.text)+'</div>'
+         + '<button onclick="removePlanItem('+i+')" style="color:var(--red);font-size:.7rem;padding:4px">×</button>'
+         + '</div>';
+    });
+  }
+  pList.innerHTML = h;
+}
+window.togglePlanItem = function(idx) {
+  _PF.plan[idx].done = !_PF.plan[idx].done;
+  renderPlanItems();
+};
+window.removePlanItem = function(idx) {
+  _PF.plan.splice(idx, 1);
+  renderPlanItems();
+};
+window.addTxPlan = function() {
+  var input = document.getElementById('tp-new-txt');
+  if(input && input.value.trim()){
+    if(!_PF.plan) _PF.plan = [];
+    _PF.plan.push({id:uid(), text:input.value.trim(), done:false});
+    input.value = '';
+    renderPlanItems();
+  }
+};
 
 function buildPatPanel(){
   openPanel();
@@ -1114,7 +1281,6 @@ function buildPatPanel(){
       +'<button onclick="delVisit(\''+esc(v.id)+'\')" style="font-size:.7rem;color:var(--red);cursor:pointer;font-weight:600;padding:2px 8px;border-radius:6px;background:rgba(192,57,43,.08)">Remove</button>'
       +'</div>'
       +'<div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:4px">'+txBadges(v.txData,v.treatments,4)+'</div>'
-      // per-treatment notes
       +(v.txData&&v.txData.some(function(x){return x.txNote;})?
         '<div style="display:flex;flex-direction:column;gap:3px;margin-top:4px">'
         +v.txData.filter(function(x){return x.txNote;}).map(function(x){
@@ -1133,8 +1299,11 @@ function buildPatPanel(){
   EMOJIS.forEach(function(em){epH+='<button class="epbtn'+(f.emoji===em?' sel':'')+'" onclick="pickEmoji(\''+esc(em)+'\')">'+esc(em)+'</button>';});
   epH+='<button class="epbtn'+(f.emoji===null?' sel':'')+'" onclick="pickEmoji(null)" style="font-size:.64rem;font-weight:700;color:var(--slate)">ABC</button>';
   var pad=S.mob?'18px':'18px 22px';
+  var waNum=(f.phone||'').replace(/[^0-9]/g,'');
+  var waBtn=waNum?'<button onclick="window.open(\'https://wa.me/'+waNum+'?text=Hello '+encodeURIComponent(f.name)+', a reminder for your upcoming dental appointment.\', \'_blank\')" style="font-size:.75rem;color:#10B981;font-weight:600;margin-top:4px;cursor:pointer;padding:4px 0">💬 Send WhatsApp</button>':'';
+
   document.getElementById('RP').innerHTML=
-    '<div style="background:'+FOREST+';padding:'+(S.mob?'max(18px,env(safe-area-inset-top)) 18px 16px':'18px 22px')+';flex-shrink:0;display:flex;justify-content:space-between;align-items:flex-start">'
+    '<div style="background:var(--F);padding:'+(S.mob?'max(18px,env(safe-area-inset-top)) 18px 16px':'18px 22px')+';flex-shrink:0;display:flex;justify-content:space-between;align-items:flex-start">'
     +'<div><div style="font-family:\'Playfair Display\',serif;font-size:1.05rem;color:#fff">'+(isNew?'New Patient':'Patient Profile')+'</div>'
     +(f.name?'<div style="font-size:.7rem;color:var(--sage);margin-top:3px">'+esc(f.name)+'</div>':'')
     +'</div>'
@@ -1144,22 +1313,32 @@ function buildPatPanel(){
     +'<div style="margin-bottom:20px"><div class="sbar">👤 Patient Information</div>'
     +'<div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:14px">'
     +'<div style="position:relative;flex-shrink:0">'
-    +'<div id="pp-av" onclick=\"openEpModal()\" style="width:54px;height:54px;border-radius:50%;background:'+(f.emoji?'var(--parch)':(f.name&&ini(f.name)!=='?'?FOREST:'var(--parch)'))+';color:'+(f.emoji?'inherit':(f.name&&ini(f.name)!=='?'?'#fff':'var(--mist)'))+';display:flex;align-items:center;justify-content:center;font-size:'+(f.emoji?'1.6rem':'.88rem')+';font-weight:700;border:'+(f.emoji?'1.5px solid var(--ln)':'none')+';cursor:pointer;position:relative">'
+    +'<div id="pp-av" onclick=\"openEpModal()\" style="width:54px;height:54px;border-radius:50%;background:'+(f.emoji?'var(--parch)':(f.name&&ini(f.name)!=='?'?'var(--F)':'var(--parch)'))+';color:'+(f.emoji?'inherit':(f.name&&ini(f.name)!=='?'?'#fff':'var(--mist)'))+';display:flex;align-items:center;justify-content:center;font-size:'+(f.emoji?'1.6rem':'.88rem')+';font-weight:700;border:'+(f.emoji?'1.5px solid var(--ln)':'none')+';cursor:pointer;position:relative">'
     +(f.emoji?esc(f.emoji):(f.name&&ini(f.name)!=='?'?ini(f.name):'🦷'))
-    +'<div style="position:absolute;bottom:0;right:0;width:17px;height:17px;background:'+GOLD+';border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.55rem;color:'+FOREST+';font-weight:700;border:2px solid var(--warm)">✏</div>'
+    +'<div style="position:absolute;bottom:0;right:0;width:17px;height:17px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.55rem;color:var(--F);font-weight:700;border:2px solid var(--warm)">✏</div>'
     +'</div>'
     +'</div>'
     +'<div style="flex:1"><label class="lbl">Full Name</label>'
     +'<input class="inp" id="pp-name" value="'+esc(f.name||'')+'" placeholder="Patient full name" oninput="ppName(this.value)" style="font-size:16px"></div>'
     +'</div>'
     +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">'
+    +'<div style="grid-column:1/-1"><label class="lbl" style="color:var(--red)">⚠️ Medical Alerts</label><input class="inp" style="border-color:var(--red);background:rgba(192,57,43,.04)" value="'+esc(f.medAlert||'')+'" placeholder="e.g. Penicillin allergy, Diabetes..." oninput="_PF.medAlert=this.value"></div>'
     +'<div><label class="lbl">Age</label><input class="inp" id="pp-age" type="number" inputmode="numeric" value="'+esc(f.age||'')+'" placeholder="Years" oninput="_PF.age=this.value"></div>'
     +'<div><label class="lbl">Gender</label><select class="inp" onchange="_PF.gender=this.value"><option value="">—</option><option'+(f.gender==='Male'?' selected':'')+'>Male</option><option'+(f.gender==='Female'?' selected':'')+'>Female</option><option'+(f.gender==='Other'?' selected':'')+'>Other</option></select></div>'
-    +'<div><label class="lbl">Phone</label><input class="inp" type="tel" value="'+esc(f.phone||'')+'" placeholder="+1 000 0000" oninput="_PF.phone=this.value"></div>'
+    +'<div><label class="lbl">Phone</label><input class="inp" type="tel" value="'+esc(f.phone||'')+'" placeholder="+1 000 0000" oninput="_PF.phone=this.value">'+waBtn+'</div>'
     +'<div><label class="lbl">Email</label><input class="inp" type="email" value="'+esc(f.email||'')+'" placeholder="email@…" oninput="_PF.email=this.value"></div>'
-    +'<div style="grid-column:1/-1"><label class="lbl">Notes / Allergies</label><textarea class="inp" style="min-height:55px" oninput="_PF.note=this.value">'+esc(f.note||'')+'</textarea></div>'
+    +'<div style="grid-column:1/-1"><label class="lbl">Notes</label><textarea class="inp" style="min-height:55px" oninput="_PF.note=this.value">'+esc(f.note||'')+'</textarea></div>'
     +'</div></div>'
-    +(!isNew?'<div style="margin-bottom:20px"><div class="sbar">🦷 Dental Chart</div><button id="open-chart-btn" data-patid="'+esc(f.id)+'" style="width:100%;padding:13px;background:#0F2318;color:#fff;border-radius:12px;font-size:.88rem;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;border:none">🗺 Open Dental Chart</button></div>':'')
+    
+    // Treatment Plan Section
+    +'<div style="margin-bottom:24px"><div class="sbar">📝 Proposed Treatment Plan</div>'
+    +'<div id="tp-list"></div>'
+    +'<div style="display:flex;gap:6px;margin-top:8px">'
+    +'<input class="inp" id="tp-new-txt" placeholder="e.g. Crown on 4.6" onkeydown="if(event.key===\'Enter\') addTxPlan()">'
+    +'<button class="bghost" onclick="addTxPlan()" style="padding:0 14px;font-size:.8rem">Add</button>'
+    +'</div></div>'
+
+    +(!isNew?'<div style="margin-bottom:20px"><div class="sbar">🦷 Dental Chart</div><button id="open-chart-btn" data-patid="'+esc(f.id)+'" style="width:100%;padding:13px;background:var(--F);color:#fff;border-radius:12px;font-size:.88rem;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;border:none">🗺 Open Dental & Perio Chart</button></div>':'')
     +(!isNew?'<div><div class="sbar">📋 Visit History ('+(f.visits||[]).length+')</div>'+(visH||'<div style="text-align:center;padding:20px;color:var(--mist);font-size:.8rem">No visits recorded yet</div>')+'</div>':'')
     +'</div>'
     +'<div style="padding:'+(S.mob?'12px 18px':'12px 22px')+';padding-bottom:'+(S.mob?'max(12px,env(safe-area-inset-bottom))':'12px')+';border-top:1px solid var(--ln);display:flex;gap:9px;background:var(--cream);flex-shrink:0">'
@@ -1168,9 +1347,8 @@ function buildPatPanel(){
     +'<button class="bgold" onclick="savePat()" style="flex:1;padding:12px;font-size:.88rem">Save Patient</button>'
     +'</div>';
 
-  // emoji handled by modal
-  // chart button listener
   setTimeout(function(){
+    renderPlanItems();
     var cb=document.getElementById('open-chart-btn');
     if(cb){cb.addEventListener('click',function(){openChartPanel(cb.dataset.patid);});}
   },50);
@@ -1182,14 +1360,14 @@ function ppName(v){
     var av=document.getElementById('pp-av');
     if(av){
       var i=ini(v);
-      av.style.background=i!=='?'?FOREST:'var(--parch)';
+      av.style.background=i!=='?'?'var(--F)':'var(--parch)';
       av.style.color=i!=='?'?'#fff':'var(--mist)';
       av.style.fontSize='.88rem';
       av.style.border='none';
       var badge=av.querySelector('div');
       var text=i!=='?'?i:'🦷';
       av.textContent=text;
-      if(!badge){badge=document.createElement('div');badge.style.cssText='position:absolute;bottom:0;right:0;width:17px;height:17px;background:'+GOLD+';border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.55rem;color:'+FOREST+';font-weight:700;border:2px solid var(--warm)';badge.textContent='✏';}
+      if(!badge){badge=document.createElement('div');badge.style.cssText='position:absolute;bottom:0;right:0;width:17px;height:17px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.55rem;color:var(--F);font-weight:700;border:2px solid var(--warm)';badge.textContent='✏';}
       av.appendChild(badge);
     }
   }
@@ -1199,14 +1377,14 @@ function pickEmoji(em){
   var av=document.getElementById('pp-av');
   if(av){
     var badge=document.createElement('div');
-    badge.style.cssText='position:absolute;bottom:0;right:0;width:17px;height:17px;background:'+GOLD+';border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.55rem;color:'+FOREST+';font-weight:700;border:2px solid var(--warm)';
+    badge.style.cssText='position:absolute;bottom:0;right:0;width:17px;height:17px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.55rem;color:var(--F);font-weight:700;border:2px solid var(--warm)';
     badge.textContent='✏';
     if(em){
       av.textContent=em;av.style.fontSize='1.6rem';av.style.background='var(--parch)';
       av.style.border='1.5px solid var(--ln)';av.style.color='inherit';
     } else {
       var i=ini(_PF.name||'');av.textContent=i!=='?'?i:'🦷';
-      av.style.fontSize='.88rem';av.style.background=i!=='?'?FOREST:'var(--parch)';
+      av.style.fontSize='.88rem';av.style.background=i!=='?'?'var(--F)':'var(--parch)';
       av.style.color=i!=='?'?'#fff':'var(--mist)';av.style.border='none';
     }
     av.appendChild(badge);
@@ -1291,7 +1469,6 @@ window.importDentaLog=function(){
 };
 
 /* ── SERVICE WORKER ───────────────────── */
-// Unregister any old service workers that may be serving stale cache
 if('serviceWorker' in navigator){
   navigator.serviceWorker.getRegistrations().then(function(regs){
     regs.forEach(function(r){r.unregister();});
@@ -1328,12 +1505,8 @@ function closeEpModal(){
 
 
 /* ══════════════════════════════════════
-   ODONTOGRAM v4  –  Professional SVG design
-   Modes (correct clinical order):
-     adult | primary | mixed | immature
+   ODONTOGRAM & PERIO
 ══════════════════════════════════════ */
-
-/* ── Conditions ── */
 var COND_BASE={
   '':        {label:'Clear',             color:'#fff',    border:'#E4DDD4', text:'#94A3B8'},
   'caries':  {label:'Caries',            color:'#EF4444', border:'#DC2626', text:'#fff'},
@@ -1356,12 +1529,10 @@ var COND_PEDO={
   'revasc': {label:'Revascularization',     color:'#818CF8', border:'#6366F1', text:'#fff'}
 };
 function getCOND(mode){
-  if(mode==='primary'||mode==='mixed')
-    return Object.assign({},COND_BASE,COND_PEDO);
+  if(mode==='primary'||mode==='mixed') return Object.assign({},COND_BASE,COND_PEDO);
   return COND_BASE;
 }
 
-/* ── Arches (FDI) ── */
 var A_U  =['1.8','1.7','1.6','1.5','1.4','1.3','1.2','1.1','2.1','2.2','2.3','2.4','2.5','2.6','2.7','2.8'];
 var A_L  =['4.8','4.7','4.6','4.5','4.4','4.3','4.2','4.1','3.1','3.2','3.3','3.4','3.5','3.6','3.7','3.8'];
 var P_U  =['5.5','5.4','5.3','5.2','5.1','6.1','6.2','6.3','6.4','6.5'];
@@ -1369,30 +1540,11 @@ var P_L  =['8.5','8.4','8.3','8.2','8.1','7.1','7.2','7.3','7.4','7.5'];
 var MX_U =['1.7','1.6','1.5','1.4','1.3','1.2','1.1','2.1','2.2','2.3','2.4','2.5','2.6','2.7'];
 var MX_L =['4.7','4.6','4.5','4.4','4.3','4.2','4.1','3.1','3.2','3.3','3.4','3.5','3.6','3.7'];
 
-/* ── Surface labels per tooth ── */
 function twSurfs(tooth){
   var n=parseInt(tooth.split('.')[1]);
   return n<=3?{top:'La',mid:'I',bot:'Pa'}:{top:'B',mid:'O',bot:'L'};
 }
 
-/* ── Tooth shape type (for SVG) ──
-   0=central incisor, 1=lateral incisor, 2=canine,
-   3=1st premolar, 4=2nd premolar, 5=molar, 6=wisdom molar */
-function toothType(tooth){
-  var n=parseInt(tooth.split('.')[1]);
-  if(n===1)return 0; if(n===2)return 1; if(n===3)return 2;
-  if(n===4)return 3; if(n===5)return 4;
-  if(n===8)return 6; return 5;
-}
-/* Deciduous type */
-function toothTypeP(tooth){
-  var n=parseInt(tooth.split('.')[1]);
-  if(n===1)return 0; if(n===2)return 1; if(n===3)return 2;
-  return 5; // deciduous molars
-}
-
-/* ── SVG tooth tile (occlusal view) 24×26px ──
-   Draws a proper occlusal outline with 5 coloured surface zones */
 function toothSVG(tooth,data,mode,size){
   size=size||24;
   var C=getCOND(mode);
@@ -1414,7 +1566,6 @@ function toothSVG(tooth,data,mode,size){
   }
   var n=parseInt(tooth.split('.')[1]);
   var isMolar=(n>=4&&n<=8)||(n>=4&&n<=5&&tooth.indexOf('.')>-1&&parseInt(tooth.split('.')[0])>=5);
-  // For deciduous check
   var quad=parseInt(tooth.split('.')[0]);
   if(quad>=5)isMolar=(n>=4);
 
@@ -1423,7 +1574,6 @@ function toothSVG(tooth,data,mode,size){
   var h='<svg style="width:100%;max-width:'+size+'px;height:auto" viewBox="0 0 '+size+' '+size+'" xmlns="http://www.w3.org/2000/svg">';
 
   if(miss){
-    // Grey circle with X
     h+='<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="'+sw+'"/>';
     h+='<line x1="'+(cx-r*0.5)+'" y1="'+(cy-r*0.5)+'" x2="'+(cx+r*0.5)+'" y2="'+(cy+r*0.5)+'" stroke="#9CA3AF" stroke-width="'+(sw*1.5)+'" stroke-linecap="round"/>';
     h+='<line x1="'+(cx+r*0.5)+'" y1="'+(cy-r*0.5)+'" x2="'+(cx-r*0.5)+'" y2="'+(cy+r*0.5)+'" stroke="#9CA3AF" stroke-width="'+(sw*1.5)+'" stroke-linecap="round"/>';
@@ -1431,58 +1581,40 @@ function toothSVG(tooth,data,mode,size){
     return h;
   }
 
-  // Outer tooth shape
   var ow=size*0.88, oh=size*(isMolar?0.88:0.92);
   var ox=(size-ow)/2, oy=(size-oh)/2;
-  var rx=ow*0.42, ry=oh*0.42;
-  var baseFill = (allCond && C[allCond]) ? C[allCond].color : 'white';
+  var baseFill = (allCond && C[allCond]) ? C[allCond].color : (document.body.classList.contains('dark') ? '#2A2A2A' : 'white');
   h+='<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+(ow/2)+'" ry="'+(oh/2)+'" fill="'+baseFill+'" stroke="#CBD5E1" stroke-width="'+sw+'"/>';
 
-  // 5 surface zones using SVG paths
-  // Center (O/I surface)
   var ir=r*0.38;
   h+='<circle cx="'+cx+'" cy="'+cy+'" r="'+ir+'" fill="'+(col(surfs.mid)||'#F9FAFB')+'" stroke="'+(str(surfs.mid))+'" stroke-width="'+(sw*0.8)+'"/>';
 
-  // Top (B/La)
   var bFill=col(surfs.top);
-  if(bFill&&bFill!=='none'){
-    h+='<ellipse cx="'+cx+'" cy="'+(oy+oh*0.12)+'" rx="'+(ow*0.28)+'" ry="'+(oh*0.14)+'" fill="'+bFill+'" stroke="'+str(surfs.top)+'" stroke-width="'+(sw*0.7)+'"/>';
-  } else {
-    h+='<ellipse cx="'+cx+'" cy="'+(oy+oh*0.12)+'" rx="'+(ow*0.26)+'" ry="'+(oh*0.12)+'" fill="#F9FAFB" stroke="#E5E7EB" stroke-width="'+(sw*0.6)+'"/>';
-  }
-  // Bottom (L/Pa)
+  if(bFill&&bFill!=='none'){ h+='<ellipse cx="'+cx+'" cy="'+(oy+oh*0.12)+'" rx="'+(ow*0.28)+'" ry="'+(oh*0.14)+'" fill="'+bFill+'" stroke="'+str(surfs.top)+'" stroke-width="'+(sw*0.7)+'"/>';
+  } else { h+='<ellipse cx="'+cx+'" cy="'+(oy+oh*0.12)+'" rx="'+(ow*0.26)+'" ry="'+(oh*0.12)+'" fill="#F9FAFB" stroke="#E5E7EB" stroke-width="'+(sw*0.6)+'"/>'; }
+  
   var lFill=col(surfs.bot);
-  if(lFill&&lFill!=='none'){
-    h+='<ellipse cx="'+cx+'" cy="'+(oy+oh*0.88)+'" rx="'+(ow*0.28)+'" ry="'+(oh*0.14)+'" fill="'+lFill+'" stroke="'+str(surfs.bot)+'" stroke-width="'+(sw*0.7)+'"/>';
-  } else {
-    h+='<ellipse cx="'+cx+'" cy="'+(oy+oh*0.88)+'" rx="'+(ow*0.26)+'" ry="'+(oh*0.12)+'" fill="#F9FAFB" stroke="#E5E7EB" stroke-width="'+(sw*0.6)+'"/>';
-  }
-  // Left (M)
+  if(lFill&&lFill!=='none'){ h+='<ellipse cx="'+cx+'" cy="'+(oy+oh*0.88)+'" rx="'+(ow*0.28)+'" ry="'+(oh*0.14)+'" fill="'+lFill+'" stroke="'+str(surfs.bot)+'" stroke-width="'+(sw*0.7)+'"/>';
+  } else { h+='<ellipse cx="'+cx+'" cy="'+(oy+oh*0.88)+'" rx="'+(ow*0.26)+'" ry="'+(oh*0.12)+'" fill="#F9FAFB" stroke="#E5E7EB" stroke-width="'+(sw*0.6)+'"/>'; }
+  
   var mFill=col('M');
-  if(mFill&&mFill!=='none'){
-    h+='<ellipse cx="'+(ox+ow*0.12)+'" cy="'+cy+'" rx="'+(ow*0.14)+'" ry="'+(oh*0.28)+'" fill="'+mFill+'" stroke="'+str('M')+'" stroke-width="'+(sw*0.7)+'"/>';
-  } else {
-    h+='<ellipse cx="'+(ox+ow*0.12)+'" cy="'+cy+'" rx="'+(ow*0.12)+'" ry="'+(oh*0.26)+'" fill="#F9FAFB" stroke="#E5E7EB" stroke-width="'+(sw*0.6)+'"/>';
-  }
-  // Right (D)
+  if(mFill&&mFill!=='none'){ h+='<ellipse cx="'+(ox+ow*0.12)+'" cy="'+cy+'" rx="'+(ow*0.14)+'" ry="'+(oh*0.28)+'" fill="'+mFill+'" stroke="'+str('M')+'" stroke-width="'+(sw*0.7)+'"/>';
+  } else { h+='<ellipse cx="'+(ox+ow*0.12)+'" cy="'+cy+'" rx="'+(ow*0.12)+'" ry="'+(oh*0.26)+'" fill="#F9FAFB" stroke="#E5E7EB" stroke-width="'+(sw*0.6)+'"/>'; }
+  
   var dFill=col('D');
-  if(dFill&&dFill!=='none'){
-    h+='<ellipse cx="'+(ox+ow*0.88)+'" cy="'+cy+'" rx="'+(ow*0.14)+'" ry="'+(oh*0.28)+'" fill="'+dFill+'" stroke="'+str('D')+'" stroke-width="'+(sw*0.7)+'"/>';
-  } else {
-    h+='<ellipse cx="'+(ox+ow*0.88)+'" cy="'+cy+'" rx="'+(ow*0.12)+'" ry="'+(oh*0.26)+'" fill="#F9FAFB" stroke="#E5E7EB" stroke-width="'+(sw*0.6)+'"/>';
-  }
-  // Outer border on top
+  if(dFill&&dFill!=='none'){ h+='<ellipse cx="'+(ox+ow*0.88)+'" cy="'+cy+'" rx="'+(ow*0.14)+'" ry="'+(oh*0.28)+'" fill="'+dFill+'" stroke="'+str('D')+'" stroke-width="'+(sw*0.7)+'"/>';
+  } else { h+='<ellipse cx="'+(ox+ow*0.88)+'" cy="'+cy+'" rx="'+(ow*0.12)+'" ry="'+(oh*0.26)+'" fill="#F9FAFB" stroke="#E5E7EB" stroke-width="'+(sw*0.6)+'"/>'; }
+  
   h+='<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+(ow/2)+'" ry="'+(oh/2)+'" fill="none" stroke="#CBD5E1" stroke-width="'+sw+'"/>';
   h+='</svg>';
   return h;
 }
 
-/* ── State ── */
 var _chartPatId=null, _chartMode='adult', _selCond='caries';
-var MODES=['adult','primary','mixed'];
-var MODE_LABELS={adult:'Adult',primary:'Primary',mixed:'Mixed'};
 
-function saveQuiet(){lsSet(KP,P);lsSet(KA,A);}
+function saveQuiet(){
+  saveAll();
+}
 
 function openChartPanel(patId){
   _chartPatId=patId;
@@ -1490,7 +1622,7 @@ function openChartPanel(patId){
   if(!pat.chart)pat.chart={mode:'adult',teeth:{},immature:{}};
   _chartMode=pat.chart.mode||'adult';
   _selCond='caries';
-  document.getElementById('chart-title').textContent=(pat.name||'Patient')+' — Dental Chart';
+  document.getElementById('chart-title').textContent=(pat.name||'Patient')+' — Chart';
   document.getElementById('chart-panel').className='on slUp';
   refreshModeBtn(); renderChart();
 }
@@ -1499,7 +1631,8 @@ function closeChartPanel(){document.getElementById('chart-panel').className='';}
 function refreshModeBtn(){
   var btn=document.getElementById('chart-mode-btn');
   if(!btn)return;
-  btn.textContent=MODE_LABELS[_chartMode] + ' ⇄';
+  var ni=(MODES.indexOf(_chartMode)+1)%MODES.length;
+  btn.textContent='→ '+MODE_LABELS[MODES[ni]];
 }
 function toggleChartMode(){
   var ni=(MODES.indexOf(_chartMode)+1)%MODES.length;
@@ -1518,16 +1651,25 @@ function isImmature(tooth){
   return !!(pat&&pat.chart&&pat.chart.immature&&pat.chart.immature[tooth]);
 }
 
-/* ── Arch HTML ── */
 function archGrid(teeth,jaw){
   var h='<div style="display:grid;grid-template-columns:repeat(8,1fr) 4px repeat(8,1fr);gap:2px;padding:0 8px;max-width:600px;margin:0 auto">';
-
   function renderCell(tooth){
     var data=getTC(tooth);
     var miss=data['all']==='missing';
     var immature=(_chartMode==='mixed')&&isImmature(tooth);
+    
+    // Check if Perio PD/BOP exists to show a small red dot indicator
+    var hasPerioIssue = false;
+    if(data.perio) {
+      if(data.perio.bop) hasPerioIssue = true;
+      else {
+        var pds = (data.perio.b + '-' + data.perio.l).split('-');
+        if(pds.some(function(n){return parseInt(n)>=4})) hasPerioIssue = true;
+      }
+    }
+
     var numCol=miss?'#9CA3AF':(immature?'#60A5FA':'var(--slate)');
-    var numLbl=esc(tooth)+(immature?' ⬟':'');
+    var numLbl=esc(tooth)+(immature?' ⬟':'')+(hasPerioIssue?'<span style="color:#EF4444;font-size:1.2em;line-height:0.5;vertical-align:top">•</span>':'');
     var out='<div data-tooth="'+esc(tooth)+'" style="display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;-webkit-tap-highlight-color:transparent;width:100%;min-width:0">';
     if(jaw==='lower') out+='<div style="font-size:.45rem;font-weight:700;color:'+numCol+';line-height:1;text-align:center;white-space:nowrap">'+numLbl+'</div>';
     out+=toothSVG(tooth,data,_chartMode,26);
@@ -1584,16 +1726,13 @@ function renderChart(){
   }
   b.innerHTML=h;
   buildCondSelector();
-  // Event delegation
   b.addEventListener('click',function(e){
     var tw=e.target.closest('[data-tooth]');
     if(!tw)return;
-    var tooth=tw.dataset.tooth;
-    openToothDetail(tooth);
+    openToothDetail(tw.dataset.tooth);
   });
 }
 
-/* ── Condition selector ── */
 function selCond(cond){_selCond=cond;buildCondSelector();}
 function buildCondSelector(){
   var COND=getCOND(_chartMode);
@@ -1603,20 +1742,18 @@ function buildCondSelector(){
   Object.keys(COND).forEach(function(k){
     var c=COND[k], on=_selCond===k;
     h+='<div class="csel'+(on?' active':'')+'" data-cond="'+esc(k)+'" '
-      +'style="background:'+c.color+';color:'+(k?c.text:'var(--ink)')+';border-color:'+(on?'#0F2318':c.border)+'">'
+      +'style="background:'+c.color+';color:'+(k?c.text:'var(--ink)')+';border-color:'+(on?'var(--ink)':c.border)+'">'
       +(k?'<span style="width:8px;height:8px;border-radius:50%;background:'+c.border+';display:inline-block;flex-shrink:0"></span>':'')
       +c.label+(on?' ✓':'')+'</div>';
   });
   h+='</div>';
   if(_chartMode!=='adult')h+='<div style="font-size:.58rem;color:var(--mist);margin-top:5px;font-style:italic">Pink tones = paediatric procedures</div>';
   var el=document.getElementById('cond-legend'); if(el)el.innerHTML=h;
-  // Attach handlers
   document.querySelectorAll('#cond-legend .csel').forEach(function(el){
     el.addEventListener('click',function(){selCond(this.dataset.cond);});
   });
 }
 
-/* ── Tooth detail modal ── */
 var _detailTooth=null;
 function openToothDetail(tooth){
   _detailTooth=tooth;
@@ -1629,14 +1766,16 @@ function openToothDetail(tooth){
     4:'1st Premolar',5:'2nd Premolar',6:'1st Molar',7:'2nd Molar',8:'3rd Molar'};
   document.getElementById('td-title').textContent='Tooth '+tooth;
   document.getElementById('td-sub').textContent=(names[n]||'Tooth')+' — selected: '+(COND[_selCond]||COND['']).label;
-  // Large SVG preview
+  
   var prev='<div style="display:flex;justify-content:center;margin-bottom:12px">'+toothSVG(tooth,data,_chartMode,80)+'</div>';
-  // 3×3 surface grid
   function tdCell(surf,label,extraStyle){
     var cond=miss?'missing':(data[surf]||'');
     var c=COND[cond]||COND[''];
+    var isDark = document.body.classList.contains('dark');
+    var bg = c.color;
+    if(cond === '' && isDark) bg = '#2A2A2A'; 
     return '<div class="td-cell" data-surf="'+esc(surf)+'" '
-      +'style="background:'+c.color+';border-color:'+c.border+';color:'+(cond?c.text:'var(--slate)')+';'+(extraStyle||'')+'">'
+      +'style="background:'+bg+';border-color:'+c.border+';color:'+(cond?c.text:'var(--slate)')+';'+(extraStyle||'')+'">'
       +label+'</div>';
   }
   var grid='<div class="td-grid">'
@@ -1644,7 +1783,7 @@ function openToothDetail(tooth){
     +tdCell('M','M')+tdCell(surfs.mid,surfs.mid)+tdCell('D','D')
     +'<div class="td-cell td-empty"></div>'+tdCell(surfs.bot,surfs.bot)+'<div class="td-cell td-empty"></div>'
     +'</div>';
-  // Missing whole-tooth button
+
   var missBtn='<button data-surf="__miss" style="margin-top:12px;width:100%;padding:10px;border-radius:10px;background:'
     +(miss?'#6B7280':'var(--parch)')+';border:1.5px solid '+(miss?'#4B5563':'var(--ln)')+';color:'+(miss?'#fff':'var(--slate)')
     +';font-size:.78rem;font-weight:600;cursor:pointer;font-family:inherit">'
@@ -1660,15 +1799,29 @@ function openToothDetail(tooth){
   }
 
   document.getElementById('td-grid-wrap').innerHTML=prev+grid+missBtn+immBtn;
-  // Info line
+  
   var info=[];
   [surfs.top,'M',surfs.mid,'D',surfs.bot].forEach(function(s){
     if(data[s])info.push(s+': '+((COND[data[s]]||{}).label||data[s]));
   });
   document.getElementById('td-cond-info').textContent=info.length?info.join(' · '):'All surfaces healthy';
+  
+  // Fill Perio Data
+  if(data.perio) {
+    document.getElementById('perio-b').value = data.perio.b || '';
+    document.getElementById('perio-l').value = data.perio.l || '';
+    document.getElementById('perio-bop').checked = !!data.perio.bop;
+    document.getElementById('perio-mob').value = data.perio.mob || '0';
+  } else {
+    document.getElementById('perio-b').value = '';
+    document.getElementById('perio-l').value = '';
+    document.getElementById('perio-bop').checked = false;
+    document.getElementById('perio-mob').value = '0';
+  }
+
   document.getElementById('tooth-detail-bg').className='on';
   document.getElementById('tooth-detail').className='on';
-  // Handlers
+
   document.querySelectorAll('#td-grid-wrap .td-cell[data-surf]').forEach(function(el){
     el.addEventListener('click',function(){
       tapSurf(_detailTooth,this.dataset.surf);
@@ -1676,30 +1829,46 @@ function openToothDetail(tooth){
     });
   });
   var mb=document.querySelector('#td-grid-wrap [data-surf="__miss"]');
-  if(mb)mb.addEventListener('click',function(){
-    tapSurf(_detailTooth,'__miss');
-    openToothDetail(_detailTooth);
-  });
+  if(mb)mb.addEventListener('click',function(){ tapSurf(_detailTooth,'__miss'); openToothDetail(_detailTooth); });
   var ib=document.querySelector('#td-grid-wrap [data-surf="__immature"]');
-  if(ib)ib.addEventListener('click',function(){
-    toggleImmature(_detailTooth);
-    openToothDetail(_detailTooth);
-  });
+  if(ib)ib.addEventListener('click',function(){ toggleImmature(_detailTooth); openToothDetail(_detailTooth); });
 }
+
 function closeToothDetail(){
   document.getElementById('tooth-detail-bg').className='';
   document.getElementById('tooth-detail').className='';
   _detailTooth=null;
 }
 
-/* ── Surface tap ── */
+window.savePerio = function() {
+  if(!_detailTooth) return;
+  var pat=P[_chartPatId]; if(!pat)return;
+  if(!pat.chart)pat.chart={mode:_chartMode,teeth:{},immature:{}};
+  if(!pat.chart.teeth[_detailTooth])pat.chart.teeth[_detailTooth]={};
+  
+  var pb = document.getElementById('perio-b').value.trim();
+  var pl = document.getElementById('perio-l').value.trim();
+  var pbop = document.getElementById('perio-bop').checked;
+  var pmob = document.getElementById('perio-mob').value;
+
+  if(!pb && !pl && !pbop && pmob==='0') {
+    delete pat.chart.teeth[_detailTooth].perio;
+  } else {
+    pat.chart.teeth[_detailTooth].perio = { b:pb, l:pl, bop:pbop, mob:pmob };
+  }
+  
+  saveQuiet(); 
+  renderChart();
+  toast('Perio saved for ' + _detailTooth);
+};
+
 function tapSurf(tooth,surf){
   var pat=P[_chartPatId]; if(!pat)return;
   if(!pat.chart)pat.chart={mode:_chartMode,teeth:{},immature:{}};
   if(!pat.chart.teeth[tooth])pat.chart.teeth[tooth]={};
   var td=pat.chart.teeth[tooth];
 
-  var WHOLE_TOOTH = ['crown', 'bridge', 'pontic', 'ssc']; // These should override and fill the whole tooth
+  var WHOLE_TOOTH = ['crown', 'bridge', 'pontic', 'ssc']; 
 
   if(surf==='__miss'){
     pat.chart.teeth[tooth]=td['all']==='missing'?{}:{all:'missing'};
@@ -1718,7 +1887,6 @@ function tapSurf(tooth,surf){
   saveQuiet(); renderChart();
 }
 
-/* ── Immature toggle ── */
 function toggleImmature(tooth){
   var pat=P[_chartPatId]; if(!pat)return;
   if(!pat.chart)pat.chart={mode:_chartMode,teeth:{},immature:{}};
@@ -1726,47 +1894,6 @@ function toggleImmature(tooth){
   pat.chart.immature[tooth]=!pat.chart.immature[tooth];
   saveQuiet(); renderChart();
 }
-
-
-/* ── BACKUP ───────────────────────────── */
-var _bkTimer=null;
-
-function autoBackup(){
-  clearTimeout(_bkTimer);
-  _bkTimer=setTimeout(function(){
-    try{
-      var pCount=Object.keys(P).length;
-      var data=JSON.stringify({patients:P,appointments:A,exported:new Date().toISOString(),version:3},null,2);
-      var blob=new Blob([data],{type:'application/json'});
-      var filename = 'DentaLog_backup.json';
-
-      if (navigator.canShare && navigator.share) {
-        var file = new File([blob], filename, { type: 'application/json' });
-        if (navigator.canShare({ files: [file] })) {
-          navigator.share({
-            title: 'DentaLog Backup',
-            files: [file]
-          }).then(function(){ toast('💾 Backup saved!'); }).catch(function(){});
-          return; 
-        }
-      }
-
-      var a=document.createElement('a');
-      a.href=URL.createObjectURL(blob);
-      a.download=filename;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      setTimeout(function(){try{URL.revokeObjectURL(a.href);}catch(e){}},1000);
-      if(pCount>0)toast('💾 Backed up '+pCount+' patients');
-    }catch(e){ toast('Backup failed'); }
-  },800);
-}
-
-
-
-// saveAll is used for ALL saves - only trigger backup on explicit user actions
-// Chart taps use saveQuiet() instead - no backup triggered
 
 /* ── INIT ─────────────────────────────── */
 paint();
