@@ -1541,12 +1541,12 @@ function renderChart(){
   var b=document.getElementById('chart-body'); if(!b)return;
   var h='';
   if(_chartMode==='adult'){
-    h+='<div style="text-align:center;font-size:.6rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mist);padding:6px 0 3px">Permanent Dentition (Adult)</div>';
+    h+='<div style="text-align:center;font-size:.6rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mist);padding:6px 0 3px">Permanent Dentition</div>';
     h+=archGrid(A_U,'upper');
     h+='<div style="text-align:center;font-size:.55rem;letter-spacing:.1em;color:var(--mist);padding:3px 0">─ MIDLINE ─</div>';
     h+=archGrid(A_L,'lower');
   } else if(_chartMode==='primary'){
-    h+='<div style="text-align:center;font-size:.6rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mist);padding:6px 0 3px">Deciduous Dentition (Primary)</div>';
+    h+='<div style="text-align:center;font-size:.6rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mist);padding:6px 0 3px">Deciduous Dentition</div>';
     h+=archGrid(P_U,'upper');
     h+='<div style="text-align:center;font-size:.55rem;letter-spacing:.1em;color:var(--mist);padding:3px 0">─ MIDLINE ─</div>';
     h+=archGrid(P_L,'lower');
