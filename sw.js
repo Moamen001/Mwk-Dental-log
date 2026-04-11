@@ -1,14 +1,11 @@
-// Passthrough service worker - no caching, always fetch fresh
-self.addEventListener('install', function(e) {
-  self.skipWaiting();
-});
+// This service worker unregisters itself to stop serving stale cached files
+self.addEventListener('install', function() { self.skipWaiting(); });
 self.addEventListener('activate', function(e) {
   e.waitUntil(
     caches.keys().then(function(keys) {
       return Promise.all(keys.map(function(k) { return caches.delete(k); }));
-    }).then(function() { return clients.claim(); })
+    }).then(function() {
+      return self.registration.unregister();
+    })
   );
-});
-self.addEventListener('fetch', function(e) {
-  e.respondWith(fetch(e.request));
 });
