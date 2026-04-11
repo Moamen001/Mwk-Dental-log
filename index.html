@@ -155,26 +155,9 @@ select.inp{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.
 /* ── ODONTOGRAM ── */
 #chart-panel{position:fixed;top:0;left:0;right:0;bottom:0;z-index:950;background:var(--cream);display:none;flex-direction:column}
 #chart-panel.on{display:flex}
-/* ── Arch layout: ALL teeth visible, no scroll ── */
-.arch-grid{display:grid;grid-template-columns:repeat(8,1fr) 6px repeat(8,1fr);gap:2px;padding:2px 10px}
-.midline-cell{width:6px;background:rgba(15,35,24,.15);border-radius:3px;align-self:stretch}
-/* Tooth tile - small enough to fit all 16 in one row */
-.tw{display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;
-  -webkit-tap-highlight-color:transparent;user-select:none}
-.tw-num{font-size:.5rem;font-weight:700;color:var(--slate);line-height:1;text-align:center;white-space:nowrap}
-/* 5-surface cross: top(B), left(M), center(O/I), right(D), bottom(L) */
-.tbox{position:relative;width:20px;height:20px}
-.tbox-bg{position:absolute;inset:0;border-radius:4px;background:var(--warm);border:1.5px solid var(--ln);transition:all .1s}
-.ts-top,.ts-bot{position:absolute;left:3px;right:3px;height:5px;border-radius:2px;transition:background .1s}
-.ts-left,.ts-right{position:absolute;top:3px;bottom:3px;width:5px;border-radius:2px;transition:background .1s}
-.ts-center{position:absolute;left:5px;right:5px;top:5px;bottom:5px;border-radius:2px;transition:background .1s}
-.ts-top{top:1px}
-.ts-bot{bottom:1px}
-.ts-left{left:1px}
-.ts-right{right:1px}
-/* Missing */
-.tw.tw-miss .tbox-bg{background:#f0f0f0;border-color:#ccc}
-.tw.tw-miss .tw-miss-x{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:900;color:#9CA3AF;pointer-events:none;z-index:2}
+/* ── Odontogram arch: SVG tooth tiles ── */
+[data-tooth]{cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none}
+[data-tooth]:active{opacity:.75}
 /* Tooth detail modal */
 #tooth-detail{position:fixed;bottom:0;left:0;right:0;z-index:960;background:var(--cream);
   border-radius:22px 22px 0 0;padding:0 0 env(safe-area-inset-bottom);
@@ -1346,237 +1329,180 @@ function closeEpModal(){
 
 
 /* ══════════════════════════════════════
-   ODONTOGRAM v3
-   Modes: Adult | Mixed | Primary | Immature
-   Procedures: universal + pedo-specific
+   ODONTOGRAM v4  –  Professional SVG design
+   Modes (correct clinical order):
+     adult | primary | mixed | immature
 ══════════════════════════════════════ */
 
-// ── Conditions (all modes) ──
+/* ── Conditions ── */
 var COND_BASE={
-  '':          {label:'Clear',              color:'#ffffff',border:'#E4DDD4',text:'#94A3B8'},
-  'caries':    {label:'Caries',             color:'#EF4444',border:'#DC2626',text:'#fff'},
-  'filling':   {label:'Filling',            color:'#3B82F6',border:'#2563EB',text:'#fff'},
-  'crown':     {label:'Crown',              color:'#C9A84C',border:'#9E7B28',text:'#0F2318'},
-  'missing':   {label:'Missing',            color:'#9CA3AF',border:'#6B7280',text:'#fff'},
-  'fracture':  {label:'Fracture',           color:'#F97316',border:'#EA580C',text:'#fff'},
-  'rct':       {label:'RCT',                color:'#8B5CF6',border:'#7C3AED',text:'#fff'},
-  'pontic':    {label:'Pontic/Bridge',       color:'#06B6D4',border:'#0891B2',text:'#fff'},
-  'vpt':       {label:'VPT',                color:'#10B981',border:'#059669',text:'#fff'},
-  'dpc':       {label:'Direct Pulp Cap',    color:'#34D399',border:'#10B981',text:'#0F2318'},
-  'ipc':       {label:'Indirect Pulp Cap',  color:'#A7F3D0',border:'#34D399',text:'#0F2318'}
+  '':        {label:'Clear',             color:'#fff',    border:'#E4DDD4', text:'#94A3B8'},
+  'caries':  {label:'Caries',            color:'#EF4444', border:'#DC2626', text:'#fff'},
+  'filling': {label:'Filling',           color:'#3B82F6', border:'#2563EB', text:'#fff'},
+  'crown':   {label:'Crown',             color:'#C9A84C', border:'#9E7B28', text:'#0F2318'},
+  'missing': {label:'Missing',           color:'#9CA3AF', border:'#6B7280', text:'#fff'},
+  'fracture':{label:'Fracture',          color:'#F97316', border:'#EA580C', text:'#fff'},
+  'rct':     {label:'RCT',               color:'#8B5CF6', border:'#7C3AED', text:'#fff'},
+  'pontic':  {label:'Pontic/Bridge',     color:'#06B6D4', border:'#0891B2', text:'#fff'},
+  'vpt':     {label:'VPT',               color:'#10B981', border:'#059669', text:'#fff'},
+  'dpc':     {label:'Direct Pulp Cap',   color:'#34D399', border:'#10B981', text:'#0F2318'},
+  'ipc':     {label:'Indirect Pulp Cap', color:'#A7F3D0', border:'#34D399', text:'#0F2318'}
 };
-// ── Pedo-only conditions ──
 var COND_PEDO={
-  'pulp_p':    {label:'Pulpotomy (Partial)',    color:'#F472B6',border:'#EC4899',text:'#fff'},
-  'pulp_t':    {label:'Pulpotomy (Total)',      color:'#EC4899',border:'#DB2777',text:'#fff'},
-  'ssc':       {label:'Stainless Steel Crown',  color:'#94A3B8',border:'#64748B',text:'#fff'},
-  'apex':      {label:'Apexification',          color:'#60A5FA',border:'#3B82F6',text:'#fff'},
-  'revasc':    {label:'Revascularization',      color:'#818CF8',border:'#6366F1',text:'#fff'}
+  'pulp_p': {label:'Pulpotomy (Partial)',   color:'#F472B6', border:'#EC4899', text:'#fff'},
+  'pulp_t': {label:'Pulpotomy (Total)',     color:'#EC4899', border:'#DB2777', text:'#fff'},
+  'ssc':    {label:'Stainless Steel Crown', color:'#94A3B8', border:'#64748B', text:'#fff'},
+  'apex':   {label:'Apexification',         color:'#60A5FA', border:'#3B82F6', text:'#fff'},
+  'revasc': {label:'Revascularization',     color:'#818CF8', border:'#6366F1', text:'#fff'}
 };
 function getCOND(mode){
-  if(mode==='primary'||mode==='mixed')return Object.assign({},COND_BASE,COND_PEDO);
-  if(mode==='immature')return Object.assign({},COND_BASE,COND_PEDO);
+  if(mode==='primary'||mode==='mixed')
+    return Object.assign({},COND_BASE,COND_PEDO);
   return COND_BASE;
 }
 
-// ── Arch definitions ──
-var ADULT_U  =['1.8','1.7','1.6','1.5','1.4','1.3','1.2','1.1','2.1','2.2','2.3','2.4','2.5','2.6','2.7','2.8'];
-var ADULT_L  =['4.8','4.7','4.6','4.5','4.4','4.3','4.2','4.1','3.1','3.2','3.3','3.4','3.5','3.6','3.7','3.8'];
-var PRIM_U   =['5.5','5.4','5.3','5.2','5.1','6.1','6.2','6.3','6.4','6.5'];
-var PRIM_L   =['8.5','8.4','8.3','8.2','8.1','7.1','7.2','7.3','7.4','7.5'];
+/* ── Arches (FDI) ── */
+var A_U  =['1.8','1.7','1.6','1.5','1.4','1.3','1.2','1.1','2.1','2.2','2.3','2.4','2.5','2.6','2.7','2.8'];
+var A_L  =['4.8','4.7','4.6','4.5','4.4','4.3','4.2','4.1','3.1','3.2','3.3','3.4','3.5','3.6','3.7','3.8'];
+var P_U  =['5.5','5.4','5.3','5.2','5.1','6.1','6.2','6.3','6.4','6.5'];
+var P_L  =['8.5','8.4','8.3','8.2','8.1','7.1','7.2','7.3','7.4','7.5'];
+var MX_U =['1.7','1.6','1.5','1.4','1.3','1.2','1.1','2.1','2.2','2.3','2.4','2.5','2.6','2.7'];
+var MX_L =['4.7','4.6','4.5','4.4','4.3','4.2','4.1','3.1','3.2','3.3','3.4','3.5','3.6','3.7'];
 
-// Mixed: permanent without wisdom + primary
-var MIXED_PERM_U=['1.7','1.6','1.5','1.4','1.3','1.2','1.1','2.1','2.2','2.3','2.4','2.5','2.6','2.7'];
-var MIXED_PERM_L=['4.7','4.6','4.5','4.4','4.3','4.2','4.1','3.1','3.2','3.3','3.4','3.5','3.6','3.7'];
-
+/* ── Surface labels per tooth ── */
 function twSurfs(tooth){
-  var n=parseInt((tooth.split('.'))[1]);
-  if(n<=3)return{top:'La',mid:'I',bot:'Pa'};
-  return{top:'B',mid:'O',bot:'L'};
+  var n=parseInt(tooth.split('.')[1]);
+  return n<=3?{top:'La',mid:'I',bot:'Pa'}:{top:'B',mid:'O',bot:'L'};
 }
-function isAnterior(tooth){return parseInt((tooth.split('.'))[1])<=3;}
 
-var _chartPatId=null,_chartMode='adult',_selCond='caries';
+/* ── Tooth shape type (for SVG) ──
+   0=central incisor, 1=lateral incisor, 2=canine,
+   3=1st premolar, 4=2nd premolar, 5=molar, 6=wisdom molar */
+function toothType(tooth){
+  var n=parseInt(tooth.split('.')[1]);
+  if(n===1)return 0; if(n===2)return 1; if(n===3)return 2;
+  if(n===4)return 3; if(n===5)return 4;
+  if(n===8)return 6; return 5;
+}
+/* Deciduous type */
+function toothTypeP(tooth){
+  var n=parseInt(tooth.split('.')[1]);
+  if(n===1)return 0; if(n===2)return 1; if(n===3)return 2;
+  return 5; // deciduous molars
+}
+
+/* ── SVG tooth tile (occlusal view) 24×26px ──
+   Draws a proper occlusal outline with 5 coloured surface zones */
+function toothSVG(tooth,data,mode,size){
+  size=size||24;
+  var C=getCOND(mode);
+  var surfs=twSurfs(tooth);
+  var miss=data['all']==='missing';
+  function col(s){
+    if(miss)return '#E5E7EB';
+    var c=data[s]||'';
+    return c?C[c].color:'none';
+  }
+  function str(s){
+    if(miss)return '#CBD5E1';
+    var c=data[s]||'';
+    return c?C[c].border:'#D1D5DB';
+  }
+  var n=parseInt(tooth.split('.')[1]);
+  var isMolar=(n>=4&&n<=8)||(n>=4&&n<=5&&tooth.indexOf('.')>-1&&parseInt(tooth.split('.')[0])>=5);
+  // For deciduous check
+  var quad=parseInt(tooth.split('.')[0]);
+  if(quad>=5)isMolar=(n>=4);
+
+  var cx=size/2, cy=size/2, r=size*0.44;
+  var sw=Math.max(1,size*0.055);
+  var h='<svg width="'+size+'" height="'+size+'" viewBox="0 0 '+size+' '+size+'" xmlns="http://www.w3.org/2000/svg">';
+
+  if(miss){
+    // Grey circle with X
+    h+='<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="'+sw+'"/>';
+    h+='<line x1="'+(cx-r*0.5)+'" y1="'+(cy-r*0.5)+'" x2="'+(cx+r*0.5)+'" y2="'+(cy+r*0.5)+'" stroke="#9CA3AF" stroke-width="'+(sw*1.5)+'" stroke-linecap="round"/>';
+    h+='<line x1="'+(cx+r*0.5)+'" y1="'+(cy-r*0.5)+'" x2="'+(cx-r*0.5)+'" y2="'+(cy+r*0.5)+'" stroke="#9CA3AF" stroke-width="'+(sw*1.5)+'" stroke-linecap="round"/>';
+    h+='</svg>';
+    return h;
+  }
+
+  // Outer tooth shape
+  var ow=size*0.88, oh=size*(isMolar?0.88:0.92);
+  var ox=(size-ow)/2, oy=(size-oh)/2;
+  var rx=ow*0.42, ry=oh*0.42;
+  h+='<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+(ow/2)+'" ry="'+(oh/2)+'" fill="white" stroke="#CBD5E1" stroke-width="'+sw+'"/>';
+
+  // 5 surface zones using SVG paths
+  // Center (O/I surface)
+  var ir=r*0.38;
+  h+='<circle cx="'+cx+'" cy="'+cy+'" r="'+ir+'" fill="'+(col(surfs.mid)||'#F9FAFB')+'" stroke="'+(str(surfs.mid))+'" stroke-width="'+(sw*0.8)+'"/>';
+
+  // Top (B/La)
+  var bFill=col(surfs.top);
+  if(bFill&&bFill!=='none'){
+    h+='<ellipse cx="'+cx+'" cy="'+(oy+oh*0.12)+'" rx="'+(ow*0.28)+'" ry="'+(oh*0.14)+'" fill="'+bFill+'" stroke="'+str(surfs.top)+'" stroke-width="'+(sw*0.7)+'"/>';
+  } else {
+    h+='<ellipse cx="'+cx+'" cy="'+(oy+oh*0.12)+'" rx="'+(ow*0.26)+'" ry="'+(oh*0.12)+'" fill="#F9FAFB" stroke="#E5E7EB" stroke-width="'+(sw*0.6)+'"/>';
+  }
+  // Bottom (L/Pa)
+  var lFill=col(surfs.bot);
+  if(lFill&&lFill!=='none'){
+    h+='<ellipse cx="'+cx+'" cy="'+(oy+oh*0.88)+'" rx="'+(ow*0.28)+'" ry="'+(oh*0.14)+'" fill="'+lFill+'" stroke="'+str(surfs.bot)+'" stroke-width="'+(sw*0.7)+'"/>';
+  } else {
+    h+='<ellipse cx="'+cx+'" cy="'+(oy+oh*0.88)+'" rx="'+(ow*0.26)+'" ry="'+(oh*0.12)+'" fill="#F9FAFB" stroke="#E5E7EB" stroke-width="'+(sw*0.6)+'"/>';
+  }
+  // Left (M)
+  var mFill=col('M');
+  if(mFill&&mFill!=='none'){
+    h+='<ellipse cx="'+(ox+ow*0.12)+'" cy="'+cy+'" rx="'+(ow*0.14)+'" ry="'+(oh*0.28)+'" fill="'+mFill+'" stroke="'+str('M')+'" stroke-width="'+(sw*0.7)+'"/>';
+  } else {
+    h+='<ellipse cx="'+(ox+ow*0.12)+'" cy="'+cy+'" rx="'+(ow*0.12)+'" ry="'+(oh*0.26)+'" fill="#F9FAFB" stroke="#E5E7EB" stroke-width="'+(sw*0.6)+'"/>';
+  }
+  // Right (D)
+  var dFill=col('D');
+  if(dFill&&dFill!=='none'){
+    h+='<ellipse cx="'+(ox+ow*0.88)+'" cy="'+cy+'" rx="'+(ow*0.14)+'" ry="'+(oh*0.28)+'" fill="'+dFill+'" stroke="'+str('D')+'" stroke-width="'+(sw*0.7)+'"/>';
+  } else {
+    h+='<ellipse cx="'+(ox+ow*0.88)+'" cy="'+cy+'" rx="'+(ow*0.12)+'" ry="'+(oh*0.26)+'" fill="#F9FAFB" stroke="#E5E7EB" stroke-width="'+(sw*0.6)+'"/>';
+  }
+  // Outer border on top
+  h+='<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+(ow/2)+'" ry="'+(oh/2)+'" fill="none" stroke="#CBD5E1" stroke-width="'+sw+'"/>';
+  h+='</svg>';
+  return h;
+}
+
+/* ── State ── */
+var _chartPatId=null, _chartMode='adult', _selCond='caries';
+var MODES=['adult','primary','mixed'];
+var MODE_LABELS={adult:'Adult',primary:'Primary',mixed:'Mixed'};
 
 function saveQuiet(){lsSet(KP,P);lsSet(KA,A);}
 
 function openChartPanel(patId){
   _chartPatId=patId;
-  var pat=P[patId];if(!pat)return;
+  var pat=P[patId]; if(!pat)return;
   if(!pat.chart)pat.chart={mode:'adult',teeth:{},immature:{}};
   _chartMode=pat.chart.mode||'adult';
   _selCond='caries';
   document.getElementById('chart-title').textContent=(pat.name||'Patient')+' — Dental Chart';
   document.getElementById('chart-panel').className='on slUp';
-  refreshModeBtn();
-  renderChart();
-  // teeth open via onclick on .tw divs - handled in toothHTML
-  // immature toggle also via onclick on .tw-num
+  refreshModeBtn(); renderChart();
 }
 function closeChartPanel(){document.getElementById('chart-panel').className='';}
 
-var MODES=['adult','mixed','primary','immature'];
-var MODE_LABELS={'adult':'Adult','mixed':'Primary','primary':'Mixed','immature':'Immature Perm.'};
 function refreshModeBtn(){
   var btn=document.getElementById('chart-mode-btn');
-  if(btn){
-    var nextIdx=(MODES.indexOf(_chartMode)+1)%MODES.length;
-    btn.textContent='→ '+MODE_LABELS[MODES[nextIdx]];
-    btn.title='Switch to '+MODE_LABELS[MODES[nextIdx]];
-  }
+  if(!btn)return;
+  var ni=(MODES.indexOf(_chartMode)+1)%MODES.length;
+  btn.textContent='→ '+MODE_LABELS[MODES[ni]];
 }
 function toggleChartMode(){
-  var nextIdx=(MODES.indexOf(_chartMode)+1)%MODES.length;
-  _chartMode=MODES[nextIdx];
-  var pat=P[_chartPatId];if(pat&&pat.chart)pat.chart.mode=_chartMode;
-  _selCond='caries';
-  saveQuiet();refreshModeBtn();renderChart();
+  var ni=(MODES.indexOf(_chartMode)+1)%MODES.length;
+  _chartMode=MODES[ni];
+  var pat=P[_chartPatId]; if(pat&&pat.chart)pat.chart.mode=_chartMode;
+  _selCond='caries'; saveQuiet(); refreshModeBtn(); renderChart();
 }
-
-function renderChart(){
-  document.getElementById('chart-body').innerHTML=buildArchHTML();
-  buildCondSelector();
-  // Event delegation for tooth tiles and immature toggles
-  requestAnimationFrame(function(){
-    document.getElementById('chart-body').addEventListener('click',function(e){
-      var tw=e.target.closest('[data-tooth]');
-      if(!tw)return;
-      var tooth=tw.dataset.tooth;
-      // immature toggle: tap the number label
-      if(_chartMode==='immature'&&e.target.classList.contains('tw-num')&&e.target.dataset.imm){
-        toggleImmature(e.target.dataset.imm);return;
-      }
-      openToothDetail(tooth);
-    });
-  });
-}
-
-function buildArchHTML(){
-  var h='';
-  if(_chartMode==='adult'||_chartMode==='immature'){
-    h+='<div style="font-size:.62rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mist);text-align:center;margin-bottom:4px">'
-      +(_chartMode==='immature'?'Immature Permanent — tap number to mark open apex ⬟':'Adult Permanent')+'</div>';
-    h+=archRow(ADULT_U,'upper');
-    h+='<div style="text-align:center;font-size:.58rem;letter-spacing:.1em;color:var(--mist);padding:3px 0">── MIDLINE ──</div>';
-    h+=archRow(ADULT_L,'lower');
-  } else if(_chartMode==='mixed'){
-    // mixed = deciduous only (Primary)
-    h+='<div style="font-size:.62rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mist);text-align:center;margin-bottom:4px">Primary / Deciduous Dentition</div>';
-    h+=archRow(PRIM_U,'upper');
-    h+='<div style="text-align:center;font-size:.58rem;letter-spacing:.1em;color:var(--mist);padding:3px 0">── MIDLINE ──</div>';
-    h+=archRow(PRIM_L,'lower');
-  } else if(_chartMode==='primary'){
-    // primary = mixed dentition (both arches)
-    h+='<div style="font-size:.62rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mist);text-align:center;margin-bottom:4px">Mixed Dentition</div>';
-    h+='<div style="font-size:.58rem;color:var(--slate);text-align:center;margin-bottom:2px;font-weight:600">Permanent</div>';
-    h+=archRow(MIXED_PERM_U,'upper');
-    h+='<div style="font-size:.58rem;color:var(--slate);text-align:center;margin:4px 0 2px;font-weight:600">Deciduous</div>';
-    h+=archRow(PRIM_U,'upper');
-    h+='<div style="text-align:center;font-size:.58rem;letter-spacing:.1em;color:var(--mist);padding:3px 0">── MIDLINE ──</div>';
-    h+='<div style="font-size:.58rem;color:var(--slate);text-align:center;margin-bottom:2px;font-weight:600">Deciduous</div>';
-    h+=archRow(PRIM_L,'lower');
-    h+='<div style="font-size:.58rem;color:var(--slate);text-align:center;margin:4px 0 2px;font-weight:600">Permanent</div>';
-    h+=archRow(MIXED_PERM_L,'lower');
-  }
-  return h;
-}
-
-function archRow(teeth,jaw){
-  var h='<div class="arch-grid">';
-  var mid=Math.floor(teeth.length/2);
-  teeth.forEach(function(t,i){
-    h+=toothHTML(t,jaw);
-    if(i===mid-1)h+='<div class="midline-cell"></div>';
-  });
-  h+='</div>';
-  return h;
-}
-
-function toothHTML(tooth,jaw){
-  var data=getTC(tooth);
-  var isMissing=data['all']==='missing';
-  var immature=(_chartMode==='immature')&&isImmature(tooth);
-  var surfs=twSurfs(tooth);
-  // Compute surface colors for the 5 zones
-  function sc(surf){
-    if(isMissing)return '#E5E7EB';
-    var cond=data[surf]||'';
-    var COND=getCOND(_chartMode);
-    return (COND[cond]||COND['']).color;
-  }
-  var bCol=sc(surfs.top),lCol=sc('M'),oCol=sc(surfs.mid),dCol=sc('D'),paCol=sc(surfs.bot);
-  // Determine border color from primary condition
-  var primaryCond='';
-  var allSurfs=[surfs.top,'M',surfs.mid,'D',surfs.bot];
-  for(var si=0;si<allSurfs.length;si++){if(data[allSurfs[si]]){primaryCond=data[allSurfs[si]];break;}}
-  var COND2=getCOND(_chartMode);
-  var borderColor=primaryCond?(COND2[primaryCond]||COND2['']).border:'var(--ln)';
-  var numColor=isMissing?'#9CA3AF':(immature?'#60A5FA':'var(--slate)');
-  var numLabel=esc(tooth)+(immature?' ⬟':'');
-  var boxStyle='position:relative;width:20px;height:20px;';
-  return '<div class="tw'+(isMissing?' tw-miss':'')+'" data-tooth="'+esc(tooth)+'" style="position:relative">'
-    +(jaw==='upper'?'':'<div class="tw-num" style="color:'+numColor+'">'+numLabel+'</div>')
-    +'<div class="tbox">'
-    +'<div class="tbox-bg" style="border-color:'+borderColor+'"></div>'
-    +(isMissing?'<div class="tw-miss-x">×</div>':'')
-    +'<div class="ts-top" style="background:'+bCol+';opacity:'+(bCol==='#ffffff'?'0':'0.9')+'"></div>'
-    +'<div class="ts-left" style="background:'+lCol+';opacity:'+(lCol==='#ffffff'?'0':'0.9')+'"></div>'
-    +'<div class="ts-center" style="background:'+oCol+';opacity:'+(oCol==='#ffffff'?'0':'0.9')+'"></div>'
-    +'<div class="ts-right" style="background:'+dCol+';opacity:'+(dCol==='#ffffff'?'0':'0.9')+'"></div>'
-    +'<div class="ts-bot" style="background:'+paCol+';opacity:'+(paCol==='#ffffff'?'0':'0.9')+'"></div>'
-    +'</div>'
-    +(jaw==='upper'?'<div class="tw-num" style="color:'+numColor+'">'+numLabel+'</div>':'')
-    +'</div>';
-}
-
-var _detailTooth=null;
-function openToothDetail(tooth){
-  _detailTooth=tooth;
-  var COND=getCOND(_chartMode);
-  var data=getTC(tooth);
-  var isMissing=data['all']==='missing';
-  var surfs=twSurfs(tooth);
-  // Tooth name
-  var n=parseInt(tooth.split('.')[1]);
-  var names={1:'Central Incisor',2:'Lateral Incisor',3:'Canine',4:'1st Premolar',5:'2nd Premolar',
-    6:'1st Molar',7:'2nd Molar',8:'3rd Molar (Wisdom)'};
-  document.getElementById('td-title').textContent='Tooth '+tooth;
-  document.getElementById('td-sub').textContent=(names[n]||'Tooth')+' — tap surface to apply selected condition';
-  // Build 3x3 large grid
-  function tdCell(surf,label){
-    var cond=isMissing?'missing':(data[surf]||'');
-    var c=COND[cond]||COND[''];
-    return '<div class="td-cell" data-surf="'+esc(surf)+'" style="background:'+c.color+';border-color:'+c.border+';color:'+(cond?c.text:'var(--slate)')+'">'+label+'</div>';
-  }
-  var grid=''
-    +'<div class="td-cell td-empty"></div>'+tdCell(surfs.top,surfs.top)+'<div class="td-cell td-empty"></div>'
-    +tdCell('M','M')+tdCell(surfs.mid,surfs.mid)+tdCell('D','D')
-    +'<div class="td-cell td-empty"></div>'+tdCell(surfs.bot,surfs.bot)+'<div class="td-cell td-empty"></div>';
-  document.getElementById('td-grid-wrap').innerHTML='<div class="td-grid">'+grid+'</div>';
-  // Info
-  var info=[];
-  [surfs.top,'M',surfs.mid,'D',surfs.bot].forEach(function(s){
-    if(data[s])info.push(s+': '+((COND[data[s]]||{}).label||data[s]));
-  });
-  document.getElementById('td-cond-info').innerHTML=info.length?info.join('  ·  '):'All surfaces healthy';
-  // Show
-  document.getElementById('tooth-detail-bg').className='on';
-  document.getElementById('tooth-detail').className='on';
-  // Attach surface click handlers
-  document.querySelectorAll('#td-grid-wrap .td-cell[data-surf]').forEach(function(el){
-    el.addEventListener('click',function(){
-      if(isMissing&&_selCond!=='')return;
-      tapSurf(_detailTooth,el.dataset.surf);
-      openToothDetail(_detailTooth); // refresh
-    });
-  });
-}
-function closeToothDetail(){
-  document.getElementById('tooth-detail-bg').className='';
-  document.getElementById('tooth-detail').className='';
-  _detailTooth=null;
-}
-
 
 function getTC(tooth){
   var pat=P[_chartPatId];
@@ -1585,101 +1511,186 @@ function getTC(tooth){
 }
 function isImmature(tooth){
   var pat=P[_chartPatId];
-  if(!pat||!pat.chart||!pat.chart.immature)return false;
-  return !!pat.chart.immature[tooth];
+  return !!(pat&&pat.chart&&pat.chart.immature&&pat.chart.immature[tooth]);
 }
 
-function toothHTML(tooth,jaw){
-  var data=getTC(tooth);
-  var isMissing=data['all']==='missing';
-  var immature=(_chartMode==='immature')&&isImmature(tooth);
-  var surfs=twSurfs(tooth);
-  function cell(surf){
-    var cond=isMissing?'missing':(data[surf]||'');
-    var COND=getCOND(_chartMode);
-    var c=(COND[cond]||COND['']);
-    return '<div class="ts" data-tooth="'+esc(tooth)+'" data-surf="'+esc(surf)+'" '
-      +'style="background:'+c.color+';border-color:'+c.border+';'+(isMissing?'opacity:.4;pointer-events:none;':'')+'">'
-      +'<span class="ts-lbl" style="color:'+(cond?c.text:'#CBD5E1')+'">'+surf+'</span></div>';
+/* ── Arch HTML ── */
+function archGrid(teeth,jaw){
+  var mid=Math.floor(teeth.length/2);
+  var cols='repeat('+mid+',1fr) 4px repeat('+(teeth.length-mid)+',1fr)';
+  var h='<div style="display:grid;grid-template-columns:'+cols+';gap:2px;padding:0 8px">';
+  teeth.forEach(function(tooth,i){
+    var data=getTC(tooth);
+    var miss=data['all']==='missing';
+    var immature=(_chartMode==='mixed')&&isImmature(tooth);
+    var numCol=miss?'#9CA3AF':(immature?'#60A5FA':'var(--slate)');
+    var numLbl=esc(tooth)+(immature?' ⬟':'');
+    if(i===mid){
+      h+='<div style="width:4px;background:rgba(15,35,24,.15);border-radius:2px;align-self:stretch"></div>';
+    }
+    h+='<div data-tooth="'+esc(tooth)+'" style="display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;-webkit-tap-highlight-color:transparent">';
+    if(jaw==='lower')h+='<div style="font-size:.45rem;font-weight:700;color:'+numCol+';line-height:1;text-align:center;white-space:nowrap">'+numLbl+'</div>';
+    h+=toothSVG(tooth,data,_chartMode,26);
+    if(jaw==='upper')h+='<div style="font-size:.45rem;font-weight:700;color:'+numCol+';line-height:1;text-align:center;white-space:nowrap">'+numLbl+'</div>';
+    h+='</div>';
+  });
+  h+='</div>';
+  return h;
+}
+
+function renderChart(){
+  var b=document.getElementById('chart-body'); if(!b)return;
+  var h='';
+  if(_chartMode==='adult'){
+    h+='<div style="text-align:center;font-size:.6rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mist);padding:6px 0 3px">Primary / Permanent Dentition</div>';
+    h+=archGrid(A_U,'upper');
+    h+='<div style="text-align:center;font-size:.55rem;letter-spacing:.1em;color:var(--mist);padding:3px 0">─ MIDLINE ─</div>';
+    h+=archGrid(A_L,'lower');
+  } else if(_chartMode==='primary'){
+    h+='<div style="text-align:center;font-size:.6rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mist);padding:6px 0 3px">Deciduous Dentition</div>';
+    h+=archGrid(P_U,'upper');
+    h+='<div style="text-align:center;font-size:.55rem;letter-spacing:.1em;color:var(--mist);padding:3px 0">─ MIDLINE ─</div>';
+    h+=archGrid(P_L,'lower');
+  } else if(_chartMode==='mixed'){
+    h+='<div style="text-align:center;font-size:.6rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mist);padding:6px 0 2px">Mixed Dentition</div>';
+    h+='<div style="text-align:center;font-size:.58rem;color:var(--slate);padding:2px 0 1px">Permanent <span style="color:#60A5FA;font-size:.56rem">(tap tooth # to toggle immature ⬟)</span></div>';
+    h+=archGrid(MX_U,'upper');
+    h+='<div style="text-align:center;font-size:.55rem;color:var(--slate);font-weight:600;padding:3px 0 1px">Deciduous</div>';
+    h+=archGrid(P_U,'upper');
+    h+='<div style="text-align:center;font-size:.55rem;letter-spacing:.1em;color:var(--mist);padding:3px 0">─ MIDLINE ─</div>';
+    h+='<div style="text-align:center;font-size:.55rem;color:var(--slate);font-weight:600;padding:1px 0 3px">Deciduous</div>';
+    h+=archGrid(P_L,'lower');
+    h+='<div style="text-align:center;font-size:.55rem;color:var(--slate);font-weight:600;padding:3px 0 1px">Permanent</div>';
+    h+=archGrid(MX_L,'lower');
   }
-    var grid=''
-    +'<div class="ts corner"></div>'+cell(surfs.top)+'<div class="ts corner"></div>'
-    +cell('M')+cell(surfs.mid)+cell('D')
-    +'<div class="ts corner"></div>'+cell(surfs.bot)+'<div class="ts corner"></div>';
-
-  // Tooth number - clickable in immature mode to toggle open apex
-  var numStyle='font-size:.62rem;font-weight:700;color:'+(isMissing?'#9CA3AF':(immature?'#60A5FA':'var(--slate)'))+';line-height:1;text-align:center;min-width:28px;';
-  if(_chartMode==='immature'){
-    numStyle+='cursor:pointer;text-decoration:underline dotted;';
-  }
-  var numDiv='<div class="tw-num" style="'+numStyle+'"'
-    +(_chartMode==='immature'?' data-immtooth="'+esc(tooth)+'" class="imm-toggle"':'') + ' style="'+numStyle+'"'
-    +'>'+esc(tooth)+(immature?' ⬟':'')+'</div>';
-
-  return '<div class="tw'+(isMissing?' tw-miss':'')+'" style="position:relative">'
-    +(jaw==='upper'?'':''+numDiv)
-    +(isMissing?'<div class="tw-miss-x">×</div>':'')
-    +'<div class="tg">'+grid+'</div>'
-    +(jaw==='upper'?numDiv:'')
-    +'</div>';
+  b.innerHTML=h;
+  buildCondSelector();
+  // Event delegation
+  b.addEventListener('click',function(e){
+    var tw=e.target.closest('[data-tooth]');
+    if(!tw)return;
+    var tooth=tw.dataset.tooth;
+    // In mixed mode, tap on the number label (blue colored) to toggle immature
+    if(_chartMode==='mixed'&&e.target.style&&e.target.style.color==='#60A5FA'){
+      toggleImmature(tooth);return;
+    }
+    openToothDetail(tooth);
+  });
 }
 
-function tapSurf(tooth,surf){
-  var pat=P[_chartPatId];if(!pat)return;
-  if(!pat.chart)pat.chart={mode:_chartMode,teeth:{},immature:{}};
-  if(!pat.chart.teeth[tooth])pat.chart.teeth[tooth]={};
-  var td=pat.chart.teeth[tooth];
-  if(_selCond==='missing'){
-    pat.chart.teeth[tooth]={all:'missing'};
-  } else if(_selCond===''){
-    if(td.all==='missing')pat.chart.teeth[tooth]={};
-    else delete td[surf];
-  } else {
-    if(td.all==='missing')pat.chart.teeth[tooth]={};
-    pat.chart.teeth[tooth][surf]=_selCond;
-  }
-  saveQuiet();renderChart();
-  if(typeof _detailTooth!=='undefined'&&_detailTooth===tooth)openToothDetail(tooth);
-}
-
-function toggleImmature(tooth){
-  var pat=P[_chartPatId];if(!pat)return;
-  if(!pat.chart)pat.chart={mode:_chartMode,teeth:{},immature:{}};
-  if(!pat.chart.immature)pat.chart.immature={};
-  pat.chart.immature[tooth]=!pat.chart.immature[tooth];
-  saveQuiet();renderChart();
-}
-
+/* ── Condition selector ── */
 function selCond(cond){_selCond=cond;buildCondSelector();}
-
 function buildCondSelector(){
   var COND=getCOND(_chartMode);
-  var h='<div style="font-size:.61rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--slate);width:100%;margin-bottom:8px">';
-  h+='Mode: <span style="color:var(--FL)">'+MODE_LABELS[_chartMode]+'</span>';
-  if(_chartMode==='immature')h+='&nbsp;&nbsp;<span style="color:var(--mist);font-weight:400;font-size:.59rem">tap tooth number = open apex</span>';
-  h+='</div><div style="display:flex;flex-wrap:wrap;gap:6px">';
-  var keys=Object.keys(COND);
-  for(var ki=0;ki<keys.length;ki++){
-    var k=keys[ki];
-    var c=COND[k];
-    var isActive=_selCond===k;
-    var onclick='selCond(this.dataset.cond)';
-    h+='<div class="csel'+(isActive?' active':'')+'" data-cond="'+esc(k)+'" onclick="'+onclick+'" '
-      +'style="background:'+c.color+';color:'+(k?c.text:'var(--ink)')+';border-color:'+(isActive?'#0F2318':c.border)+'">'
+  var h='<div style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--FL);width:100%;margin-bottom:8px">'
+    +'Mode: '+MODE_LABELS[_chartMode]
+    +'</div><div style="display:flex;flex-wrap:wrap;gap:5px">';
+  Object.keys(COND).forEach(function(k){
+    var c=COND[k], on=_selCond===k;
+    h+='<div class="csel'+(on?' active':'')+'" data-cond="'+esc(k)+'" '
+      +'style="background:'+c.color+';color:'+(k?c.text:'var(--ink)')+';border-color:'+(on?'#0F2318':c.border)+'">'
       +(k?'<span style="width:8px;height:8px;border-radius:50%;background:'+c.border+';display:inline-block;flex-shrink:0"></span>':'')
-      +c.label+(isActive?' ✓':'')
-      +'</div>';
-  }
+      +c.label+(on?' ✓':'')+'</div>';
+  });
   h+='</div>';
-  if(_chartMode==='primary'||_chartMode==='mixed'||_chartMode==='immature'){
-    h+='<div style="font-size:.59rem;color:var(--mist);margin-top:5px;font-style:italic">Pink = paediatric procedures</div>';
-  }
-  document.getElementById('cond-legend').innerHTML=h;
-  // attach click handlers
-  document.querySelectorAll('.csel[data-cond]').forEach(function(el){
+  if(_chartMode!=='adult')h+='<div style="font-size:.58rem;color:var(--mist);margin-top:5px;font-style:italic">Pink tones = paediatric procedures</div>';
+  var el=document.getElementById('cond-legend'); if(el)el.innerHTML=h;
+  // Attach handlers
+  document.querySelectorAll('#cond-legend .csel').forEach(function(el){
     el.addEventListener('click',function(){selCond(this.dataset.cond);});
   });
 }
+
+/* ── Tooth detail modal ── */
+var _detailTooth=null;
+function openToothDetail(tooth){
+  _detailTooth=tooth;
+  var COND=getCOND(_chartMode);
+  var data=getTC(tooth);
+  var miss=data['all']==='missing';
+  var surfs=twSurfs(tooth);
+  var n=parseInt(tooth.split('.')[1]);
+  var names={1:'Central Incisor',2:'Lateral Incisor',3:'Canine',
+    4:'1st Premolar',5:'2nd Premolar',6:'1st Molar',7:'2nd Molar',8:'3rd Molar'};
+  document.getElementById('td-title').textContent='Tooth '+tooth;
+  document.getElementById('td-sub').textContent=(names[n]||'Tooth')+' — selected: '+(COND[_selCond]||COND['']).label;
+  // Large SVG preview
+  var prev='<div style="display:flex;justify-content:center;margin-bottom:12px">'+toothSVG(tooth,data,_chartMode,80)+'</div>';
+  // 3×3 surface grid
+  function tdCell(surf,label,extraStyle){
+    var cond=miss?'missing':(data[surf]||'');
+    var c=COND[cond]||COND[''];
+    return '<div class="td-cell" data-surf="'+esc(surf)+'" '
+      +'style="background:'+c.color+';border-color:'+c.border+';color:'+(cond?c.text:'var(--slate)')+';'+(extraStyle||'')+'">'
+      +label+'</div>';
+  }
+  var grid='<div class="td-grid">'
+    +'<div class="td-cell td-empty"></div>'+tdCell(surfs.top,surfs.top)+'<div class="td-cell td-empty"></div>'
+    +tdCell('M','M')+tdCell(surfs.mid,surfs.mid)+tdCell('D','D')
+    +'<div class="td-cell td-empty"></div>'+tdCell(surfs.bot,surfs.bot)+'<div class="td-cell td-empty"></div>'
+    +'</div>';
+  // Missing whole-tooth button
+  var missBtn='<button data-surf="__miss" style="margin-top:12px;width:100%;padding:10px;border-radius:10px;background:'
+    +(miss?'#6B7280':'var(--parch)')+';border:1.5px solid '+(miss?'#4B5563':'var(--ln)')+';color:'+(miss?'#fff':'var(--slate)')
+    +';font-size:.78rem;font-weight:600;cursor:pointer;font-family:inherit">'
+    +(miss?'✓ Tooth Missing — tap to restore':'Mark Whole Tooth Missing')+'</button>';
+  document.getElementById('td-grid-wrap').innerHTML=prev+grid+missBtn;
+  // Info line
+  var info=[];
+  [surfs.top,'M',surfs.mid,'D',surfs.bot].forEach(function(s){
+    if(data[s])info.push(s+': '+((COND[data[s]]||{}).label||data[s]));
+  });
+  document.getElementById('td-cond-info').textContent=info.length?info.join(' · '):'All surfaces healthy';
+  document.getElementById('tooth-detail-bg').className='on';
+  document.getElementById('tooth-detail').className='on';
+  // Handlers
+  document.querySelectorAll('#td-grid-wrap .td-cell[data-surf]').forEach(function(el){
+    el.addEventListener('click',function(){
+      tapSurf(_detailTooth,this.dataset.surf);
+      openToothDetail(_detailTooth);
+    });
+  });
+  var mb=document.querySelector('#td-grid-wrap [data-surf="__miss"]');
+  if(mb)mb.addEventListener('click',function(){
+    tapSurf(_detailTooth,'__miss');
+    openToothDetail(_detailTooth);
+  });
+}
+function closeToothDetail(){
+  document.getElementById('tooth-detail-bg').className='';
+  document.getElementById('tooth-detail').className='';
+  _detailTooth=null;
+}
+
+/* ── Surface tap ── */
+function tapSurf(tooth,surf){
+  var pat=P[_chartPatId]; if(!pat)return;
+  if(!pat.chart)pat.chart={mode:_chartMode,teeth:{},immature:{}};
+  if(!pat.chart.teeth[tooth])pat.chart.teeth[tooth]={};
+  var td=pat.chart.teeth[tooth];
+  if(surf==='__miss'){
+    pat.chart.teeth[tooth]=td['all']==='missing'?{}:{all:'missing'};
+  } else if(_selCond==='missing'){
+    pat.chart.teeth[tooth]={all:'missing'};
+  } else if(_selCond===''){
+    if(td['all']==='missing')pat.chart.teeth[tooth]={};
+    else{delete td[surf];}
+  } else {
+    if(td['all']==='missing')pat.chart.teeth[tooth]={};
+    pat.chart.teeth[tooth][surf]=_selCond;
+  }
+  saveQuiet(); renderChart();
+}
+
+/* ── Immature toggle ── */
+function toggleImmature(tooth){
+  var pat=P[_chartPatId]; if(!pat)return;
+  if(!pat.chart)pat.chart={mode:_chartMode,teeth:{},immature:{}};
+  if(!pat.chart.immature)pat.chart.immature={};
+  pat.chart.immature[tooth]=!pat.chart.immature[tooth];
+  saveQuiet(); renderChart();
+}
+
 
 /* ── BACKUP ───────────────────────────── */
 var _bkTimer=null;
