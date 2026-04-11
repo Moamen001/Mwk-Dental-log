@@ -1638,18 +1638,20 @@ function toggleChartMode(){
 
 function getTC(tooth){
   var pat=P[_chartPatId];
-  if(!pat||!pat.chart||!pat.chart.teeth)return {};
+  if(!pat||!pat.chart||!pat.chart.teeth) return {};
   var t = pat.chart.teeth[tooth];
   if(!t || typeof t !== 'object') return {};
   
+  // This automatically cleans old "Pontic/Bridge" data so the chart never crashes
   var migrated = Object.assign({}, t);
   if(migrated.all === 'Pontic/Bridge') migrated.all = 'pontic';
   ['La','B','Pa','L','I','O','M','D'].forEach(function(s){
     if(migrated[s] === 'Pontic/Bridge') migrated[s] = 'pontic';
   });
+  
   return migrated;
 }
-
+  
 function isImmature(tooth){
   var pat=P[_chartPatId];
   return !!(pat&&pat.chart&&pat.chart.immature&&pat.chart.immature[tooth]);
@@ -1832,10 +1834,16 @@ function openToothDetail(tooth){
       openToothDetail(_detailTooth);
     });
   });
-  var mb=document.querySelector('#td-grid-wrap [data-surf="__miss"]');
-  if(mb)mb.addEventListener('click',function(){ tapSurf(_detailTooth,'__miss'); openToothDetail(_detailTooth); });
+ var mb=document.querySelector('#td-grid-wrap [data-surf="__miss"]');
+  if(mb)mb.addEventListener('click',function(){
+    tapSurf(_detailTooth,'__miss');
+    openToothDetail(_detailTooth);
+  });
   var ib=document.querySelector('#td-grid-wrap [data-surf="__immature"]');
-  if(ib)ib.addEventListener('click',function(){ toggleImmature(_detailTooth); openToothDetail(_detailTooth); });
+  if(ib)ib.addEventListener('click',function(){
+    toggleImmature(_detailTooth);
+    openToothDetail(_detailTooth);
+  });
 }
 
 function closeToothDetail(){
@@ -1890,7 +1898,7 @@ function tapSurf(tooth,surf){
   }
   saveQuiet(); renderChart();
 }
-
+  
 function toggleImmature(tooth){
   var pat=P[_chartPatId]; if(!pat)return;
   if(!pat.chart)pat.chart={mode:_chartMode,teeth:{},immature:{}};
