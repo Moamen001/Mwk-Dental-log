@@ -2,7 +2,7 @@
   "name": "DentaLog",
   "short_name": "DentaLog",
   "description": "Personal dental practice manager",
-  "start_url": "/",
+  "start_url": "./",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#0F2318",
