@@ -87,14 +87,29 @@ select.inp{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.
 .card{background:var(--warm);border-radius:14px;border:1.5px solid var(--ln)}
 /* Odontogram */
 .odo-wrap{background:var(--warm);border:1.5px solid var(--ln);border-radius:14px;overflow:hidden;margin-bottom:12px}
-.odo-toolbar{display:flex;align-items:center;gap:6px;padding:10px 12px;border-bottom:1px solid var(--ln);flex-wrap:wrap}
-.odo-mode{padding:5px 11px;border-radius:14px;font-size:.7rem;font-weight:700;border:1.5px solid var(--ln);background:var(--parch);color:var(--slate);cursor:pointer;white-space:nowrap;-webkit-tap-highlight-color:transparent}
+.odo-toolbar{display:flex;align-items:center;gap:5px;padding:9px 12px;border-bottom:1px solid var(--ln);flex-wrap:wrap}
+.odo-mode{padding:5px 10px;border-radius:14px;font-size:.68rem;font-weight:700;border:1.5px solid var(--ln);background:var(--parch);color:var(--slate);cursor:pointer;white-space:nowrap;-webkit-tap-highlight-color:transparent}
 .odo-mode.on{background:var(--F);color:#fff;border-color:var(--F)}
-.odo-cond{padding:5px 10px;border-radius:12px;font-size:.68rem;font-weight:600;border:1.5px solid transparent;cursor:pointer;white-space:nowrap;-webkit-tap-highlight-color:transparent;transition:all .12s}
-.odo-arch{display:flex;justify-content:center;padding:8px 4px 4px;gap:1px}
-.oto{width:22px;height:22px;border-radius:4px;border:1.5px solid var(--ln);background:var(--parch);display:flex;align-items:center;justify-content:center;font-size:.5rem;font-weight:700;color:var(--slate);transition:background .12s,border-color .12s;position:relative;cursor:pointer;-webkit-tap-highlight-color:transparent}
-.oto.filled{border-color:var(--toc)}
-.odo-sep{width:100%;height:1px;background:var(--ln);margin:3px 0}
+.odo-cond{padding:4px 9px;border-radius:10px;font-size:.66rem;font-weight:600;border:1.5px solid transparent;cursor:pointer;white-space:nowrap;-webkit-tap-highlight-color:transparent;transition:all .12s}
+/* Oval arch layout */
+.odo-oval{padding:10px 8px 8px;display:flex;flex-direction:column;align-items:center;gap:0}
+.odo-arch-row{display:flex;justify-content:center;align-items:flex-end;gap:2px;padding:0 4px}
+.odo-arch-row.lower{align-items:flex-start}
+.odo-midline{width:85%;height:1px;background:var(--ln);margin:3px 0;opacity:.6}
+.odo-quadlabel{font-size:.55rem;font-weight:700;color:var(--mist);letter-spacing:.05em;text-align:center;padding:2px 0}
+/* Tooth cell */
+.oto{border:1.5px solid var(--ln);background:var(--parch);border-radius:3px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:.48rem;font-weight:800;color:var(--slate);transition:background .12s,border-color .12s;position:relative;cursor:pointer;-webkit-tap-highlight-color:transparent;line-height:1}
+.oto.filled{border-color:var(--toc);background:var(--tbg)}
+/* Tooth sizes — posterior wider, anterior narrower */
+.oto.molar{width:22px;height:24px}
+.oto.premolar{width:18px;height:22px}
+.oto.canine{width:16px;height:22px}
+.oto.incisor{width:14px;height:20px}
+.oto.ci{width:12px;height:20px}
+/* Lower teeth flip */
+.odo-arch-row.lower .oto{transform:scaleY(-1)}
+.odo-arch-row.lower .oto span{transform:scaleY(-1);display:block}
+.odo-sep{width:90%;height:1px;background:var(--ln);margin:2px 0}
 .odo-legend{padding:8px 12px;display:flex;flex-wrap:wrap;gap:5px;border-top:1px solid var(--ln)}
 
 
@@ -566,7 +581,7 @@ function paintSidebar(){
   var tc=(A[today()]||[]).length, tp=allPats().length;
   var h='<div style="padding:26px 20px 18px">'
     +'<div style="display:flex;align-items:center;gap:10px;margin-bottom:3px">'
-    +'<div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#C9A84C,#9E7B28);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;box-shadow:0 4px 12px rgba(201,168,76,.3)">🦷</div>'
+    +'<div style="width:36px;height:36px;border-radius:10px;overflow:hidden;flex-shrink:0;box-shadow:0 4px 12px rgba(201,168,76,.3)"><img src="icon-192.png" style="width:100%;height:100%;object-fit:cover"></div>'
     +'<div style="font-family:\'Playfair Display\',serif;font-size:1.42rem;color:#fff">DentaLog</div>'
     +'</div>'
     +'<div style="font-size:.64rem;color:var(--sage);letter-spacing:.08em;text-transform:uppercase;font-weight:500;margin-left:46px">Dr. Moamen W. Khalil</div>'
@@ -604,7 +619,7 @@ function paintTopbar(){
   if(S.mob){
     return '<div style="background:'+FOREST+';padding:max(14px,env(safe-area-inset-top)) 18px 14px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;box-shadow:0 2px 10px rgba(0,0,0,.14)">'
       +'<div style="display:flex;align-items:center;gap:10px">'
-      +'<div style="width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#C9A84C,#9E7B28);display:flex;align-items:center;justify-content:center;font-size:.95rem">🦷</div>'
+      +'<div style="width:30px;height:30px;border-radius:8px;overflow:hidden"><img src="icon-192.png" style="width:100%;height:100%;object-fit:cover"></div>'
       +'<div>'
       +'<div style="font-family:\'Playfair Display\',serif;font-size:1.15rem;color:#fff;line-height:1">DentaLog</div>'
       +'<div style="font-size:.6rem;color:var(--sage);margin-top:1px">'+subs[S.view]+'</div>'
@@ -1309,12 +1324,14 @@ function buildOdoHTML(pat){
   ch._selCond=selCond;
   var pid=esc(pat.id);
 
+  // Mode tabs
   var modes=[['adult','Adult'],['primary','Primary'],['mixed','Mixed'],['immature','Immature']];
   var mH='';
   modes.forEach(function(m){
     mH+='<button class="odo-mode'+(mode===m[0]?' on':'')+'" onclick="odoSetMode(\''+pid+'\',\''+m[0]+'\')">'+m[1]+'</button>';
   });
 
+  // Condition chips
   var cH='';
   conditions.forEach(function(c){
     var col=COND_COL[c]||'var(--slate)';
@@ -1322,52 +1339,108 @@ function buildOdoHTML(pat){
     cH+='<button class="odo-cond" onclick="odoSelCond(\''+pid+'\',\''+esc(c)+'\')" style="background:'+(on?col+'22':'var(--parch)')+';color:'+(on?col:'var(--slate)')+';border-color:'+(on?col:'var(--ln)')+'">'+esc(c)+'</button>';
   });
 
-  function toothHTML(tn){
+  // Tooth type class by FDI number
+  function toothClass(tn){
+    var n=tn%10; // last digit = tooth position
+    if(n===8||n===7)return 'molar';
+    if(n===6||n===5)return 'premolar';
+    if(n===4||n===3)return 'premolar';
+    if(n===2||n===1)return 'incisor';
+    // deciduous
+    if(n===5||n===4)return 'premolar';
+    if(n===3)return 'canine';
+    if(n===2||n===1)return 'incisor';
+    return 'incisor';
+  }
+  // More precise
+  function toothCls(tn){
+    var n=tn%10;
+    if(n===8||n===7)return 'molar';
+    if(n===6)return 'molar';
+    if(n===5||n===4)return 'premolar';
+    if(n===3)return 'canine';
+    if(n===2)return 'incisor';
+    if(n===1)return 'ci';
+    return 'incisor';
+  }
+
+  function toothHTML(tn, isLower){
     var td=ch.teeth[tn]||{};
     var cond=td.cond||'Clear';
-    var col=COND_COL[cond]||'var(--parch)';
+    var col=COND_COL[cond]||'';
     var filled=cond!=='Clear';
     var immMark=!!(td.immature);
-    return '<div class="oto'+(filled?' filled':'')+(immMark?' immature':'')+'" onclick="odoPaint(\''+pid+'\','+tn+')" title="'+tn+'" style="'+(filled?'background:'+col+'33;border-color:'+col+';--toc:'+col:'')+'">'
-      +'<span style="font-size:.48rem;font-weight:800;color:'+(filled?col:'var(--mist)')+'">'+tn+'</span>'
-      +(immMark?'<span style="position:absolute;top:-1px;right:-1px;font-size:.5rem;color:var(--gold)">◇</span>':'')
+    var cls=toothCls(tn);
+    var styleStr='';
+    if(filled) styleStr='--toc:'+col+';--tbg:'+col+'22;';
+    return '<div class="oto '+cls+(filled?' filled':'')+(immMark?' immature':'')+'" onclick="odoPaint(\''+pid+'\','+tn+')" style="'+styleStr+'">'
+      +'<span>'+tn+'</span>'
+      +(immMark?'<span style="position:absolute;top:0;right:0;font-size:.55rem;color:var(--gold);transform:none">◇</span>':'')
       +'</div>';
   }
 
-  function archRow(top, bot){
-    var th=top.length/2|0, bh=bot.length/2|0;
-    var tL=top.slice(0,th), tR=top.slice(th);
-    var bL=bot.slice(0,bh), bR=bot.slice(bh);
-    return '<div style="display:flex;flex-direction:column;padding:8px 6px 6px">'
-      +'<div style="display:flex;justify-content:center;gap:2px">'
-        +'<div style="display:flex;gap:2px">'+tL.map(toothHTML).join('')+'</div>'
-        +'<div style="width:10px"></div>'
-        +'<div style="display:flex;gap:2px">'+tR.map(toothHTML).join('')+'</div>'
-      +'</div>'
-      +'<div class="odo-sep"></div>'
-      +'<div style="display:flex;justify-content:center;gap:2px">'
-        +'<div style="display:flex;gap:2px">'+bL.map(toothHTML).join('')+'</div>'
-        +'<div style="width:10px"></div>'
-        +'<div style="display:flex;gap:2px">'+bR.map(toothHTML).join('')+'</div>'
-      +'</div>'
-      +'</div>';
+  // Build upper arch (oval shape — wider in posterior)
+  // FDI upper: right quad 18-11, left quad 21-28
+  // Display: 18 17 16 15 14 13 12 11 | 21 22 23 24 25 26 27 28
+  function archHTML(topTeeth, botTeeth){
+    var topLeft=topTeeth.slice(0,topTeeth.length/2);
+    var topRight=topTeeth.slice(topTeeth.length/2);
+    var botLeft=botTeeth.slice(0,botTeeth.length/2);
+    var botRight=botTeeth.slice(botTeeth.length/2);
+
+    var h='<div class="odo-oval">';
+    // Upper arch
+    h+='<div class="odo-arch-row" style="gap:2px">';
+    topLeft.forEach(function(t){h+=toothHTML(t,false);});
+    h+='<div style="width:8px"></div>';
+    topRight.forEach(function(t){h+=toothHTML(t,false);});
+    h+='</div>';
+    // Tooth numbers upper
+    h+='<div style="display:flex;justify-content:center;gap:2px;margin-top:1px">';
+    topLeft.forEach(function(t){h+='<div style="font-size:.42rem;color:var(--mist);text-align:center;width:'+(t%10>=7?22:t%10>=5?18:t%10>=3?16:t%10==2?14:12)+'px">'+t+'</div>';});
+    h+='<div style="width:8px"></div>';
+    topRight.forEach(function(t){h+='<div style="font-size:.42rem;color:var(--mist);text-align:center;width:'+(t%10>=7?22:t%10>=5?18:t%10>=3?16:t%10==2?14:12)+'px">'+t+'</div>';});
+    h+='</div>';
+    // Midline
+    h+='<div style="display:flex;align-items:center;justify-content:center;gap:6px;margin:4px 0">';
+    h+='<div style="flex:1;height:1px;background:var(--ln)"></div>';
+    h+='<div style="font-size:.55rem;color:var(--mist);font-weight:600;white-space:nowrap">Upper / Lower</div>';
+    h+='<div style="flex:1;height:1px;background:var(--ln)"></div>';
+    h+='</div>';
+    // Lower tooth numbers
+    h+='<div style="display:flex;justify-content:center;gap:2px;margin-bottom:1px">';
+    botLeft.forEach(function(t){h+='<div style="font-size:.42rem;color:var(--mist);text-align:center;width:'+(t%10>=7?22:t%10>=5?18:t%10>=3?16:t%10==2?14:12)+'px">'+t+'</div>';});
+    h+='<div style="width:8px"></div>';
+    botRight.forEach(function(t){h+='<div style="font-size:.42rem;color:var(--mist);text-align:center;width:'+(t%10>=7?22:t%10>=5?18:t%10>=3?16:t%10==2?14:12)+'px">'+t+'</div>';});
+    h+='</div>';
+    // Lower arch (flipped visually)
+    h+='<div class="odo-arch-row lower" style="gap:2px">';
+    botLeft.forEach(function(t){h+=toothHTML(t,true);});
+    h+='<div style="width:8px"></div>';
+    botRight.forEach(function(t){h+=toothHTML(t,true);});
+    h+='</div>';
+    h+='</div>';
+    return h;
   }
 
   var archH='';
   if(mode==='adult'||mode==='immature'){
-    archH=archRow(ODO_ADULT_TOP,ODO_ADULT_BOT);
+    archH=archHTML(ODO_ADULT_TOP,ODO_ADULT_BOT);
   } else if(mode==='primary'){
-    archH=archRow(ODO_PRIM_TOP,ODO_PRIM_BOT);
-  } else {
-    archH=archRow(ODO_ADULT_TOP,ODO_ADULT_BOT)
-      +'<div style="margin:4px 8px;border-top:1px dashed var(--ln)"></div>'
-      +archRow(ODO_PRIM_TOP,ODO_PRIM_BOT);
+    archH=archHTML(ODO_PRIM_TOP,ODO_PRIM_BOT);
+  } else { // mixed
+    archH=archHTML(ODO_ADULT_TOP,ODO_ADULT_BOT)
+      +'<div style="margin:6px 12px;border-top:1.5px dashed var(--ln);opacity:.5"></div>'
+      +archHTML(ODO_PRIM_TOP,ODO_PRIM_BOT);
   }
 
+  // Legend
   var lgH='<div class="odo-legend">';
+  var usedConds=[];
+  Object.keys(ch.teeth||{}).forEach(function(k){var c=(ch.teeth[k]||{}).cond;if(c&&c!=='Clear'&&usedConds.indexOf(c)<0)usedConds.push(c);});
   conditions.filter(function(c){return c!=='Clear'}).forEach(function(c){
     var col=COND_COL[c]||'var(--slate)';
-    var used=Object.keys(ch.teeth||{}).some(function(k){return (ch.teeth[k]||{}).cond===c});
+    var used=usedConds.indexOf(c)>-1;
     lgH+='<span style="padding:2px 7px;border-radius:8px;font-size:.62rem;font-weight:600;background:'+col+(used?'22':'11')+';color:'+col+';border:1px solid '+col+(used?'44':'22')+'">'+esc(c)+'</span>';
   });
   lgH+='</div>';
@@ -1425,11 +1498,7 @@ window.addEventListener('resize',function(){
   if(m!==S.mob){S.mob=m;R();}
 });
 
-if('serviceWorker' in navigator){
-  window.addEventListener('load',function(){
-    navigator.serviceWorker.register('sw.js').catch(function(){});
-  });
-}
+// No service worker - prevents iOS PWA cache issues
 
 paint();
 </script>
