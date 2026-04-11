@@ -152,6 +152,32 @@ select.inp{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.
   font-size:1.15rem;font-weight:700;color:var(--slate);display:flex;align-items:center;
   justify-content:center;flex-shrink:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .vc-btn:active{background:var(--ln)}
+/* ── ODONTOGRAM ── */
+#chart-panel{position:fixed;top:0;left:0;right:0;bottom:0;z-index:950;
+  background:var(--cream);display:none;flex-direction:column}
+#chart-panel.on{display:flex}
+.arch-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:4px 12px}
+.arch-wrap::-webkit-scrollbar{display:none}
+.arch-row{display:flex;align-items:flex-end;gap:3px;justify-content:center;min-width:max-content}
+.arch-row.lower{align-items:flex-start;margin-top:2px}
+.tooth-w{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;
+  -webkit-tap-highlight-color:transparent;user-select:none}
+.tooth-w .fdi{font-size:.52rem;font-weight:700;color:var(--slate);line-height:1;text-align:center}
+.tooth-grid{display:grid;grid-template-columns:10px 14px 10px;grid-template-rows:10px 14px 10px;gap:1px}
+.ts{border-radius:2px;background:var(--warm);border:1px solid var(--ln);transition:background .1s;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.ts:active{opacity:.7}
+.ts.empty{background:transparent!important;border-color:transparent!important;pointer-events:none}
+.tooth-w.missing .tooth-grid{opacity:.5}
+.tooth-w.missing::after{content:'×';position:absolute;font-size:1rem;font-weight:900;color:#6B7280;pointer-events:none}
+/* Condition legend chips */
+.cond-chip{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:20px;
+  font-size:.73rem;font-weight:600;cursor:pointer;border:2px solid transparent;
+  transition:all .12s;-webkit-tap-highlight-color:transparent;user-select:none}
+.cond-chip.sel{border-color:var(--ink)}
+/* Surface label */
+.surf-label{font-size:.48rem;font-weight:700;color:var(--slate);line-height:1;
+  display:flex;align-items:center;justify-content:center;pointer-events:none;letter-spacing:0}
+
 </style>
 </head>
 <body>
@@ -159,9 +185,10 @@ select.inp{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.
 <!-- LOCK SCREEN -->
 <div id="LS">
   <div style="width:100%;max-width:300px;text-align:center">
-    <div style="width:72px;height:72px;border-radius:20px;background:linear-gradient(135deg,#C9A84C,#9E7B28);display:flex;align-items:center;justify-content:center;font-size:2rem;margin:0 auto 20px;box-shadow:0 8px 28px rgba(201,168,76,.35)">🦷</div>
-    <div style="font-family:'Playfair Display',serif;font-size:2rem;color:#fff;margin-bottom:4px">DentaLog</div>
-    <div style="font-size:.75rem;color:#8BAF95;letter-spacing:.08em;text-transform:uppercase;margin-bottom:36px">Practice Manager</div>
+    <div style="width:90px;height:90px;border-radius:22px;background:#0F2318;border:2px solid #C9A84C;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;box-shadow:0 8px 28px rgba(201,168,76,.35);padding:8px"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0NCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjQzlBODRDIiBzdHJva2Utd2lkdGg9IjIiLz48cGF0aCBkPSJNNTAgMTggQzM4IDE4IDI4IDI2IDI2IDM2IEMyNCA0NCAyNSA1MiAyNyA1OCBDMjkgNjUgMzEgNzQgMzQgODAgQzM1IDg0IDM3IDg2IDM5IDg0IEM0MSA4MiA0MiA3NiA0MyA3MCBDNDQgNjQgNDYgNjAgNTAgNjAgQzU0IDYwIDU2IDY0IDU3IDcwIEM1OCA3NiA1OSA4MiA2MSA4NCBDNjMgODYgNjUgODQgNjYgODAgQzY5IDc0IDcxIDY1IDczIDU4IEM3NSA1MiA3NiA0NCA3NCAzNiBDNzIgMjYgNjIgMTggNTAgMThaIiBmaWxsPSJub25lIiBzdHJva2U9IiNDOUE4NEMiIHN0cm9rZS13aWR0aD0iMi4yIi8+PHRleHQgeD0iMzgiIHk9IjQ4IiBmb250LWZhbWlseT0ic2VyaWYiIGZvbnQtc2l6ZT0iMTEiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiNDOUE4NEMiIHRleHQtYW5jaG9yPSJtaWRkbGUiPk08L3RleHQ+PHRleHQgeD0iNTAiIHk9IjQ4IiBmb250LWZhbWlseT0ic2VyaWYiIGZvbnQtc2l6ZT0iMTEiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiNDOUE4NEMiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlc8L3RleHQ+PHRleHQgeD0iNjIiIHk9IjQ4IiBmb250LWZhbWlseT0ic2VyaWYiIGZvbnQtc2l6ZT0iMTEiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiNDOUE4NEMiIHRleHQtYW5jaG9yPSJtaWRkbGUiPks8L3RleHQ+PGxpbmUgeDE9IjMzIiB5MT0iNTIiIHgyPSI2NyIgeTI9IjUyIiBzdHJva2U9IiNDOUE4NEMiIHN0cm9rZS13aWR0aD0iMSIgb3BhY2l0eT0iMC42Ii8+PC9zdmc+" style="width:100%;height:100%"></div>
+    <div style="font-family:'Playfair Display',serif;font-size:1.8rem;color:#fff;margin-bottom:2px">DentaLog</div>
+    <div style="font-size:.72rem;color:#C9A84C;letter-spacing:.06em;font-weight:600;margin-bottom:2px">DR. MOAMEN WALID KHALIL</div>
+    <div style="font-size:.65rem;color:#8BAF95;letter-spacing:.08em;text-transform:uppercase;margin-bottom:36px">Doctor of Dental Medicine</div>
     <input id="LI" type="password" placeholder="Password" autocomplete="off"
       style="width:100%;padding:14px 18px;border-radius:14px;border:1.5px solid rgba(255,255,255,.15);background:rgba(255,255,255,.08);color:#fff;font-size:1.1rem;text-align:center;letter-spacing:.1em;font-family:inherit;outline:none"/>
     <button id="LB"
@@ -183,6 +210,22 @@ select.inp{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.
 <div id="RP"></div>
 <div id="CF"></div>
 <div id="toast"></div>
+<div id="chart-panel">
+  <div id="chart-hdr" style="background:var(--F);padding:max(16px,env(safe-area-inset-top)) 18px 14px;flex-shrink:0;display:flex;justify-content:space-between;align-items:center">
+    <div>
+      <div style="font-family:'Playfair Display',serif;font-size:1.05rem;color:#fff" id="chart-title">Dental Chart</div>
+      <div style="font-size:.68rem;color:var(--sage);margin-top:2px" id="chart-sub"></div>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <button id="chart-mode-btn" onclick="toggleChartMode()" style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:6px 12px;color:#fff;font-size:.72rem;font-weight:600;cursor:pointer;font-family:inherit">Adult</button>
+      <button onclick="closeChartPanel()" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.15);color:#fff;font-size:1.2rem;display:flex;align-items:center;justify-content:center;border:none;cursor:pointer">×</button>
+    </div>
+  </div>
+  <div style="flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px 0 20px" id="chart-body"></div>
+  <div style="padding:12px 16px;padding-bottom:max(12px,env(safe-area-inset-bottom));border-top:1px solid var(--ln);background:var(--cream);flex-shrink:0">
+    <div style="display:flex;gap:6px;flex-wrap:wrap" id="cond-legend"></div>
+  </div>
+</div>
 <div id="ep-modal" onclick="if(event.target===document.getElementById('ep-modal'))closeEpModal()">
   <div id="ep-sheet">
     <div style="padding:14px 16px 10px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--ln);flex-shrink:0">
@@ -458,10 +501,10 @@ function paintSidebar(){
   var total=allPats().length,todayCnt=(A[today()]||[]).length;
   var h='<div style="padding:26px 20px 18px">'
     +'<div style="display:flex;align-items:center;gap:10px;margin-bottom:3px">'
-    +'<div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#C9A84C,#9E7B28);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;box-shadow:0 4px 12px rgba(201,168,76,.3)">🦷</div>'
+    +'<div style="width:36px;height:36px;border-radius:10px;background:#0a1e10;border:1.5px solid rgba(201,168,76,.4);display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:4px;box-shadow:0 4px 12px rgba(201,168,76,.25)"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0NCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjQzlBODRDIiBzdHJva2Utd2lkdGg9IjIiLz48cGF0aCBkPSJNNTAgMTggQzM4IDE4IDI4IDI2IDI2IDM2IEMyNCA0NCAyNSA1MiAyNyA1OCBDMjkgNjUgMzEgNzQgMzQgODAgQzM1IDg0IDM3IDg2IDM5IDg0IEM0MSA4MiA0MiA3NiA0MyA3MCBDNDQgNjQgNDYgNjAgNTAgNjAgQzU0IDYwIDU2IDY0IDU3IDcwIEM1OCA3NiA1OSA4MiA2MSA4NCBDNjMgODYgNjUgODQgNjYgODAgQzY5IDc0IDcxIDY1IDczIDU4IEM3NSA1MiA3NiA0NCA3NCAzNiBDNzIgMjYgNjIgMTggNTAgMThaIiBmaWxsPSJub25lIiBzdHJva2U9IiNDOUE4NEMiIHN0cm9rZS13aWR0aD0iMi4yIi8+PHRleHQgeD0iMzgiIHk9IjQ4IiBmb250LWZhbWlseT0ic2VyaWYiIGZvbnQtc2l6ZT0iMTEiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiNDOUE4NEMiIHRleHQtYW5jaG9yPSJtaWRkbGUiPk08L3RleHQ+PHRleHQgeD0iNTAiIHk9IjQ4IiBmb250LWZhbWlseT0ic2VyaWYiIGZvbnQtc2l6ZT0iMTEiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiNDOUE4NEMiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlc8L3RleHQ+PHRleHQgeD0iNjIiIHk9IjQ4IiBmb250LWZhbWlseT0ic2VyaWYiIGZvbnQtc2l6ZT0iMTEiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiNDOUE4NEMiIHRleHQtYW5jaG9yPSJtaWRkbGUiPks8L3RleHQ+PGxpbmUgeDE9IjMzIiB5MT0iNTIiIHgyPSI2NyIgeTI9IjUyIiBzdHJva2U9IiNDOUE4NEMiIHN0cm9rZS13aWR0aD0iMSIgb3BhY2l0eT0iMC42Ii8+PC9zdmc+" style="width:100%;height:100%"></div>'
     +'<div style="font-family:\'Playfair Display\',serif;font-size:1.42rem;color:#fff">DentaLog</div>'
     +'</div>'
-    +'<div style="font-size:.66rem;color:var(--sage);letter-spacing:.08em;text-transform:uppercase;font-weight:500;margin-left:46px">Practice Manager</div>'
+    +'<div style="font-size:.66rem;color:var(--sage);letter-spacing:.08em;text-transform:uppercase;font-weight:500;margin-left:46px">Dr. M.W. Khalil</div>'
     +'</div>'
     +'<div style="height:1px;background:rgba(255,255,255,.08);margin:0 18px"></div>'
     +'<div style="flex:1;padding:12px 12px 0">';
@@ -480,6 +523,12 @@ function paintSidebar(){
     +'<div style="background:rgba(255,255,255,.06);border-radius:10px;padding:10px 12px;border:1px solid rgba(255,255,255,.07)">'
     +'<div style="font-size:.6rem;color:var(--sage);text-transform:uppercase;letter-spacing:.07em;font-weight:600">Patients</div>'
     +'<div style="font-size:.85rem;color:#fff;font-weight:700;margin-top:2px">'+total+' total</div></div>'
+    +'</div></div>'
+    +'<div style="padding:10px 14px 4px;border-top:1px solid rgba(255,255,255,.07);margin-top:4px">'
+    +'<div style="font-size:.58rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:7px">Data</div>'
+    +'<div style="display:flex;gap:6px">'
+    +'<button onclick="autoBackup()" style="flex:1;padding:8px 6px;border-radius:8px;background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.3);color:rgba(201,168,76,.9);font-size:.68rem;font-weight:600;cursor:pointer;font-family:inherit">💾 Backup</button>'
+    +'<button onclick="restoreBackup()" style="flex:1;padding:8px 6px;border-radius:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.6);font-size:.68rem;font-weight:600;cursor:pointer;font-family:inherit">📂 Restore</button>'
     +'</div></div>';
   return h;
 }
@@ -491,12 +540,15 @@ function paintTopbar(){
   if(S.mob){
     return '<div style="background:'+FOREST+';padding:max(14px,env(safe-area-inset-top)) 18px 14px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;box-shadow:0 2px 10px rgba(0,0,0,.14)">'
       +'<div style="display:flex;align-items:center;gap:10px">'
-      +'<div style="width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#C9A84C,#9E7B28);display:flex;align-items:center;justify-content:center;font-size:.95rem">🦷</div>'
+      +'<div style="width:32px;height:32px;border-radius:8px;background:#0a1e10;border:1.5px solid #C9A84C44;display:flex;align-items:center;justify-content:center;padding:4px"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0NCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjQzlBODRDIiBzdHJva2Utd2lkdGg9IjIiLz48cGF0aCBkPSJNNTAgMTggQzM4IDE4IDI4IDI2IDI2IDM2IEMyNCA0NCAyNSA1MiAyNyA1OCBDMjkgNjUgMzEgNzQgMzQgODAgQzM1IDg0IDM3IDg2IDM5IDg0IEM0MSA4MiA0MiA3NiA0MyA3MCBDNDQgNjQgNDYgNjAgNTAgNjAgQzU0IDYwIDU2IDY0IDU3IDcwIEM1OCA3NiA1OSA4MiA2MSA4NCBDNjMgODYgNjUgODQgNjYgODAgQzY5IDc0IDcxIDY1IDczIDU4IEM3NSA1MiA3NiA0NCA3NCAzNiBDNzIgMjYgNjIgMTggNTAgMThaIiBmaWxsPSJub25lIiBzdHJva2U9IiNDOUE4NEMiIHN0cm9rZS13aWR0aD0iMi4yIi8+PHRleHQgeD0iMzgiIHk9IjQ4IiBmb250LWZhbWlseT0ic2VyaWYiIGZvbnQtc2l6ZT0iMTEiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiNDOUE4NEMiIHRleHQtYW5jaG9yPSJtaWRkbGUiPk08L3RleHQ+PHRleHQgeD0iNTAiIHk9IjQ4IiBmb250LWZhbWlseT0ic2VyaWYiIGZvbnQtc2l6ZT0iMTEiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiNDOUE4NEMiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlc8L3RleHQ+PHRleHQgeD0iNjIiIHk9IjQ4IiBmb250LWZhbWlseT0ic2VyaWYiIGZvbnQtc2l6ZT0iMTEiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiNDOUE4NEMiIHRleHQtYW5jaG9yPSJtaWRkbGUiPks8L3RleHQ+PGxpbmUgeDE9IjMzIiB5MT0iNTIiIHgyPSI2NyIgeTI9IjUyIiBzdHJva2U9IiNDOUE4NEMiIHN0cm9rZS13aWR0aD0iMSIgb3BhY2l0eT0iMC42Ii8+PC9zdmc+" style="width:100%;height:100%"></div>'
       +'<div>'
       +'<div style="font-family:\'Playfair Display\',serif;font-size:1.15rem;color:#fff;line-height:1">DentaLog</div>'
       +'<div style="font-size:.6rem;color:var(--sage);margin-top:1px">'+subs[S.view]+'</div>'
       +'</div></div>'
+      +'<div style="display:flex;gap:6px">'
+      +'<button onclick="restoreBackup()" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:8px 10px;color:rgba(255,255,255,.65);font-size:.8rem" title="Restore backup">📂</button>'
       +'<button onclick="openApptPanel(null,\''+S.date+'\')" style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);border-radius:10px;padding:8px 14px;color:#fff;font-size:.75rem;font-weight:700">+ Add</button>'
+      +'</div>'
       +'</div>';
   }
   return '<div style="background:var(--warm);border-bottom:1px solid var(--ln);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0">'
@@ -1094,6 +1146,7 @@ function buildPatPanel(){
     +'<div><label class="lbl">Email</label><input class="inp" type="email" value="'+esc(f.email||'')+'" placeholder="email@…" oninput="_PF.email=this.value"></div>'
     +'<div style="grid-column:1/-1"><label class="lbl">Notes / Allergies</label><textarea class="inp" style="min-height:55px" oninput="_PF.note=this.value">'+esc(f.note||'')+'</textarea></div>'
     +'</div></div>'
+    +(!isNew?'<div style="margin-bottom:20px"><div class="sbar">🦷 Dental Chart</div><button id="open-chart-btn" data-patid="'+esc(f.id)+'" style="width:100%;padding:13px;background:#0F2318;color:#fff;border-radius:12px;font-size:.88rem;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;border:none">🗺 Open Dental Chart</button></div>':'')
     +(!isNew?'<div><div class="sbar">📋 Visit History ('+(f.visits||[]).length+')</div>'+(visH||'<div style="text-align:center;padding:20px;color:var(--mist);font-size:.8rem">No visits recorded yet</div>')+'</div>':'')
     +'</div>'
     +'<div style="padding:'+(S.mob?'12px 18px':'12px 22px')+';padding-bottom:'+(S.mob?'max(12px,env(safe-area-inset-bottom))':'12px')+';border-top:1px solid var(--ln);display:flex;gap:9px;background:var(--cream);flex-shrink:0">'
@@ -1103,6 +1156,11 @@ function buildPatPanel(){
     +'</div>';
 
   // emoji handled by modal
+  // chart button listener
+  setTimeout(function(){
+    var cb=document.getElementById('open-chart-btn');
+    if(cb){cb.addEventListener('click',function(){openChartPanel(cb.dataset.patid);});}
+  },50);
 }
 
 function ppName(v){
@@ -1175,6 +1233,26 @@ window.addEventListener('resize',function(){
 });
 
 /* ── BACKUP / RESTORE ─────────────────── */
+function restoreBackup(){
+  var input=document.createElement('input');
+  input.type='file';input.accept='.json';
+  input.onchange=function(e){
+    var r=new FileReader();
+    r.onload=function(ev){
+      try{
+        var d=JSON.parse(ev.target.result);
+        var pCount=0,aCount=0;
+        if(d.patients){Object.assign(P,d.patients);pCount=Object.keys(d.patients).length;}
+        if(d.appointments){Object.assign(A,d.appointments);aCount=Object.keys(d.appointments).length;}
+        saveAll();
+        toast('✓ Restored: '+pCount+' patients, '+aCount+' days');
+        R();
+      }catch(e2){toast('⚠️ Invalid backup file');}
+    };
+    r.readAsText(e.target.files[0]);
+  };
+  input.click();
+}
 window.exportDentaLog=function(){
   var data=JSON.stringify({patients:P,appointments:A,exported:new Date().toISOString()},null,2);
   var blob=new Blob([data],{type:'application/json'});
@@ -1235,6 +1313,165 @@ function closeEpModal(){
   if(m)m.className='';
 }
 
+
+/* ══════════════════════════════════════
+   ODONTOGRAM
+══════════════════════════════════════ */
+var COND={
+  '':       {label:'Healthy',  color:'#fff',     border:'#E4DDD4', text:'#94A3B8'},
+  'caries': {label:'Caries',   color:'#EF4444',  border:'#DC2626', text:'#fff'},
+  'filling':{label:'Filling',  color:'#3B82F6',  border:'#2563EB', text:'#fff'},
+  'crown':  {label:'Crown',    color:'#C9A84C',  border:'#9E7B28', text:'#0F2318'},
+  'missing':{label:'Missing',  color:'#9CA3AF',  border:'#6B7280', text:'#fff'},
+  'fracture':{label:'Fracture',color:'#F97316',  border:'#EA580C', text:'#fff'},
+  'rct':    {label:'RCT',      color:'#8B5CF6',  border:'#7C3AED', text:'#fff'},
+  'pontic': {label:'Pontic',   color:'#06B6D4',  border:'#0891B2', text:'#fff'}
+};
+var COND_ORDER=['','caries','filling','crown','missing','fracture','rct','pontic'];
+
+var ADULT_U=['1.8','1.7','1.6','1.5','1.4','1.3','1.2','1.1','2.1','2.2','2.3','2.4','2.5','2.6','2.7','2.8'];
+var ADULT_L=['4.8','4.7','4.6','4.5','4.4','4.3','4.2','4.1','3.1','3.2','3.3','3.4','3.5','3.6','3.7','3.8'];
+var CHILD_U=['5.5','5.4','5.3','5.2','5.1','6.1','6.2','6.3','6.4','6.5'];
+var CHILD_L=['8.5','8.4','8.3','8.2','8.1','7.1','7.2','7.3','7.4','7.5'];
+
+// surfaces: [top=B/La, left=M, center=O/I, right=D, bottom=L/Pa]
+function toothSurfs(tooth){
+  var n=parseInt(tooth.split('.')[1]);
+  if(n===1||n===2||n===1||n===2){return ['La','M','I','D','Pa'];}
+  if(n===3){return ['La','M','I','D','Pa'];}
+  return ['B','M','O','D','L'];
+}
+
+var _chartPatId=null, _chartMode='adult', _selCond='caries';
+
+function openChartPanel(patId){
+  _chartPatId=patId;
+  var pat=P[patId];
+  if(!pat)return;
+  if(!pat.chart)pat.chart={mode:'adult',teeth:{}};
+  _chartMode=pat.chart.mode||'adult';
+  document.getElementById('chart-title').textContent=(pat.name||'Patient')+' — Chart';
+  document.getElementById('chart-sub').textContent='Tap a surface to set condition';
+  document.getElementById('chart-panel').className='on slUp';
+  renderChartMode();
+}
+
+function closeChartPanel(){
+  document.getElementById('chart-panel').className='';
+}
+
+function toggleChartMode(){
+  _chartMode=_chartMode==='adult'?'child':'adult';
+  document.getElementById('chart-mode-btn').textContent=_chartMode==='adult'?'Adult':'Child';
+  var pat=P[_chartPatId];if(pat&&pat.chart)pat.chart.mode=_chartMode;
+  renderChartMode();
+}
+
+function renderChartMode(){
+  var uRow=_chartMode==='adult'?ADULT_U:CHILD_U;
+  var lRow=_chartMode==='adult'?ADULT_L:CHILD_L;
+  var btn=document.getElementById('chart-mode-btn');
+  if(btn)btn.textContent=_chartMode==='adult'?'→ Child':'→ Adult';
+  document.getElementById('chart-body').innerHTML=buildArch(uRow,lRow);
+  buildCondLegend();
+}
+
+function buildArch(upper,lower){
+  var h='';
+  // Labels row
+  h+='<div style="display:flex;justify-content:center;gap:20px;margin-bottom:4px;padding:0 12px">'
+    +'<div style="font-size:.6rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mist)">Upper</div>'
+    +'</div>';
+  // Upper arch
+  h+='<div class="arch-wrap"><div class="arch-row" id="upper-arch">';
+  // divider line in middle
+  var mid=Math.floor(upper.length/2);
+  upper.forEach(function(t,i){
+    h+=toothWidget(t,'upper');
+    if(i===mid-1)h+='<div style="width:2px;background:var(--ln);align-self:stretch;border-radius:2px;margin:0 2px"></div>';
+  });
+  h+='</div></div>';
+  // midline
+  h+='<div style="display:flex;justify-content:center;margin:4px 0">'
+    +'<div style="font-size:.55rem;color:var(--mist);letter-spacing:.06em">─── MIDLINE ───</div></div>';
+  // Lower arch
+  h+='<div class="arch-wrap"><div class="arch-row lower" id="lower-arch">';
+  lower.forEach(function(t,i){
+    h+=toothWidget(t,'lower');
+    if(i===Math.floor(lower.length/2)-1)h+='<div style="width:2px;background:var(--ln);align-self:stretch;border-radius:2px;margin:0 2px"></div>';
+  });
+  h+='</div></div>';
+  h+='<div style="display:flex;justify-content:center;gap:20px;margin-top:4px;padding:0 12px">'
+    +'<div style="font-size:.6rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mist)">Lower</div>'
+    +'</div>';
+  return h;
+}
+
+function getTeethData(tooth){
+  var pat=P[_chartPatId];
+  if(!pat||!pat.chart)return {};
+  return pat.chart.teeth[tooth]||{};
+}
+
+function toothWidget(tooth,jaw){
+  var surfs=toothSurfs(tooth);
+  var data=getTeethData(tooth);
+  var isMissing=data['all']==='missing';
+  // grid positions: top=surfs[0], left=surfs[1], center=surfs[2], right=surfs[3], bottom=surfs[4]
+  var cells=['empty',surfs[0],'empty', surfs[1],surfs[2],surfs[3], 'empty',surfs[4],'empty'];
+  var grid='';
+  cells.forEach(function(s){
+    if(s==='empty'){grid+='<div class="ts empty"></div>';return;}
+    var cond=data[s]||'';
+    var c=COND[cond]||COND[''];
+    var lbl=s.length<=2?s:'';
+    grid+='<div class="ts" onclick="tapSurf(\''+esc(tooth)+'\',\''+esc(s)+'\')" '
+      +'style="background:'+c.color+';border-color:'+c.border+'" '
+      +'title="'+esc(tooth)+' '+s+': '+(cond||'healthy')+'">'
+      +'<div class="surf-label" style="color:'+(cond?c.text:'var(--mist)')+'">'+lbl+'</div>'
+      +'</div>';
+  });
+  // For upper teeth, number is below; for lower, above
+  var numDiv='<div class="fdi" style="color:'+(isMissing?'#9CA3AF':'var(--slate)')+'">'+esc(tooth)+'</div>';
+  var pos=isMissing?'<div style="position:relative">':'<div>';
+  return pos+'<div class="tooth-w'+(isMissing?' missing':'')+'">'
+    +(jaw==='upper'?'':''+numDiv)
+    +'<div class="tooth-grid">'+grid+'</div>'
+    +(jaw==='upper'?numDiv:'')
+    +'</div></div>';
+}
+
+function tapSurf(tooth,surf){
+  var pat=P[_chartPatId];if(!pat)return;
+  if(!pat.chart)pat.chart={mode:_chartMode,teeth:{}};
+  if(!pat.chart.teeth[tooth])pat.chart.teeth[tooth]={};
+  var current=pat.chart.teeth[tooth][surf]||'';
+  var nextIdx=(COND_ORDER.indexOf(current)+1)%COND_ORDER.length;
+  // special: missing applies to whole tooth
+  var next=COND_ORDER[nextIdx];
+  if(next==='missing'){pat.chart.teeth[tooth]={all:'missing'};}
+  else{
+    if(pat.chart.teeth[tooth]['all']==='missing')pat.chart.teeth[tooth]={};
+    pat.chart.teeth[tooth][surf]=next;
+  }
+  saveAll();
+  // re-render just the arch
+  var uRow=_chartMode==='adult'?ADULT_U:CHILD_U;
+  var lRow=_chartMode==='adult'?ADULT_L:CHILD_L;
+  document.getElementById('chart-body').innerHTML=buildArch(uRow,lRow);
+}
+
+function buildCondLegend(){
+  var h='<div style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--slate);width:100%;margin-bottom:4px">Tap surface to cycle:</div>';
+  Object.keys(COND).forEach(function(k){
+    var c=COND[k];
+    h+='<div class="cond-chip" style="background:'+c.color+';color:'+(k?c.text:'var(--ink)')+';border-color:'+c.border+'">'
+      +(k?'<span style="width:7px;height:7px;border-radius:50%;background:'+(k===''?'var(--ln)':c.border)+';display:inline-block"></span>':'')
+      +c.label+'</div>';
+  });
+  document.getElementById('cond-legend').innerHTML=h;
+}
+
 /* ── BACKUP ───────────────────────────── */
 var _bkTimer=null;
 
@@ -1242,6 +1479,7 @@ function autoBackup(){
   clearTimeout(_bkTimer);
   _bkTimer=setTimeout(function(){
     try{
+      var pCount=Object.keys(P).length;
       var data=JSON.stringify({patients:P,appointments:A,exported:new Date().toISOString(),version:3},null,2);
       var blob=new Blob([data],{type:'application/json'});
       var a=document.createElement('a');
@@ -1251,6 +1489,7 @@ function autoBackup(){
       a.click();
       document.body.removeChild(a);
       setTimeout(function(){try{URL.revokeObjectURL(a.href);}catch(e){}},1000);
+      if(pCount>0)toast('💾 Backed up '+pCount+' patients');
     }catch(e){}
   },800);
 }
