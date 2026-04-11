@@ -1339,10 +1339,11 @@ var COND_BASE={
   'caries':  {label:'Caries',            color:'#EF4444', border:'#DC2626', text:'#fff'},
   'filling': {label:'Filling',           color:'#3B82F6', border:'#2563EB', text:'#fff'},
   'crown':   {label:'Crown',             color:'#C9A84C', border:'#9E7B28', text:'#0F2318'},
+  'bridge':  {label:'Bridge',            color:'#92400E', border:'#78350F', text:'#fff'},
   'missing': {label:'Missing',           color:'#9CA3AF', border:'#6B7280', text:'#fff'},
   'fracture':{label:'Fracture',          color:'#F97316', border:'#EA580C', text:'#fff'},
   'rct':     {label:'RCT',               color:'#8B5CF6', border:'#7C3AED', text:'#fff'},
-  'pontic':  {label:'Pontic/Bridge',     color:'#06B6D4', border:'#0891B2', text:'#fff'},
+  'pontic':  {label:'Pontic',            color:'#06B6D4', border:'#0891B2', text:'#fff'},
   'vpt':     {label:'VPT',               color:'#10B981', border:'#059669', text:'#fff'},
   'dpc':     {label:'Direct Pulp Cap',   color:'#34D399', border:'#10B981', text:'#0F2318'},
   'ipc':     {label:'Indirect Pulp Cap', color:'#A7F3D0', border:'#34D399', text:'#0F2318'}
@@ -1498,8 +1499,7 @@ function closeChartPanel(){document.getElementById('chart-panel').className='';}
 function refreshModeBtn(){
   var btn=document.getElementById('chart-mode-btn');
   if(!btn)return;
-  var ni=(MODES.indexOf(_chartMode)+1)%MODES.length;
-  btn.textContent='→ '+MODE_LABELS[MODES[ni]];
+  btn.textContent=MODE_LABELS[_chartMode] + ' ⇄';
 }
 function toggleChartMode(){
   var ni=(MODES.indexOf(_chartMode)+1)%MODES.length;
@@ -1699,7 +1699,7 @@ function tapSurf(tooth,surf){
   if(!pat.chart.teeth[tooth])pat.chart.teeth[tooth]={};
   var td=pat.chart.teeth[tooth];
 
-  var WHOLE_TOOTH = ['crown', 'pontic', 'ssc']; // These should override and fill the whole tooth
+  var WHOLE_TOOTH = ['crown', 'bridge', 'pontic', 'ssc']; // These should override and fill the whole tooth
 
   if(surf==='__miss'){
     pat.chart.teeth[tooth]=td['all']==='missing'?{}:{all:'missing'};
