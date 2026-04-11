@@ -85,6 +85,18 @@ select.inp{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.
 
 /* Cards */
 .card{background:var(--warm);border-radius:14px;border:1.5px solid var(--ln)}
+/* Odontogram */
+.odo-wrap{background:var(--warm);border:1.5px solid var(--ln);border-radius:14px;overflow:hidden;margin-bottom:12px}
+.odo-toolbar{display:flex;align-items:center;gap:6px;padding:10px 12px;border-bottom:1px solid var(--ln);flex-wrap:wrap}
+.odo-mode{padding:5px 11px;border-radius:14px;font-size:.7rem;font-weight:700;border:1.5px solid var(--ln);background:var(--parch);color:var(--slate);cursor:pointer;white-space:nowrap;-webkit-tap-highlight-color:transparent}
+.odo-mode.on{background:var(--F);color:#fff;border-color:var(--F)}
+.odo-cond{padding:5px 10px;border-radius:12px;font-size:.68rem;font-weight:600;border:1.5px solid transparent;cursor:pointer;white-space:nowrap;-webkit-tap-highlight-color:transparent;transition:all .12s}
+.odo-arch{display:flex;justify-content:center;padding:8px 4px 4px;gap:1px}
+.oto{width:22px;height:22px;border-radius:4px;border:1.5px solid var(--ln);background:var(--parch);display:flex;align-items:center;justify-content:center;font-size:.5rem;font-weight:700;color:var(--slate);transition:background .12s,border-color .12s;position:relative;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.oto.filled{border-color:var(--toc)}
+.odo-sep{width:100%;height:1px;background:var(--ln);margin:3px 0}
+.odo-legend{padding:8px 12px;display:flex;flex-wrap:wrap;gap:5px;border-top:1px solid var(--ln)}
+
 
 /* Date strip */
 .dsd{flex-shrink:0;width:52px;height:68px;border-radius:14px;display:flex;flex-direction:column;
@@ -1188,6 +1200,7 @@ function buildPatPanel(){
     +'<div><label class="lbl">Email</label><input class="inp" type="email" value="'+esc(f.email||'')+'" placeholder="email@…" oninput="_PF.email=this.value"></div>'
     +'<div style="grid-column:1/-1"><label class="lbl">Notes / Allergies</label><textarea class="inp" style="min-height:55px" oninput="_PF.note=this.value">'+esc(f.note||'')+'</textarea></div>'
     +'</div></div>'
+    +(!isNew?'<div><div class="sbar">🦷 Dental Chart</div><div id="pat-odo">'+buildOdoHTML(f)+'</div></div>':'')
     +(!isNew?'<div><div class="sbar">📋 Visit History ('+(f.visits||[]).length+')</div>'+(visH||'<div style="text-align:center;padding:20px;color:var(--mist);font-size:.8rem">No visits recorded yet</div>')+'</div>':'')
     +'</div>'
     +'<div style="padding:'+(S.mob?'12px 18px':'12px 22px')+';padding-bottom:'+(S.mob?'max(12px,env(safe-area-inset-bottom))':'12px')+';border-top:1px solid var(--ln);display:flex;gap:9px;background:var(--cream);flex-shrink:0">'
@@ -1256,6 +1269,155 @@ function savePat(){
   toast('✓ Patient saved');
   if(_PF_cb){var cb=_PF_cb;_PF_cb=null;closePanel();cb(_PF);}
   else{closePanel();R();}
+}
+
+
+/* ════════════════════════════════════════
+   ODONTOGRAM
+════════════════════════════════════════ */
+// FDI tooth numbering per mode
+var ODO_ADULT_TOP=[18,17,16,15,14,13,12,11, 21,22,23,24,25,26,27,28];
+var ODO_ADULT_BOT=[48,47,46,45,44,43,42,41, 31,32,33,34,35,36,37,38];
+var ODO_PRIM_TOP =[55,54,53,52,51, 61,62,63,64,65];
+var ODO_PRIM_BOT =[85,84,83,82,81, 71,72,73,74,75];
+
+var COND_BASE=['Clear','Caries','Filling','Crown','Missing','Fracture','RCT','Bridge','VPT','Pulp Cap','Implant'];
+var COND_PEDO=['Pulpotomy','SSC','Apexification','Revascularization'];
+var COND_COL={
+  'Clear':'var(--parch)','Caries':'#C0392B','Filling':'#2980B9','Crown':'#F39C12',
+  'Missing':'#555','Fracture':'#E67E22','RCT':'#8E44AD','Bridge':'#16A085',
+  'VPT':'#27AE60','Pulp Cap':'#E91E63','Implant':'#00BCD4',
+  'Pulpotomy':'#9C27B0','SSC':'#607D8B','Apexification':'#FF5722','Revascularization':'#4CAF50'
+};
+
+function odoInit(pat){
+  if(!pat.chart)pat.chart={mode:'adult',teeth:{}};
+  return pat.chart;
+}
+
+function odoConditions(mode){
+  if(mode==='adult')return COND_BASE;
+  return COND_BASE.concat(COND_PEDO);
+}
+
+function buildOdoHTML(pat){
+  var ch=odoInit(pat);
+  var mode=ch.mode||'adult';
+  var selCond=ch._selCond||'Caries';
+  var conditions=odoConditions(mode);
+  if(conditions.indexOf(selCond)<0)selCond='Caries';
+  ch._selCond=selCond;
+
+  // Mode tabs
+  var modes=[['adult','Adult'],['primary','Primary'],['mixed','Mixed'],['immature','Immature']];
+  var mH='';
+  modes.forEach(function(m){mH+='<button class="odo-mode'+(mode===m[0]?' on':'')+'" onclick="odoSetMode(''+esc(pat.id)+'',''+m[0]+'')">'+m[1]+'</button>';});
+
+  // Condition chips
+  var cH='';
+  conditions.forEach(function(c){
+    var col=COND_COL[c]||'var(--slate)';
+    var on=selCond===c;
+    cH+='<button class="odo-cond" onclick="odoSelCond(''+esc(pat.id)+'',''+esc(c)+'')" style="background:'+(on?col+'22':'var(--parch)')+';color:'+(on?col:'var(--slate)')+';border-color:'+(on?col:'var(--ln)')+'">'+esc(c)+'</button>';
+  });
+
+  // Arches
+  function toothHTML(tn){
+    var cond=(ch.teeth[tn]||{}).cond||'Clear';
+    var col=COND_COL[cond]||'var(--parch)';
+    var immature=!!(ch.teeth[tn]||{}).immature;
+    var filled=cond!=='Clear';
+    return '<div class="odo-tooth" onclick="odoPaint(''+esc(pat.id)+'','+tn+')">'
+      +'<div class="oto'+(filled?' filled':'')+(immature?' immature':'')+'" style="'+(filled?'background:'+col+'33;border-color:'+col+';--toc:'+col:'')+'"><span style="font-size:.48rem;font-weight:800;color:'+(filled?col:'var(--mist)')+'">'+tn+'</span></div>'
+      +'</div>';
+  }
+
+  function archRow(topTeeth, botTeeth){
+    var topLeft=topTeeth.slice(0,topTeeth.length/2);
+    var topRight=topTeeth.slice(topTeeth.length/2);
+    var botLeft=botTeeth.slice(0,botTeeth.length/2);
+    var botRight=botTeeth.slice(botTeeth.length/2);
+    var h='<div class="odo-arch">';
+    // top arch
+    h+='<div style="display:flex;flex-direction:column;gap:2px;width:100%">';
+    h+='<div style="display:flex;justify-content:center;gap:1px">'
+      +'<div class="odo-quad">'+topLeft.map(toothHTML).join('')+'</div>'
+      +'<div class="odo-gap"></div>'
+      +'<div class="odo-quad">'+topRight.map(toothHTML).join('')+'</div>'
+      +'</div>';
+    h+='<div class="odo-sep"></div>';
+    h+='<div style="display:flex;justify-content:center;gap:1px">'
+      +'<div class="odo-quad">'+botLeft.map(toothHTML).join('')+'</div>'
+      +'<div class="odo-gap"></div>'
+      +'<div class="odo-quad">'+botRight.map(toothHTML).join('')+'</div>'
+      +'</div>';
+    h+='</div></div>';
+    return h;
+  }
+
+  var archH='';
+  if(mode==='adult'||mode==='immature'){
+    archH=archRow(ODO_ADULT_TOP,ODO_ADULT_BOT);
+  } else if(mode==='primary'){
+    archH=archRow(ODO_PRIM_TOP,ODO_PRIM_BOT);
+  } else { // mixed
+    archH=archRow(ODO_ADULT_TOP,ODO_ADULT_BOT)
+      +'<div style="margin:4px 0;border-top:1px dashed var(--ln)"></div>'
+      +archRow(ODO_PRIM_TOP,ODO_PRIM_BOT);
+  }
+
+  // Legend
+  var lgH='<div class="odo-legend">';
+  conditions.filter(function(c){return c!=='Clear'}).forEach(function(c){
+    var col=COND_COL[c]||'var(--slate)';
+    var used=Object.values(ch.teeth||{}).some(function(t){return t.cond===c});
+    lgH+='<span style="padding:2px 7px;border-radius:8px;font-size:.62rem;font-weight:600;background:'+col+(used?'22':'11')+';color:'+col+';border:1px solid '+col+(used?'44':'22')+'">'+esc(c)+'</span>';
+  });
+  lgH+='</div>';
+
+  return '<div class="odo-wrap">'
+    +'<div class="odo-toolbar">'+mH+'</div>'
+    +'<div class="odo-toolbar" style="border-top:none;padding-top:6px">'+cH+'</div>'
+    +archH
+    +lgH
+    +'</div>';
+}
+
+function odoSetMode(patId,mode){
+  var pat=P[patId];if(!pat)return;
+  odoInit(pat).mode=mode;
+  odoInit(pat)._selCond='Caries';
+  saveQuiet();
+  var el=document.getElementById('pat-odo');
+  if(el)el.innerHTML=buildOdoHTML(pat);
+}
+
+function odoSelCond(patId,cond){
+  var pat=P[patId];if(!pat)return;
+  odoInit(pat)._selCond=cond;
+  var el=document.getElementById('pat-odo');
+  if(el)el.innerHTML=buildOdoHTML(pat);
+}
+
+function odoPaint(patId,tn){
+  var pat=P[patId];if(!pat)return;
+  var ch=odoInit(pat);
+  var selCond=ch._selCond||'Caries';
+  if(!ch.teeth[tn])ch.teeth[tn]={};
+  if(ch.mode==='immature'){
+    // toggle immature apex marker
+    ch.teeth[tn].immature=!ch.teeth[tn].immature;
+  } else {
+    // cycle: apply selected cond, or clear if already set
+    if((ch.teeth[tn].cond||'Clear')===selCond){
+      ch.teeth[tn].cond='Clear';
+    } else {
+      ch.teeth[tn].cond=selCond;
+    }
+  }
+  saveQuiet();
+  var el=document.getElementById('pat-odo');
+  if(el)el.innerHTML=buildOdoHTML(pat);
 }
 
 /* ════════════════════════════════════════
