@@ -1307,52 +1307,50 @@ function buildOdoHTML(pat){
   var conditions=odoConditions(mode);
   if(conditions.indexOf(selCond)<0)selCond='Caries';
   ch._selCond=selCond;
+  var pid=esc(pat.id);
 
-  // Mode tabs
   var modes=[['adult','Adult'],['primary','Primary'],['mixed','Mixed'],['immature','Immature']];
   var mH='';
-  modes.forEach(function(m){mH+='<button class="odo-mode'+(mode===m[0]?' on':'')+'" onclick="odoSetMode(''+esc(pat.id)+'',''+m[0]+'')">'+m[1]+'</button>';});
+  modes.forEach(function(m){
+    mH+='<button class="odo-mode'+(mode===m[0]?' on':'')+'" onclick="odoSetMode(\''+pid+'\',\''+m[0]+'\')">'+m[1]+'</button>';
+  });
 
-  // Condition chips
   var cH='';
   conditions.forEach(function(c){
     var col=COND_COL[c]||'var(--slate)';
     var on=selCond===c;
-    cH+='<button class="odo-cond" onclick="odoSelCond(''+esc(pat.id)+'',''+esc(c)+'')" style="background:'+(on?col+'22':'var(--parch)')+';color:'+(on?col:'var(--slate)')+';border-color:'+(on?col:'var(--ln)')+'">'+esc(c)+'</button>';
+    cH+='<button class="odo-cond" onclick="odoSelCond(\''+pid+'\',\''+esc(c)+'\')" style="background:'+(on?col+'22':'var(--parch)')+';color:'+(on?col:'var(--slate)')+';border-color:'+(on?col:'var(--ln)')+'">'+esc(c)+'</button>';
   });
 
-  // Arches
   function toothHTML(tn){
-    var cond=(ch.teeth[tn]||{}).cond||'Clear';
+    var td=ch.teeth[tn]||{};
+    var cond=td.cond||'Clear';
     var col=COND_COL[cond]||'var(--parch)';
-    var immature=!!(ch.teeth[tn]||{}).immature;
     var filled=cond!=='Clear';
-    return '<div class="odo-tooth" onclick="odoPaint(''+esc(pat.id)+'','+tn+')">'
-      +'<div class="oto'+(filled?' filled':'')+(immature?' immature':'')+'" style="'+(filled?'background:'+col+'33;border-color:'+col+';--toc:'+col:'')+'"><span style="font-size:.48rem;font-weight:800;color:'+(filled?col:'var(--mist)')+'">'+tn+'</span></div>'
+    var immMark=!!(td.immature);
+    return '<div class="oto'+(filled?' filled':'')+(immMark?' immature':'')+'" onclick="odoPaint(\''+pid+'\','+tn+')" title="'+tn+'" style="'+(filled?'background:'+col+'33;border-color:'+col+';--toc:'+col:'')+'">'
+      +'<span style="font-size:.48rem;font-weight:800;color:'+(filled?col:'var(--mist)')+'">'+tn+'</span>'
+      +(immMark?'<span style="position:absolute;top:-1px;right:-1px;font-size:.5rem;color:var(--gold)">◇</span>':'')
       +'</div>';
   }
 
-  function archRow(topTeeth, botTeeth){
-    var topLeft=topTeeth.slice(0,topTeeth.length/2);
-    var topRight=topTeeth.slice(topTeeth.length/2);
-    var botLeft=botTeeth.slice(0,botTeeth.length/2);
-    var botRight=botTeeth.slice(botTeeth.length/2);
-    var h='<div class="odo-arch">';
-    // top arch
-    h+='<div style="display:flex;flex-direction:column;gap:2px;width:100%">';
-    h+='<div style="display:flex;justify-content:center;gap:1px">'
-      +'<div class="odo-quad">'+topLeft.map(toothHTML).join('')+'</div>'
-      +'<div class="odo-gap"></div>'
-      +'<div class="odo-quad">'+topRight.map(toothHTML).join('')+'</div>'
+  function archRow(top, bot){
+    var th=top.length/2|0, bh=bot.length/2|0;
+    var tL=top.slice(0,th), tR=top.slice(th);
+    var bL=bot.slice(0,bh), bR=bot.slice(bh);
+    return '<div style="display:flex;flex-direction:column;padding:8px 6px 6px">'
+      +'<div style="display:flex;justify-content:center;gap:2px">'
+        +'<div style="display:flex;gap:2px">'+tL.map(toothHTML).join('')+'</div>'
+        +'<div style="width:10px"></div>'
+        +'<div style="display:flex;gap:2px">'+tR.map(toothHTML).join('')+'</div>'
+      +'</div>'
+      +'<div class="odo-sep"></div>'
+      +'<div style="display:flex;justify-content:center;gap:2px">'
+        +'<div style="display:flex;gap:2px">'+bL.map(toothHTML).join('')+'</div>'
+        +'<div style="width:10px"></div>'
+        +'<div style="display:flex;gap:2px">'+bR.map(toothHTML).join('')+'</div>'
+      +'</div>'
       +'</div>';
-    h+='<div class="odo-sep"></div>';
-    h+='<div style="display:flex;justify-content:center;gap:1px">'
-      +'<div class="odo-quad">'+botLeft.map(toothHTML).join('')+'</div>'
-      +'<div class="odo-gap"></div>'
-      +'<div class="odo-quad">'+botRight.map(toothHTML).join('')+'</div>'
-      +'</div>';
-    h+='</div></div>';
-    return h;
   }
 
   var archH='';
@@ -1360,24 +1358,23 @@ function buildOdoHTML(pat){
     archH=archRow(ODO_ADULT_TOP,ODO_ADULT_BOT);
   } else if(mode==='primary'){
     archH=archRow(ODO_PRIM_TOP,ODO_PRIM_BOT);
-  } else { // mixed
+  } else {
     archH=archRow(ODO_ADULT_TOP,ODO_ADULT_BOT)
-      +'<div style="margin:4px 0;border-top:1px dashed var(--ln)"></div>'
+      +'<div style="margin:4px 8px;border-top:1px dashed var(--ln)"></div>'
       +archRow(ODO_PRIM_TOP,ODO_PRIM_BOT);
   }
 
-  // Legend
   var lgH='<div class="odo-legend">';
   conditions.filter(function(c){return c!=='Clear'}).forEach(function(c){
     var col=COND_COL[c]||'var(--slate)';
-    var used=Object.values(ch.teeth||{}).some(function(t){return t.cond===c});
+    var used=Object.keys(ch.teeth||{}).some(function(k){return (ch.teeth[k]||{}).cond===c});
     lgH+='<span style="padding:2px 7px;border-radius:8px;font-size:.62rem;font-weight:600;background:'+col+(used?'22':'11')+';color:'+col+';border:1px solid '+col+(used?'44':'22')+'">'+esc(c)+'</span>';
   });
   lgH+='</div>';
 
   return '<div class="odo-wrap">'
     +'<div class="odo-toolbar">'+mH+'</div>'
-    +'<div class="odo-toolbar" style="border-top:none;padding-top:6px">'+cH+'</div>'
+    +'<div class="odo-toolbar" style="border-top:none;padding-top:4px">'+cH+'</div>'
     +archH
     +lgH
     +'</div>';
