@@ -484,7 +484,7 @@ var S={
   patQ:''
 };
 var _rf;
-function R(){if(!_rf)_rf=requestAnimationFrame(function(){_rf=null;paint();});}
+function R(){if(!_rf)_rf=requestAnimationFrame(function(){_rf=null;loadData();});}
 
 /* ── HTML HELPERS ─────────────────────── */
 function avH(pat,sz){
@@ -580,8 +580,9 @@ function paintSidebar(){
     +'<div style="padding:10px 14px 4px;border-top:1px solid rgba(255,255,255,.07);margin-top:4px">'
     +'<div style="font-size:.58rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:7px">Data</div>'
     +'<div style="display:flex;gap:6px">'
-    +'<button onclick="autoBackup()" style="flex:1;padding:8px 6px;border-radius:8px;background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.3);color:rgba(201,168,76,.9);font-size:.68rem;font-weight:600;cursor:pointer;font-family:inherit">💾 Backup</button>'
-    +'<button onclick="restoreBackup()" style="flex:1;padding:8px 6px;border-radius:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.6);font-size:.68rem;font-weight:600;cursor:pointer;font-family:inherit">📂 Restore</button>'
+    +'<button onclick="autoBackup()" style="flex:1;padding:8px 4px;border-radius:8px;background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.3);color:rgba(201,168,76,.9);font-size:.62rem;font-weight:600;cursor:pointer;font-family:inherit">💾 Backup</button>'
+    +'<button onclick="saveQuiet();toast(\'💾 Data Saved!\')" style="flex:1;padding:8px 4px;border-radius:8px;background:rgba(76,175,80,.15);border:1px solid rgba(76,175,80,.3);color:rgba(76,175,80,.9);font-size:.62rem;font-weight:600;cursor:pointer;font-family:inherit">✅ Save</button>'
+    +'<button onclick="restoreBackup()" style="flex:1;padding:8px 4px;border-radius:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.6);font-size:.62rem;font-weight:600;cursor:pointer;font-family:inherit">📂 Restore</button>'
     +'</div></div>';
   return h;
 }
@@ -1203,7 +1204,13 @@ function buildPatPanel(){
     +'<div><label class="lbl">Email</label><input class="inp" type="email" value="'+esc(f.email||'')+'" placeholder="email@…" oninput="_PF.email=this.value"></div>'
     +'<div style="grid-column:1/-1"><label class="lbl">Notes / Allergies</label><textarea class="inp" style="min-height:55px" oninput="_PF.note=this.value">'+esc(f.note||'')+'</textarea></div>'
     +'</div></div>'
-    +(!isNew?'<div style="margin-bottom:20px"><div class="sbar">🦷 Dental Chart</div><button id="open-chart-btn" data-patid="'+esc(f.id)+'" style="width:100%;padding:13px;background:#0F2318;color:#fff;border-radius:12px;font-size:.88rem;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;border:none">🗺 Open Dental Chart</button></div>':'')
+    
+    +(!isNew?'<div style="margin-bottom:20px"><div class="sbar">🖼 Image Gallery (X-rays & Clinical)</div>'
+    +'<div id="pp-gallery" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px"></div>'
+    +'<button onclick="document.getElementById(\'img-upload\').click()" style="width:100%;padding:10px;background:rgba(15,35,24,.05);color:var(--F);border:1.5px dashed var(--ln);border-radius:10px;font-size:.75rem;font-weight:600;cursor:pointer;font-family:inherit">＋ Upload Image</button>'
+    +'<input type="file" id="img-upload" style="display:none" accept="image/*" onchange="handleImgUpload(this)">'
+    +'</div>':'')
++(!isNew?'<div style="margin-bottom:20px"><div class="sbar">🦷 Dental Chart</div><button id="open-chart-btn" data-patid="'+esc(f.id)+'" style="width:100%;padding:13px;background:#0F2318;color:#fff;border-radius:12px;font-size:.88rem;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;border:none">🗺 Open Dental Chart</button></div>':'')
     +(!isNew?'<div><div class="sbar">📋 Visit History ('+(f.visits||[]).length+')</div>'+(visH||'<div style="text-align:center;padding:20px;color:var(--mist);font-size:.8rem">No visits recorded yet</div>')+'</div>':'')
     +'</div>'
     +'<div style="padding:'+(S.mob?'12px 18px':'12px 22px')+';padding-bottom:'+(S.mob?'max(12px,env(safe-area-inset-bottom))':'12px')+';border-top:1px solid var(--ln);display:flex;gap:9px;background:var(--cream);flex-shrink:0">'
@@ -1216,7 +1223,7 @@ function buildPatPanel(){
   // chart button listener
   setTimeout(function(){
     var cb=document.getElementById('open-chart-btn');
-    if(cb){cb.addEventListener('click',function(){openChartPanel(cb.dataset.patid);});}
+    if(cb){cb.addEventListener('click',function(){openChartPanel(cb.dataset.patid);});} if(!isNew) paintGallery(f.id);
   },50);
 }
 
@@ -2166,7 +2173,6 @@ function renderPerioChart(){
       archH+='<td style="padding:2px 3px;text-align:center"><input type="checkbox" data-tooth="'+tooth+'" data-field="bl_b" '+(checked?'checked':'')+' onchange="perioCbChange(this)" style="width:14px;height:14px;accent-color:#EF4444"></td>';
     });
     archH += '</tr>';
-
     rows.forEach(function(row){
       archH += '<tr>';
       archH += '<td style="padding:2px 4px;color:var(--slate);font-weight:600;white-space:nowrap;text-align:right;font-size:.62rem">'+row.label+'</td>';
@@ -2175,11 +2181,11 @@ function renderPerioChart(){
         var val=d[row.key]||'';
         archH += '<td style="padding:2px 3px;text-align:center">'
           +'<input class="perio-input" type="number" data-tooth="'+tooth+'" data-field="'+row.key+'" min="0" max="'+(row.key==='furc'||row.key==='calc'||row.key==='stain'?'3':'20')+'" value="'+val+'" placeholder="'+row.placeholder+'"'
-          +' onchange="perioInputChange(this)">'
+          +' onchange="perioInputChange(this)" style="width:34px;height:24px;border:1px solid var(--ln);border-radius:4px;text-align:center;font-size:.75rem;background:var(--warm);color:var(--ink)">'
           +'</td>';
       });
       archH += '</tr>';
-    });
+    });;
     archH += '</table></div>';
     archH += '</div>';
     return archH;
@@ -2208,12 +2214,12 @@ function renderPerioChart(){
 }
 
 function perioCbChange(el){
-  var tooth=el.dataset.tooth, field=el.dataset.field;
+  var tooth=el.getAttribute('data-tooth'), field=el.getAttribute('data-field');
   setPerioData(tooth,field,el.checked?'1':'0');
   renderPerioChart();
 }
 function perioInputChange(el){
-  var tooth=el.dataset.tooth, field=el.dataset.field;
+  var tooth=el.getAttribute('data-tooth'), field=el.getAttribute('data-field');
   setPerioData(tooth,field,el.value);
   renderPerioChart();
 }
@@ -2231,9 +2237,191 @@ function printPerioChart(){
 }
 
 
+
+/* ── INDEXEDDB CORE ──────────────────────── */
+var DB_NAME = 'DentaLogDB';
+var DB_VERSION = 1;
+var db;
+
+function initDB() {
+  return new Promise((resolve, reject) => {
+    var request = indexedDB.open(DB_NAME, DB_VERSION);
+    request.onupgradeneeded = function(e) {
+      var db = e.target.result;
+      if (!db.objectStoreNames.contains('patients')) db.createObjectStore('patients', { keyPath: 'id' });
+      if (!db.objectStoreNames.contains('appts')) db.createObjectStore('appts', { keyPath: 'id' });
+      if (!db.objectStoreNames.contains('images')) db.createObjectStore('images', { keyPath: 'id' });
+    };
+    request.onsuccess = function(e) {
+      db = e.target.result;
+      resolve(db);
+    };
+    request.onerror = function(e) { reject(e); };
+  });
+}
+
+function dbGet(storeName, id) {
+  return new Promise((resolve, reject) => {
+    var transaction = db.transaction([storeName], 'readonly');
+    var store = transaction.objectStore(storeName);
+    var request = store.get(id);
+    request.onsuccess = function(e) { resolve(e.target.result); };
+    request.onerror = function(e) { reject(e); };
+  });
+}
+
+function dbGetAll(storeName) {
+  return new Promise((resolve, reject) => {
+    var transaction = db.transaction([storeName], 'readonly');
+    var store = transaction.objectStore(storeName);
+    var request = store.getAll();
+    request.onsuccess = function(e) { resolve(e.target.result); };
+    request.onerror = function(e) { reject(e); };
+  });
+}
+
+function dbPut(storeName, data) {
+  return new Promise((resolve, reject) => {
+    var transaction = db.transaction([storeName], 'readwrite');
+    var store = transaction.objectStore(storeName);
+    var request = store.put(data);
+    request.onsuccess = function(e) { resolve(e.target.result); };
+    request.onerror = function(e) { reject(e); };
+  });
+}
+
+function dbDel(storeName, id) {
+  return new Promise((resolve, reject) => {
+    var transaction = db.transaction([storeName], 'readwrite');
+    var store = transaction.objectStore(storeName);
+    var request = store.delete(id);
+    request.onsuccess = function(e) { resolve(e.target.result); };
+    request.onerror = function(e) { reject(e); };
+  });
+}
+
+async function syncToDB() {
+  if (!db) return;
+  // Sync patients
+  for (var id in P) { await dbPut('patients', Object.assign({id: id}, P[id])); }
+  // Sync appts
+  for (var id in A) { await dbPut('appts', Object.assign({id: id}, A[id])); }
+}
+
+async function migrateFromLS() {
+  var pKeys = ['dl_p3', 'dl_p2', 'dl_patients_v1', 'dl_patients'];
+  var aKeys = ['dl_a3', 'dl_a2', 'dl_appts_v1', 'dl_appts'];
+  var migrated = false;
+  
+  for (var k of pKeys) {
+    var val = lsGet(k);
+    if (val && Object.keys(val).length > 0) {
+      for (var id in val) { await dbPut('patients', Object.assign({id: id}, val[id])); }
+      migrated = true;
+    }
+  }
+  for (var k of aKeys) {
+    var val = lsGet(k);
+    if (val && Object.keys(val).length > 0) {
+      for (var id in val) { await dbPut('appts', Object.assign({id: id}, val[id])); }
+      migrated = true;
+    }
+  }
+  return migrated;
+}
+
+async function loadData() {
+  await initDB();
+  var patients = await dbGetAll('patients');
+  var appts = await dbGetAll('appts');
+  
+  if (patients.length === 0 && appts.length === 0) {
+    var migrated = await migrateFromLS();
+    if (migrated) {
+      patients = await dbGetAll('patients');
+      appts = await dbGetAll('appts');
+    }
+  }
+  
+  P = {}; patients.forEach(p => { P[p.id] = p; });
+  A = {}; appts.forEach(a => { A[a.id] = a; });
+  loadData();
+}
+
+// Override saveQuiet to also sync to DB
+var _origSaveQuiet = saveQuiet;
+saveQuiet = function() {
+  _origSaveQuiet();
+  syncToDB();
+};
+
+/* ── IMAGE GALLERY ─────────────────────── */
+async function handleImgUpload(el) {
+  var files = Array.from(el.files);
+  if (files.length === 0) return;
+  
+  var pending = files.length;
+  files.forEach(file => {
+    var reader = new FileReader();
+    reader.onload = async function(e) {
+      var imgData = e.target.result;
+      var imgId = uid();
+      var imgObj = {
+        id: imgId,
+        patId: _PF.id,
+        data: imgData,
+        name: file.name,
+        date: today()
+      };
+      await dbPut('images', imgObj);
+      pending--;
+      if (pending === 0) {
+        toast('🖼 Images uploaded!');
+        paintGallery(_PF.id);
+      }
+    };
+    reader.readAsDataURL(file);
+  });
+  el.value = '';
+}
+
+async function paintGallery(patId) {
+  var container = document.getElementById('pp-gallery');
+  if (!container) return;
+  var allImages = await dbGetAll('images');
+  var patImages = allImages.filter(img => img.patId === patId);
+  
+  if (patImages.length === 0) {
+    container.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:10px;color:var(--mist);font-size:.7rem">No images yet</div>';
+    return;
+  }
+  
+  container.innerHTML = patImages.map(img => `
+    <div style="position:relative;aspect-ratio:1;border-radius:8px;overflow:hidden;border:1px solid var(--ln);background:var(--ln)">
+      <img src="${img.data}" style="width:100%;height:100%;object-fit:cover;cursor:pointer" onclick="viewFullImg('${img.id}')">
+      <button onclick="delImg('${img.id}')" style="position:absolute;top:2px;right:2px;width:18px;height:18px;background:rgba(0,0,0,.5);color:#fff;border-radius:50%;font-size:10px;display:flex;align-items:center;justify-content:center;border:none;cursor:pointer">×</button>
+    </div>
+  `).join('');
+}
+
+async function viewFullImg(imgId) {
+  var img = await dbGet('images', imgId);
+  if (!img) return;
+  var w = window.open('');
+  w.document.write('<html><head><title>' + esc(img.name) + '</title></head><body style="margin:0;background:#000;display:flex;align-items:center;justify-content:center"><img src="' + img.data + '" style="max-width:100%;max-height:100%"></body></html>');
+}
+
+async function delImg(imgId) {
+  if (confirm('Delete this image?')) {
+    await dbDel('images', imgId);
+    toast('Image deleted');
+    paintGallery(_PF.id);
+  }
+}
+
 /* ── INIT ─────────────────────────────── */
 applyDarkMode();
-paint();
+loadData();
 </script>
 </body>
 </html>
