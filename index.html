@@ -363,7 +363,7 @@ body.dark .perio-input{background:#0F2318;border-color:#1a3a22;color:#e0f0e5}
   });
 })();
 
-window.addEventListener("DOMContentLoaded",()=>{setTimeout(()=>{if(!document.getElementById("app").innerHTML.trim())paint()},1000)});
+window.addEventListener("DOMContentLoaded",()=>{setTimeout(()=>{if(!document.getElementById("view").innerHTML.trim())paint()},1000)});
 </script>
 
 <script>
@@ -1685,15 +1685,7 @@ function openChartPanel(patId){
   document.getElementById('chart-panel').className='on slUp';
   refreshModeBtn(); renderChart();
 }
-function closeChartPanel() {
-  document.getElementById('chart-panel').className='';
-  
-  // If the patient panel is open in the background, refresh it to show new chart updates
-  if (document.getElementById('RP').className.indexOf('on') > -1 && _PF && _PF.id === _chartPatId) {
-    _PF.chart = P[_chartPatId].chart; // Sync the newly saved chart data back into the form
-    buildPatPanel();
-  }
-}
+function closeChartPanel(){document.getElementById('chart-panel').className='';}
 
 function refreshModeBtn(){
   var btn=document.getElementById('chart-mode-btn');
@@ -2495,4 +2487,28 @@ function paintAnalytics(){
   // Top treatments
   if(topTx.length){
     h+='<div style="background:var(--warm);border-radius:14px;border:1.5px solid var(--ln);padding:16px;margin-bottom:14px">';
-    h+='<div style="font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;
+    h+='<div style="font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--FL);margin-bottom:10px">Top Procedures</div>';
+    var maxTx=topTx[0][1];
+    topTx.forEach(function(tx){
+      var pct=Math.round((tx[1]/maxTx)*100);
+      var col=pc(tx[0]);
+      h+='<div style="margin-bottom:8px">'
+        +'<div style="display:flex;justify-content:space-between;font-size:.72rem;margin-bottom:3px">'
+        +'<span style="color:var(--ink);font-weight:500">'+esc(tx[0])+'</span>'
+        +'<span style="color:var(--mist);font-weight:600">'+tx[1]+'</span>'
+        +'</div>'
+        +'<div style="height:6px;background:var(--ln);border-radius:3px;overflow:hidden">'
+        +'<div style="height:100%;width:'+pct+'%;background:'+col+';border-radius:3px;transition:width .4s"></div>'
+        +'</div></div>';
+    });
+    h+='</div>';
+  }
+  // Demographics
+  h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">';
+  // Gender
+  h+='<div style="background:var(--warm);border-radius:14px;border:1.5px solid var(--ln);padding:14px">';
+  h+='<div style="font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--FL);margin-bottom:10px">Gender</div>';
+  [['Male',male,'#3B82F6'],['Female',female,'#EC4899'],['Other/Unknown',other,'#94A3B8']].forEach(function(g){
+    if(!g[1])return;
+    var pct=totalPats?Math.round((g[1]/totalPats)*100):0;
+    h
