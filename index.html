@@ -272,7 +272,6 @@ body.dark .perio-input{background:#0F2318;border-color:#1a3a22;color:#e0f0e5}
   </div>
 </div>
 
-<!-- TREATMENT PLAN PANEL -->
 <div id="tx-panel">
   <div style="background:var(--F);padding:max(16px,env(safe-area-inset-top)) 18px 14px;flex-shrink:0;display:flex;justify-content:space-between;align-items:center">
     <div>
@@ -285,7 +284,6 @@ body.dark .perio-input{background:#0F2318;border-color:#1a3a22;color:#e0f0e5}
     </div>
   </div>
   <div style="flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px" id="tx-body"></div>
-  <!-- Add item form -->
   <div style="padding:12px 16px;padding-bottom:max(12px,env(safe-area-inset-bottom));border-top:1px solid var(--ln);background:var(--cream);flex-shrink:0" id="tx-add-form">
     <div style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--FL);margin-bottom:8px">Add Item</div>
     <div style="display:grid;grid-template-columns:80px 1fr 90px;gap:8px;margin-bottom:8px">
@@ -304,7 +302,6 @@ body.dark .perio-input{background:#0F2318;border-color:#1a3a22;color:#e0f0e5}
   </div>
 </div>
 
-<!-- PERIO CHART PANEL -->
 <div id="perio-panel">
   <div style="background:var(--F);padding:max(16px,env(safe-area-inset-top)) 18px 14px;flex-shrink:0;display:flex;justify-content:space-between;align-items:center">
     <div>
@@ -1223,6 +1220,39 @@ function buildPatPanel(){
       +(v.photos&&v.photos.length?'<div style="display:flex;gap:4px;margin-top:6px">'+v.photos.slice(0,4).map(function(ph){return '<img src="'+ph.data+'" style="width:36px;height:36px;border-radius:6px;object-fit:cover" alt="">';}).join('')+'</div>':'')
       +'</div>';
   });
+
+  // --- NEW: Generate Chart Summary HTML ---
+  var chartSummaryHTML = '';
+  if(!isNew && f.chart && f.chart.teeth) {
+    var cTeeth = f.chart.teeth;
+    var cMode = f.chart.mode || 'adult';
+    var COND = getCOND(cMode);
+    var activeTeeth = [];
+    
+    // Sort teeth numerically (e.g., 1.1, 1.2, 4.8)
+    Object.keys(cTeeth).sort(function(a,b){return parseFloat(a)-parseFloat(b);}).forEach(function(t){
+      var data = cTeeth[t];
+      var keys = Object.keys(data).filter(function(k){return data[k];});
+      
+      if(keys.length){
+        var condsH = keys.map(function(k){
+          var c = COND[data[k]] || {label:data[k], border:'#aaa'};
+          var sLbl = k==='all' ? 'Whole' : k;
+          return '<span style="display:inline-block;margin:2px;padding:2px 8px;border-radius:12px;font-size:.65rem;font-weight:600;background:'+(c.color||'#ccc')+'15;border:1px solid '+(c.border||'#aaa')+'66;color:'+(c.border||'#aaa')+'">'+sLbl+': '+(c.label||data[k])+'</span>';
+        }).join('');
+        activeTeeth.push('<div style="font-size:.75rem;margin-bottom:6px;display:flex;align-items:flex-start;gap:8px"><span style="font-weight:700;color:var(--ink);width:22px;flex-shrink:0;margin-top:3px">'+t+'</span> <div style="flex:1">'+condsH+'</div></div>');
+      }
+    });
+    
+    if(activeTeeth.length) {
+      chartSummaryHTML = '<div style="margin-top:12px;padding:12px;background:var(--warm);border:1px solid var(--ln);border-radius:12px;max-height:180px;overflow-y:auto;-webkit-overflow-scrolling:touch">'
+        + '<div style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--slate);margin-bottom:10px">Current Diagnosis Summary</div>'
+        + activeTeeth.join('')
+        + '</div>';
+    }
+  }
+  // --- END NEW ---
+
   var epH='';
   EMOJIS.forEach(function(em){epH+='<button class="epbtn'+(f.emoji===em?' sel':'')+'" onclick="pickEmoji(\''+esc(em)+'\')">'+esc(em)+'</button>';});
   epH+='<button class="epbtn'+(f.emoji===null?' sel':'')+'" onclick="pickEmoji(null)" style="font-size:.64rem;font-weight:700;color:var(--slate)">ABC</button>';
@@ -1260,7 +1290,7 @@ function buildPatPanel(){
     +'<button onclick="document.getElementById(\'img-upload\').click()" style="width:100%;padding:10px;background:rgba(15,35,24,.05);color:var(--F);border:1.5px dashed var(--ln);border-radius:10px;font-size:.75rem;font-weight:600;cursor:pointer;font-family:inherit">＋ Upload Image</button>'
     +'<input type="file" id="img-upload" style="display:none" accept="image/*" onchange="handleImgUpload(this)">'
     +'</div>':'')
-+(!isNew?'<div style="margin-bottom:20px"><div class="sbar">🦷 Dental Chart</div><button id="open-chart-btn" data-patid="'+esc(f.id)+'" style="width:100%;padding:13px;background:#0F2318;color:#fff;border-radius:12px;font-size:.88rem;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;border:none">🗺 Open Dental Chart</button></div>':'')
++(!isNew?'<div style="margin-bottom:20px"><div class="sbar">🦷 Dental Chart</div><button id="open-chart-btn" data-patid="'+esc(f.id)+'" style="width:100%;padding:13px;background:#0F2318;color:#fff;border-radius:12px;font-size:.88rem;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;border:none">🗺 Open Dental Chart</button>'+chartSummaryHTML+'</div>':'')
     +(!isNew?'<div><div class="sbar">📋 Visit History ('+(f.visits||[]).length+')</div>'+(visH||'<div style="text-align:center;padding:20px;color:var(--mist);font-size:.8rem">No visits recorded yet</div>')+'</div>':'')
     +'</div>'
     +'<div style="padding:'+(S.mob?'12px 18px':'12px 22px')+';padding-bottom:'+(S.mob?'max(12px,env(safe-area-inset-bottom))':'12px')+';border-top:1px solid var(--ln);display:flex;gap:9px;background:var(--cream);flex-shrink:0">'
@@ -1655,7 +1685,15 @@ function openChartPanel(patId){
   document.getElementById('chart-panel').className='on slUp';
   refreshModeBtn(); renderChart();
 }
-function closeChartPanel(){document.getElementById('chart-panel').className='';}
+function closeChartPanel() {
+  document.getElementById('chart-panel').className='';
+  
+  // If the patient panel is open in the background, refresh it to show new chart updates
+  if (document.getElementById('RP').className.indexOf('on') > -1 && _PF && _PF.id === _chartPatId) {
+    _PF.chart = P[_chartPatId].chart; // Sync the newly saved chart data back into the form
+    buildPatPanel();
+  }
+}
 
 function refreshModeBtn(){
   var btn=document.getElementById('chart-mode-btn');
@@ -2457,434 +2495,4 @@ function paintAnalytics(){
   // Top treatments
   if(topTx.length){
     h+='<div style="background:var(--warm);border-radius:14px;border:1.5px solid var(--ln);padding:16px;margin-bottom:14px">';
-    h+='<div style="font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--FL);margin-bottom:10px">Top Procedures</div>';
-    var maxTx=topTx[0][1];
-    topTx.forEach(function(tx){
-      var pct=Math.round((tx[1]/maxTx)*100);
-      var col=pc(tx[0]);
-      h+='<div style="margin-bottom:8px">'
-        +'<div style="display:flex;justify-content:space-between;font-size:.72rem;margin-bottom:3px">'
-        +'<span style="color:var(--ink);font-weight:500">'+esc(tx[0])+'</span>'
-        +'<span style="color:var(--mist);font-weight:600">'+tx[1]+'</span>'
-        +'</div>'
-        +'<div style="height:6px;background:var(--ln);border-radius:3px;overflow:hidden">'
-        +'<div style="height:100%;width:'+pct+'%;background:'+col+';border-radius:3px;transition:width .4s"></div>'
-        +'</div></div>';
-    });
-    h+='</div>';
-  }
-  // Demographics
-  h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">';
-  // Gender
-  h+='<div style="background:var(--warm);border-radius:14px;border:1.5px solid var(--ln);padding:14px">';
-  h+='<div style="font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--FL);margin-bottom:10px">Gender</div>';
-  [['Male',male,'#3B82F6'],['Female',female,'#EC4899'],['Other/Unknown',other,'#94A3B8']].forEach(function(g){
-    if(!g[1])return;
-    var pct=totalPats?Math.round((g[1]/totalPats)*100):0;
-    h+='<div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">'
-      +'<div style="width:8px;height:8px;border-radius:50%;background:'+g[2]+';flex-shrink:0"></div>'
-      +'<div style="font-size:.7rem;color:var(--ink);flex:1">'+g[0]+'</div>'
-      +'<div style="font-size:.7rem;font-weight:700;color:var(--slate)">'+g[1]+' ('+pct+'%)</div>'
-      +'</div>';
-  });
-  h+='</div>';
-  // Age groups
-  h+='<div style="background:var(--warm);border-radius:14px;border:1.5px solid var(--ln);padding:14px">';
-  h+='<div style="font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--FL);margin-bottom:10px">Age Groups</div>';
-  [['0–12 yrs',age0_12,'#34D399'],['13–30 yrs',age13_30,'#3B82F6'],['31–60 yrs',age31_60,'#C9A84C'],['61+ yrs',age61,'#F97316']].forEach(function(g){
-    if(!g[1])return;
-    var pct=totalPats?Math.round((g[1]/totalPats)*100):0;
-    h+='<div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">'
-      +'<div style="width:8px;height:8px;border-radius:50%;background:'+g[2]+';flex-shrink:0"></div>'
-      +'<div style="font-size:.7rem;color:var(--ink);flex:1">'+g[0]+'</div>'
-      +'<div style="font-size:.7rem;font-weight:700;color:var(--slate)">'+g[1]+' ('+pct+'%)</div>'
-      +'</div>';
-  });
-  h+='</div></div>';
-  h+='</div>';
-  return h;
-}
-
-/* ── PERIO CHART ─────────────────────── */
-var _perioPat=null;
-// FDI upper: 1.8→2.8, lower: 4.8→3.8
-var PERIO_U=['1.8','1.7','1.6','1.5','1.4','1.3','1.2','1.1','2.1','2.2','2.3','2.4','2.5','2.6','2.7','2.8'];
-var PERIO_L=['4.8','4.7','4.6','4.5','4.4','4.3','4.2','4.1','3.1','3.2','3.3','3.4','3.5','3.6','3.7','3.8'];
-
-function openPerioPanel(patId){
-  _perioPat=patId;
-  var pat=P[patId]; if(!pat)return;
-  if(!pat.perio)pat.perio={};
-  document.getElementById('perio-title').textContent=(pat.name||'Patient')+' — Periodontal Chart';
-  renderPerioChart();
-  document.getElementById('perio-panel').className='on slUp';
-}
-function closePerioPanel(){document.getElementById('perio-panel').className='';}
-
-function getPerioData(tooth){
-  var pat=P[_perioPat]; if(!pat||!pat.perio)return {};
-  return pat.perio[tooth]||{};
-}
-function setPerioData(tooth,field,val){
-  var pat=P[_perioPat]; if(!pat)return;
-  if(!pat.perio)pat.perio={};
-  if(!pat.perio[tooth])pat.perio[tooth]={};
-  pat.perio[tooth][field]=val;
-  saveQuiet();
-}
-
-// Draw a single tooth silhouette SVG for perio chart
-function perioToothSVG(tooth, isMolar, isUpper, width, height){
-  var w=width||28, h=height||55;
-  var crown_h=h*0.42, root_h=h*0.52, neck_y=crown_h;
-  var cx=w/2;
-  // Crown shape
-  var cw=isMolar?w*0.88:w*0.72;
-  var ch=crown_h*0.9;
-  var cox=(w-cw)/2, coy=2;
-  // Root(s)
-  var svgParts='';
-  // Crown
-  svgParts+='<rect x="'+cox+'" y="'+coy+'" width="'+cw+'" height="'+ch+'" rx="'+(cw*0.25)+'" ry="'+(ch*0.2)+'" fill="#F0EBE0" stroke="#C8B89A" stroke-width="1.2"/>';
-  // Root(s)
-  if(isMolar){
-    // Two roots
-    var rw=cw*0.32, rh=root_h*0.85;
-    var r1x=cox+cw*0.12, r2x=cox+cw*0.56;
-    var ry=neck_y+ch*0.05;
-    if(isUpper){
-      // 3 roots for upper molars
-      var r3x=cox+cw*0.34;
-      svgParts+='<rect x="'+r1x+'" y="'+ry+'" width="'+rw+'" height="'+rh+'" rx="'+(rw*0.45)+'" fill="#F0EBE0" stroke="#C8B89A" stroke-width="1.1"/>';
-      svgParts+='<rect x="'+r3x+'" y="'+ry+'" width="'+(rw*0.7)+'" height="'+(rh*0.8)+'" rx="'+(rw*0.45)+'" fill="#F0EBE0" stroke="#C8B89A" stroke-width="1.1"/>';
-      svgParts+='<rect x="'+r2x+'" y="'+ry+'" width="'+rw+'" height="'+rh+'" rx="'+(rw*0.45)+'" fill="#F0EBE0" stroke="#C8B89A" stroke-width="1.1"/>';
-    } else {
-      svgParts+='<rect x="'+r1x+'" y="'+ry+'" width="'+rw+'" height="'+rh+'" rx="'+(rw*0.45)+'" fill="#F0EBE0" stroke="#C8B89A" stroke-width="1.1"/>';
-      svgParts+='<rect x="'+r2x+'" y="'+ry+'" width="'+rw+'" height="'+rh+'" rx="'+(rw*0.45)+'" fill="#F0EBE0" stroke="#C8B89A" stroke-width="1.1"/>';
-    }
-  } else {
-    // Single root
-    var rw=cw*0.55, rh=root_h*0.85;
-    var rx2=(w-rw)/2, ry=neck_y+ch*0.05;
-    svgParts+='<rect x="'+rx2+'" y="'+ry+'" width="'+rw+'" height="'+rh+'" rx="'+(rw*0.45)+'" fill="#F0EBE0" stroke="#C8B89A" stroke-width="1.1"/>';
-  }
-  return '<svg width="'+w+'" height="'+h+'" viewBox="0 0 '+w+' '+h+'" xmlns="http://www.w3.org/2000/svg">'+svgParts+'</svg>';
-}
-
-function renderPerioChart(){
-  var b=document.getElementById('perio-body'); if(!b)return;
-  var mob=S.mob;
-  var toothW=mob?30:38, toothSvgH=mob?50:62, probH=mob?62:80;
-  var inputSz=mob?25:32, inputH=mob?22:26, labelW=mob?82:108;
-  var fsSm=mob?'.58rem':'.62rem', fsIn=mob?'.68rem':'.75rem';
-  var h='<div style="padding:8px 0 20px">';
-
-  function drawArch(teeth,isUpper,label){
-    var totalW=teeth.length*toothW, svgTotalH=toothSvgH+probH+18;
-    var toothY=isUpper?0:probH+8, probY=isUpper?toothSvgH+5:5;
-    var mgJY=isUpper?toothSvgH+probH*0.75:probH*0.25+5;
-    var lblStyle='position:sticky;left:0;z-index:3;background:var(--cream);text-align:right;padding:3px 7px 3px 4px;font-weight:600;white-space:nowrap;color:var(--slate);font-size:'+fsSm+';border-bottom:1px solid var(--ln);min-width:'+labelW+'px';
-    var cellStyle='padding:2px 1px;text-align:center;border-bottom:1px solid var(--ln);width:'+toothW+'px';
-    var aH='<div style="margin-bottom:18px;padding:0 8px">';
-    aH+='<div style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--FL);margin-bottom:6px">'+label+'</div>';
-    aH+='<div style="overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:10px;border:1px solid var(--ln);background:var(--warm)">';
-    aH+='<table style="border-collapse:collapse;font-size:'+fsSm+';table-layout:fixed">';
-    // Header: tooth numbers
-    aH+='<thead><tr><th style="'+lblStyle+';font-weight:400;color:var(--mist);font-size:.5rem;border-bottom:1.5px solid var(--ln)"> </th>';
-    teeth.forEach(function(t){ aH+='<th style="width:'+toothW+'px;text-align:center;font-size:'+fsSm+';font-weight:700;color:var(--slate);padding:3px 0;border-bottom:1.5px solid var(--ln)">'+t+'</th>'; });
-    aH+='</tr></thead><tbody>';
-    // SVG row
-    aH+='<tr><td style="'+lblStyle+';font-style:italic;font-weight:400;color:var(--mist)">'+(isUpper?'&uarr;':'&darr;')+'</td>';
-    aH+='<td colspan="'+teeth.length+'" style="padding:0;line-height:0">';
-    aH+='<svg width="'+totalW+'" height="'+svgTotalH+'" xmlns="http://www.w3.org/2000/svg" style="display:block">';
-    var sc='';
-    // Grid
-    for(var gi=0;gi<=5;gi++){var gy=probY+gi*(probH/5);sc+='<line x1="0" y1="'+gy+'" x2="'+totalW+'" y2="'+gy+'" stroke="#E4DDD4" stroke-width="0.5"/>';}
-    // GM/CAL lines
-    var gm2=[],cal2=[];
-    teeth.forEach(function(tooth,i){
-      var d=getPerioData(tooth),gm=parseFloat(d.gm||0);
-      var avgPd=(parseFloat(d.pd_m||3)+parseFloat(d.pd_b||3)+parseFloat(d.pd_d||3))/3;
-      var cx2=i*toothW+toothW/2;
-      gm2.push(cx2+','+(isUpper?probY+probH*(gm/10):probY+probH*(1-gm/10)));
-      cal2.push(cx2+','+(isUpper?probY+probH*(avgPd/10):probY+probH*(1-avgPd/10)));
-    });
-    if(gm2.length>1){
-      sc+='<polyline points="'+gm2.join(' ')+'" fill="none" stroke="#9333EA" stroke-width="1.5" stroke-linejoin="round"/>';
-      sc+='<polyline points="'+cal2.join(' ')+'" fill="none" stroke="#2563EB" stroke-width="1.5" stroke-linejoin="round"/>';
-    }
-    sc+='<line x1="0" y1="'+mgJY+'" x2="'+totalW+'" y2="'+mgJY+'" stroke="#F97316" stroke-width="1.2" stroke-dasharray="4,3"/>';
-    // Teeth
-    teeth.forEach(function(tooth,i){
-      var d=getPerioData(tooth),n=parseInt(tooth.split('.')[1]),isMolar=(n>=6&&n<=8);
-      var tx=i*toothW,cx2=tx+toothW/2,tw2=toothW-4,th2=toothSvgH-4;
-      var cH=th2*0.42,cW=isMolar?tw2*0.88:tw2*0.68;
-      var cX=tx+(toothW-cW)/2,cY=toothY+2;
-      sc+='<rect x="'+cX+'" y="'+cY+'" width="'+cW+'" height="'+cH+'" rx="'+(cW*0.22)+'" fill="#F0EBE0" stroke="#C8B89A" stroke-width="1"/>';
-      var nY=cY+cH,rH=th2*0.52;
-      if(isMolar){var rw=cW*0.32,rh=rH*0.85;
-        if(isUpper){sc+='<rect x="'+(cX+cW*0.04)+'" y="'+nY+'" width="'+rw+'" height="'+rh+'" rx="'+(rw*0.45)+'" fill="#F0EBE0" stroke="#C8B89A" stroke-width="0.9"/>';sc+='<rect x="'+(cX+cW*0.36)+'" y="'+nY+'" width="'+(rw*0.65)+'" height="'+(rh*0.75)+'" rx="'+(rw*0.4)+'" fill="#F0EBE0" stroke="#C8B89A" stroke-width="0.9"/>';sc+='<rect x="'+(cX+cW*0.62)+'" y="'+nY+'" width="'+rw+'" height="'+rh+'" rx="'+(rw*0.45)+'" fill="#F0EBE0" stroke="#C8B89A" stroke-width="0.9"/>';}
-        else{sc+='<rect x="'+(cX+cW*0.06)+'" y="'+nY+'" width="'+rw+'" height="'+rh+'" rx="'+(rw*0.45)+'" fill="#F0EBE0" stroke="#C8B89A" stroke-width="0.9"/>';sc+='<rect x="'+(cX+cW*0.6)+'" y="'+nY+'" width="'+rw+'" height="'+rh+'" rx="'+(rw*0.45)+'" fill="#F0EBE0" stroke="#C8B89A" stroke-width="0.9"/>';}
-      }else{var rw=cW*0.52,rh=rH*0.85;sc+='<rect x="'+(cx2-rw/2)+'" y="'+nY+'" width="'+rw+'" height="'+rh+'" rx="'+(rw*0.45)+'" fill="#F0EBE0" stroke="#C8B89A" stroke-width="0.9"/>';}
-      // PD bars
-      var sites=['pd_m','pd_b','pd_d'],sOff=[1,toothW/2-3,toothW-8];
-      sites.forEach(function(site,si){
-        var pv=parseFloat(d[site]||0),bl=d['bl_'+site.split('_')[1]]==='1';
-        var bH=pv>0?Math.min(probH-4,pv*(probH/10)):0,bW=Math.max(3,toothW*0.13),bx=tx+sOff[si],by=isUpper?probY+probH-bH-2:probY+2;
-        if(bH>0)sc+='<rect x="'+bx+'" y="'+by+'" width="'+bW+'" height="'+bH+'" rx="2" fill="'+(bl?'#EF4444':'#16A34A')+'"/>';
-        if(bl)sc+='<circle cx="'+(bx+bW/2)+'" cy="'+(isUpper?probY+probH+4:probY-4)+'" r="3" fill="#EF4444"/>';
-      });
-      // Furcation
-      if(isMolar){var furc=parseInt(d.furc||0);if(furc>0){
-        var fC=['','#F97316','#EF4444','#991B1B'][furc]||'#F97316',fx=cx2,fy=isUpper?toothY+toothSvgH-4:toothY+4,ts=6;
-        sc+=isUpper?'<polygon points="'+fx+','+fy+' '+(fx-ts/2)+','+(fy+ts)+' '+(fx+ts/2)+','+(fy+ts)+'" fill="'+(furc===1?'none':fC)+'" stroke="'+fC+'" stroke-width="1.5"/>':'<polygon points="'+fx+','+fy+' '+(fx-ts/2)+','+(fy-ts)+' '+(fx+ts/2)+','+(fy-ts)+'" fill="'+(furc===1?'none':fC)+'" stroke="'+fC+'" stroke-width="1.5"/>';
-      }}
-    });
-    aH+=sc+'</svg></td></tr>';
-    // Bleeding row
-    aH+='<tr><td style="'+lblStyle+'">Bleeding</td>';
-    teeth.forEach(function(tooth){var d=getPerioData(tooth);aH+='<td style="'+cellStyle+'"><input type="checkbox" data-tooth="'+tooth+'" data-field="bl_b" '+(d.bl_b==='1'?'checked':'')+' onchange="perioCbChange(this)" style="width:15px;height:15px;accent-color:#EF4444;cursor:pointer;margin:1px auto;display:block"></td>';});
-    aH+='</tr>';
-    // Data rows
-    [{key:'pd_b',lbl:'PD Buccal',ph:'3',mx:'20'},{key:'pd_m',lbl:'PD Mesial',ph:'3',mx:'20'},{key:'pd_d',lbl:'PD Distal',ph:'3',mx:'20'},{key:'gm',lbl:'Gingival Margin',ph:'0',mx:'20'},{key:'furc',lbl:'Furcation (0-3)',ph:'0',mx:'3'},{key:'calc',lbl:'Calculus (0-3)',ph:'0',mx:'3'}].forEach(function(row,ri,arr){
-      var last=ri===arr.length-1,ls=lblStyle+(last?';border-bottom:none':''),cs=cellStyle+(last?';border-bottom:none':'');
-      aH+='<tr><td style="'+ls+'">'+row.lbl+'</td>';
-      teeth.forEach(function(tooth){var d=getPerioData(tooth);aH+='<td style="'+cs+'"><input class="perio-input" type="number" inputmode="numeric" pattern="[0-9]*" data-tooth="'+tooth+'" data-field="'+row.key+'" min="0" max="'+row.mx+'" value="'+(d[row.key]||'')+'" placeholder="'+row.ph+'" onchange="perioInputChange(this)" style="width:'+inputSz+'px;height:'+inputH+'px;border:1px solid var(--ln);border-radius:4px;text-align:center;font-size:'+fsIn+';background:var(--warm);color:var(--ink);font-family:inherit;display:block;margin:0 auto"></td>';});
-      aH+='</tr>';
-    });
-    aH+='</tbody></table></div></div>';
-    return aH;
-  }
-
-  h+=drawArch(PERIO_U,true,'Upper Arch \u2014 Buccal');
-  h+='<div style="height:1px;background:var(--ln);margin:4px 8px 12px"></div>';
-  h+=drawArch(PERIO_L,false,'Lower Arch \u2014 Buccal');
-  h+='<div style="background:var(--warm);border-radius:12px;border:1px solid var(--ln);padding:12px 16px;margin:8px 8px 0">';
-  h+='<div style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--FL);margin-bottom:8px">Legend</div>';
-  h+='<div style="display:flex;flex-wrap:wrap;gap:10px;font-size:.68rem;color:var(--ink)">';
-  h+='<span style="display:flex;align-items:center;gap:4px"><svg width="10" height="10"><circle cx="5" cy="5" r="4" fill="#EF4444"/></svg>Bleeding on Probing</span>';
-  h+='<span style="display:flex;align-items:center;gap:4px"><svg width="14" height="10"><rect x="0" y="0" width="5" height="10" rx="2" fill="#16A34A"/></svg>PD Healthy</span>';
-  h+='<span style="display:flex;align-items:center;gap:4px"><svg width="14" height="10"><rect x="0" y="0" width="5" height="10" rx="2" fill="#EF4444"/></svg>PD Bleeding</span>';
-  h+='<span style="display:flex;align-items:center;gap:4px"><svg width="18" height="8"><line x1="0" y1="4" x2="18" y2="4" stroke="#9333EA" stroke-width="2"/></svg>Gingival Margin</span>';
-  h+='<span style="display:flex;align-items:center;gap:4px"><svg width="18" height="8"><line x1="0" y1="4" x2="18" y2="4" stroke="#2563EB" stroke-width="2"/></svg>CAL</span>';
-  h+='<span style="display:flex;align-items:center;gap:4px"><svg width="18" height="8"><line x1="0" y1="4" x2="18" y2="4" stroke="#F97316" stroke-width="2" stroke-dasharray="4,2"/></svg>MGJ</span>';
-  h+='<span style="display:flex;align-items:center;gap:4px"><svg width="12" height="10"><polygon points="6,0 0,10 12,10" fill="none" stroke="#F97316" stroke-width="1.5"/></svg>Furc I</span>';
-  h+='<span style="display:flex;align-items:center;gap:4px"><svg width="12" height="10"><polygon points="6,0 0,10 12,10" fill="#EF4444" stroke="#EF4444" stroke-width="1.5"/></svg>Furc II\u2013III</span>';
-  h+='</div></div>';
-  h+='</div>';
-  b.innerHTML=h;
-}
-function perioCbChange(el){
-  var tooth=el.getAttribute('data-tooth'), field=el.getAttribute('data-field');
-  setPerioData(tooth,field,el.checked?'1':'0');
-  renderPerioChart();
-}
-function perioInputChange(el){
-  var tooth=el.getAttribute('data-tooth'), field=el.getAttribute('data-field');
-  setPerioData(tooth,field,el.value);
-  renderPerioChart();
-}
-
-function printPerioChart(){
-  var content=document.getElementById('perio-body');
-  if(!content)return;
-  var w=window.open('','_blank');
-  w.document.write('<html><head><title>Periodontal Chart</title><style>body{font-family:sans-serif;padding:20px}table{border-collapse:collapse}input{border:1px solid #ccc;text-align:center;width:32px}</style></head><body>');
-  w.document.write('<h2>Periodontal Chart</h2>');
-  w.document.write(content.innerHTML);
-  w.document.write('</body></html>');
-  w.document.close();
-  w.print();
-}
-
-
-
-/* ── INDEXEDDB CORE ──────────────────────── */
-var DB_NAME = 'DentaLogDB';
-var DB_VERSION = 1;
-var db;
-
-function initDB() {
-  return new Promise((resolve, reject) => {
-    var request = indexedDB.open(DB_NAME, DB_VERSION);
-    request.onupgradeneeded = function(e) {
-      var db = e.target.result;
-      if (!db.objectStoreNames.contains('patients')) db.createObjectStore('patients', { keyPath: 'id' });
-      if (!db.objectStoreNames.contains('appts')) db.createObjectStore('appts', { keyPath: 'id' });
-      if (!db.objectStoreNames.contains('images')) db.createObjectStore('images', { keyPath: 'id' });
-    };
-    request.onsuccess = function(e) {
-      db = e.target.result;
-      resolve(db);
-    };
-    request.onerror = function(e) { reject(e); };
-  });
-}
-
-function dbGet(storeName, id) {
-  return new Promise((resolve, reject) => {
-    var transaction = db.transaction([storeName], 'readonly');
-    var store = transaction.objectStore(storeName);
-    var request = store.get(id);
-    request.onsuccess = function(e) { resolve(e.target.result); };
-    request.onerror = function(e) { reject(e); };
-  });
-}
-
-function dbGetAll(storeName) {
-  return new Promise((resolve, reject) => {
-    var transaction = db.transaction([storeName], 'readonly');
-    var store = transaction.objectStore(storeName);
-    var request = store.getAll();
-    request.onsuccess = function(e) { resolve(e.target.result); };
-    request.onerror = function(e) { reject(e); };
-  });
-}
-
-function dbPut(storeName, data) {
-  return new Promise((resolve, reject) => {
-    var transaction = db.transaction([storeName], 'readwrite');
-    var store = transaction.objectStore(storeName);
-    var request = store.put(data);
-    request.onsuccess = function(e) { resolve(e.target.result); };
-    request.onerror = function(e) { reject(e); };
-  });
-}
-
-function dbDel(storeName, id) {
-  return new Promise((resolve, reject) => {
-    var transaction = db.transaction([storeName], 'readwrite');
-    var store = transaction.objectStore(storeName);
-    var request = store.delete(id);
-    request.onsuccess = function(e) { resolve(e.target.result); };
-    request.onerror = function(e) { reject(e); };
-  });
-}
-
-async function syncToDB() {
-  if (!db) return;
-  // Sync patients
-  for (var id in P) { await dbPut('patients', Object.assign({id: id}, P[id])); }
-  // Sync appts
-  for (var id in A) { await dbPut('appts', Object.assign({id: id}, A[id])); }
-}
-
-async function migrateFromLS() {
-  var pKeys = ['dl_p3', 'dl_p2', 'dl_patients_v1', 'dl_patients'];
-  var aKeys = ['dl_a3', 'dl_a2', 'dl_appts_v1', 'dl_appts'];
-  var migrated = false;
-  
-  for (var k of pKeys) {
-    var val = lsGet(k);
-    if (val && Object.keys(val).length > 0) {
-      for (var id in val) { await dbPut('patients', Object.assign({id: id}, val[id])); }
-      migrated = true;
-    }
-  }
-  for (var k of aKeys) {
-    var val = lsGet(k);
-    if (val && Object.keys(val).length > 0) {
-      for (var id in val) { await dbPut('appts', Object.assign({id: id}, val[id])); }
-      migrated = true;
-    }
-  }
-  return migrated;
-}
-
-async function loadData() {
-  await initDB();
-  var patients = await dbGetAll('patients');
-  var appts = await dbGetAll('appts');
-  
-  if (patients.length === 0 && appts.length === 0) {
-    var migrated = await migrateFromLS();
-    if (migrated) {
-      patients = await dbGetAll('patients');
-      appts = await dbGetAll('appts');
-    }
-  }
-  
-  P = {}; patients.forEach(p => { P[p.id] = p; });
-  A = {}; appts.forEach(a => { A[a.id] = a; });
-  paint();
-}
-
-// Override saveQuiet to also sync to DB
-var _origSaveQuiet = saveQuiet;
-saveQuiet = function() {
-  _origSaveQuiet();
-  syncToDB();
-};
-
-/* ── IMAGE GALLERY ─────────────────────── */
-async function handleImgUpload(el) {
-  var files = Array.from(el.files);
-  if (files.length === 0) return;
-  
-  var pending = files.length;
-  files.forEach(file => {
-    var reader = new FileReader();
-    reader.onload = async function(e) {
-      var imgData = e.target.result;
-      var imgId = uid();
-      var imgObj = {
-        id: imgId,
-        patId: _PF.id,
-        data: imgData,
-        name: file.name,
-        date: today()
-      };
-      await dbPut('images', imgObj);
-      pending--;
-      if (pending === 0) {
-        toast('🖼 Images uploaded!');
-        paintGallery(_PF.id);
-      }
-    };
-    reader.readAsDataURL(file);
-  });
-  el.value = '';
-}
-
-async function paintGallery(patId) {
-  var container = document.getElementById('pp-gallery');
-  if (!container) return;
-  var allImages = await dbGetAll('images');
-  var patImages = allImages.filter(img => img.patId === patId);
-  
-  if (patImages.length === 0) {
-    container.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:10px;color:var(--mist);font-size:.7rem">No images yet</div>';
-    return;
-  }
-  
-  container.innerHTML = patImages.map(img => `
-    <div style="position:relative;aspect-ratio:1;border-radius:8px;overflow:hidden;border:1px solid var(--ln);background:var(--ln)">
-      <img src="${img.data}" style="width:100%;height:100%;object-fit:cover;cursor:pointer" onclick="viewFullImg('${img.id}')">
-      <button onclick="delImg('${img.id}')" style="position:absolute;top:2px;right:2px;width:18px;height:18px;background:rgba(0,0,0,.5);color:#fff;border-radius:50%;font-size:10px;display:flex;align-items:center;justify-content:center;border:none;cursor:pointer">×</button>
-    </div>
-  `).join('');
-}
-
-async function viewFullImg(imgId) {
-  var img = await dbGet('images', imgId);
-  if (!img) return;
-  var w = window.open('');
-  w.document.write('<html><head><title>' + esc(img.name) + '</title></head><body style="margin:0;background:#000;display:flex;align-items:center;justify-content:center"><img src="' + img.data + '" style="max-width:100%;max-height:100%"></body></html>');
-}
-
-async function delImg(imgId) {
-  if (confirm('Delete this image?')) {
-    await dbDel('images', imgId);
-    toast('Image deleted');
-    paintGallery(_PF.id);
-  }
-}
-
-/* ── INIT ─────────────────────────────── */
-applyDarkMode();
-loadData();
-
-window.addEventListener("DOMContentLoaded",()=>{setTimeout(()=>{if(!document.getElementById("app").innerHTML.trim())paint()},1000)});
-</script>
-</body>
-</html>
+    h+='<div style="font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;
