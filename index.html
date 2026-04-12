@@ -178,6 +178,29 @@ select.inp{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.
   transition:all .12s;-webkit-tap-highlight-color:transparent;user-select:none}
 .csel.active{border-color:#0F2318!important;box-shadow:0 0 0 2px rgba(15,35,24,.2)}
 
+/* ── DARK MODE ── */
+body.dark{background:#0a1208}
+body.dark .card{background:#0F2318;border-color:#1a3a22}
+body.dark .inp{background:#0F2318;border-color:#1a3a22;color:#e0f0e5}
+body.dark .inp::placeholder{color:#4a6355}
+body.dark #RP,body.dark #CF>div{background:#0a1208}
+body.dark #view,body.dark #topbar{background:#0a1208}
+body.dark .bghost{background:rgba(255,255,255,.06);border-color:#1a3a22;color:#e0f0e5}
+body.dark #tooth-detail,body.dark #chart-panel{background:#0a1208}
+body.dark .td-cell{background:#0F2318;border-color:#1a3a22;color:#8BAF95}
+body.dark #ep-sheet{background:#0a1208}
+body.dark #perio-panel{background:#0a1208}
+:root{--dm-bg:#0a1208;--dm-card:#0F2318;--dm-border:#1a3a22;--dm-text:#e0f0e5}
+/* ── ANALYTICS ── */
+.stat-card{background:var(--warm);border-radius:14px;border:1.5px solid var(--ln);padding:16px;display:flex;flex-direction:column;gap:4px}
+body.dark .stat-card{background:#0F2318;border-color:#1a3a22}
+/* ── PERIO PANEL ── */
+#perio-panel{position:fixed;top:0;left:0;right:0;bottom:0;z-index:952;background:var(--cream);display:none;flex-direction:column}
+#perio-panel.on{display:flex}
+.perio-input{width:36px;height:28px;text-align:center;border:1px solid var(--ln);border-radius:6px;font-size:.75rem;font-weight:700;color:var(--ink);background:var(--warm);font-family:inherit}
+.perio-input:focus{border-color:var(--FL);outline:none}
+body.dark .perio-input{background:#0F2318;border-color:#1a3a22;color:#e0f0e5}
+
 </style>
 </head>
 <body>
@@ -216,6 +239,7 @@ select.inp{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.
     </div>
     <div style="display:flex;gap:8px;align-items:center">
       <button id="chart-mode-btn" onclick="toggleChartMode()" style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:6px 12px;color:#fff;font-size:.72rem;font-weight:600;cursor:pointer;font-family:inherit">Adult</button>
+      <button onclick="openPerioPanel(_chartPatId)" style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:6px 12px;color:#fff;font-size:.72rem;font-weight:600;cursor:pointer;font-family:inherit">🦷 Perio</button>
       <button onclick="closeChartPanel()" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.15);color:#fff;font-size:1.2rem;display:flex;align-items:center;justify-content:center;border:none;cursor:pointer">×</button>
     </div>
   </div>
@@ -238,6 +262,22 @@ select.inp{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.
     <div id="td-cond-info" style="font-size:.75rem;color:var(--slate);text-align:center"></div>
   </div>
 </div>
+
+<!-- PERIO CHART PANEL -->
+<div id="perio-panel">
+  <div style="background:var(--F);padding:max(16px,env(safe-area-inset-top)) 18px 14px;flex-shrink:0;display:flex;justify-content:space-between;align-items:center">
+    <div>
+      <div style="font-family:'Playfair Display',serif;font-size:1.05rem;color:#fff" id="perio-title">Periodontal Chart</div>
+      <div style="font-size:.68rem;color:var(--sage);margin-top:2px" id="perio-sub">Tap a cell to enter measurements</div>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <button onclick="printPerioChart()" style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:6px 12px;color:#fff;font-size:.72rem;font-weight:600;cursor:pointer;font-family:inherit">🖨 Print</button>
+      <button onclick="closePerioPanel()" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.15);color:#fff;font-size:1.2rem;display:flex;align-items:center;justify-content:center;border:none;cursor:pointer">×</button>
+    </div>
+  </div>
+  <div style="flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch" id="perio-body"></div>
+</div>
+
 <div id="ep-modal" onclick="if(event.target===document.getElementById('ep-modal'))closeEpModal()">
   <div id="ep-sheet">
     <div style="padding:14px 16px 10px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--ln);flex-shrink:0">
@@ -482,6 +522,7 @@ function paint(){
   var v='';
   if(S.view==='today')v=paintToday();
   else if(S.view==='patients')v=paintPatients();
+  else if(S.view==='analytics')v=paintAnalytics();
   else v=paintSchedule();
   document.getElementById('view').innerHTML=v;
   afterPaint();
@@ -520,7 +561,7 @@ function paintSidebar(){
     +'</div>'
     +'<div style="height:1px;background:rgba(255,255,255,.08);margin:0 18px"></div>'
     +'<div style="flex:1;padding:12px 12px 0">';
-  var navs=[{id:'today',ic:'📅',lb:'Today'},{id:'patients',ic:'🧑‍⚕️',lb:'Patients'},{id:'schedule',ic:'🗓',lb:'Schedule'}];
+  var navs=[{id:'today',ic:'📅',lb:'Today'},{id:'patients',ic:'🧑‍⚕️',lb:'Patients'},{id:'schedule',ic:'🗓',lb:'Schedule'},{id:'analytics',ic:'📊',lb:'Analytics'}];
   navs.forEach(function(n){
     h+='<button class="sdn'+(S.view===n.id?' on':'')+'" onclick="nav(\''+n.id+'\')"><span style="font-size:1rem">'+n.ic+'</span>'+n.lb+'</button>';
   });
@@ -547,8 +588,8 @@ function paintSidebar(){
 
 /* ── TOPBAR ───────────────────────────── */
 function paintTopbar(){
-  var subs={today:(A[today()]||[]).length+' appointments today',patients:allPats().length+' patients',schedule:''};
-  var titles={today:'Daily Agenda',patients:'Patient Records',schedule:'Schedule'};
+  var subs={today:(A[today()]||[]).length+' appointments today',patients:allPats().length+' patients',schedule:'',analytics:'Practice overview'};
+  var titles={today:'Daily Agenda',patients:'Patient Records',schedule:'Schedule',analytics:'Analytics'};
   if(S.mob){
     return '<div style="background:'+FOREST+';padding:max(14px,env(safe-area-inset-top)) 18px 14px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;box-shadow:0 2px 10px rgba(0,0,0,.14)">'
       +'<div style="display:flex;align-items:center;gap:10px">'
@@ -558,6 +599,7 @@ function paintTopbar(){
       +'<div style="font-size:.6rem;color:var(--sage);margin-top:1px">'+subs[S.view]+'</div>'
       +'</div></div>'
       +'<div style="display:flex;gap:6px">'
+      +'<button onclick="toggleDarkMode()" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:8px 10px;color:rgba(255,255,255,.65);font-size:.8rem" title="Toggle dark mode" id="dm-btn">🌙</button>'
       +'<button onclick="restoreBackup()" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:8px 10px;color:rgba(255,255,255,.65);font-size:.8rem" title="Restore backup">📂</button>'
       +'<button onclick="openApptPanel(null,\''+S.date+'\')" style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);border-radius:10px;padding:8px 14px;color:#fff;font-size:.75rem;font-weight:700">+ Add</button>'
       +'</div>'
@@ -578,6 +620,7 @@ function paintBnav(){
   h+='<button class="bni" onclick="openApptPanel(null,\''+S.date+'\')">'
     +'<div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#C9A84C,#9E7B28);display:flex;align-items:center;justify-content:center;color:'+FOREST+';font-size:1.4rem;margin-top:-12px;box-shadow:0 4px 14px rgba(201,168,76,.38);font-weight:700">＋</div>'
     +'<span style="font-size:.61rem;color:var(--mist)">Add</span></button>';
+  h+='<button class="bni" onclick="nav(\'analytics\')" style="color:'+(S.view==='analytics'?FOREST:'var(--mist)')+'"><span style="font-size:1.22rem">📊</span><span style="font-size:.61rem;font-weight:'+(S.view==='analytics'?700:500)+'">Stats</span></button>';
   h+='<button class="bni" onclick="nav(\'schedule\')" style="color:'+(S.view==='schedule'?FOREST:'var(--mist)')+'"><span style="font-size:1.22rem">🗓</span><span style="font-size:.61rem;font-weight:'+(S.view==='schedule'?700:500)+'">Schedule</span></button>';
   document.getElementById('bnav').innerHTML=h;
   document.getElementById('bnav').className='on';
@@ -947,6 +990,7 @@ function buildApptPanel(){
     '<div id="ap-hdr" style="background:'+col+';padding:'+(S.mob?'max(18px,env(safe-area-inset-top)) 18px 16px':'18px 22px')+';flex-shrink:0;display:flex;justify-content:space-between;align-items:flex-start;transition:background .3s">'
     +'<div><div style="font-family:\'Playfair Display\',serif;font-size:1.05rem;color:#fff">'+(f.isNew?'New Appointment':'Edit Appointment')+'</div>'
     +'<div style="font-size:.68rem;color:rgba(255,255,255,.7);margin-top:3px">'+esc(f.date)+'</div></div>'
+    +(f.phone?'<button onclick="window.open(\'https://wa.me/\'+encodeURIComponent((_PF.phone||\'\').replace(/[^0-9]/g,\'\'))" style="width:32px;height:32px;border-radius:50%;background:rgba(37,211,102,.25);color:#25D366;font-size:1.1rem;display:flex;align-items:center;justify-content:center;border:1px solid rgba(37,211,102,.4)">💬</button>':'')
     +'<button onclick="closePanel()" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.18);color:#fff;font-size:1.2rem;display:flex;align-items:center;justify-content:center">×</button>'
     +'</div>'
     +'<div class="scr" style="flex:1;padding:'+pad+'">'
@@ -1137,10 +1181,9 @@ function buildPatPanel(){
     +'<div><div style="font-family:\'Playfair Display\',serif;font-size:1.05rem;color:#fff">'+(isNew?'New Patient':'Patient Profile')+'</div>'
     +(f.name?'<div style="font-size:.7rem;color:var(--sage);margin-top:3px">'+esc(f.name)+'</div>':'')
     +'</div>'
-    +'<div style="display:flex;gap:8px;align-items:center">'
-    +(!isNew&&f.phone?'<button onclick="window.open(\'https://wa.me/\'+(\''+esc(f.phone)+'\').replace(/[^0-9]/g,\'\'),\'_blank\')" style="width:32px;height:32px;border-radius:50%;background:#25D366;color:#fff;font-size:1.1rem;display:flex;align-items:center;justify-content:center;border:none;cursor:pointer">💬</button>':'')
-    +'<button onclick="closePanel()" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.18);color:#fff;font-size:1.2rem;display:flex;align-items:center;justify-content:center;border:none;cursor:pointer">×</button>'
-    +'</div></div>'
+    +(f.phone?'<button onclick="window.open(\'https://wa.me/\'+encodeURIComponent((_PF.phone||\'\').replace(/[^0-9]/g,\'\'))" style="width:32px;height:32px;border-radius:50%;background:rgba(37,211,102,.25);color:#25D366;font-size:1.1rem;display:flex;align-items:center;justify-content:center;border:1px solid rgba(37,211,102,.4)">💬</button>':'')
+    +'<button onclick="closePanel()" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.18);color:#fff;font-size:1.2rem;display:flex;align-items:center;justify-content:center">×</button>'
+    +'</div>'
     +'<div class="scr" style="flex:1;padding:'+pad+'">'
     +'<div style="margin-bottom:20px"><div class="sbar">👤 Patient Information</div>'
     +'<div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:14px">'
@@ -1366,8 +1409,8 @@ var A_U  =['1.8','1.7','1.6','1.5','1.4','1.3','1.2','1.1','2.1','2.2','2.3','2.
 var A_L  =['4.8','4.7','4.6','4.5','4.4','4.3','4.2','4.1','3.1','3.2','3.3','3.4','3.5','3.6','3.7','3.8'];
 var P_U  =['5.5','5.4','5.3','5.2','5.1','6.1','6.2','6.3','6.4','6.5'];
 var P_L  =['8.5','8.4','8.3','8.2','8.1','7.1','7.2','7.3','7.4','7.5'];
-var MX_U =['1.8','1.7','1.6','1.5','1.4','1.3','1.2','1.1','2.1','2.2','2.3','2.4','2.5','2.6','2.7','2.8'];
-var MX_L =['4.8','4.7','4.6','4.5','4.4','4.3','4.2','4.1','3.1','3.2','3.3','3.4','3.5','3.6','3.7','3.8'];
+var MX_U =['1.7','1.6','1.5','1.4','1.3','1.2','1.1','2.1','2.2','2.3','2.4','2.5','2.6','2.7'];
+var MX_L =['4.7','4.6','4.5','4.4','4.3','4.2','4.1','3.1','3.2','3.3','3.4','3.5','3.6','3.7'];
 
 /* ── Surface labels per tooth ── */
 function twSurfs(tooth){
@@ -1516,23 +1559,40 @@ function isImmature(tooth){
 /* ── Arch HTML ── */
 function archGrid(teeth,jaw){
   var mid=Math.floor(teeth.length/2);
-  var cols='repeat('+mid+',1fr) 4px repeat('+(teeth.length-mid)+',1fr)';
-  var h='<div style="display:grid;grid-template-columns:'+cols+';gap:2px;padding:0 8px">';
-  teeth.forEach(function(tooth,i){
+  var flexRow='display:flex;align-items:center;gap:0;padding:4px 8px;overflow-x:auto;-webkit-overflow-scrolling:touch;justify-content:center;min-width:min-content';
+  var h='<div style="'+flexRow+'">';
+  // Left half
+  h+='<div style="display:flex;flex-shrink:0;justify-content:flex-end;gap:1px">';
+  teeth.slice(0,mid).forEach(function(tooth){
     var data=getTC(tooth);
     var miss=data['all']==='missing';
     var immature=(_chartMode==='mixed')&&isImmature(tooth);
     var numCol=miss?'#9CA3AF':(immature?'#60A5FA':'var(--slate)');
     var numLbl=esc(tooth)+(immature?' ⬟':'');
-    if(i===mid){
-      h+='<div style="width:4px;background:rgba(15,35,24,.15);border-radius:2px;align-self:stretch"></div>';
-    }
-    h+='<div data-tooth="'+esc(tooth)+'" style="display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;-webkit-tap-highlight-color:transparent">';
-    if(jaw==='lower')h+='<div data-num="'+esc(tooth)+'" style="font-size:.45rem;font-weight:700;color:'+numCol+';line-height:1;text-align:center;white-space:nowrap">'+numLbl+'</div>';
-    h+=toothSVG(tooth,data,_chartMode,26);
-    if(jaw==='upper')h+='<div data-num="'+esc(tooth)+'" style="font-size:.45rem;font-weight:700;color:'+numCol+';line-height:1;text-align:center;white-space:nowrap">'+numLbl+'</div>';
+    h+='<div data-tooth="'+esc(tooth)+'" style="display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;-webkit-tap-highlight-color:transparent;min-width:54px">';
+    if(jaw==='lower')h+='<div data-num="'+esc(tooth)+'" style="font-size:.55rem;font-weight:700;color:'+numCol+';line-height:1;text-align:center;white-space:nowrap">'+numLbl+'</div>';
+    h+=toothSVG(tooth,data,_chartMode,52);
+    if(jaw==='upper')h+='<div data-num="'+esc(tooth)+'" style="font-size:.55rem;font-weight:700;color:'+numCol+';line-height:1;text-align:center;white-space:nowrap">'+numLbl+'</div>';
     h+='</div>';
   });
+  h+='</div>';
+  // Midline divider
+  h+='<div style="width:4px;min-width:4px;background:rgba(15,35,24,.2);border-radius:2px;align-self:stretch;margin:0 2px"></div>';
+  // Right half
+  h+='<div style="display:flex;flex-shrink:0;justify-content:flex-start;gap:1px">';
+  teeth.slice(mid).forEach(function(tooth){
+    var data=getTC(tooth);
+    var miss=data['all']==='missing';
+    var immature=(_chartMode==='mixed')&&isImmature(tooth);
+    var numCol=miss?'#9CA3AF':(immature?'#60A5FA':'var(--slate)');
+    var numLbl=esc(tooth)+(immature?' ⬟':'');
+    h+='<div data-tooth="'+esc(tooth)+'" style="display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;-webkit-tap-highlight-color:transparent;min-width:54px">';
+    if(jaw==='lower')h+='<div data-num="'+esc(tooth)+'" style="font-size:.55rem;font-weight:700;color:'+numCol+';line-height:1;text-align:center;white-space:nowrap">'+numLbl+'</div>';
+    h+=toothSVG(tooth,data,_chartMode,52);
+    if(jaw==='upper')h+='<div data-num="'+esc(tooth)+'" style="font-size:.55rem;font-weight:700;color:'+numCol+';line-height:1;text-align:center;white-space:nowrap">'+numLbl+'</div>';
+    h+='</div>';
+  });
+  h+='</div>';
   h+='</div>';
   return h;
 }
@@ -1564,21 +1624,19 @@ function renderChart(){
   }
   b.innerHTML=h;
   buildCondSelector();
-  
-  // FIXED: Stacking listeners fix
-  if(b._h) b.removeEventListener('click', b._h);
-  b._h = function(e){
+  // Event delegation - remove old if exists to prevent stacking
+  if(b._h)b.removeEventListener('click',b._h);
+  b._h=function(e){
     var tw=e.target.closest('[data-tooth]');
     if(!tw)return;
     var tooth=tw.dataset.tooth;
-    
-    // FIXED: Immature toggle fix - use data-num instead of style color
+    // In mixed mode, tap on the number label to toggle immature
     if(_chartMode==='mixed' && e.target.hasAttribute('data-num')){
       toggleImmature(tooth); return;
     }
     openToothDetail(tooth);
   };
-  b.addEventListener('click', b._h);
+  b.addEventListener('click',b._h);
 }
 
 /* ── Condition selector ── */
@@ -1637,14 +1695,13 @@ function openToothDetail(tooth){
     +(miss?'#6B7280':'var(--parch)')+';border:1.5px solid '+(miss?'#4B5563':'var(--ln)')+';color:'+(miss?'#fff':'var(--slate)')
     +';font-size:.78rem;font-weight:600;cursor:pointer;font-family:inherit">'
     +(miss?'✓ Tooth Missing — tap to restore':'Mark Whole Tooth Missing')+'</button>';
-  // Immature toggle button for mixed mode
-  var immBtn = '';
-  if(_chartMode === 'mixed') {
-    var imm = isImmature(tooth);
-    immBtn = '<button data-surf="__imm" style="margin-top:8px;width:100%;padding:10px;border-radius:10px;background:'
-      +(imm?'#60A5FA':'var(--parch)')+';border:1.5px solid '+(imm?'#3B82F6':'var(--ln)')+';color:'+(imm?'#fff':'var(--slate)')
+  var immBtn='';
+  if(_chartMode==='mixed'||_chartMode==='adult'){
+    var isImm=isImmature(tooth);
+    immBtn='<button data-surf="__imm" style="margin-top:8px;width:100%;padding:10px;border-radius:10px;background:'
+      +(isImm?'#3B82F6':'var(--parch)')+';border:1.5px solid '+(isImm?'#2563EB':'var(--ln)')+';color:'+(isImm?'#fff':'var(--slate)')
       +';font-size:.78rem;font-weight:600;cursor:pointer;font-family:inherit">'
-      +(imm?'✓ Immature (⬟) — tap to toggle':'Mark as Immature (⬟)')+'</button>';
+      +(isImm?'⬟ Immature Permanent — tap to remove':'⬟ Mark as Immature Permanent')+'</button>';
   }
   document.getElementById('td-grid-wrap').innerHTML=prev+grid+missBtn+immBtn;
   // Info line
@@ -1751,7 +1808,431 @@ function autoBackup(){
 // saveAll is used for ALL saves - only trigger backup on explicit user actions
 // Chart taps use saveQuiet() instead - no backup triggered
 
+
+/* ── DARK MODE ───────────────────────── */
+var _darkMode=localStorage.getItem('dl_dark')==='1';
+function applyDarkMode(){
+  document.body.classList.toggle('dark',_darkMode);
+  var btn=document.getElementById('dm-btn');
+  if(btn)btn.textContent=_darkMode?'☀️':'🌙';
+}
+function toggleDarkMode(){
+  _darkMode=!_darkMode;
+  localStorage.setItem('dl_dark',_darkMode?'1':'0');
+  applyDarkMode();
+  R();
+}
+
+/* ── ANALYTICS VIEW ──────────────────── */
+function paintAnalytics(){
+  var pats=allPats();
+  var totalPats=pats.length;
+  var allVisits=[];
+  pats.forEach(function(p){(p.visits||[]).forEach(function(v){allVisits.push({pat:p,visit:v});});});
+  var today30=new Date();today30.setDate(today30.getDate()-30);
+  var today30s=fd(today30);
+  var recentVisits=allVisits.filter(function(x){return x.visit.date>=today30s;});
+  // Treatment frequency
+  var txCount={};
+  allVisits.forEach(function(x){
+    (x.visit.txData||[]).forEach(function(t){txCount[t.name]=(txCount[t.name]||0)+1;});
+    (x.visit.treatments||[]).forEach(function(t){if(!x.visit.txData||!x.visit.txData.length)txCount[t]=(txCount[t]||0)+1;});
+  });
+  var topTx=Object.entries(txCount).sort(function(a,b){return b[1]-a[1];}).slice(0,8);
+  // Monthly visits (last 6 months)
+  var months=[];
+  for(var i=5;i>=0;i--){
+    var d=new Date();d.setDate(1);d.setMonth(d.getMonth()-i);
+    var ym=d.getFullYear()+'-'+(d.getMonth()<9?'0':'')+(d.getMonth()+1);
+    var cnt=allVisits.filter(function(x){return x.visit.date&&x.visit.date.startsWith(ym);}).length;
+    months.push({label:d.toLocaleDateString('en-US',{month:'short'}),count:cnt});
+  }
+  var maxM=Math.max(1,Math.max.apply(null,months.map(function(m){return m.count;})));
+  // Gender split
+  var male=pats.filter(function(p){return p.gender==='Male';}).length;
+  var female=pats.filter(function(p){return p.gender==='Female';}).length;
+  var other=totalPats-male-female;
+  // Age groups
+  var age0_12=pats.filter(function(p){return parseInt(p.age||0)<=12;}).length;
+  var age13_30=pats.filter(function(p){var a=parseInt(p.age||0);return a>=13&&a<=30;}).length;
+  var age31_60=pats.filter(function(p){var a=parseInt(p.age||0);return a>=31&&a<=60;}).length;
+  var age61=pats.filter(function(p){return parseInt(p.age||0)>=61;}).length;
+
+  var pad=S.mob?'12px 16px':'16px 28px';
+  var h='<div class="scr" style="flex:1;padding:'+pad+' 100px">';
+  h+='<div style="font-family:Playfair Display,serif;font-size:1.1rem;color:var(--ink);margin-bottom:16px">Practice Overview</div>';
+  // Stat cards row
+  h+='<div style="display:grid;grid-template-columns:repeat('+(S.mob?'2':'4')+',1fr);gap:10px;margin-bottom:18px">';
+  function statCard(icon,label,value,sub,color){
+    return '<div class="stat-card"><div style="font-size:1.4rem">'+icon+'</div>'
+      +'<div style="font-size:1.5rem;font-weight:700;color:'+(color||'var(--ink)')+'">'+value+'</div>'
+      +'<div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--slate)">'+label+'</div>'
+      +(sub?'<div style="font-size:.62rem;color:var(--mist)">'+sub+'</div>':'')
+      +'</div>';
+  }
+  h+=statCard('🧑‍⚕️','Total Patients',totalPats,'registered',FOREST);
+  h+=statCard('📋','Total Visits',allVisits.length,'all time','#3B82F6');
+  h+=statCard('📅','Last 30 Days',recentVisits.length,'visits','#059669');
+  h+=statCard('🦷','Procedures',Object.keys(txCount).length,'types','#C9A84C');
+  h+='</div>';
+  // Monthly chart
+  h+='<div style="background:var(--warm);border-radius:14px;border:1.5px solid var(--ln);padding:16px;margin-bottom:14px">';
+  h+='<div style="font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--FL);margin-bottom:12px">Monthly Visits (Last 6 Months)</div>';
+  h+='<div style="display:flex;align-items:flex-end;gap:8px;height:80px">';
+  months.forEach(function(m){
+    var pct=Math.round((m.count/maxM)*100);
+    h+='<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">'
+      +'<div style="font-size:.6rem;font-weight:700;color:var(--ink)">'+m.count+'</div>'
+      +'<div style="width:100%;background:'+FOREST+';border-radius:4px 4px 0 0;height:'+(pct||2)+'%;min-height:3px;transition:height .3s"></div>'
+      +'<div style="font-size:.58rem;color:var(--mist)">'+m.label+'</div>'
+      +'</div>';
+  });
+  h+='</div></div>';
+  // Top treatments
+  if(topTx.length){
+    h+='<div style="background:var(--warm);border-radius:14px;border:1.5px solid var(--ln);padding:16px;margin-bottom:14px">';
+    h+='<div style="font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--FL);margin-bottom:10px">Top Procedures</div>';
+    var maxTx=topTx[0][1];
+    topTx.forEach(function(tx){
+      var pct=Math.round((tx[1]/maxTx)*100);
+      var col=pc(tx[0]);
+      h+='<div style="margin-bottom:8px">'
+        +'<div style="display:flex;justify-content:space-between;font-size:.72rem;margin-bottom:3px">'
+        +'<span style="color:var(--ink);font-weight:500">'+esc(tx[0])+'</span>'
+        +'<span style="color:var(--mist);font-weight:600">'+tx[1]+'</span>'
+        +'</div>'
+        +'<div style="height:6px;background:var(--ln);border-radius:3px;overflow:hidden">'
+        +'<div style="height:100%;width:'+pct+'%;background:'+col+';border-radius:3px;transition:width .4s"></div>'
+        +'</div></div>';
+    });
+    h+='</div>';
+  }
+  // Demographics
+  h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">';
+  // Gender
+  h+='<div style="background:var(--warm);border-radius:14px;border:1.5px solid var(--ln);padding:14px">';
+  h+='<div style="font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--FL);margin-bottom:10px">Gender</div>';
+  [['Male',male,'#3B82F6'],['Female',female,'#EC4899'],['Other/Unknown',other,'#94A3B8']].forEach(function(g){
+    if(!g[1])return;
+    var pct=totalPats?Math.round((g[1]/totalPats)*100):0;
+    h+='<div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">'
+      +'<div style="width:8px;height:8px;border-radius:50%;background:'+g[2]+';flex-shrink:0"></div>'
+      +'<div style="font-size:.7rem;color:var(--ink);flex:1">'+g[0]+'</div>'
+      +'<div style="font-size:.7rem;font-weight:700;color:var(--slate)">'+g[1]+' ('+pct+'%)</div>'
+      +'</div>';
+  });
+  h+='</div>';
+  // Age groups
+  h+='<div style="background:var(--warm);border-radius:14px;border:1.5px solid var(--ln);padding:14px">';
+  h+='<div style="font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--FL);margin-bottom:10px">Age Groups</div>';
+  [['0–12 yrs',age0_12,'#34D399'],['13–30 yrs',age13_30,'#3B82F6'],['31–60 yrs',age31_60,'#C9A84C'],['61+ yrs',age61,'#F97316']].forEach(function(g){
+    if(!g[1])return;
+    var pct=totalPats?Math.round((g[1]/totalPats)*100):0;
+    h+='<div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">'
+      +'<div style="width:8px;height:8px;border-radius:50%;background:'+g[2]+';flex-shrink:0"></div>'
+      +'<div style="font-size:.7rem;color:var(--ink);flex:1">'+g[0]+'</div>'
+      +'<div style="font-size:.7rem;font-weight:700;color:var(--slate)">'+g[1]+' ('+pct+'%)</div>'
+      +'</div>';
+  });
+  h+='</div></div>';
+  h+='</div>';
+  return h;
+}
+
+/* ── PERIO CHART ─────────────────────── */
+var _perioPat=null;
+// FDI upper: 1.8→2.8, lower: 4.8→3.8
+var PERIO_U=['1.8','1.7','1.6','1.5','1.4','1.3','1.2','1.1','2.1','2.2','2.3','2.4','2.5','2.6','2.7','2.8'];
+var PERIO_L=['4.8','4.7','4.6','4.5','4.4','4.3','4.2','4.1','3.1','3.2','3.3','3.4','3.5','3.6','3.7','3.8'];
+
+function openPerioPanel(patId){
+  _perioPat=patId;
+  var pat=P[patId]; if(!pat)return;
+  if(!pat.perio)pat.perio={};
+  document.getElementById('perio-title').textContent=(pat.name||'Patient')+' — Periodontal Chart';
+  renderPerioChart();
+  document.getElementById('perio-panel').className='on slUp';
+}
+function closePerioPanel(){document.getElementById('perio-panel').className='';}
+
+function getPerioData(tooth){
+  var pat=P[_perioPat]; if(!pat||!pat.perio)return {};
+  return pat.perio[tooth]||{};
+}
+function setPerioData(tooth,field,val){
+  var pat=P[_perioPat]; if(!pat)return;
+  if(!pat.perio)pat.perio={};
+  if(!pat.perio[tooth])pat.perio[tooth]={};
+  pat.perio[tooth][field]=val;
+  saveQuiet();
+}
+
+// Draw a single tooth silhouette SVG for perio chart
+function perioToothSVG(tooth, isMolar, isUpper, width, height){
+  var w=width||28, h=height||55;
+  var crown_h=h*0.42, root_h=h*0.52, neck_y=crown_h;
+  var cx=w/2;
+  // Crown shape
+  var cw=isMolar?w*0.88:w*0.72;
+  var ch=crown_h*0.9;
+  var cox=(w-cw)/2, coy=2;
+  // Root(s)
+  var svgParts='';
+  // Crown
+  svgParts+='<rect x="'+cox+'" y="'+coy+'" width="'+cw+'" height="'+ch+'" rx="'+(cw*0.25)+'" ry="'+(ch*0.2)+'" fill="#F0EBE0" stroke="#C8B89A" stroke-width="1.2"/>';
+  // Root(s)
+  if(isMolar){
+    // Two roots
+    var rw=cw*0.32, rh=root_h*0.85;
+    var r1x=cox+cw*0.12, r2x=cox+cw*0.56;
+    var ry=neck_y+ch*0.05;
+    if(isUpper){
+      // 3 roots for upper molars
+      var r3x=cox+cw*0.34;
+      svgParts+='<rect x="'+r1x+'" y="'+ry+'" width="'+rw+'" height="'+rh+'" rx="'+(rw*0.45)+'" fill="#F0EBE0" stroke="#C8B89A" stroke-width="1.1"/>';
+      svgParts+='<rect x="'+r3x+'" y="'+ry+'" width="'+(rw*0.7)+'" height="'+(rh*0.8)+'" rx="'+(rw*0.45)+'" fill="#F0EBE0" stroke="#C8B89A" stroke-width="1.1"/>';
+      svgParts+='<rect x="'+r2x+'" y="'+ry+'" width="'+rw+'" height="'+rh+'" rx="'+(rw*0.45)+'" fill="#F0EBE0" stroke="#C8B89A" stroke-width="1.1"/>';
+    } else {
+      svgParts+='<rect x="'+r1x+'" y="'+ry+'" width="'+rw+'" height="'+rh+'" rx="'+(rw*0.45)+'" fill="#F0EBE0" stroke="#C8B89A" stroke-width="1.1"/>';
+      svgParts+='<rect x="'+r2x+'" y="'+ry+'" width="'+rw+'" height="'+rh+'" rx="'+(rw*0.45)+'" fill="#F0EBE0" stroke="#C8B89A" stroke-width="1.1"/>';
+    }
+  } else {
+    // Single root
+    var rw=cw*0.55, rh=root_h*0.85;
+    var rx2=(w-rw)/2, ry=neck_y+ch*0.05;
+    svgParts+='<rect x="'+rx2+'" y="'+ry+'" width="'+rw+'" height="'+rh+'" rx="'+(rw*0.45)+'" fill="#F0EBE0" stroke="#C8B89A" stroke-width="1.1"/>';
+  }
+  return '<svg width="'+w+'" height="'+h+'" viewBox="0 0 '+w+' '+h+'" xmlns="http://www.w3.org/2000/svg">'+svgParts+'</svg>';
+}
+
+function renderPerioChart(){
+  var b=document.getElementById('perio-body'); if(!b)return;
+  var h='<div style="padding:12px 8px 20px">';
+
+  function drawArch(teeth, isUpper, label){
+    var archH='';
+    var toothW=38, toothSvgH=60, probH=80, inputH=28, bleedH=14;
+    var totalW=teeth.length*toothW + 20;
+
+    archH+='<div style="margin-bottom:16px">';
+    archH+='<div style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--FL);text-align:center;margin-bottom:6px">'+label+'</div>';
+
+    // SVG perio diagram
+    var svgH = toothSvgH + probH + bleedH + 20;
+    if(!isUpper) svgH = probH + toothSvgH + bleedH + 20;
+
+    archH += '<div style="overflow-x:auto;-webkit-overflow-scrolling:touch">';
+    archH += '<svg width="'+(totalW)+'" height="'+(svgH)+'" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:0 auto">';
+
+    var xStart=10;
+    var toothY = isUpper ? 0 : probH+10;
+    var probY  = isUpper ? toothSvgH+5 : 5;
+    var gumLineY = isUpper ? toothSvgH+5 : probH+5;
+    var mgJY = isUpper ? toothSvgH+probH*0.75 : probH*0.25+5;
+
+    // Background grid lines
+    for(var gi=0;gi<=5;gi++){
+      var gy=probY + gi*(probH/5);
+      archH+=''; // will add to SVG string below
+    }
+
+    // Build SVG content
+    var svgContent='';
+
+    // Grid lines in probe area
+    for(var gi=0;gi<=5;gi++){
+      var gy=probY + gi*(probH/5);
+      svgContent+='<line x1="'+xStart+'" y1="'+gy+'" x2="'+(xStart+teeth.length*toothW)+'" y2="'+gy+'" stroke="#E4DDD4" stroke-width="0.5"/>';
+    }
+
+    // Gingival margin line (purple) - connects midpoints
+    var gmPoints=[];
+    var calPoints=[];
+    teeth.forEach(function(tooth,i){
+      var d=getPerioData(tooth);
+      var gm=parseFloat(d.gm||0);
+      var pd3=[(parseFloat(d.pd_m||3)),(parseFloat(d.pd_b||3)),(parseFloat(d.pd_d||3))];
+      var avgPd=(pd3[0]+pd3[1]+pd3[2])/3;
+      var cx2=xStart+i*toothW+toothW/2;
+      var gmY=isUpper ? probY+probH*(gm/10) : probY+probH*(1-gm/10);
+      var calY=isUpper ? probY+probH*(avgPd/10) : probY+probH*(1-avgPd/10);
+      gmPoints.push(cx2+','+gmY);
+      calPoints.push(cx2+','+calY);
+    });
+    if(gmPoints.length>1){
+      svgContent+='<polyline points="'+gmPoints.join(' ')+'" fill="none" stroke="#9333EA" stroke-width="1.5" stroke-linejoin="round"/>';
+      svgContent+='<polyline points="'+calPoints.join(' ')+'" fill="none" stroke="#2563EB" stroke-width="1.5" stroke-linejoin="round"/>';
+    }
+    // Mucogingival junction line (orange)
+    svgContent+='<line x1="'+xStart+'" y1="'+mgJY+'" x2="'+(xStart+teeth.length*toothW)+'" y2="'+mgJY+'" stroke="#F97316" stroke-width="1.2" stroke-dasharray="4,3"/>';
+
+    // Per-tooth elements
+    teeth.forEach(function(tooth,i){
+      var d=getPerioData(tooth);
+      var n=parseInt(tooth.split('.')[1]);
+      var isMolar=(n>=6&&n<=8);
+      var cx2=xStart+i*toothW+toothW/2;
+      var tx=xStart+i*toothW;
+
+      // Tooth silhouette (embedded as foreignObject equivalent — use rect+path approximation)
+      // Draw simplified tooth shape directly in SVG
+      var tw=toothW-4, th=toothSvgH-4;
+      var tcx=tx+2+tw/2, tcy=toothY+2+th/2;
+      var crownH=th*0.42, rootH=th*0.52;
+      var crownW=isMolar?tw*0.88:tw*0.68;
+      var crownX=tcx-crownW/2, crownY=toothY+2;
+
+      // Crown
+      svgContent+='<rect x="'+crownX+'" y="'+crownY+'" width="'+crownW+'" height="'+(crownH)+'" rx="'+(crownW*0.22)+'" fill="#F0EBE0" stroke="#C8B89A" stroke-width="1"/>';
+      // Root(s)
+      var neckY=crownY+crownH;
+      if(isMolar){
+        var rw2=crownW*0.32, rh2=rootH*0.85;
+        if(isUpper){
+          svgContent+='<rect x="'+(crownX+crownW*0.04)+'" y="'+neckY+'" width="'+rw2+'" height="'+rh2+'" rx="'+(rw2*0.45)+'" fill="#F0EBE0" stroke="#C8B89A" stroke-width="0.9"/>';
+          svgContent+='<rect x="'+(crownX+crownW*0.36)+'" y="'+neckY+'" width="'+(rw2*0.65)+'" height="'+(rh2*0.75)+'" rx="'+(rw2*0.4)+'" fill="#F0EBE0" stroke="#C8B89A" stroke-width="0.9"/>';
+          svgContent+='<rect x="'+(crownX+crownW*0.62)+'" y="'+neckY+'" width="'+rw2+'" height="'+rh2+'" rx="'+(rw2*0.45)+'" fill="#F0EBE0" stroke="#C8B89A" stroke-width="0.9"/>';
+        } else {
+          svgContent+='<rect x="'+(crownX+crownW*0.06)+'" y="'+neckY+'" width="'+rw2+'" height="'+rh2+'" rx="'+(rw2*0.45)+'" fill="#F0EBE0" stroke="#C8B89A" stroke-width="0.9"/>';
+          svgContent+='<rect x="'+(crownX+crownW*0.6)+'" y="'+neckY+'" width="'+rw2+'" height="'+rh2+'" rx="'+(rw2*0.45)+'" fill="#F0EBE0" stroke="#C8B89A" stroke-width="0.9"/>';
+        }
+      } else {
+        var rw2=crownW*0.52, rh2=rootH*0.85;
+        svgContent+='<rect x="'+(tcx-rw2/2)+'" y="'+neckY+'" width="'+rw2+'" height="'+rh2+'" rx="'+(rw2*0.45)+'" fill="#F0EBE0" stroke="#C8B89A" stroke-width="0.9"/>';
+      }
+
+      // Probing depth bars (3 per tooth: M, B/L, D)
+      var sites=['pd_m','pd_b','pd_d'];
+      var siteX=[tx+3, cx2-3, tx+toothW-11];
+      sites.forEach(function(site,si){
+        var pd_val=parseFloat(d[site]||0);
+        var bleed=d['bl_'+site.split('_')[1]]==='1';
+        var barH=pd_val>0 ? Math.min(probH-4, pd_val*(probH/10)) : 0;
+        var barW=5;
+        var bx=siteX[si];
+        var by=isUpper ? probY+probH-barH-2 : probY+2;
+
+        if(barH>0){
+          svgContent+='<rect x="'+bx+'" y="'+by+'" width="'+barW+'" height="'+barH+'" rx="2" fill="'+(bleed?'#EF4444':'#16A34A')+'"/>';
+        }
+        // Bleeding dot
+        if(bleed){
+          var dotY=isUpper ? probY+probH+4 : probY-4;
+          svgContent+='<circle cx="'+(bx+barW/2)+'" cy="'+dotY+'" r="3" fill="#EF4444"/>';
+        }
+      });
+
+      // Furcation indicator for molars
+      if(isMolar){
+        var furc=parseInt(d.furc||0);
+        if(furc>0){
+          var fx=cx2, fy=isUpper ? toothY+toothSvgH-4 : toothY+4;
+          var fColors=['','#F97316','#EF4444','#991B1B'];
+          // Triangle
+          var ts=7;
+          if(isUpper){
+            svgContent+='<polygon points="'+fx+','+(fy)+' '+(fx-ts/2)+','+(fy+ts)+' '+(fx+ts/2)+','+(fy+ts)+'" fill="'+(furc===1?'none':fColors[furc])+'" stroke="'+fColors[furc]+'" stroke-width="1.5"/>';
+          } else {
+            svgContent+='<polygon points="'+fx+','+(fy)+' '+(fx-ts/2)+','+(fy-ts)+' '+(fx+ts/2)+','+(fy-ts)+'" fill="'+(furc===1?'none':fColors[furc])+'" stroke="'+fColors[furc]+'" stroke-width="1.5"/>';
+          }
+        }
+      }
+
+      // Tooth number label
+      var numY=isUpper ? svgH-4 : 10;
+      svgContent+='<text x="'+cx2+'" y="'+numY+'" text-anchor="middle" font-size="8" font-family="Outfit,sans-serif" font-weight="700" fill="#4A6355">'+tooth+'</text>';
+    });
+
+    archH += svgContent + '</svg></div>';
+
+    // Input rows
+    archH += '<div style="overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:6px">';
+    archH += '<table style="border-collapse:collapse;margin:0 auto;font-size:.65rem">';
+    // Row labels
+    var rows=[
+      {key:'pd_b', label:'PD Buccal (mm)', placeholder:'3'},
+      {key:'pd_m', label:'PD Mesial (mm)', placeholder:'3'},
+      {key:'pd_d', label:'PD Distal (mm)', placeholder:'3'},
+      {key:'gm',   label:'Gingival Margin', placeholder:'0'},
+      {key:'furc', label:'Furcation (0-3)', placeholder:'0'},
+      {key:'calc', label:'Calculus (0-3)', placeholder:'0'},
+      {key:'stain',label:'Staining (0-3)', placeholder:'0'},
+    ];
+    // Bleeding checkboxes
+    archH += '<tr><td style="padding:2px 4px;color:var(--slate);font-weight:600;white-space:nowrap;text-align:right">Bleeding</td>';
+    teeth.forEach(function(tooth){
+      var d=getPerioData(tooth);
+      var checked=d.bl_b==='1';
+      archH+='<td style="padding:2px 3px;text-align:center"><input type="checkbox" data-tooth="'+tooth+'" data-field="bl_b" '+(checked?'checked':'')+' onchange="perioCbChange(this)" style="width:14px;height:14px;accent-color:#EF4444"></td>';
+    });
+    archH += '</tr>';
+
+    rows.forEach(function(row){
+      archH += '<tr>';
+      archH += '<td style="padding:2px 4px;color:var(--slate);font-weight:600;white-space:nowrap;text-align:right;font-size:.62rem">'+row.label+'</td>';
+      teeth.forEach(function(tooth){
+        var d=getPerioData(tooth);
+        var val=d[row.key]||'';
+        archH += '<td style="padding:2px 3px;text-align:center">'
+          +'<input class="perio-input" type="number" data-tooth="'+tooth+'" data-field="'+row.key+'" min="0" max="'+(row.key==='furc'||row.key==='calc'||row.key==='stain'?'3':'20')+'" value="'+val+'" placeholder="'+row.placeholder+'"'
+          +' onchange="perioInputChange(this)">'
+          +'</td>';
+      });
+      archH += '</tr>';
+    });
+    archH += '</table></div>';
+    archH += '</div>';
+    return archH;
+  }
+
+  h += drawArch(PERIO_U, true, 'Upper Arch — Buccal');
+  h += '<div style="height:1px;background:var(--ln);margin:8px 0"></div>';
+  h += drawArch(PERIO_L, false, 'Lower Arch — Buccal');
+
+  // Legend
+  h += '<div style="background:var(--warm);border-radius:12px;border:1px solid var(--ln);padding:12px 16px;margin-top:12px">';
+  h += '<div style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--FL);margin-bottom:8px">Legend</div>';
+  h += '<div style="display:flex;flex-wrap:wrap;gap:12px;font-size:.7rem;color:var(--ink)">';
+  h += '<div style="display:flex;align-items:center;gap:5px"><svg width="12" height="12"><circle cx="6" cy="6" r="5" fill="#EF4444"/></svg>Bleeding on Probing</div>';
+  h += '<div style="display:flex;align-items:center;gap:5px"><svg width="16" height="12"><rect x="0" y="0" width="6" height="12" rx="2" fill="#16A34A"/></svg>Probing Depth (healthy)</div>';
+  h += '<div style="display:flex;align-items:center;gap:5px"><svg width="16" height="12"><rect x="0" y="0" width="6" height="12" rx="2" fill="#EF4444"/></svg>Probing Depth (bleeding)</div>';
+  h += '<div style="display:flex;align-items:center;gap:5px"><svg width="20" height="8"><line x1="0" y1="4" x2="20" y2="4" stroke="#9333EA" stroke-width="2"/></svg>Gingival Margin</div>';
+  h += '<div style="display:flex;align-items:center;gap:5px"><svg width="20" height="8"><line x1="0" y1="4" x2="20" y2="4" stroke="#2563EB" stroke-width="2"/></svg>Clinical Attachment Level</div>';
+  h += '<div style="display:flex;align-items:center;gap:5px"><svg width="20" height="8"><line x1="0" y1="4" x2="20" y2="4" stroke="#F97316" stroke-width="2" stroke-dasharray="4,2"/></svg>Mucogingival Junction</div>';
+  h += '<div style="display:flex;align-items:center;gap:5px"><svg width="14" height="12"><polygon points="7,0 0,12 14,12" fill="none" stroke="#F97316" stroke-width="1.5"/></svg>Furcation Grade 1</div>';
+  h += '<div style="display:flex;align-items:center;gap:5px"><svg width="14" height="12"><polygon points="7,0 0,12 14,12" fill="#EF4444" stroke="#EF4444" stroke-width="1.5"/></svg>Furcation Grade 2-3</div>';
+  h += '</div></div>';
+
+  h += '</div>';
+  b.innerHTML = h;
+}
+
+function perioCbChange(el){
+  var tooth=el.dataset.tooth, field=el.dataset.field;
+  setPerioData(tooth,field,el.checked?'1':'0');
+  renderPerioChart();
+}
+function perioInputChange(el){
+  var tooth=el.dataset.tooth, field=el.dataset.field;
+  setPerioData(tooth,field,el.value);
+  renderPerioChart();
+}
+
+function printPerioChart(){
+  var content=document.getElementById('perio-body');
+  if(!content)return;
+  var w=window.open('','_blank');
+  w.document.write('<html><head><title>Periodontal Chart</title><style>body{font-family:sans-serif;padding:20px}table{border-collapse:collapse}input{border:1px solid #ccc;text-align:center;width:32px}</style></head><body>');
+  w.document.write('<h2>Periodontal Chart</h2>');
+  w.document.write(content.innerHTML);
+  w.document.write('</body></html>');
+  w.document.close();
+  w.print();
+}
+
+
 /* ── INIT ─────────────────────────────── */
+applyDarkMode();
 paint();
 </script>
 </body>
