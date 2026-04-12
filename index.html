@@ -179,21 +179,49 @@ select.inp{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.
 .csel.active{border-color:#0F2318!important;box-shadow:0 0 0 2px rgba(15,35,24,.2)}
 
 /* ── DARK MODE ── */
-body.dark{background:#0a1208}
-body.dark .card{background:#0F2318;border-color:#1a3a22}
-body.dark .inp{background:#0F2318;border-color:#1a3a22;color:#e0f0e5}
+body.dark{background:#0a1208;color:#e0f0e5}
+body.dark .card{background:#0F2318;border-color:#1a3a22;color:#e0f0e5}
+body.dark .inp{background:#162a1c;border-color:#1a3a22;color:#e0f0e5}
 body.dark .inp::placeholder{color:#4a6355}
-body.dark #RP,body.dark #CF>div{background:#0a1208}
+body.dark select.inp{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath fill='%238BAF95' d='M6 8 0 0h12z'/%3E%3C/svg%3E")}
+body.dark #RP{background:#0a1208;color:#e0f0e5}
+body.dark #CF>div{background:#0F2318;color:#e0f0e5;border:1px solid #1a3a22}
 body.dark #view,body.dark #topbar{background:#0a1208}
 body.dark .bghost{background:rgba(255,255,255,.06);border-color:#1a3a22;color:#e0f0e5}
+body.dark .bghost:active{background:rgba(255,255,255,.12)}
 body.dark #tooth-detail,body.dark #chart-panel{background:#0a1208}
-body.dark .td-cell{background:#0F2318;border-color:#1a3a22;color:#8BAF95}
-body.dark #ep-sheet{background:#0a1208}
+body.dark #tooth-detail-bg{background:rgba(0,0,0,.65)}
+body.dark .td-cell{background:#162a1c;border-color:#1a3a22;color:#8BAF95}
+body.dark #ep-sheet{background:#0F2318}
 body.dark #perio-panel{background:#0a1208}
+body.dark .sbar{color:#8BAF95;border-color:#1a3a22}
+body.dark .lbl{color:#8BAF95}
+body.dark .wkc{border-color:#1a3a22}
+body.dark .wkh{background:#0F2318;border-color:#1a3a22}
+body.dark .mcell{background:#0F2318}
+body.dark .mcell.other{background:#0a1208}
+body.dark .mnum,.dark .mnum{color:#e0f0e5}
+body.dark .mnum.onum{color:#4a6355}
+body.dark .dsd{background:#0F2318;border-color:#1a3a22}
+body.dark .dsd.tod{background:rgba(201,168,76,.1);border-color:var(--gold)}
+body.dark .vtog{background:#162a1c}
+body.dark .vtog button{color:#8BAF95}
+body.dark .vtog button.on{background:#0F2318;color:#e0f0e5}
+body.dark .scr::-webkit-scrollbar-thumb{background:rgba(139,175,149,.25)}
+/* Inline text in dark mode */
+body.dark [style*="color:var(--ink)"]{color:#e0f0e5!important}
+body.dark [style*="color:var(--slate)"]{color:#8BAF95!important}
+body.dark [style*="color:var(--mist)"]{color:#4a6355!important}
+body.dark [style*="background:var(--warm)"]{background:#0F2318!important}
+body.dark [style*="background:var(--cream)"]{background:#0a1208!important}
+body.dark [style*="background:var(--parch)"]{background:#162a1c!important}
+body.dark [style*="border-color:var(--ln)"],[style*="border:1.5px solid var(--ln)"]{border-color:#1a3a22!important}
 :root{--dm-bg:#0a1208;--dm-card:#0F2318;--dm-border:#1a3a22;--dm-text:#e0f0e5}
 /* ── ANALYTICS ── */
 .stat-card{background:var(--warm);border-radius:14px;border:1.5px solid var(--ln);padding:16px;display:flex;flex-direction:column;gap:4px}
-body.dark .stat-card{background:#0F2318;border-color:#1a3a22}
+body.dark .stat-card{background:#0F2318;border-color:#1a3a22;color:#e0f0e5}
+body.dark .stat-card [style*="color:var(--slate)"]{color:#8BAF95!important}
+body.dark .stat-card [style*="color:var(--mist)"]{color:#4a6355!important}
 /* ── PERIO PANEL ── */
 #perio-panel{position:fixed;top:0;left:0;right:0;bottom:0;z-index:952;background:var(--cream);display:none;flex-direction:column}
 #perio-panel.on{display:flex}
@@ -570,6 +598,7 @@ function paint(){
   if(S.view==='today')v=paintToday();
   else if(S.view==='patients')v=paintPatients();
   else if(S.view==='analytics')v=paintAnalytics();
+  else if(S.view==='reviews')v=paintReviews();
   else v=paintSchedule();
   document.getElementById('view').innerHTML=v;
   afterPaint();
@@ -601,14 +630,14 @@ function paintSidebar(){
   var total=allPats().length,todayCnt=(A[today()]||[]).length;
   var h='<div style="padding:26px 20px 18px">'
     +'<div style="display:flex;align-items:center;gap:10px;margin-bottom:3px">'
-    +'<div style="width:36px;height:36px;border-radius:10px;background:#0a1e10;border:1.5px solid rgba(201,168,76,.4);display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:4px;box-shadow:0 4px 12px rgba(201,168,76,.25)"><img src="data:image/jpeg;base64,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" style="width:100%;height:100%;object-fit:cover;object-position:center center;border-radius:50%"></div>'
+    +'<div style="width:36px;height:36px;border-radius:10px;background:#0a1e10;border:1.5px solid rgba(201,168,76,.4);display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:4px;box-shadow:0 4px 12px rgba(201,168,76,.25)"><img src="data:image/jpeg;base64,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" style="width:100%;height:100%;object-fit:cover;object-position:center 38%;border-radius:50%"></div>'
     +'<div style="font-family:\'Playfair Display\',serif;font-size:1.42rem;color:#fff">DentaLog</div>'
     +'</div>'
     +'<div style="font-size:.66rem;color:var(--sage);letter-spacing:.08em;text-transform:uppercase;font-weight:500;margin-left:46px">Dr. M.W. Khalil</div>'
     +'</div>'
     +'<div style="height:1px;background:rgba(255,255,255,.08);margin:0 18px"></div>'
     +'<div style="flex:1;padding:12px 12px 0">';
-  var navs=[{id:'today',ic:'📅',lb:'Today'},{id:'patients',ic:'🧑‍⚕️',lb:'Patients'},{id:'schedule',ic:'🗓',lb:'Schedule'},{id:'analytics',ic:'📊',lb:'Analytics'}];
+  var navs=[{id:'today',ic:'📅',lb:'Today'},{id:'patients',ic:'🧑‍⚕️',lb:'Patients'},{id:'schedule',ic:'🗓',lb:'Schedule'},{id:'analytics',ic:'📊',lb:'Analytics'},{id:'reviews',ic:'⭐',lb:'Reviews'}];
   navs.forEach(function(n){
     h+='<button class="sdn'+(S.view===n.id?' on':'')+'" onclick="nav(\''+n.id+'\')"><span style="font-size:1rem">'+n.ic+'</span>'+n.lb+'</button>';
   });
@@ -643,7 +672,7 @@ function paintTopbar(){
   if(S.mob){
     return '<div style="background:'+FOREST+';padding:max(14px,env(safe-area-inset-top)) 18px 14px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;box-shadow:0 2px 10px rgba(0,0,0,.14)">'
       +'<div style="display:flex;align-items:center;gap:10px">'
-      +'<div style="width:32px;height:32px;border-radius:8px;background:#0a1e10;border:1.5px solid #C9A84C44;display:flex;align-items:center;justify-content:center;padding:4px"><img src="data:image/jpeg;base64,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" style="width:100%;height:100%;object-fit:cover;object-position:center center;border-radius:50%"></div>'
+      +'<div style="width:32px;height:32px;border-radius:8px;background:#0a1e10;border:1.5px solid #C9A84C44;display:flex;align-items:center;justify-content:center;padding:4px"><img src="data:image/jpeg;base64,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" style="width:100%;height:100%;object-fit:cover;object-position:center 38%;border-radius:50%"></div>'
       +'<div>'
       +'<div style="font-family:\'Playfair Display\',serif;font-size:1.15rem;color:#fff;line-height:1">DentaLog</div>'
       +'<div style="font-size:.6rem;color:var(--sage);margin-top:1px">'+subs[S.view]+'</div>'
@@ -862,7 +891,7 @@ function paintSchedMonth(){
 }
 
 /* ── NAV ACTIONS ──────────────────────── */
-function nav(v){S.view=v;R();}
+function nav(v){S.view=v;if(v!=='analytics')_analDrill=null;R();}
 function setSched(m){S.sched=m;R();}
 function pickDate(ds){S.date=ds;if(S.view==='schedule')S.sched='day';else S.view='today';R();}
 function schPrev(){S.date=addDays(S.date,-1);R();}
@@ -1003,7 +1032,7 @@ function txRowsHTML(){
       +'</div></div>'
       // total
       +'<div>'
-      +'<div style="font-size:.64rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--slate);margin-bottom:6px">Total planned</div>'
+      +'<div style="font-size:.64rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--slate);margin-bottom:6px">Sessions total</div>'
       +'<div style="display:flex;align-items:center;gap:8px">'
       +'<button class="vc-btn" onclick="adjVisit('+idx+',-1,\'total\')">−</button>'
       +'<div style="flex:1;text-align:center;font-size:1.5rem;font-weight:800;color:var(--ink)">'+item.totalVisits+'</div>'
@@ -1191,7 +1220,9 @@ var _PF={},_PF_cb=null;
 
 function openPatPanel(patId,cb){
   var pat=patId?P[patId]:null;
-  _PF=pat?JSON.parse(JSON.stringify(pat)):{id:uid(),name:'',age:'',gender:'',phone:'',email:'',emoji:null,note:'',visits:[]};
+  _PF=pat?JSON.parse(JSON.stringify(pat)):{id:uid(),name:'',age:'',gender:'',phone:'',email:'',emoji:null,note:'',visits:[],medHistory:{conditions:[],medications:'',allergies:'',bloodType:''},ratings:[]};
+  if(!_PF.medHistory)_PF.medHistory={conditions:[],medications:'',allergies:'',bloodType:''};
+  if(!_PF.ratings)_PF.ratings=[];
   _PF_cb=cb||null;
   buildPatPanel();
 }
@@ -1199,51 +1230,136 @@ function openPatPanel(patId,cb){
 function buildPatPanel(){
   openPanel();
   var f=_PF,isNew=!P[f.id];
+  var pad=S.mob?'18px':'18px 22px';
+
+  // ── Medical history section ──
+  var CONDITIONS=['Diabetes','Hypertension','Heart Disease','Asthma','Epilepsy',
+    'HIV/AIDS','Hepatitis B','Hepatitis C','Tuberculosis','Bleeding Disorder',
+    'Kidney Disease','Liver Disease','Thyroid Disease','Pregnancy','Osteoporosis'];
+  var mh=f.medHistory||{conditions:[],medications:'',allergies:'',bloodType:''};
+  var medH='<div style="margin-bottom:20px"><div class="sbar">🏥 Medical History</div>'
+    +'<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px">';
+  CONDITIONS.forEach(function(con){
+    var on=(mh.conditions||[]).indexOf(con)>-1;
+    medH+='<button onclick="toggleMedCond(\''+esc(con)+'\')" id="mcon-'+con.replace(/\W/g,'_')+'" style="padding:5px 11px;border-radius:20px;font-size:.68rem;font-weight:600;cursor:pointer;font-family:inherit;border:1.5px solid '+(on?'var(--red)':'var(--ln)')+';background:'+(on?'rgba(192,57,43,.1)':'var(--parch)')+';color:'+(on?'var(--red)':'var(--slate)')+'">'+esc(con)+'</button>';
+  });
+  medH+='</div>';
+  medH+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">';
+  medH+='<div><label class="lbl">Current Medications</label><input class="inp" style="font-size:14px" placeholder="e.g. Metformin 500mg…" value="'+esc(mh.medications||'')+'" oninput="_PF.medHistory.medications=this.value"></div>';
+  medH+='<div><label class="lbl">Allergies</label><input class="inp" style="font-size:14px" placeholder="e.g. Penicillin, Latex…" value="'+esc(mh.allergies||'')+'" oninput="_PF.medHistory.allergies=this.value"></div>';
+  medH+='<div><label class="lbl">Blood Type</label><select class="inp" onchange="_PF.medHistory.bloodType=this.value"><option value="">Unknown</option>';
+  ['A+','A−','B+','B−','AB+','AB−','O+','O−'].forEach(function(bt){medH+='<option'+(mh.bloodType===bt?' selected':'')+'>'+bt+'</option>';});
+  medH+='</select></div>';
+  medH+='<div><label class="lbl">Extra Notes</label><input class="inp" style="font-size:14px" placeholder="Other notes…" value="'+esc(mh.extraNotes||'')+'" oninput="_PF.medHistory.extraNotes=this.value"></div>';
+  medH+='</div></div>';
+
+  // ── Odontogram summary ──
+  var chartSumH='';
+  if(!isNew&&f.chart&&f.chart.teeth){
+    var COND_ALL=getCOND(f.chart.mode||'adult');
+    var done=[],needs=[],planned=[];
+    var DONE_CONDS=['filling','crown','bridge','pontic','ssc','rct','vpt','dpc','ipc','pulp_p','pulp_t','apex','revasc'];
+    var NEEDS_CONDS=['caries','fracture','ext_plan'];
+    Object.keys(f.chart.teeth).forEach(function(tooth){
+      var td=f.chart.teeth[tooth];
+      var all=td['all']||'';
+      if(all){
+        var lbl=(COND_ALL[all]||{}).label||all;
+        if(DONE_CONDS.indexOf(all)>-1)done.push(tooth+': '+lbl);
+        else if(all==='extracted'||all==='missing'){}// skip
+        else if(NEEDS_CONDS.indexOf(all)>-1)needs.push(tooth+': '+lbl);
+        else planned.push(tooth+': '+lbl);
+        if(td['base']){var bl=(COND_ALL[td['base']]||{}).label||td['base'];done.push(tooth+' (base): '+bl);}
+      } else {
+        Object.keys(td).forEach(function(surf){
+          if(!td[surf])return;
+          var lbl=(COND_ALL[td[surf]]||{}).label||td[surf];
+          if(DONE_CONDS.indexOf(td[surf])>-1)done.push(tooth+' '+surf+': '+lbl);
+          else if(NEEDS_CONDS.indexOf(td[surf])>-1)needs.push(tooth+' '+surf+': '+lbl);
+        });
+      }
+    });
+    var txPlan=f.chart&&f.chart.txPlan?f.chart.txPlan.filter(function(x){return x.status!=='done';}).map(function(x){return (x.tooth?x.tooth+': ':'')+x.procedure;}):[]; 
+    chartSumH='<div style="margin-bottom:20px"><div class="sbar">🦷 Odontogram Summary</div>'
+      +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">';
+    function sumBox(title,items,col,icon){
+      return '<div style="background:'+col+'12;border:1px solid '+col+'44;border-radius:10px;padding:10px">'
+        +'<div style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:'+col+';margin-bottom:6px">'+icon+' '+title+' ('+items.length+')</div>'
+        +(items.length?'<div style="display:flex;flex-direction:column;gap:2px">'
+          +items.slice(0,5).map(function(s){return '<div style="font-size:.68rem;color:var(--ink)">'+esc(s)+'</div>';}).join('')
+          +(items.length>5?'<div style="font-size:.63rem;color:var(--mist)">+' + (items.length-5)+' more</div>':'')
+          +'</div>':'<div style="font-size:.68rem;color:var(--mist);font-style:italic">None</div>')
+        +'</div>';
+    }
+    chartSumH+=sumBox('Completed',done,'#16A34A','✓');
+    chartSumH+=sumBox('Needs Attention',needs,'#EF4444','⚠');
+    if(txPlan.length)chartSumH+=sumBox('Treatment Plan',txPlan,'#F59E0B','📋');
+    chartSumH+='</div>';
+    chartSumH+='<button id="open-chart-btn" data-patid="'+esc(f.id)+'" style="width:100%;padding:11px;background:#0F2318;color:#fff;border-radius:10px;font-size:.82rem;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;border:none">🗺 Open Full Dental Chart</button>'
+      +'</div>';
+  } else if(!isNew){
+    chartSumH='<div style="margin-bottom:20px"><div class="sbar">🦷 Dental Chart</div>'
+      +'<button id="open-chart-btn" data-patid="'+esc(f.id)+'" style="width:100%;padding:13px;background:#0F2318;color:#fff;border-radius:12px;font-size:.88rem;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;border:none">🗺 Open Dental Chart</button>'
+      +'</div>';
+  }
+
+  // ── Visit history ──
   var visH='';
   (f.visits||[]).slice().sort(function(a,b){return b.date>a.date?1:-1;}).forEach(function(v){
-    var col=v.txData&&v.txData.length?pc(v.txData[0].name):(v.treatments&&v.treatments.length?pc(v.treatments[0]):GOLD);
-    visH+='<div class="card" style="padding:12px 14px;margin-bottom:8px;border-left:3px solid '+col+'">'
+    var col2=v.txData&&v.txData.length?pc(v.txData[0].name):(v.treatments&&v.treatments.length?pc(v.treatments[0]):GOLD);
+    var rating=(f.ratings||[]).find(function(r){return r.visitId===v.id;});
+    var ratingH='';
+    if(rating){
+      var stars='';for(var s=1;s<=5;s++)stars+='<span style="color:'+(s<=rating.patStar?'#F59E0B':'#D1D5DB')+'">★</span>';
+      ratingH='<div style="display:flex;align-items:center;gap:8px;margin-top:6px;padding:6px 0;border-top:1px solid var(--ln)">'
+        +'<span style="font-size:.6rem;font-weight:600;color:var(--mist)">Patient</span>'
+        +'<span style="font-size:.85rem;letter-spacing:-1px">'+stars+'</span>'
+        +(rating.drStar?'<span style="font-size:.6rem;color:var(--mist);margin-left:4px">Dr: '+'⭐'.repeat(rating.drStar)+'</span>':'')
+        +(rating.issue?'<span style="font-size:.65rem;color:var(--red);margin-left:4px">⚠ '+esc(rating.issue)+'</span>':'')
+        +'</div>';
+    }
+    visH+='<div class="card" style="padding:12px 14px;margin-bottom:8px;border-left:3px solid '+col2+'">'
       +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">'
       +'<div style="font-size:.8rem;font-weight:700;color:var(--ink)">'+esc(shortD(v.date))+'</div>'
+      +'<div style="display:flex;gap:6px">'
+      +'<button onclick="openRatingModal(\''+esc(v.id)+'\')" style="font-size:.62rem;color:var(--slate);cursor:pointer;padding:2px 8px;border-radius:6px;background:rgba(15,35,24,.05);border:1px solid var(--ln)">⭐ Rate</button>'
       +'<button onclick="delVisit(\''+esc(v.id)+'\')" style="font-size:.7rem;color:var(--red);cursor:pointer;font-weight:600;padding:2px 8px;border-radius:6px;background:rgba(192,57,43,.08)">Remove</button>'
-      +'</div>'
+      +'</div></div>'
       +'<div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:4px">'+txBadges(v.txData,v.treatments,4)+'</div>'
-      // per-treatment notes
       +(v.txData&&v.txData.some(function(x){return x.txNote;})?
         '<div style="display:flex;flex-direction:column;gap:3px;margin-top:4px">'
         +v.txData.filter(function(x){return x.txNote;}).map(function(x){
-          var c=pc(x.name);
-          return '<div style="font-size:.7rem;padding:3px 8px;background:'+c+'10;border-radius:6px;border-left:2px solid '+c+'">'
-            +'<span style="font-weight:600;color:'+c+'">'+esc(x.name)+(x.totalVisits>1?' ('+x.visitNum+'/'+x.totalVisits+')':'')+':</span> '+esc(x.txNote)
+          var c2=pc(x.name);
+          return '<div style="font-size:.7rem;padding:3px 8px;background:'+c2+'10;border-radius:6px;border-left:2px solid '+c2+'">'
+            +'<span style="font-weight:600;color:'+c2+'">'+esc(x.name)+(x.totalVisits>1?' (session '+x.visitNum+'/'+x.totalVisits+')':'')+':</span> '+esc(x.txNote)
             +'</div>';
-        }).join('')
-        +'</div>':'')
+        }).join('')+'</div>':'')
       +(v.diagnosis?'<div style="font-size:.73rem;color:var(--slate);margin-top:4px"><strong>Dx:</strong> '+esc(v.diagnosis)+'</div>':'')
+      +(v.medication?'<div style="font-size:.73rem;color:var(--slate);margin-top:3px">💊 <strong>Rx:</strong> '+esc(v.medication)+'</div>':'')
       +(v.notes?'<div style="font-size:.72rem;color:var(--mist);margin-top:2px">'+esc(v.notes)+'</div>':'')
       +(v.photos&&v.photos.length?'<div style="display:flex;gap:4px;margin-top:6px">'+v.photos.slice(0,4).map(function(ph){return '<img src="'+ph.data+'" style="width:36px;height:36px;border-radius:6px;object-fit:cover" alt="">';}).join('')+'</div>':'')
+      +ratingH
       +'</div>';
   });
-  var epH='';
-  EMOJIS.forEach(function(em){epH+='<button class="epbtn'+(f.emoji===em?' sel':'')+'" onclick="pickEmoji(\''+esc(em)+'\')">'+esc(em)+'</button>';});
-  epH+='<button class="epbtn'+(f.emoji===null?' sel':'')+'" onclick="pickEmoji(null)" style="font-size:.64rem;font-weight:700;color:var(--slate)">ABC</button>';
-  var pad=S.mob?'18px':'18px 22px';
+
   document.getElementById('RP').innerHTML=
     '<div style="background:'+FOREST+';padding:'+(S.mob?'max(18px,env(safe-area-inset-top)) 18px 16px':'18px 22px')+';flex-shrink:0;display:flex;justify-content:space-between;align-items:flex-start">'
     +'<div><div style="font-family:\'Playfair Display\',serif;font-size:1.05rem;color:#fff">'+(isNew?'New Patient':'Patient Profile')+'</div>'
     +(f.name?'<div style="font-size:.7rem;color:var(--sage);margin-top:3px">'+esc(f.name)+'</div>':'')
     +'</div>'
-    +(f.phone?'<button onclick="window.open(\'https://wa.me/\'+encodeURIComponent((_PF.phone||\'\').replace(/[^0-9]/g,\'\'))" style="width:32px;height:32px;border-radius:50%;background:rgba(37,211,102,.25);color:#25D366;font-size:1.1rem;display:flex;align-items:center;justify-content:center;border:1px solid rgba(37,211,102,.4)">💬</button>':'')
+    +'<div style="display:flex;gap:8px;align-items:center">'
+    +(f.phone?'<button onclick="window.open(\'https://wa.me/\'+encodeURIComponent((_PF.phone||\'\').replace(/[^0-9]/g,\'\')))" style="width:32px;height:32px;border-radius:50%;background:rgba(37,211,102,.25);color:#25D366;font-size:1.1rem;display:flex;align-items:center;justify-content:center;border:1px solid rgba(37,211,102,.4)">💬</button>':'')
+    +(!isNew?'<button onclick="printPatientCard()" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.15);color:#fff;font-size:.9rem;display:flex;align-items:center;justify-content:center;border:none;cursor:pointer" title="Print">🖨</button>':'')
     +'<button onclick="closePanel()" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.18);color:#fff;font-size:1.2rem;display:flex;align-items:center;justify-content:center">×</button>'
-    +'</div>'
+    +'</div></div>'
     +'<div class="scr" style="flex:1;padding:'+pad+'">'
     +'<div style="margin-bottom:20px"><div class="sbar">👤 Patient Information</div>'
     +'<div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:14px">'
     +'<div style="position:relative;flex-shrink:0">'
-    +'<div id="pp-av" onclick=\"openEpModal()\" style="width:54px;height:54px;border-radius:50%;background:'+(f.emoji?'var(--parch)':(f.name&&ini(f.name)!=='?'?FOREST:'var(--parch)'))+';color:'+(f.emoji?'inherit':(f.name&&ini(f.name)!=='?'?'#fff':'var(--mist)'))+';display:flex;align-items:center;justify-content:center;font-size:'+(f.emoji?'1.6rem':'.88rem')+';font-weight:700;border:'+(f.emoji?'1.5px solid var(--ln)':'none')+';cursor:pointer;position:relative">'
+    +'<div id="pp-av" onclick="openEpModal()" style="width:54px;height:54px;border-radius:50%;background:'+(f.emoji?'var(--parch)':(f.name&&ini(f.name)!=='?'?FOREST:'var(--parch)'))+';color:'+(f.emoji?'inherit':(f.name&&ini(f.name)!=='?'?'#fff':'var(--mist)'))+';display:flex;align-items:center;justify-content:center;font-size:'+(f.emoji?'1.6rem':'.88rem')+';font-weight:700;border:'+(f.emoji?'1.5px solid var(--ln)':'none')+';cursor:pointer;position:relative">'
     +(f.emoji?esc(f.emoji):(f.name&&ini(f.name)!=='?'?ini(f.name):'🦷'))
     +'<div style="position:absolute;bottom:0;right:0;width:17px;height:17px;background:'+GOLD+';border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.55rem;color:'+FOREST+';font-weight:700;border:2px solid var(--warm)">✏</div>'
-    +'</div>'
-    +'</div>'
+    +'</div></div>'
     +'<div style="flex:1"><label class="lbl">Full Name</label>'
     +'<input class="inp" id="pp-name" value="'+esc(f.name||'')+'" placeholder="Patient full name" oninput="ppName(this.value)" style="font-size:16px"></div>'
     +'</div>'
@@ -1252,15 +1368,15 @@ function buildPatPanel(){
     +'<div><label class="lbl">Gender</label><select class="inp" onchange="_PF.gender=this.value"><option value="">—</option><option'+(f.gender==='Male'?' selected':'')+'>Male</option><option'+(f.gender==='Female'?' selected':'')+'>Female</option><option'+(f.gender==='Other'?' selected':'')+'>Other</option></select></div>'
     +'<div><label class="lbl">Phone</label><input class="inp" type="tel" value="'+esc(f.phone||'')+'" placeholder="+1 000 0000" oninput="_PF.phone=this.value"></div>'
     +'<div><label class="lbl">Email</label><input class="inp" type="email" value="'+esc(f.email||'')+'" placeholder="email@…" oninput="_PF.email=this.value"></div>'
-    +'<div style="grid-column:1/-1"><label class="lbl">Notes / Allergies</label><textarea class="inp" style="min-height:55px" oninput="_PF.note=this.value">'+esc(f.note||'')+'</textarea></div>'
+    +'<div style="grid-column:1/-1"><label class="lbl">Notes / Chief Complaint</label><textarea class="inp" style="min-height:55px" oninput="_PF.note=this.value">'+esc(f.note||'')+'</textarea></div>'
     +'</div></div>'
-    
-    +(!isNew?'<div style="margin-bottom:20px"><div class="sbar">🖼 Image Gallery (X-rays & Clinical)</div>'
+    +medH
+    +(!isNew?'<div style="margin-bottom:20px"><div class="sbar">🖼 Image Gallery (X-rays &amp; Clinical)</div>'
     +'<div id="pp-gallery" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px"></div>'
     +'<button onclick="document.getElementById(\'img-upload\').click()" style="width:100%;padding:10px;background:rgba(15,35,24,.05);color:var(--F);border:1.5px dashed var(--ln);border-radius:10px;font-size:.75rem;font-weight:600;cursor:pointer;font-family:inherit">＋ Upload Image</button>'
     +'<input type="file" id="img-upload" style="display:none" accept="image/*" onchange="handleImgUpload(this)">'
     +'</div>':'')
-+(!isNew?'<div style="margin-bottom:20px"><div class="sbar">🦷 Dental Chart</div><button id="open-chart-btn" data-patid="'+esc(f.id)+'" style="width:100%;padding:13px;background:#0F2318;color:#fff;border-radius:12px;font-size:.88rem;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;border:none">🗺 Open Dental Chart</button></div>':'')
+    +chartSumH
     +(!isNew?'<div><div class="sbar">📋 Visit History ('+(f.visits||[]).length+')</div>'+(visH||'<div style="text-align:center;padding:20px;color:var(--mist);font-size:.8rem">No visits recorded yet</div>')+'</div>':'')
     +'</div>'
     +'<div style="padding:'+(S.mob?'12px 18px':'12px 22px')+';padding-bottom:'+(S.mob?'max(12px,env(safe-area-inset-bottom))':'12px')+';border-top:1px solid var(--ln);display:flex;gap:9px;background:var(--cream);flex-shrink:0">'
@@ -1269,12 +1385,162 @@ function buildPatPanel(){
     +'<button class="bgold" onclick="savePat()" style="flex:1;padding:12px;font-size:.88rem">Save Patient</button>'
     +'</div>';
 
-  // emoji handled by modal
-  // chart button listener
   setTimeout(function(){
     var cb=document.getElementById('open-chart-btn');
-    if(cb){cb.addEventListener('click',function(){openChartPanel(cb.dataset.patid);});} if(!isNew) paintGallery(f.id);
+    if(cb){cb.addEventListener('click',function(){openChartPanel(cb.dataset.patid);});}
+    if(!isNew)paintGallery(f.id);
   },50);
+}
+
+function toggleMedCond(con){
+  if(!_PF.medHistory)_PF.medHistory={conditions:[],medications:'',allergies:'',bloodType:''};
+  var idx=(_PF.medHistory.conditions||[]).indexOf(con);
+  if(idx>-1)_PF.medHistory.conditions.splice(idx,1);
+  else{if(!_PF.medHistory.conditions)_PF.medHistory.conditions=[];_PF.medHistory.conditions.push(con);}
+  var btn=document.getElementById('mcon-'+con.replace(/\W/g,'_'));
+  if(btn){
+    var on=_PF.medHistory.conditions.indexOf(con)>-1;
+    btn.style.borderColor=on?'var(--red)':'var(--ln)';
+    btn.style.background=on?'rgba(192,57,43,.1)':'var(--parch)';
+    btn.style.color=on?'var(--red)':'var(--slate)';
+  }
+}
+
+/* ── PATIENT RATINGS ─────────────────── */
+var _ratingVisitId=null;
+function openRatingModal(visitId){
+  _ratingVisitId=visitId;
+  var existing=(_PF.ratings||[]).find(function(r){return r.visitId===visitId;})||{};
+  var w=document.createElement('div');
+  w.id='rating-modal';
+  w.style.cssText='position:fixed;inset:0;z-index:1200;background:rgba(5,12,8,.62);display:flex;align-items:flex-end;justify-content:center;-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)';
+  function stars(id,val,label,color){
+    var h2='<div style="margin-bottom:14px"><div style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--slate);margin-bottom:7px">'+label+'</div>'
+      +'<div style="display:flex;gap:6px" id="'+id+'">';
+    for(var s=1;s<=5;s++){
+      h2+='<button onclick="setRatingStar(\''+id+'\','+s+')" style="font-size:2rem;background:none;border:none;cursor:pointer;padding:2px;color:'+(s<=(val||0)?color:'#D1D5DB')+'">★</button>';
+    }
+    h2+='</div></div>';
+    return h2;
+  }
+  w.innerHTML='<div style="background:var(--cream);border-radius:22px 22px 0 0;width:100%;max-width:500px;padding:22px 20px calc(22px + env(safe-area-inset-bottom));animation:slUp .28s cubic-bezier(.16,1,.3,1)">'
+    +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">'
+    +'<div style="font-family:\'Playfair Display\',serif;font-size:1.05rem;color:var(--ink)">Visit Rating</div>'
+    +'<button onclick="document.getElementById(\'rating-modal\').remove()" style="width:30px;height:30px;border-radius:50%;background:var(--parch);font-size:1rem;color:var(--slate);display:flex;align-items:center;justify-content:center;cursor:pointer;border:none">×</button>'
+    +'</div>'
+    +stars('pstar',existing.patStar,'Patient Satisfaction','#F59E0B')
+    +stars('dstar',existing.drStar,'Doctor Self-Assessment','#3B82F6')
+    +'<div style="margin-bottom:14px" id="issue-wrap" style="display:'+(((existing.patStar||5)<4||(existing.drStar||5)<4)?'block':'none')+'">'
+    +'<label class="lbl">What went wrong?</label>'
+    +'<input class="inp" id="rating-issue" style="font-size:14px" placeholder="e.g. patient had pain, poor isolation…" value="'+esc(existing.issue||'')+'">'
+    +'</div>'
+    +'<div style="margin-bottom:18px"><label class="lbl">Notes (optional)</label>'
+    +'<input class="inp" id="rating-note" style="font-size:14px" placeholder="Any observations…" value="'+esc(existing.note||'')+'">'
+    +'</div>'
+    +'<button onclick="saveRating()" class="bgold" style="width:100%;padding:14px;font-size:.9rem">Save Rating</button>'
+    +'</div>';
+  document.body.appendChild(w);
+  w._patStar=existing.patStar||0;
+  w._drStar=existing.drStar||0;
+  // Show issue box if existing <4
+  if((existing.patStar&&existing.patStar<4)||(existing.drStar&&existing.drStar<4)){
+    document.getElementById('issue-wrap').style.display='block';
+  } else {
+    document.getElementById('issue-wrap').style.display='none';
+  }
+}
+function setRatingStar(grpId,val){
+  var m=document.getElementById('rating-modal');
+  if(!m)return;
+  if(grpId==='pstar')m._patStar=val;else m._drStar=val;
+  var grp=document.getElementById(grpId);
+  var col=grpId==='pstar'?'#F59E0B':'#3B82F6';
+  Array.from(grp.querySelectorAll('button')).forEach(function(b,i){b.style.color=(i+1)<=val?col:'#D1D5DB';});
+  var issue=document.getElementById('issue-wrap');
+  if(issue)issue.style.display=(m._patStar>0&&m._patStar<4)||(m._drStar>0&&m._drStar<4)?'block':'none';
+}
+function saveRating(){
+  var m=document.getElementById('rating-modal');
+  if(!m)return;
+  if(!_PF.ratings)_PF.ratings=[];
+  var idx=_PF.ratings.findIndex(function(r){return r.visitId===_ratingVisitId;});
+  var entry={id:uid(),visitId:_ratingVisitId,date:today(),patStar:m._patStar,drStar:m._drStar,issue:(document.getElementById('rating-issue')||{}).value||'',note:(document.getElementById('rating-note')||{}).value||''};
+  if(idx>-1)_PF.ratings[idx]=entry;else _PF.ratings.push(entry);
+  P[_PF.id]=_PF;saveAll();
+  m.remove();toast('✓ Rating saved');buildPatPanel();
+}
+
+/* ── PRINT PATIENT CARD ──────────────── */
+function printPatientCard(){
+  var f=_PF;
+  var mh=f.medHistory||{};
+  var visits=(f.visits||[]).slice().sort(function(a,b){return b.date>a.date?1:-1;});
+  var lastV=visits[0];
+  var txPlan=f.chart&&f.chart.txPlan?f.chart.txPlan:[];
+  var pendingPlan=txPlan.filter(function(x){return x.status!=='done';});
+  var w=window.open('','_blank','width=900,height=700');
+  if(!w){toast('Allow pop-ups to print');return;}
+  var priColor={1:'#EF4444',2:'#F59E0B',3:'#22C55E'};
+  var priLabel={1:'Urgent',2:'Routine',3:'Elective'};
+  w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8">'
+    +'<title>Patient Record — '+esc(f.name||'Patient')+'</title>'
+    +'<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">'
+    +'<style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:Outfit,sans-serif;color:#1C2B22;padding:22px 28px}h1{font-family:"Playfair Display",serif;font-size:1.5rem;color:#0F2318;margin-bottom:3px}.meta{font-size:.72rem;color:#4A6355;margin-bottom:20px;display:flex;gap:14px;flex-wrap:wrap}.sec{margin-bottom:18px}.sec-title{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#2A5C3F;margin-bottom:8px;padding-bottom:4px;border-bottom:1.5px solid #E4DDD4}.tbl{width:100%;border-collapse:collapse;font-size:.78rem}.tbl th{text-align:left;font-size:.6rem;font-weight:700;text-transform:uppercase;color:#4A6355;padding:5px 8px;border-bottom:1.5px solid #E4DDD4}.tbl td{padding:5px 8px;border-bottom:1px solid #F3F4F6}.badge{display:inline-block;padding:2px 9px;border-radius:20px;font-size:.66rem;font-weight:600;border:1px solid transparent}@page{size:A4;margin:12mm}@media print{body{padding:0}}</style></head><body>'
+    +'<h1>'+esc(f.name||'Patient')+'</h1>'
+    +'<div class="meta">'
+    +(f.age?'<span>Age: <strong>'+f.age+'</strong></span>':'')
+    +(f.gender?'<span>Gender: <strong>'+f.gender+'</strong></span>':'')
+    +(f.phone?'<span>Phone: <strong>'+esc(f.phone)+'</strong></span>':'')
+    +(mh.bloodType?'<span>Blood: <strong>'+mh.bloodType+'</strong></span>':'')
+    +'<span>Date: <strong>'+new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})+'</strong></span>'
+    +'</div>');
+  // Medical alerts
+  var alerts=[];
+  if(mh.conditions&&mh.conditions.length)alerts.push(mh.conditions.join(', '));
+  if(mh.allergies)alerts.push('Allergies: '+mh.allergies);
+  if(mh.medications)alerts.push('Medications: '+mh.medications);
+  if(alerts.length){
+    w.document.write('<div class="sec"><div class="sec-title">⚠ Medical Alerts</div>'
+      +alerts.map(function(a){return '<div style="padding:4px 0;font-size:.8rem;color:#B91C1C">'+esc(a)+'</div>';}).join('')+'</div>');
+  }
+  // Current visit
+  if(lastV){
+    w.document.write('<div class="sec"><div class="sec-title">Current / Last Visit — '+shortD(lastV.date)+'</div>'
+      +'<table class="tbl"><thead><tr><th>Procedure</th><th>Session</th><th>Clinical Note</th></tr></thead><tbody>');
+    (lastV.txData||[]).forEach(function(t){
+      w.document.write('<tr><td style="font-weight:600">'+esc(t.name)+'</td><td>'+t.visitNum+(t.totalVisits>1?'/'+t.totalVisits:'')+'</td><td style="color:#6B7280">'+esc(t.txNote||'')+'</td></tr>');
+    });
+    w.document.write('</tbody></table>');
+    if(lastV.medication)w.document.write('<div style="margin-top:8px;padding:8px 12px;background:#F0FDF4;border-radius:8px;font-size:.78rem">💊 <strong>Prescribed:</strong> '+esc(lastV.medication)+'</div>');
+    if(lastV.diagnosis)w.document.write('<div style="margin-top:6px;font-size:.78rem"><strong>Diagnosis:</strong> '+esc(lastV.diagnosis)+'</div>');
+    if(lastV.notes)w.document.write('<div style="margin-top:4px;font-size:.75rem;color:#6B7280">'+esc(lastV.notes)+'</div>');
+    w.document.write('</div>');
+  }
+  // Treatment plan
+  if(pendingPlan.length){
+    w.document.write('<div class="sec"><div class="sec-title">Treatment Plan</div>'
+      +'<table class="tbl"><thead><tr><th>Tooth</th><th>Procedure</th><th>Priority</th><th>Notes</th></tr></thead><tbody>');
+    pendingPlan.forEach(function(item){
+      var pri=parseInt(item.priority)||2;
+      w.document.write('<tr><td style="font-weight:700">'+esc(item.tooth||'—')+'</td><td>'+esc(item.procedure)+'</td><td><span class="badge" style="background:'+priColor[pri]+'18;border-color:'+priColor[pri]+'66;color:'+priColor[pri]+'">'+priLabel[pri]+'</span></td><td style="color:#6B7280;font-size:.72rem">'+esc(item.notes||'')+'</td></tr>');
+    });
+    w.document.write('</tbody></table></div>');
+  }
+  // Future appointments
+  var futureAppts=[];
+  Object.keys(A).forEach(function(d){if(d>today()){(A[d]||[]).forEach(function(a){if(a.patientId===f.id)futureAppts.push({date:d,time:a.time,notes:a.notes||a.title||''});});}});
+  futureAppts.sort(function(a,b){return a.date>b.date?1:-1;});
+  if(futureAppts.length){
+    w.document.write('<div class="sec"><div class="sec-title">Upcoming Appointments</div>'
+      +'<table class="tbl"><thead><tr><th>Date</th><th>Time</th><th>Notes</th></tr></thead><tbody>');
+    futureAppts.forEach(function(a){
+      w.document.write('<tr><td style="font-weight:600">'+shortD(a.date)+'</td><td>'+esc(a.time||'—')+'</td><td style="color:#6B7280">'+esc(a.notes)+'</td></tr>');
+    });
+    w.document.write('</tbody></table></div>');
+  }
+  w.document.write('<div style="margin-top:24px;padding-top:14px;border-top:1px solid #E4DDD4;font-size:.62rem;color:#9CA3AF;text-align:center">DentaLog — Dr. M.W. Khalil — Private &amp; Confidential</div>');
+  w.document.write('<script>window.onload=function(){setTimeout(function(){window.print();},300);}<\/script></body></html>');
+  w.document.close();
 }
 
 function ppName(v){
@@ -2390,6 +2656,79 @@ function printTxPlan(){
 }
 
 /* ── ANALYTICS VIEW ──────────────────── */
+function paintReviews(){
+  var pats=allPats();
+  var allR=[];
+  pats.forEach(function(p){(p.ratings||[]).forEach(function(r){allR.push({pat:p,r:r});});});
+  allR.sort(function(a,b){return b.r.date>a.r.date?1:-1;});
+  var avgP=allR.length?Math.round(allR.reduce(function(s,x){return s+(x.r.patStar||0);},0)/allR.length*10)/10:0;
+  var avgD=allR.length?Math.round(allR.reduce(function(s,x){return s+(x.r.drStar||0);},0)/allR.length*10)/10:0;
+  var issues=allR.filter(function(x){return x.r.patStar>0&&x.r.patStar<4;});
+  var pad=S.mob?'12px 16px':'16px 28px';
+  var h='<div class="scr" style="flex:1;padding:'+pad+'">';
+  h+='<div style="font-family:Playfair Display,serif;font-size:1.1rem;color:var(--ink);margin-bottom:16px">Patient Reviews &amp; Ratings</div>';
+  // Summary cards
+  h+='<div style="display:grid;grid-template-columns:repeat('+(S.mob?'2':'4')+',1fr);gap:10px;margin-bottom:18px">';
+  h+='<div class="stat-card"><div style="font-size:1.5rem">⭐</div><div style="font-size:1.4rem;font-weight:800;color:#F59E0B">'+(avgP||'—')+(allR.length?'/5':'')+'</div><div style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--slate)">Patient Avg</div><div style="font-size:.62rem;color:var(--mist)">'+allR.length+' ratings</div></div>';
+  h+='<div class="stat-card"><div style="font-size:1.5rem">🩺</div><div style="font-size:1.4rem;font-weight:800;color:#3B82F6">'+(avgD||'—')+(allR.length?'/5':'')+'</div><div style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--slate)">Self Assess</div></div>';
+  var fiveStar=allR.filter(function(x){return x.r.patStar===5;}).length;
+  h+='<div class="stat-card"><div style="font-size:1.5rem">🏆</div><div style="font-size:1.4rem;font-weight:800;color:#16A34A">'+fiveStar+'</div><div style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--slate)">5-Star Visits</div></div>';
+  h+='<div class="stat-card"><div style="font-size:1.5rem">⚠</div><div style="font-size:1.4rem;font-weight:800;color:#EF4444">'+issues.length+'</div><div style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--slate)">Needs Attention</div></div>';
+  h+='</div>';
+  if(!allR.length){
+    h+='<div style="text-align:center;padding:60px 20px">'
+      +'<div style="font-size:3rem;margin-bottom:12px">⭐</div>'
+      +'<div style="font-family:Playfair Display,serif;font-size:1.1rem;color:var(--ink);margin-bottom:6px">No Reviews Yet</div>'
+      +'<div style="font-size:.78rem;color:var(--mist)">Rate visits from individual patient cards</div>'
+      +'</div>';
+    h+='</div>';return h;
+  }
+  // Issues section
+  if(issues.length){
+    h+='<div style="background:rgba(239,68,68,.06);border:1.5px solid rgba(239,68,68,.2);border-radius:14px;padding:14px;margin-bottom:14px">';
+    h+='<div style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#EF4444;margin-bottom:10px">⚠ Needs Attention ('+issues.length+')</div>';
+    issues.forEach(function(x){
+      h+='<div onclick="openPatPanel('+esc(x.pat.id)+')" style="padding:8px 0;border-bottom:1px solid rgba(239,68,68,.12);cursor:pointer">'
+        +'<div style="display:flex;justify-content:space-between"><span style="font-weight:600;font-size:.82rem;color:var(--ink)">'+esc(x.pat.name||'Unnamed')+'</span><span style="font-size:.7rem;color:var(--mist)">'+shortD(x.r.date)+'</span></div>'
+        +(x.r.issue?'<div style="font-size:.72rem;color:#EF4444;margin-top:2px">'+esc(x.r.issue)+'</div>':'')
+        +'</div>';
+    });
+    h+='</div>';
+  }
+  // Star distribution
+  h+='<div style="background:var(--warm);border-radius:14px;border:1.5px solid var(--ln);padding:14px;margin-bottom:14px">';
+  h+='<div style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--FL);margin-bottom:10px">Rating Distribution</div>';
+  for(var s=5;s>=1;s--){
+    var cnt=allR.filter(function(x){return x.r.patStar===s;}).length;
+    var pct2=allR.length?Math.round(cnt/allR.length*100):0;
+    h+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">'
+      +'<span style="font-size:.75rem;font-weight:700;color:var(--ink);width:20px">'+s+'★</span>'
+      +'<div style="flex:1;height:8px;background:var(--ln);border-radius:4px;overflow:hidden"><div style="height:100%;width:'+pct2+'%;background:#F59E0B;border-radius:4px;transition:width .4s"></div></div>'
+      +'<span style="font-size:.7rem;color:var(--mist);width:30px;text-align:right">'+cnt+'</span>'
+      +'</div>';
+  }
+  h+='</div>';
+  // All reviews
+  h+='<div style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--FL);margin-bottom:10px">All Reviews</div>';
+  allR.forEach(function(x){
+    var stars3='';for(var s=1;s<=5;s++)stars3+='<span style="color:'+(s<=x.r.patStar?'#F59E0B':'#D1D5DB')+'">★</span>';
+    h+='<div class="card fup" onclick="openPatPanel('+esc(x.pat.id)+')" style="padding:12px 14px;margin-bottom:8px;cursor:pointer">'
+      +'<div style="display:flex;justify-content:space-between;margin-bottom:5px">'
+      +'<span style="font-weight:600;font-size:.88rem;color:var(--ink)">'+esc(x.pat.name||'Unnamed')+'</span>'
+      +'<span style="font-size:.72rem;color:var(--mist)">'+shortD(x.r.date)+'</span>'
+      +'</div>'
+      +'<div style="font-size:1.15rem;letter-spacing:-1px;margin-bottom:4px">'+stars3+'</div>'
+      +(x.r.drStar?'<div style="font-size:.68rem;color:var(--slate)">Dr self: '+'★'.repeat(x.r.drStar)+'☆'.repeat(5-x.r.drStar)+'</div>':'')
+      +(x.r.issue?'<div style="font-size:.72rem;color:var(--red);margin-top:3px">⚠ '+esc(x.r.issue)+'</div>':'')
+      +(x.r.note?'<div style="font-size:.7rem;color:var(--slate);margin-top:2px">'+esc(x.r.note)+'</div>':'')
+      +'</div>';
+  });
+  h+='</div>';
+  return h;
+}
+
+var _analDrill=null; // current drill state: {type:'proc',key:'Extraction'} etc.
+
 function paintAnalytics(){
   var pats=allPats();
   var totalPats=pats.length;
@@ -2398,74 +2737,87 @@ function paintAnalytics(){
   var today30=new Date();today30.setDate(today30.getDate()-30);
   var today30s=fd(today30);
   var recentVisits=allVisits.filter(function(x){return x.visit.date>=today30s;});
-  // Treatment frequency
   var txCount={};
   allVisits.forEach(function(x){
     (x.visit.txData||[]).forEach(function(t){txCount[t.name]=(txCount[t.name]||0)+1;});
     (x.visit.treatments||[]).forEach(function(t){if(!x.visit.txData||!x.visit.txData.length)txCount[t]=(txCount[t]||0)+1;});
   });
-  var topTx=Object.entries(txCount).sort(function(a,b){return b[1]-a[1];}).slice(0,8);
-  // Monthly visits (last 6 months)
+  var topTx=Object.entries(txCount).sort(function(a,b){return b[1]-a[1];});
   var months=[];
   for(var i=5;i>=0;i--){
     var d=new Date();d.setDate(1);d.setMonth(d.getMonth()-i);
     var ym=d.getFullYear()+'-'+(d.getMonth()<9?'0':'')+(d.getMonth()+1);
     var cnt=allVisits.filter(function(x){return x.visit.date&&x.visit.date.startsWith(ym);}).length;
-    months.push({label:d.toLocaleDateString('en-US',{month:'short'}),count:cnt});
+    months.push({label:d.toLocaleDateString('en-US',{month:'short'}),ym:ym,count:cnt});
   }
   var maxM=Math.max(1,Math.max.apply(null,months.map(function(m){return m.count;})));
-  // Gender split
   var male=pats.filter(function(p){return p.gender==='Male';}).length;
   var female=pats.filter(function(p){return p.gender==='Female';}).length;
   var other=totalPats-male-female;
-  // Age groups
   var age0_12=pats.filter(function(p){return parseInt(p.age||0)<=12;}).length;
   var age13_30=pats.filter(function(p){var a=parseInt(p.age||0);return a>=13&&a<=30;}).length;
   var age31_60=pats.filter(function(p){var a=parseInt(p.age||0);return a>=31&&a<=60;}).length;
   var age61=pats.filter(function(p){return parseInt(p.age||0)>=61;}).length;
+  // Ratings summary
+  var allRatings=[];
+  pats.forEach(function(p){(p.ratings||[]).forEach(function(r){allRatings.push({pat:p,r:r});});});
+  var avgPat=allRatings.length?Math.round(allRatings.reduce(function(s,x){return s+(x.r.patStar||0);},0)/allRatings.length*10)/10:null;
+  var avgDr=allRatings.length?Math.round(allRatings.reduce(function(s,x){return s+(x.r.drStar||0);},0)/allRatings.length*10)/10:null;
 
   var pad=S.mob?'12px 16px':'16px 28px';
-  var h='<div class="scr" style="flex:1;padding:'+pad+' 100px">';
+  var h='<div class="scr" style="flex:1;padding:'+pad+'">';
   h+='<div style="font-family:Playfair Display,serif;font-size:1.1rem;color:var(--ink);margin-bottom:16px">Practice Overview</div>';
-  // Stat cards row
+
+  // If drill-down active
+  if(_analDrill){
+    h+=paintAnalyticsDrill(_analDrill,allVisits,topTx,months,pats);
+    h+='</div>';return h;
+  }
+
+  // Stat cards
   h+='<div style="display:grid;grid-template-columns:repeat('+(S.mob?'2':'4')+',1fr);gap:10px;margin-bottom:18px">';
-  function statCard(icon,label,value,sub,color){
-    return '<div class="stat-card"><div style="font-size:1.4rem">'+icon+'</div>'
+  function statCard(icon,label,value,sub,color,drill){
+    return '<div class="stat-card" onclick="'+(drill?'setAnalDrill(\''+drill+'\')':'')+'" style="cursor:'+(drill?'pointer':'default')+'">'
+      +'<div style="font-size:1.4rem">'+icon+'</div>'
       +'<div style="font-size:1.5rem;font-weight:700;color:'+(color||'var(--ink)')+'">'+value+'</div>'
       +'<div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--slate)">'+label+'</div>'
       +(sub?'<div style="font-size:.62rem;color:var(--mist)">'+sub+'</div>':'')
+      +(drill?'<div style="font-size:.58rem;color:var(--FL);margin-top:3px">Tap for details →</div>':'')
       +'</div>';
   }
-  h+=statCard('🧑‍⚕️','Total Patients',totalPats,'registered',FOREST);
-  h+=statCard('📋','Total Visits',allVisits.length,'all time','#3B82F6');
-  h+=statCard('📅','Last 30 Days',recentVisits.length,'visits','#059669');
-  h+=statCard('🦷','Procedures',Object.keys(txCount).length,'types','#C9A84C');
+  h+=statCard('🧑‍⚕️','Total Patients',totalPats,'registered',FOREST,'patients');
+  h+=statCard('📋','Total Visits',allVisits.length,'all time','#3B82F6','visits');
+  h+=statCard('📅','Last 30 Days',recentVisits.length,'visits','#059669','recent');
+  h+=statCard('🦷','Procedures',Object.keys(txCount).length,'types','#C9A84C','procs');
+  if(avgPat!==null)h+=statCard('⭐','Patient Rating',avgPat+'/5',allRatings.length+' ratings','#F59E0B','ratings');
   h+='</div>';
-  // Monthly chart
+
+  // Monthly chart (clickable bars)
   h+='<div style="background:var(--warm);border-radius:14px;border:1.5px solid var(--ln);padding:16px;margin-bottom:14px">';
-  h+='<div style="font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--FL);margin-bottom:12px">Monthly Visits (Last 6 Months)</div>';
+  h+='<div style="font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--FL);margin-bottom:12px">Monthly Visits (Last 6 Months — tap bar for details)</div>';
   h+='<div style="display:flex;align-items:flex-end;gap:8px;height:80px">';
   months.forEach(function(m){
     var pct=Math.round((m.count/maxM)*100);
-    h+='<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">'
+    h+='<div onclick="setAnalDrill(\'month_'+m.ym+'\')" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer">'
       +'<div style="font-size:.6rem;font-weight:700;color:var(--ink)">'+m.count+'</div>'
       +'<div style="width:100%;background:'+FOREST+';border-radius:4px 4px 0 0;height:'+(pct||2)+'%;min-height:3px;transition:height .3s"></div>'
       +'<div style="font-size:.58rem;color:var(--mist)">'+m.label+'</div>'
       +'</div>';
   });
   h+='</div></div>';
-  // Top treatments
+
+  // Top procedures (all, clickable)
   if(topTx.length){
     h+='<div style="background:var(--warm);border-radius:14px;border:1.5px solid var(--ln);padding:16px;margin-bottom:14px">';
-    h+='<div style="font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--FL);margin-bottom:10px">Top Procedures</div>';
+    h+='<div style="font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--FL);margin-bottom:10px">All Procedures — tap for patient list</div>';
     var maxTx=topTx[0][1];
     topTx.forEach(function(tx){
       var pct=Math.round((tx[1]/maxTx)*100);
       var col=pc(tx[0]);
-      h+='<div style="margin-bottom:8px">'
+      h+='<div onclick="setAnalDrill(\'proc_'+esc(tx[0])+'\')" style="margin-bottom:8px;cursor:pointer;padding:4px;border-radius:6px;transition:background .1s" onmouseover="this.style.background=\'rgba(15,35,24,.04)\'" onmouseout="this.style.background=\'\'">'
         +'<div style="display:flex;justify-content:space-between;font-size:.72rem;margin-bottom:3px">'
         +'<span style="color:var(--ink);font-weight:500">'+esc(tx[0])+'</span>'
-        +'<span style="color:var(--mist);font-weight:600">'+tx[1]+'</span>'
+        +'<span style="color:var(--mist);font-weight:600">'+tx[1]+'× →</span>'
         +'</div>'
         +'<div style="height:6px;background:var(--ln);border-radius:3px;overflow:hidden">'
         +'<div style="height:100%;width:'+pct+'%;background:'+col+';border-radius:3px;transition:width .4s"></div>'
@@ -2475,33 +2827,117 @@ function paintAnalytics(){
   }
   // Demographics
   h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">';
-  // Gender
   h+='<div style="background:var(--warm);border-radius:14px;border:1.5px solid var(--ln);padding:14px">';
   h+='<div style="font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--FL);margin-bottom:10px">Gender</div>';
   [['Male',male,'#3B82F6'],['Female',female,'#EC4899'],['Other/Unknown',other,'#94A3B8']].forEach(function(g){
     if(!g[1])return;
     var pct=totalPats?Math.round((g[1]/totalPats)*100):0;
-    h+='<div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">'
-      +'<div style="width:8px;height:8px;border-radius:50%;background:'+g[2]+';flex-shrink:0"></div>'
-      +'<div style="font-size:.7rem;color:var(--ink);flex:1">'+g[0]+'</div>'
-      +'<div style="font-size:.7rem;font-weight:700;color:var(--slate)">'+g[1]+' ('+pct+'%)</div>'
-      +'</div>';
+    h+='<div style="display:flex;align-items:center;gap:6px;margin-bottom:6px"><div style="width:8px;height:8px;border-radius:50%;background:'+g[2]+';flex-shrink:0"></div><div style="font-size:.7rem;color:var(--ink);flex:1">'+g[0]+'</div><div style="font-size:.7rem;font-weight:700;color:var(--slate)">'+g[1]+' ('+pct+'%)</div></div>';
   });
   h+='</div>';
-  // Age groups
   h+='<div style="background:var(--warm);border-radius:14px;border:1.5px solid var(--ln);padding:14px">';
   h+='<div style="font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--FL);margin-bottom:10px">Age Groups</div>';
-  [['0–12 yrs',age0_12,'#34D399'],['13–30 yrs',age13_30,'#3B82F6'],['31–60 yrs',age31_60,'#C9A84C'],['61+ yrs',age61,'#F97316']].forEach(function(g){
+  [['0–12',age0_12,'#34D399'],['13–30',age13_30,'#3B82F6'],['31–60',age31_60,'#C9A84C'],['61+',age61,'#F97316']].forEach(function(g){
     if(!g[1])return;
     var pct=totalPats?Math.round((g[1]/totalPats)*100):0;
-    h+='<div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">'
-      +'<div style="width:8px;height:8px;border-radius:50%;background:'+g[2]+';flex-shrink:0"></div>'
-      +'<div style="font-size:.7rem;color:var(--ink);flex:1">'+g[0]+'</div>'
-      +'<div style="font-size:.7rem;font-weight:700;color:var(--slate)">'+g[1]+' ('+pct+'%)</div>'
-      +'</div>';
+    h+='<div style="display:flex;align-items:center;gap:6px;margin-bottom:6px"><div style="width:8px;height:8px;border-radius:50%;background:'+g[2]+';flex-shrink:0"></div><div style="font-size:.7rem;color:var(--ink);flex:1">'+g[0]+'</div><div style="font-size:.7rem;font-weight:700;color:var(--slate)">'+g[1]+' ('+pct+'%)</div></div>';
   });
   h+='</div></div>';
   h+='</div>';
+  return h;
+}
+
+function setAnalDrill(key){ _analDrill=key; nav('analytics'); }
+
+function paintAnalyticsDrill(drill,allVisits,topTx,months,pats){
+  var h='<button onclick="_analDrill=null;nav(\'analytics\')" style="display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:20px;background:var(--warm);border:1.5px solid var(--ln);font-size:.78rem;font-weight:600;color:var(--FL);cursor:pointer;margin-bottom:16px">← Back to Overview</button>';
+
+  if(drill==='patients'){
+    h+='<div style="font-family:Playfair Display,serif;font-size:1rem;color:var(--ink);margin-bottom:12px">All Patients</div>';
+    pats.slice().sort(function(a,b){return (a.name||'')>(b.name||'')?1:-1;}).forEach(function(p){
+      h+='<div class="card fup" onclick="openPatPanel(\''+esc(p.id)+'\')" style="padding:12px 14px;margin-bottom:8px;cursor:pointer;display:flex;align-items:center;gap:12px">'
+        +'<div style="width:36px;height:36px;border-radius:50%;background:var(--F);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;flex-shrink:0">'+esc(ini(p.name||''))+'</div>'
+        +'<div><div style="font-weight:600;font-size:.88rem;color:var(--ink)">'+esc(p.name||'Unnamed')+'</div>'
+        +'<div style="font-size:.7rem;color:var(--mist)">'+(p.age?p.age+'y':'')+(p.gender?' · '+p.gender:'')+' · '+(p.visits||[]).length+' visits</div>'
+        +'</div></div>';
+    });
+  } else if(drill==='visits'||drill==='recent'){
+    var list=drill==='recent'?allVisits.filter(function(x){var d30=new Date();d30.setDate(d30.getDate()-30);return x.visit.date>=fd(d30);}):allVisits;
+    list=list.slice().sort(function(a,b){return b.visit.date>a.visit.date?1:-1;});
+    h+='<div style="font-family:Playfair Display,serif;font-size:1rem;color:var(--ink);margin-bottom:12px">'+(drill==='recent'?'Last 30 Days':'All Visits')+' ('+list.length+')</div>';
+    list.slice(0,50).forEach(function(x){
+      var col=x.visit.txData&&x.visit.txData.length?pc(x.visit.txData[0].name):GOLD;
+      h+='<div class="card fup" onclick="openPatPanel(\''+esc(x.pat.id)+'\')" style="padding:10px 14px;margin-bottom:7px;cursor:pointer;border-left:3px solid '+col+'">'
+        +'<div style="display:flex;justify-content:space-between"><span style="font-weight:600;font-size:.85rem;color:var(--ink)">'+esc(x.pat.name||'Unnamed')+'</span><span style="font-size:.72rem;color:var(--mist)">'+esc(shortD(x.visit.date))+'</span></div>'
+        +'<div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:4px">'+txBadges(x.visit.txData,x.visit.treatments,3)+'</div>'
+        +'</div>';
+    });
+    if(list.length>50)h+='<div style="text-align:center;font-size:.75rem;color:var(--mist);padding:8px">Showing 50 of '+list.length+'</div>';
+  } else if(drill==='procs'){
+    h+='<div style="font-family:Playfair Display,serif;font-size:1rem;color:var(--ink);margin-bottom:12px">Procedure Breakdown</div>';
+    topTx.forEach(function(tx){
+      h+='<div onclick="setAnalDrill(\'proc_'+esc(tx[0])+'\')" class="card" style="padding:12px 14px;margin-bottom:7px;cursor:pointer;display:flex;align-items:center;gap:10px">'
+        +'<div style="width:8px;height:8px;border-radius:50%;background:'+pc(tx[0])+';flex-shrink:0"></div>'
+        +'<div style="flex:1;font-size:.85rem;font-weight:600;color:var(--ink)">'+esc(tx[0])+'</div>'
+        +'<div style="font-size:.9rem;font-weight:800;color:'+pc(tx[0])+'">'+tx[1]+'×</div>'
+        +'<span style="font-size:.65rem;color:var(--FL)">→</span>'
+        +'</div>';
+    });
+  } else if(drill.startsWith('proc_')){
+    var procName=drill.slice(5);
+    var hits=allVisits.filter(function(x){return(x.visit.txData||[]).some(function(t){return t.name===procName;});});
+    h+='<div style="font-family:Playfair Display,serif;font-size:1rem;color:var(--ink);margin-bottom:4px">'+esc(procName)+'</div>';
+    h+='<div style="font-size:.72rem;color:var(--mist);margin-bottom:12px">'+hits.length+' sessions across '+new Set(hits.map(function(x){return x.pat.id;})).size+' patients</div>';
+    hits.slice().sort(function(a,b){return b.visit.date>a.visit.date?1:-1;}).forEach(function(x){
+      var t=(x.visit.txData||[]).find(function(t2){return t2.name===procName;})||{};
+      h+='<div class="card fup" onclick="openPatPanel(\''+esc(x.pat.id)+'\')" style="padding:10px 14px;margin-bottom:7px;cursor:pointer">'
+        +'<div style="display:flex;justify-content:space-between"><span style="font-weight:600;font-size:.85rem;color:var(--ink)">'+esc(x.pat.name||'Unnamed')+'</span><span style="font-size:.72rem;color:var(--mist)">'+esc(shortD(x.visit.date))+'</span></div>'
+        +(t.txNote?'<div style="font-size:.72rem;color:var(--slate);margin-top:3px">'+esc(t.txNote)+'</div>':'')
+        +(t.totalVisits>1?'<div style="font-size:.68rem;color:'+pc(procName)+';margin-top:2px">Session '+t.visitNum+' of '+t.totalVisits+'</div>':'')
+        +'</div>';
+    });
+  } else if(drill.startsWith('month_')){
+    var ym=drill.slice(6);
+    var hits2=allVisits.filter(function(x){return x.visit.date&&x.visit.date.startsWith(ym);});
+    var mLabel=new Date(ym+'-01').toLocaleDateString('en-US',{month:'long',year:'numeric'});
+    h+='<div style="font-family:Playfair Display,serif;font-size:1rem;color:var(--ink);margin-bottom:12px">'+mLabel+' — '+hits2.length+' visits</div>';
+    // Count procs this month
+    var mProcs={};
+    hits2.forEach(function(x){(x.visit.txData||[]).forEach(function(t){mProcs[t.name]=(mProcs[t.name]||0)+1;});});
+    var mpArr=Object.entries(mProcs).sort(function(a,b){return b[1]-a[1];});
+    if(mpArr.length){
+      h+='<div style="background:var(--warm);border-radius:12px;border:1px solid var(--ln);padding:12px;margin-bottom:12px">'
+        +'<div style="font-size:.62rem;font-weight:700;text-transform:uppercase;color:var(--FL);margin-bottom:8px">Procedures this month</div>'
+        +mpArr.map(function(p2){return '<div style="display:flex;justify-content:space-between;font-size:.75rem;padding:3px 0;border-bottom:1px solid var(--ln);color:var(--ink)"><span>'+esc(p2[0])+'</span><span style="font-weight:700;color:'+pc(p2[0])+'">'+p2[1]+'×</span></div>';}).join('')
+        +'</div>';
+    }
+    hits2.slice().sort(function(a,b){return b.visit.date>a.visit.date?1:-1;}).forEach(function(x){
+      h+='<div class="card fup" onclick="openPatPanel(\''+esc(x.pat.id)+'\')" style="padding:10px 14px;margin-bottom:7px;cursor:pointer">'
+        +'<div style="display:flex;justify-content:space-between"><span style="font-weight:600;font-size:.85rem;color:var(--ink)">'+esc(x.pat.name||'Unnamed')+'</span><span style="font-size:.72rem;color:var(--mist)">'+esc(shortD(x.visit.date))+'</span></div>'
+        +'<div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:4px">'+txBadges(x.visit.txData,x.visit.treatments,4)+'</div>'
+        +'</div>';
+    });
+  } else if(drill==='ratings'){
+    var allR=[];
+    pats.forEach(function(p){(p.ratings||[]).forEach(function(r){allR.push({pat:p,r:r});});});
+    allR.sort(function(a,b){return b.r.date>a.r.date?1:-1;});
+    var avgP=allR.length?Math.round(allR.reduce(function(s,x){return s+(x.r.patStar||0);},0)/allR.length*10)/10:0;
+    var avgD=allR.length?Math.round(allR.reduce(function(s,x){return s+(x.r.drStar||0);},0)/allR.length*10)/10:0;
+    h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">';
+    h+='<div class="stat-card"><div style="font-size:1.8rem">⭐</div><div style="font-size:1.5rem;font-weight:800;color:#F59E0B">'+avgP+'/5</div><div style="font-size:.65rem;font-weight:700;text-transform:uppercase;color:var(--slate)">Patient Avg</div></div>';
+    h+='<div class="stat-card"><div style="font-size:1.8rem">🩺</div><div style="font-size:1.5rem;font-weight:800;color:#3B82F6">'+avgD+'/5</div><div style="font-size:.65rem;font-weight:700;text-transform:uppercase;color:var(--slate)">Self Assessment</div></div>';
+    h+='</div>';
+    allR.forEach(function(x){
+      var stars2='';for(var s=1;s<=5;s++)stars2+='<span style="color:'+(s<=x.r.patStar?'#F59E0B':'#D1D5DB')+'">★</span>';
+      h+='<div class="card fup" onclick="openPatPanel(\''+esc(x.pat.id)+'\')" style="padding:11px 14px;margin-bottom:8px;cursor:pointer">'
+        +'<div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-weight:600;font-size:.85rem;color:var(--ink)">'+esc(x.pat.name||'Unnamed')+'</span><span style="font-size:.72rem;color:var(--mist)">'+esc(shortD(x.r.date))+'</span></div>'
+        +'<div style="font-size:1.1rem;letter-spacing:-1px;margin-bottom:3px">'+stars2+'</div>'
+        +(x.r.issue?'<div style="font-size:.72rem;color:var(--red)">⚠ '+esc(x.r.issue)+'</div>':'')
+        +(x.r.note?'<div style="font-size:.7rem;color:var(--slate)">'+esc(x.r.note)+'</div>':'')
+        +'</div>';
+    });
+    if(!allR.length)h+='<div style="text-align:center;padding:40px;color:var(--mist)">No ratings yet</div>';
+  }
   return h;
 }
 
@@ -2641,9 +3077,15 @@ function renderPerioChart(){
       }}
     });
     aH+=sc+'</svg></td></tr>';
-    // Bleeding row
-    aH+='<tr><td style="'+lblStyle+'">Bleeding</td>';
-    teeth.forEach(function(tooth){var d=getPerioData(tooth);aH+='<td style="'+cellStyle+'"><input type="checkbox" data-tooth="'+tooth+'" data-field="bl_b" '+(d.bl_b==='1'?'checked':'')+' onchange="perioCbChange(this)" style="width:15px;height:15px;accent-color:#EF4444;cursor:pointer;margin:1px auto;display:block"></td>';});
+    // Bleeding on probing — colored toggle boxes
+    aH+='<tr><td style="'+lblStyle+'">BOP</td>';
+    teeth.forEach(function(tooth){
+      var d=getPerioData(tooth),bl=d.bl_b==='1';
+      aH+='<td style="'+cellStyle+';padding:2px 1px">'
+        +'<div onclick="toggleBOP('+tooth+')" data-tooth="'+tooth+'" data-field="bl_b" '
+        +'style="width:'+(toothW-4)+'px;height:'+(inputH)+'px;border-radius:4px;background:'+(bl?'#EF4444':'rgba(15,35,24,.06)')+';border:1.5px solid '+(bl?'#DC2626':'var(--ln)')+';cursor:pointer;margin:0 auto;display:flex;align-items:center;justify-content:center;font-size:.55rem;font-weight:800;color:'+(bl?'#fff':'#94A3B8')+';">'+(bl?'YES':'NO')+'</div>'
+        +'</td>';
+    });
     aH+='</tr>';
     // Data rows
     [{key:'pd_b',lbl:'PD Buccal',ph:'3',mx:'20'},{key:'pd_m',lbl:'PD Mesial',ph:'3',mx:'20'},{key:'pd_d',lbl:'PD Distal',ph:'3',mx:'20'},{key:'gm',lbl:'Gingival Margin',ph:'0',mx:'20'},{key:'furc',lbl:'Furcation (0-3)',ph:'0',mx:'3'},{key:'calc',lbl:'Calculus (0-3)',ph:'0',mx:'3'}].forEach(function(row,ri,arr){
@@ -2671,12 +3113,64 @@ function renderPerioChart(){
   h+='<span style="display:flex;align-items:center;gap:4px"><svg width="12" height="10"><polygon points="6,0 0,10 12,10" fill="none" stroke="#F97316" stroke-width="1.5"/></svg>Furc I</span>';
   h+='<span style="display:flex;align-items:center;gap:4px"><svg width="12" height="10"><polygon points="6,0 0,10 12,10" fill="#EF4444" stroke="#EF4444" stroke-width="1.5"/></svg>Furc II\u2013III</span>';
   h+='</div></div>';
+  // ── Perio Risk Assessment ──────────────────────────
+  h+=buildPerioRisk();
   h+='</div>';
   b.innerHTML=h;
+}
+function buildPerioRisk(){
+  var pat=P[_perioPat]; if(!pat||!pat.perio)return'';
+  var allTeeth=PERIO_U.concat(PERIO_L);
+  var totalSites=0,bopCount=0,deepCount=0,maxPD=0,furcCount=0,calcCount=0;
+  allTeeth.forEach(function(tooth){
+    var d=getPerioData(tooth);
+    ['pd_b','pd_m','pd_d'].forEach(function(k){
+      var v=parseFloat(d[k]||0);
+      if(v>0){totalSites++;if(v>=4)deepCount++;if(v>maxPD)maxPD=v;}
+    });
+    if(d.bl_b==='1')bopCount++;
+    if(parseInt(d.furc||0)>=2)furcCount++;
+    if(parseInt(d.calc||0)>=2)calcCount++;
+  });
+  var bopPct=totalSites?Math.round(bopCount/allTeeth.length*100):0;
+  // Risk score (simplified BSP 2017-aligned)
+  var score=0;
+  if(bopPct>30)score++;if(bopPct>50)score++;
+  if(deepCount>4)score++;if(deepCount>8)score++;
+  if(maxPD>=5)score++;if(maxPD>=6)score++;
+  if(furcCount>=1)score++;if(furcCount>=2)score++;
+  if(calcCount>=2)score++;
+  var risk=score<=2?'Low':score<=5?'Moderate':score<=7?'High':'Severe';
+  var rCol={Low:'#16A34A',Moderate:'#F59E0B',High:'#F97316',Severe:'#EF4444'}[risk];
+  var h='<div style="background:var(--warm);border-radius:12px;border:2px solid '+rCol+'44;padding:14px 16px;margin:10px 8px 0">';
+  h+='<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">';
+  h+='<div style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--FL)">Perio Risk Assessment</div>';
+  h+='<div style="padding:4px 14px;border-radius:20px;background:'+rCol+';color:#fff;font-size:.72rem;font-weight:800">'+risk+' Risk</div>';
+  h+='</div>';
+  h+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">';
+  function rCell(lbl,val,warn){return '<div style="background:'+(warn?'rgba(239,68,68,.08)':'rgba(15,35,24,.04)')+';border-radius:8px;padding:8px;text-align:center"><div style="font-size:1rem;font-weight:800;color:'+(warn?'#EF4444':'var(--ink)')+'">'+val+'</div><div style="font-size:.58rem;color:var(--slate);margin-top:2px">'+lbl+'</div></div>';}
+  h+=rCell('BOP Sites',bopPct+'%',bopPct>30);
+  h+=rCell('PD ≥4mm',deepCount,deepCount>4);
+  h+=rCell('Max PD',maxPD+'mm',maxPD>=5);
+  h+=rCell('Furc ≥II',furcCount,furcCount>=1);
+  h+=rCell('Calculus',calcCount,calcCount>=2);
+  h+=rCell('Risk Score',score+'/9',score>4);
+  h+='</div>';
+  if(risk!=='Low'){
+    var recs={Moderate:'Re-assess in 3–4 months. Full mouth debridement, OHI.',High:'Intensive treatment phase. 4–6 weekly review. Consider referral.',Severe:'Urgent specialist referral. Aggressive intervention required.'}[risk];
+    h+='<div style="margin-top:10px;padding:8px 12px;background:'+rCol+'15;border-radius:8px;border-left:3px solid '+rCol+';font-size:.72rem;color:var(--ink)">'+recs+'</div>';
+  }
+  h+='</div>';
+  return h;
 }
 function perioCbChange(el){
   var tooth=el.getAttribute('data-tooth'), field=el.getAttribute('data-field');
   setPerioData(tooth,field,el.checked?'1':'0');
+  renderPerioChart();
+}
+function toggleBOP(tooth){
+  var d=getPerioData(tooth);
+  setPerioData(tooth,'bl_b',d.bl_b==='1'?'0':'1');
   renderPerioChart();
 }
 function perioInputChange(el){
