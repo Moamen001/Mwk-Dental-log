@@ -173,8 +173,8 @@ select.inp{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.
 .td-cell:active{transform:scale(.94)}
 .td-cell.td-empty{background:transparent!important;border-color:transparent!important;pointer-events:none}
 /* Condition selector */
-.csel{display:inline-flex;align-items:center;gap:5px;padding:7px 12px;border-radius:20px;
-  font-size:.73rem;font-weight:600;cursor:pointer;border:2.5px solid transparent;
+.csel{display:inline-flex;align-items:center;gap:4px;padding:5px 10px;border-radius:20px;
+  font-size:.68rem;font-weight:600;cursor:pointer;border:2.5px solid transparent;
   transition:all .12s;-webkit-tap-highlight-color:transparent;user-select:none}
 .csel.active{border-color:#0F2318!important;box-shadow:0 0 0 2px rgba(15,35,24,.2)}
 
@@ -197,6 +197,13 @@ body.dark .stat-card{background:#0F2318;border-color:#1a3a22}
 /* ── PERIO PANEL ── */
 #perio-panel{position:fixed;top:0;left:0;right:0;bottom:0;z-index:952;background:var(--cream);display:none;flex-direction:column}
 #perio-panel.on{display:flex}
+/* ── TX PLAN PANEL ── */
+#tx-panel{position:fixed;top:0;left:0;right:0;bottom:0;z-index:965;background:var(--cream);display:none;flex-direction:column}
+#tx-panel.on{display:flex;animation:slUp .28s cubic-bezier(.16,1,.3,1)}
+body.dark #tx-panel{background:#0a1208}
+.txp-row{display:flex;align-items:flex-start;gap:10px;padding:12px 16px;border-bottom:1px solid var(--ln);background:var(--warm);border-radius:12px;margin-bottom:8px}
+.txp-pri{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800;flex-shrink:0}
+body.dark .txp-row{background:#0F2318;border-color:#1a3a22}
 .perio-input{width:36px;height:28px;text-align:center;border:1px solid var(--ln);border-radius:6px;font-size:.75rem;font-weight:700;color:var(--ink);background:var(--warm);font-family:inherit}
 .perio-input:focus{border-color:var(--FL);outline:none}
 body.dark .perio-input{background:#0F2318;border-color:#1a3a22;color:#e0f0e5}
@@ -207,7 +214,7 @@ body.dark .perio-input{background:#0F2318;border-color:#1a3a22;color:#e0f0e5}
 
 <div id="LS">
   <div style="width:100%;max-width:300px;text-align:center">
-    <div style="width:110px;height:110px;border-radius:50%;background:#0F2318 url(data:image/jpeg;base64,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) no-repeat center 40%;background-size:84%;border:2.5px solid #C9A84C;margin:0 auto 24px;box-shadow:0 8px 32px rgba(201,168,76,.4),0 0 0 4px rgba(201,168,76,.15);flex-shrink:0"></div>
+    <div style="width:110px;height:110px;border-radius:50%;overflow:hidden;margin:0 auto 24px;flex-shrink:0;box-shadow:0 8px 32px rgba(201,168,76,.4),0 0 0 6px rgba(201,168,76,.35)"><img src="data:image/jpeg;base64,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" style="width:100%;height:100%;object-fit:cover;object-position:center center;display:block"></div>
     <div style="font-family:'Playfair Display',serif;font-size:1.8rem;color:#fff;margin-bottom:2px">DentaLog</div>
     <div style="font-size:.72rem;color:#C9A84C;letter-spacing:.06em;font-weight:600;margin-bottom:2px">DR. MOAMEN WALID KHALIL</div>
     <div style="font-size:.65rem;color:#8BAF95;letter-spacing:.08em;text-transform:uppercase;margin-bottom:36px">Doctor of Dental Medicine</div>
@@ -239,14 +246,15 @@ body.dark .perio-input{background:#0F2318;border-color:#1a3a22;color:#e0f0e5}
     </div>
     <div style="display:flex;gap:8px;align-items:center">
       <button id="chart-mode-btn" onclick="toggleChartMode()" style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:6px 12px;color:#fff;font-size:.72rem;font-weight:600;cursor:pointer;font-family:inherit">Adult</button>
+      <button onclick="openTxPanel()" style="background:rgba(201,168,76,.2);border:1px solid rgba(201,168,76,.4);border-radius:8px;padding:6px 12px;color:#fff;font-size:.72rem;font-weight:600;cursor:pointer;font-family:inherit">📋 Tx Plan</button>
       <button onclick="printChart()" style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:6px 12px;color:#fff;font-size:.72rem;font-weight:600;cursor:pointer;font-family:inherit">🖨 Print</button>
       <button onclick="openPerioPanel(_chartPatId)" style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:6px 12px;color:#fff;font-size:.72rem;font-weight:600;cursor:pointer;font-family:inherit">🦷 Perio</button>
       <button onclick="closeChartPanel()" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.15);color:#fff;font-size:1.2rem;display:flex;align-items:center;justify-content:center;border:none;cursor:pointer">×</button>
     </div>
   </div>
-  <div style="flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px 0 20px" id="chart-body"></div>
-  <div style="padding:12px 16px;padding-bottom:max(12px,env(safe-area-inset-bottom));border-top:1px solid var(--ln);background:var(--cream);flex-shrink:0">
-    <div style="display:flex;gap:6px;flex-wrap:wrap" id="cond-legend"></div>
+  <div style="flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:10px 0 16px" id="chart-body"></div>
+  <div style="padding:10px 12px;padding-bottom:max(10px,env(safe-area-inset-bottom));border-top:1px solid var(--ln);background:var(--cream);flex-shrink:0;max-height:38vh;overflow-y:auto;-webkit-overflow-scrolling:touch">
+    <div style="display:flex;gap:5px;flex-wrap:wrap" id="cond-legend"></div>
   </div>
 </div>
 <div id="tooth-detail-bg" onclick="closeToothDetail()"></div>
@@ -261,6 +269,38 @@ body.dark .perio-input{background:#0F2318;border-color:#1a3a22;color:#e0f0e5}
   <div style="padding:18px;display:flex;flex-direction:column;align-items:center;gap:16px">
     <div id="td-grid-wrap"></div>
     <div id="td-cond-info" style="font-size:.75rem;color:var(--slate);text-align:center"></div>
+  </div>
+</div>
+
+<!-- TREATMENT PLAN PANEL -->
+<div id="tx-panel">
+  <div style="background:var(--F);padding:max(16px,env(safe-area-inset-top)) 18px 14px;flex-shrink:0;display:flex;justify-content:space-between;align-items:center">
+    <div>
+      <div style="font-family:'Playfair Display',serif;font-size:1.05rem;color:#fff" id="tx-title">Treatment Plan</div>
+      <div style="font-size:.68rem;color:var(--sage);margin-top:2px" id="tx-sub"></div>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <button onclick="printTxPlan()" style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:6px 12px;color:#fff;font-size:.72rem;font-weight:600;cursor:pointer;font-family:inherit">🖨 Print</button>
+      <button onclick="closeTxPanel()" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.15);color:#fff;font-size:1.2rem;display:flex;align-items:center;justify-content:center;border:none;cursor:pointer">×</button>
+    </div>
+  </div>
+  <div style="flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px" id="tx-body"></div>
+  <!-- Add item form -->
+  <div style="padding:12px 16px;padding-bottom:max(12px,env(safe-area-inset-bottom));border-top:1px solid var(--ln);background:var(--cream);flex-shrink:0" id="tx-add-form">
+    <div style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--FL);margin-bottom:8px">Add Item</div>
+    <div style="display:grid;grid-template-columns:80px 1fr 90px;gap:8px;margin-bottom:8px">
+      <input id="txa-tooth" class="inp" placeholder="Tooth #" style="padding:9px 10px;font-size:.82rem">
+      <select id="txa-proc" class="inp" style="padding:9px 10px;font-size:.82rem"></select>
+      <select id="txa-pri" class="inp" style="padding:9px 10px;font-size:.82rem">
+        <option value="1">🔴 Urgent</option>
+        <option value="2" selected>🟡 Routine</option>
+        <option value="3">🟢 Elective</option>
+      </select>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr auto;gap:8px">
+      <input id="txa-notes" class="inp" placeholder="Notes (optional)" style="padding:9px 10px;font-size:.82rem">
+      <button onclick="addTxItem()" class="bgold" style="padding:9px 18px;font-size:.82rem;white-space:nowrap">+ Add</button>
+    </div>
   </div>
 </div>
 
@@ -1304,6 +1344,8 @@ function savePat(){
 window.addEventListener('resize',function(){
   var m=window.innerWidth<640;
   if(m!==S.mob){S.mob=m;R();}
+  // Re-render chart if open (handles orientation change on mobile)
+  if(document.getElementById('chart-panel').className.includes('on')){renderChart();}
 });
 
 /* ── BACKUP / RESTORE ─────────────────── */
@@ -1423,6 +1465,17 @@ function getCOND(mode){
     return Object.assign({},COND_BASE,COND_PEDO);
   return COND_BASE;
 }
+/* ── Abbreviations for every condition ── */
+var COND_ABBR={
+  'caries':'CA','filling':'FL','fracture':'FX','dpc':'DP','ipc':'IP',
+  'crown':'CR','bridge':'BR','pontic':'PN','ssc':'SS',
+  'missing':'×','ext_plan':'XP','extracted':'XT',
+  'rct':'RC','vpt':'VP','pulp_p':'PP','pulp_t':'PT','apex':'AX','revasc':'RV'
+};
+/* Endo-treated conditions (can coexist under a restoration) */
+var ENDO_CONDS=['rct','vpt','apex','revasc','pulp_p','pulp_t'];
+/* Restorations that sit on top of endo conditions */
+var RESTO_CONDS=['crown','bridge','pontic','ssc'];
 
 /* ── Arches (FDI) ── */
 var A_U  =['1.8','1.7','1.6','1.5','1.4','1.3','1.2','1.1','2.1','2.2','2.3','2.4','2.5','2.6','2.7','2.8'];
@@ -1459,18 +1512,9 @@ function toothSVG(tooth,data,mode,size){
   var C=getCOND(mode);
   var surfs=twSurfs(tooth);
   var wholeAll=data['all']||'';
+  var baseAll=data['base']||''; // underlying endo (RCT etc.) when restoration is on top
   var miss=wholeAll==='missing';
-  var wholeTC=(wholeAll&&!miss)?wholeAll:null;
-  function col(s){
-    if(miss)return '#E5E7EB';
-    var c=data[s]||'';
-    return c?C[c].color:'none';
-  }
-  function str(s){
-    if(miss)return '#CBD5E1';
-    var c=data[s]||'';
-    return c?C[c].border:'#D1D5DB';
-  }
+
   var n=parseInt(tooth.split('.')[1]);
   var isMolar=(n>=4&&n<=8)||(n>=4&&n<=5&&tooth.indexOf('.')>-1&&parseInt(tooth.split('.')[0])>=5);
   var quad=parseInt(tooth.split('.')[0]);
@@ -1478,69 +1522,120 @@ function toothSVG(tooth,data,mode,size){
 
   var cx=size/2, cy=size/2, r=size*0.44;
   var sw=Math.max(1,size*0.055);
-  var h='<svg width="'+size+'" height="'+size+'" viewBox="0 0 '+size+' '+size+'" xmlns="http://www.w3.org/2000/svg">';
-
   var ow=size*0.88, oh=size*(isMolar?0.88:0.92);
   var ox=(size-ow)/2, oy=(size-oh)/2;
 
+  var h='<svg width="'+size+'" height="'+size+'" viewBox="0 0 '+size+' '+size+'" xmlns="http://www.w3.org/2000/svg">';
+
+  /* ── Missing: grey ellipse + cross ── */
   if(miss){
     h+='<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+(ow/2)+'" ry="'+(oh/2)+'" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="'+sw+'"/>';
     h+='<line x1="'+(cx-r*0.45)+'" y1="'+(cy-r*0.45)+'" x2="'+(cx+r*0.45)+'" y2="'+(cy+r*0.45)+'" stroke="#9CA3AF" stroke-width="'+(sw*1.5)+'" stroke-linecap="round"/>';
     h+='<line x1="'+(cx+r*0.45)+'" y1="'+(cy-r*0.45)+'" x2="'+(cx-r*0.45)+'" y2="'+(cy+r*0.45)+'" stroke="#9CA3AF" stroke-width="'+(sw*1.5)+'" stroke-linecap="round"/>';
-    h+='</svg>';
-    return h;
+    h+='</svg>'; return h;
   }
 
-  // Whole-tooth conditions: fill entire tooth with solid color
-  var WHOLE_TOOTH_CONDS=['crown','bridge','pontic','ssc','ext_plan','extracted'];
-  if(wholeTC&&WHOLE_TOOTH_CONDS.indexOf(wholeTC)>-1){
-    var wc=C[wholeTC]||C[''];
-    h+='<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+(ow/2)+'" ry="'+(oh/2)+'" fill="'+wc.color+'" stroke="'+wc.border+'" stroke-width="'+(sw*1.2)+'"/>';
-    // Abbreviation labels
-    var abbr={crown:'CR',bridge:'BR',pontic:'PT',ssc:'SS',ext_plan:'X?',extracted:'XX'}[wholeTC]||'';
-    if(abbr){
-      var fs=size*0.26;
-      h+='<text x="'+cx+'" y="'+(cy+fs*0.38)+'" text-anchor="middle" font-size="'+fs+'" font-weight="800" fill="'+wc.text+'" font-family="system-ui,sans-serif">'+abbr+'</text>';
-    }
-    // Diagonal hatch for ext_plan to indicate planned/pending
-    if(wholeTC==='ext_plan'){
-      h+='<line x1="'+(cx-r*0.4)+'" y1="'+(cy-r*0.4)+'" x2="'+(cx+r*0.4)+'" y2="'+(cy+r*0.4)+'" stroke="'+wc.border+'" stroke-width="'+(sw*1.3)+'" stroke-linecap="round"/>';
-    }
-    h+='</svg>';
-    return h;
+  /* ── Helper: draw abbreviation text centred in tooth ── */
+  function abbText(code,fillColor,yOffset,fsScale){
+    var abbr=COND_ABBR[code]||code.slice(0,2).toUpperCase();
+    var fs=size*(fsScale||0.26);
+    return '<text x="'+cx+'" y="'+(cy+(yOffset||0)+fs*0.36)+'" text-anchor="middle" font-size="'+fs+'" font-weight="800" fill="'+fillColor+'" font-family="system-ui,sans-serif">'+abbr+'</text>';
   }
 
-  // Surface zone rendering
+  /* ── Whole-tooth conditions ── */
+  var ALL_WHOLE=['crown','bridge','pontic','ssc','ext_plan','extracted',
+                 'rct','vpt','pulp_p','pulp_t','apex','revasc'];
+
+  if(wholeAll&&ALL_WHOLE.indexOf(wholeAll)>-1){
+    var wc=C[wholeAll]||C[''];
+
+    /* Dual-layer: endo base + restoration on top */
+    if(baseAll&&ENDO_CONDS.indexOf(baseAll)>-1&&RESTO_CONDS.indexOf(wholeAll)>-1){
+      var bc=C[baseAll]||C[''];
+      // Base endo fill
+      h+='<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+(ow/2)+'" ry="'+(oh/2)+'" fill="'+bc.color+'" stroke="'+bc.border+'" stroke-width="'+(sw*1.2)+'"/>';
+      // Restoration overlay at 78% opacity
+      h+='<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+(ow/2)+'" ry="'+(oh/2)+'" fill="'+wc.color+'" stroke="'+wc.border+'" stroke-width="'+(sw*1.2)+'" opacity="0.78"/>';
+      // Restoration abbreviation (main, slightly up)
+      h+=abbText(wholeAll,wc.text,-size*0.07,0.24);
+      // Endo abbreviation (smaller, below)
+      h+=abbText(baseAll,bc.border,size*0.12,0.18);
+    } else {
+      // Single whole-tooth condition
+      h+='<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+(ow/2)+'" ry="'+(oh/2)+'" fill="'+wc.color+'" stroke="'+wc.border+'" stroke-width="'+(sw*1.2)+'"/>';
+      h+=abbText(wholeAll,wc.text,0,0.26);
+      // Extra marker for ext_plan: diagonal line
+      if(wholeAll==='ext_plan'){
+        h+='<line x1="'+(cx-r*0.38)+'" y1="'+(cy-r*0.38)+'" x2="'+(cx+r*0.38)+'" y2="'+(cy+r*0.38)+'" stroke="'+wc.border+'" stroke-width="'+(sw*1.3)+'" stroke-linecap="round"/>';
+      }
+    }
+    h+='</svg>'; return h;
+  }
+
+  /* ── Surface zone rendering ── */
+  function col(s){var c=data[s]||'';return c&&C[c]?C[c].color:'none';}
+  function str2(s){var c=data[s]||'';return c&&C[c]?C[c].border:'#D1D5DB';}
+  function surfAbbr(s){
+    // Add tiny abbreviation inside a colored surface zone (only at larger sizes)
+    if(size<36)return '';
+    var c=data[s]||'';
+    if(!c||!C[c])return '';
+    var ab=COND_ABBR[c]||'';
+    if(!ab)return '';
+    var fs=size*0.14;
+    return '<text text-anchor="middle" dominant-baseline="middle" font-size="'+fs+'" font-weight="800" fill="'+C[c].text+'" font-family="system-ui,sans-serif">';
+  }
+
   var ir=r*0.38;
   h+='<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+(ow/2)+'" ry="'+(oh/2)+'" fill="white" stroke="#CBD5E1" stroke-width="'+sw+'"/>';
-  h+='<circle cx="'+cx+'" cy="'+cy+'" r="'+ir+'" fill="'+(col(surfs.mid)||'#F9FAFB')+'" stroke="'+(str(surfs.mid))+'" stroke-width="'+(sw*0.8)+'"/>';
+
+  // Occlusal / Incisal (centre)
+  var midFill=col(surfs.mid);
+  h+='<circle cx="'+cx+'" cy="'+cy+'" r="'+ir+'" fill="'+(midFill&&midFill!=='none'?midFill:'#F9FAFB')+'" stroke="'+str2(surfs.mid)+'" stroke-width="'+(sw*0.8)+'"/>';
+  if(midFill&&midFill!=='none'&&size>=36){var ab=COND_ABBR[data[surfs.mid]]||'';if(ab)h+='<text x="'+cx+'" y="'+(cy+ir*0.38)+'" text-anchor="middle" font-size="'+(size*0.14)+'" font-weight="800" fill="'+C[data[surfs.mid]].text+'" font-family="system-ui,sans-serif">'+ab+'</text>';}
+
+  // Buccal / Labial (top)
   var bFill=col(surfs.top);
   if(bFill&&bFill!=='none'){
-    h+='<ellipse cx="'+cx+'" cy="'+(oy+oh*0.12)+'" rx="'+(ow*0.28)+'" ry="'+(oh*0.14)+'" fill="'+bFill+'" stroke="'+str(surfs.top)+'" stroke-width="'+(sw*0.7)+'"/>';
+    var bcy=oy+oh*0.12;
+    h+='<ellipse cx="'+cx+'" cy="'+bcy+'" rx="'+(ow*0.28)+'" ry="'+(oh*0.14)+'" fill="'+bFill+'" stroke="'+str2(surfs.top)+'" stroke-width="'+(sw*0.7)+'"/>';
+    if(size>=36){var ab=COND_ABBR[data[surfs.top]]||'';if(ab)h+='<text x="'+cx+'" y="'+(bcy+oh*0.055)+'" text-anchor="middle" font-size="'+(size*0.13)+'" font-weight="800" fill="'+C[data[surfs.top]].text+'" font-family="system-ui,sans-serif">'+ab+'</text>';}
   } else {
     h+='<ellipse cx="'+cx+'" cy="'+(oy+oh*0.12)+'" rx="'+(ow*0.26)+'" ry="'+(oh*0.12)+'" fill="#F9FAFB" stroke="#E5E7EB" stroke-width="'+(sw*0.6)+'"/>';
   }
+
+  // Palatal / Lingual (bottom)
   var lFill=col(surfs.bot);
   if(lFill&&lFill!=='none'){
-    h+='<ellipse cx="'+cx+'" cy="'+(oy+oh*0.88)+'" rx="'+(ow*0.28)+'" ry="'+(oh*0.14)+'" fill="'+lFill+'" stroke="'+str(surfs.bot)+'" stroke-width="'+(sw*0.7)+'"/>';
+    var lcy=oy+oh*0.88;
+    h+='<ellipse cx="'+cx+'" cy="'+lcy+'" rx="'+(ow*0.28)+'" ry="'+(oh*0.14)+'" fill="'+lFill+'" stroke="'+str2(surfs.bot)+'" stroke-width="'+(sw*0.7)+'"/>';
+    if(size>=36){var ab=COND_ABBR[data[surfs.bot]]||'';if(ab)h+='<text x="'+cx+'" y="'+(lcy+oh*0.055)+'" text-anchor="middle" font-size="'+(size*0.13)+'" font-weight="800" fill="'+C[data[surfs.bot]].text+'" font-family="system-ui,sans-serif">'+ab+'</text>';}
   } else {
     h+='<ellipse cx="'+cx+'" cy="'+(oy+oh*0.88)+'" rx="'+(ow*0.26)+'" ry="'+(oh*0.12)+'" fill="#F9FAFB" stroke="#E5E7EB" stroke-width="'+(sw*0.6)+'"/>';
   }
+
+  // Mesial (left)
   var mFill=col('M');
   if(mFill&&mFill!=='none'){
-    h+='<ellipse cx="'+(ox+ow*0.12)+'" cy="'+cy+'" rx="'+(ow*0.14)+'" ry="'+(oh*0.28)+'" fill="'+mFill+'" stroke="'+str('M')+'" stroke-width="'+(sw*0.7)+'"/>';
+    var mcx=ox+ow*0.12;
+    h+='<ellipse cx="'+mcx+'" cy="'+cy+'" rx="'+(ow*0.14)+'" ry="'+(oh*0.28)+'" fill="'+mFill+'" stroke="'+str2('M')+'" stroke-width="'+(sw*0.7)+'"/>';
+    if(size>=36){var ab=COND_ABBR[data['M']]||'';if(ab)h+='<text x="'+mcx+'" y="'+(cy+size*0.055)+'" text-anchor="middle" font-size="'+(size*0.13)+'" font-weight="800" fill="'+C[data['M']].text+'" font-family="system-ui,sans-serif">'+ab+'</text>';}
   } else {
     h+='<ellipse cx="'+(ox+ow*0.12)+'" cy="'+cy+'" rx="'+(ow*0.12)+'" ry="'+(oh*0.26)+'" fill="#F9FAFB" stroke="#E5E7EB" stroke-width="'+(sw*0.6)+'"/>';
   }
+
+  // Distal (right)
   var dFill=col('D');
   if(dFill&&dFill!=='none'){
-    h+='<ellipse cx="'+(ox+ow*0.88)+'" cy="'+cy+'" rx="'+(ow*0.14)+'" ry="'+(oh*0.28)+'" fill="'+dFill+'" stroke="'+str('D')+'" stroke-width="'+(sw*0.7)+'"/>';
+    var dcx=ox+ow*0.88;
+    h+='<ellipse cx="'+dcx+'" cy="'+cy+'" rx="'+(ow*0.14)+'" ry="'+(oh*0.28)+'" fill="'+dFill+'" stroke="'+str2('D')+'" stroke-width="'+(sw*0.7)+'"/>';
+    if(size>=36){var ab=COND_ABBR[data['D']]||'';if(ab)h+='<text x="'+dcx+'" y="'+(cy+size*0.055)+'" text-anchor="middle" font-size="'+(size*0.13)+'" font-weight="800" fill="'+C[data['D']].text+'" font-family="system-ui,sans-serif">'+ab+'</text>';}
   } else {
     h+='<ellipse cx="'+(ox+ow*0.88)+'" cy="'+cy+'" rx="'+(ow*0.12)+'" ry="'+(oh*0.26)+'" fill="#F9FAFB" stroke="#E5E7EB" stroke-width="'+(sw*0.6)+'"/>';
   }
+
   h+='<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+(ow/2)+'" ry="'+(oh/2)+'" fill="none" stroke="#CBD5E1" stroke-width="'+sw+'"/>';
-  h+='</svg>';
-  return h;
+  h+='</svg>'; return h;
 }
 
 /* ── State ── */
@@ -1584,10 +1679,23 @@ function isImmature(tooth){
   return !!(pat&&pat.chart&&pat.chart.immature&&pat.chart.immature[tooth]);
 }
 
+/* ── Dynamic tooth size ──────────────── */
+function calcToothSz(){
+  if(!S.mob)return 52;
+  // Fit all teeth in one arch row within the screen width
+  // adult=16 teeth, primary=10, mixed=14 (widest sub-arch)
+  var maxTeeth=_chartMode==='adult'?16:_chartMode==='primary'?10:14;
+  var avail=window.innerWidth-16;       // 8px side padding each side
+  var sz=Math.floor((avail-8)/maxTeeth)-2; // -8 for midline, -2 for 1px gaps
+  return Math.max(18,Math.min(52,sz));
+}
+
 /* ── Arch HTML ── */
 function archGrid(teeth,jaw){
+  var sz=calcToothSz();
+  var numFs=Math.max(7,Math.round(sz*0.22))+'px';
   var mid=Math.floor(teeth.length/2);
-  var flexRow='display:flex;align-items:center;gap:0;padding:4px 8px;overflow-x:auto;-webkit-overflow-scrolling:touch;justify-content:center;min-width:min-content';
+  var flexRow='display:flex;align-items:center;gap:0;padding:4px 0;justify-content:center;min-width:min-content';
   var h='<div style="'+flexRow+'">';
   // Left half
   h+='<div style="display:flex;flex-shrink:0;justify-content:flex-end;gap:1px">';
@@ -1600,10 +1708,10 @@ function archGrid(teeth,jaw){
     var immature=(_chartMode==='mixed')&&isImmature(tooth);
     var numCol=miss||extracted?'#9CA3AF':(extPlan?'#D97706':(immature?'#60A5FA':'var(--slate)'));
     var numLbl=esc(tooth)+(immature?' ⬟':'');
-    h+='<div data-tooth="'+esc(tooth)+'" style="display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;-webkit-tap-highlight-color:transparent;min-width:54px">';
-    if(jaw==='lower')h+='<div data-num="'+esc(tooth)+'" style="font-size:.55rem;font-weight:700;color:'+numCol+';line-height:1;text-align:center;white-space:nowrap">'+numLbl+'</div>';
-    h+=toothSVG(tooth,data,_chartMode,52);
-    if(jaw==='upper')h+='<div data-num="'+esc(tooth)+'" style="font-size:.55rem;font-weight:700;color:'+numCol+';line-height:1;text-align:center;white-space:nowrap">'+numLbl+'</div>';
+    h+='<div data-tooth="'+esc(tooth)+'" style="display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;-webkit-tap-highlight-color:transparent;width:'+(sz+2)+'px;flex-shrink:0">';
+    if(jaw==='lower')h+='<div data-num="'+esc(tooth)+'" style="font-size:'+numFs+';font-weight:700;color:'+numCol+';line-height:1;text-align:center;white-space:nowrap">'+numLbl+'</div>';
+    h+=toothSVG(tooth,data,_chartMode,sz);
+    if(jaw==='upper')h+='<div data-num="'+esc(tooth)+'" style="font-size:'+numFs+';font-weight:700;color:'+numCol+';line-height:1;text-align:center;white-space:nowrap">'+numLbl+'</div>';
     h+='</div>';
   });
   h+='</div>';
@@ -1620,10 +1728,10 @@ function archGrid(teeth,jaw){
     var immature=(_chartMode==='mixed')&&isImmature(tooth);
     var numCol=miss||extracted?'#9CA3AF':(extPlan?'#D97706':(immature?'#60A5FA':'var(--slate)'));
     var numLbl=esc(tooth)+(immature?' ⬟':'');
-    h+='<div data-tooth="'+esc(tooth)+'" style="display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;-webkit-tap-highlight-color:transparent;min-width:54px">';
-    if(jaw==='lower')h+='<div data-num="'+esc(tooth)+'" style="font-size:.55rem;font-weight:700;color:'+numCol+';line-height:1;text-align:center;white-space:nowrap">'+numLbl+'</div>';
-    h+=toothSVG(tooth,data,_chartMode,52);
-    if(jaw==='upper')h+='<div data-num="'+esc(tooth)+'" style="font-size:.55rem;font-weight:700;color:'+numCol+';line-height:1;text-align:center;white-space:nowrap">'+numLbl+'</div>';
+    h+='<div data-tooth="'+esc(tooth)+'" style="display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;-webkit-tap-highlight-color:transparent;width:'+(sz+2)+'px;flex-shrink:0">';
+    if(jaw==='lower')h+='<div data-num="'+esc(tooth)+'" style="font-size:'+numFs+';font-weight:700;color:'+numCol+';line-height:1;text-align:center;white-space:nowrap">'+numLbl+'</div>';
+    h+=toothSVG(tooth,data,_chartMode,sz);
+    if(jaw==='upper')h+='<div data-num="'+esc(tooth)+'" style="font-size:'+numFs+';font-weight:700;color:'+numCol+';line-height:1;text-align:center;white-space:nowrap">'+numLbl+'</div>';
     h+='</div>';
   });
   h+='</div>';
@@ -1722,11 +1830,23 @@ function openToothDetail(tooth){
   if(isWholeCond){
     // Whole-tooth condition set — show info + toggle button
     var wc=COND[wholeAll]||COND[''];
-    gridOrWhole='<div style="width:100%;padding:14px;border-radius:12px;background:'+wc.color+';border:2px solid '+wc.border+';text-align:center;margin-bottom:12px">'
-      +'<div style="font-size:.88rem;font-weight:700;color:'+wc.text+'">'+wc.label+'</div>'
-      +'<div style="font-size:.7rem;color:'+wc.text+';opacity:.8;margin-top:3px">Whole tooth condition</div>'
-      +'</div>'
-      +'<button data-surf="__whole" style="width:100%;padding:10px;border-radius:10px;background:rgba(192,57,43,.08);border:1.5px solid rgba(192,57,43,.3);color:var(--red);font-size:.78rem;font-weight:600;cursor:pointer;font-family:inherit">✕ Clear whole-tooth condition</button>';
+    var baseAll2=data['base']||'';
+    var bc2=baseAll2?COND[baseAll2]:null;
+    var mainBadge='<div style="width:100%;padding:12px;border-radius:12px;background:'+wc.color+';border:2px solid '+wc.border+';text-align:center;margin-bottom:8px">'
+      +'<div style="font-size:.88rem;font-weight:700;color:'+wc.text+'">'+wc.label+' ('+(COND_ABBR[wholeAll]||wholeAll)+')</div>'
+      +'<div style="font-size:.7rem;color:'+wc.text+';opacity:.8;margin-top:2px">Whole tooth</div>'
+      +'</div>';
+    var baseBadge=bc2?'<div style="width:100%;padding:8px;border-radius:10px;background:'+bc2.color+'22;border:1.5px solid '+bc2.border+';text-align:center;margin-bottom:8px">'
+      +'<div style="font-size:.78rem;font-weight:600;color:'+bc2.border+'">&#11835; Underlying: '+bc2.label+' ('+(COND_ABBR[baseAll2]||baseAll2)+')</div>'
+      +'</div>':'';
+    var clearBtns='<button data-surf="__whole" style="width:100%;padding:10px;border-radius:10px;background:rgba(192,57,43,.08);border:1.5px solid rgba(192,57,43,.3);color:var(--red);font-size:.78rem;font-weight:600;cursor:pointer;font-family:inherit">✕ Clear all conditions</button>';
+    if(bc2){
+      clearBtns='<div style="display:flex;gap:7px">'
+        +'<button data-surf="__rmtop" style="flex:1;padding:9px;border-radius:10px;background:rgba(192,57,43,.07);border:1.5px solid rgba(192,57,43,.28);color:var(--red);font-size:.72rem;font-weight:600;cursor:pointer;font-family:inherit">✕ Remove '+wc.label+'</button>'
+        +'<button data-surf="__rmbase" style="flex:1;padding:9px;border-radius:10px;background:rgba(124,58,237,.07);border:1.5px solid rgba(124,58,237,.28);color:#7C3AED;font-size:.72rem;font-weight:600;cursor:pointer;font-family:inherit">✕ Remove '+bc2.label+'</button>'
+        +'</div>';
+    }
+    gridOrWhole=mainBadge+baseBadge+clearBtns;
   } else {
     // 3×3 surface grid
     function tdCell(surf,label,extraStyle){
@@ -1762,7 +1882,8 @@ function openToothDetail(tooth){
   // Info line
   var info=[];
   if(isWholeCond){
-    info.push('Whole tooth: '+((COND[wholeAll]||{}).label||wholeAll));
+    info.push((COND[wholeAll]||{}).label||wholeAll);
+    if(data['base'])info.push('over '+(COND[data['base']]||{}).label);
   } else {
     [surfs.top,'M',surfs.mid,'D',surfs.bot].forEach(function(s){
       if(data[s])info.push(s+': '+((COND[data[s]]||{}).label||data[s]));
@@ -1785,11 +1906,26 @@ function openToothDetail(tooth){
   });
   var wb=document.querySelector('#td-grid-wrap [data-surf="__whole"]');
   if(wb)wb.addEventListener('click',function(){
-    // Clear whole-tooth condition
     var pat=P[_chartPatId]; if(!pat)return;
     pat.chart.teeth[_detailTooth]={};
-    saveQuiet(); renderChart();
-    closeToothDetail();
+    saveQuiet(); renderChart(); closeToothDetail();
+  });
+  // Remove only restoration (keep endo base)
+  var rtop=document.querySelector('#td-grid-wrap [data-surf="__rmtop"]');
+  if(rtop)rtop.addEventListener('click',function(){
+    var pat=P[_chartPatId]; if(!pat)return;
+    var td2=pat.chart.teeth[_detailTooth]||{};
+    pat.chart.teeth[_detailTooth]=td2['base']?{all:td2['base']}:{};
+    saveQuiet(); renderChart(); openToothDetail(_detailTooth);
+  });
+  // Remove only base (keep restoration)
+  var rbase=document.querySelector('#td-grid-wrap [data-surf="__rmbase"]');
+  if(rbase)rbase.addEventListener('click',function(){
+    var pat=P[_chartPatId]; if(!pat)return;
+    var td2=pat.chart.teeth[_detailTooth]||{};
+    var newTd={}; if(td2['all'])newTd['all']=td2['all'];
+    pat.chart.teeth[_detailTooth]=newTd;
+    saveQuiet(); renderChart(); openToothDetail(_detailTooth);
   });
   var ib=document.querySelector('#td-grid-wrap [data-surf="__imm"]');
   if(ib)ib.addEventListener('click',function(){
@@ -1804,24 +1940,67 @@ function closeToothDetail(){
 }
 
 /* ── Surface tap ── */
-var WHOLE_TOOTH_CONDS=['crown','bridge','pontic','ssc','ext_plan','extracted','missing'];
+var WHOLE_TOOTH_CONDS=['crown','bridge','pontic','ssc','ext_plan','extracted','missing',
+  'rct','vpt','pulp_p','pulp_t','apex','revasc'];
+
 function tapSurf(tooth,surf){
   var pat=P[_chartPatId]; if(!pat)return;
   if(!pat.chart)pat.chart={mode:_chartMode,teeth:{},immature:{}};
   if(!pat.chart.teeth[tooth])pat.chart.teeth[tooth]={};
   var td=pat.chart.teeth[tooth];
+
   if(surf==='__whole'||WHOLE_TOOTH_CONDS.indexOf(_selCond)>-1){
-    // Toggle: if same condition already set, clear it; otherwise apply
-    pat.chart.teeth[tooth]=(td['all']===_selCond)?{}:{all:_selCond};
+    var isEndo=ENDO_CONDS.indexOf(_selCond)>-1;
+    var isResto=RESTO_CONDS.indexOf(_selCond)>-1;
+    var curAll=td['all']||'';
+    var curBase=td['base']||'';
+    var curIsEndo=ENDO_CONDS.indexOf(curAll)>-1;
+    var curIsResto=RESTO_CONDS.indexOf(curAll)>-1;
+
+    if(isEndo&&curIsResto){
+      // Adding endo to a tooth already showing a restoration
+      if(curBase===_selCond){
+        // Toggle off: remove base
+        var newTd={}; newTd['all']=curAll;
+        pat.chart.teeth[tooth]=newTd;
+      } else {
+        // Set base endo
+        var newTd={}; newTd['all']=curAll; newTd['base']=_selCond;
+        pat.chart.teeth[tooth]=newTd;
+      }
+    } else if(isResto&&curIsEndo){
+      // Adding restoration on top of an endo tooth
+      if(curAll===_selCond){
+        // Toggle off restoration: restore endo base or clear
+        pat.chart.teeth[tooth]=curBase?{all:curBase}:{};
+      } else {
+        // Layer restoration over endo
+        var newTd={}; newTd['all']=_selCond; newTd['base']=curAll;
+        pat.chart.teeth[tooth]=newTd;
+      }
+    } else if(isResto&&curIsResto&&curBase){
+      // Swapping one restoration for another — keep base
+      if(curAll===_selCond){
+        // Toggle off: restore endo
+        pat.chart.teeth[tooth]={all:curBase};
+      } else {
+        var newTd={}; newTd['all']=_selCond; newTd['base']=curBase;
+        pat.chart.teeth[tooth]=newTd;
+      }
+    } else {
+      // Normal whole-tooth toggle
+      pat.chart.teeth[tooth]=(curAll===_selCond&&!curBase)?{}:{all:_selCond};
+    }
   } else if(surf==='__miss'){
     pat.chart.teeth[tooth]=td['all']==='missing'?{}:{all:'missing'};
   } else if(_selCond==='missing'){
     pat.chart.teeth[tooth]={all:'missing'};
   } else if(_selCond===''){
-    if(td['all']==='missing')pat.chart.teeth[tooth]={};
+    // Clear: remove surface or wipe whole tooth
+    if(td['all'])pat.chart.teeth[tooth]={};
     else{delete td[surf];}
   } else {
-    if(td['all']==='missing')pat.chart.teeth[tooth]={};
+    if(td['all'])pat.chart.teeth[tooth]={};
     pat.chart.teeth[tooth][surf]=_selCond;
   }
   saveQuiet(); renderChart();
@@ -1894,41 +2073,318 @@ function toggleDarkMode(){
   R();
 }
 
-/* ── PRINT ODONTOGRAM ────────────────── */
+/* ── DIAGNOSIS EXTRACTION ─────────────── */
+function getChartDiagnosis(){
+  var pat=P[_chartPatId]; if(!pat||!pat.chart)return[];
+  var COND=getCOND(_chartMode);
+  var teeth=pat.chart.teeth||{};
+  var rows=[];
+  var allTeeth=_chartMode==='adult'?A_U.concat(A_L):
+               _chartMode==='primary'?P_U.concat(P_L):
+               MX_U.concat(MX_L).concat(P_U).concat(P_L);
+  allTeeth.forEach(function(tooth){
+    var data=teeth[tooth]||{};
+    var keys=Object.keys(data).filter(function(k){return data[k];});
+    if(!keys.length)return;
+    var conds=[];
+    keys.forEach(function(surf){
+      var c=COND[data[surf]]||{label:data[surf]};
+      conds.push({surf:surf==='all'?'Whole':surf, label:c.label||data[surf], color:c.color||'#ccc', border:c.border||'#aaa'});
+    });
+    rows.push({tooth:tooth, conds:conds});
+  });
+  return rows;
+}
+
+/* ── PRINT ODONTOGRAM ─────────────────── */
 function printChart(){
   var pat=P[_chartPatId];
   var patName=pat?(pat.name||'Patient'):'Patient';
   var chartBody=document.getElementById('chart-body');
-  var condLegend=document.getElementById('cond-legend');
   if(!chartBody)return;
-  var w=window.open('','_blank','width=900,height=700');
+  var diagRows=getChartDiagnosis();
+  var COND=getCOND(_chartMode);
+  var txPlan=(pat&&pat.chart&&pat.chart.txPlan)||[];
+
+  var w=window.open('','_blank','width=1000,height=800');
   if(!w){toast('Allow pop-ups to print');return;}
+
+  var diagHTML='';
+  if(diagRows.length){
+    diagHTML='<div class="section-title">Current Diagnosis</div>'
+      +'<table class="diag-table"><thead><tr><th>Tooth</th><th>Surface</th><th>Condition</th></tr></thead><tbody>';
+    diagRows.forEach(function(row){
+      row.conds.forEach(function(c,i){
+        diagHTML+='<tr>'
+          +(i===0?'<td rowspan="'+row.conds.length+'" style="font-weight:700;vertical-align:top">'+row.tooth+'</td>':'')
+          +'<td>'+c.surf+'</td>'
+          +'<td><span class="cond-badge" style="background:'+c.color+';border:1px solid '+c.border+'">'+c.label+'</span></td>'
+          +'</tr>';
+      });
+    });
+    diagHTML+='</tbody></table>';
+  } else {
+    diagHTML='<div class="section-title">Current Diagnosis</div><p style="color:#9CA3AF;font-size:.8rem;font-style:italic">No conditions recorded — all teeth healthy.</p>';
+  }
+
+  var txHTML='';
+  if(txPlan.length){
+    var priLabel={1:'Urgent',2:'Routine',3:'Elective'};
+    var priColor={1:'#EF4444',2:'#F59E0B',3:'#22C55E'};
+    txHTML='<div class="section-title" style="margin-top:22px">Treatment Plan</div>'
+      +'<table class="diag-table"><thead><tr><th>Tooth</th><th>Procedure</th><th>Priority</th><th>Status</th><th>Notes</th></tr></thead><tbody>';
+    txPlan.forEach(function(item){
+      var pri=parseInt(item.priority)||2;
+      txHTML+='<tr>'
+        +'<td style="font-weight:700">'+esc(item.tooth||'—')+'</td>'
+        +'<td>'+esc(item.procedure||'')+'</td>'
+        +'<td><span class="cond-badge" style="background:'+priColor[pri]+'22;border:1px solid '+priColor[pri]+'88;color:'+priColor[pri]+'">'+priLabel[pri]+'</span></td>'
+        +'<td>'+esc(item.status||'pending')+'</td>'
+        +'<td style="color:#6B7280">'+esc(item.notes||'')+'</td>'
+        +'</tr>';
+    });
+    txHTML+='</tbody></table>';
+  }
+
+  // Legend
+  var legHTML='<div class="section-title" style="margin-top:22px">Legend</div><div class="legend">';
+  Object.keys(COND).forEach(function(k){
+    if(!k)return;
+    var c=COND[k];
+    legHTML+='<div class="leg-item"><div class="leg-dot" style="background:'+c.color+';border:1px solid '+c.border+'"></div>'+c.label+'</div>';
+  });
+  legHTML+='</div>';
+
   w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8">'
     +'<title>Dental Chart — '+patName+'</title>'
     +'<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">'
     +'<style>'
     +'*{box-sizing:border-box;margin:0;padding:0}'
-    +'body{font-family:Outfit,sans-serif;background:#fff;color:#1C2B22;padding:24px}'
-    +'h1{font-family:"Playfair Display",serif;font-size:1.4rem;color:#0F2318;margin-bottom:2px}'
-    +'.sub{font-size:.72rem;color:#4A6355;margin-bottom:18px}'
-    +'.arch-wrap{display:flex;justify-content:center;overflow:hidden;margin-bottom:8px}'
-    +'.legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;padding:12px;border:1px solid #E4DDD4;border-radius:10px}'
-    +'.leg-item{display:flex;align-items:center;gap:5px;font-size:.68rem;color:#1C2B22}'
-    +'.leg-dot{width:12px;height:12px;border-radius:3px;flex-shrink:0}'
-    +'@media print{body{padding:12px}}'
+    +'body{font-family:Outfit,sans-serif;background:#fff;color:#1C2B22;padding:20px 24px}'
+    +'h1{font-family:"Playfair Display",serif;font-size:1.5rem;color:#0F2318;margin-bottom:3px}'
+    +'.meta{font-size:.72rem;color:#4A6355;margin-bottom:18px;display:flex;gap:16px}'
+    +'.arch-wrap{width:100%;overflow:visible!important}'
+    +'/* Force all flex/overflow to render fully for print */'
+    +'.arch-wrap *{overflow:visible!important;-webkit-overflow-scrolling:auto!important}'
+    +'.arch-wrap svg{display:inline-block}'
+    +'.arch-wrap>div{transform-origin:top center}'
+    +'.section-title{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#2A5C3F;margin-bottom:8px;padding-bottom:4px;border-bottom:1.5px solid #E4DDD4}'
+    +'.diag-table{width:100%;border-collapse:collapse;font-size:.78rem;margin-bottom:4px}'
+    +'.diag-table th{text-align:left;font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#4A6355;padding:5px 8px;border-bottom:1.5px solid #E4DDD4}'
+    +'.diag-table td{padding:5px 8px;border-bottom:1px solid #F3F4F6;vertical-align:middle}'
+    +'.diag-table tr:last-child td{border-bottom:none}'
+    +'.cond-badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:.68rem;font-weight:600}'
+    +'.legend{display:flex;flex-wrap:wrap;gap:7px;margin-top:4px}'
+    +'.leg-item{display:flex;align-items:center;gap:4px;font-size:.65rem;color:#1C2B22}'
+    +'.leg-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}'
+    +'@page{size:A4;margin:12mm}'
+    +'@media print{body{padding:0}.no-print{display:none}}'
     +'</style></head><body>'
     +'<h1>Dental Chart</h1>'
-    +'<div class="sub">'+patName+' &nbsp;·&nbsp; Mode: '+MODE_LABELS[_chartMode]+' &nbsp;·&nbsp; Printed: '+new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})+'</div>'
+    +'<div class="meta">'
+    +'<span>Patient: <strong>'+patName+'</strong></span>'
+    +(pat&&pat.age?'<span>Age: <strong>'+pat.age+'</strong></span>':'')
+    +(pat&&pat.gender?'<span>Gender: <strong>'+pat.gender+'</strong></span>':'')
+    +'<span>Mode: <strong>'+MODE_LABELS[_chartMode]+'</strong></span>'
+    +'<span>Date: <strong>'+new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})+'</strong></span>'
+    +'</div>'
+    +'<div style="margin-bottom:16px">'
+    +'<div class="section-title" style="margin-bottom:10px">Odontogram</div>'
     +'<div class="arch-wrap">'+chartBody.innerHTML+'</div>'
-    +'<div class="legend">');
-  var COND=getCOND(_chartMode);
-  Object.keys(COND).forEach(function(k){
-    if(!k)return;
-    var c=COND[k];
-    w.document.write('<div class="leg-item"><div class="leg-dot" style="background:'+c.color+';border:1px solid '+c.border+'"></div>'+c.label+'</div>');
+    +'</div>'
+    +diagHTML
+    +txHTML
+    +legHTML
+    +'<script>'
+    +'window.onload=function(){'
+    +'  var wrap=document.querySelector(".arch-wrap");'
+    +'  if(wrap){'
+    +'    var ratio=Math.min(1,(document.body.clientWidth-48)/wrap.scrollWidth);'
+    +'    if(ratio<1)wrap.style.transform="scale("+ratio+")";'
+    +'    wrap.style.transformOrigin="top left";'
+    +'  }'
+    +'  setTimeout(function(){window.print();},400);'
+    +'}'
+    +'<\/script>'
+    +'</body></html>');
+  w.document.close();
+}
+
+/* ══════════════════════════════════════
+   TREATMENT PLAN
+══════════════════════════════════════ */
+var _txPatId=null;
+
+function openTxPanel(){
+  _txPatId=_chartPatId;
+  var pat=P[_txPatId]; if(!pat)return;
+  if(!pat.chart)pat.chart={mode:'adult',teeth:{},immature:{}};
+  if(!pat.chart.txPlan)pat.chart.txPlan=[];
+  document.getElementById('tx-title').textContent=(pat.name||'Patient')+' — Treatment Plan';
+  document.getElementById('tx-sub').textContent='Tap + Add to create items';
+  // Populate procedure dropdown
+  var sel=document.getElementById('txa-proc');
+  sel.innerHTML='';
+  TX.forEach(function(t){
+    var o=document.createElement('option');o.value=t;o.textContent=t;sel.appendChild(o);
   });
-  w.document.write('</div>'
-    +'<script>window.onload=function(){window.print();window.close();}<\/script>'
+  // Add custom option
+  var oc=document.createElement('option');oc.value='__custom';oc.textContent='✏ Custom…';sel.appendChild(oc);
+  renderTxPlan();
+  document.getElementById('tx-panel').className='on';
+}
+function closeTxPanel(){document.getElementById('tx-panel').className='';}
+
+function renderTxPlan(){
+  var pat=P[_txPatId]; if(!pat)return;
+  var plan=pat.chart&&pat.chart.txPlan?pat.chart.txPlan:[];
+  var body=document.getElementById('tx-body');
+  var priLabel=['','🔴 Urgent','🟡 Routine','🟢 Elective'];
+  var priColor=['','#EF4444','#F59E0B','#22C55E'];
+  var statusOpts=['pending','in progress','done'];
+  if(!plan.length){
+    body.innerHTML='<div style="text-align:center;padding:40px 20px">'
+      +'<div style="font-size:2rem;margin-bottom:10px">📋</div>'
+      +'<div style="font-family:\'Playfair Display\',serif;font-size:1rem;color:var(--ink)">No treatment items yet</div>'
+      +'<div style="font-size:.75rem;color:var(--mist);margin-top:4px">Use the form below to add items</div>'
+      +'</div>';
+    return;
+  }
+  var h='';
+  // Group by priority
+  [1,2,3].forEach(function(pri){
+    var items=plan.filter(function(x){return parseInt(x.priority)===pri;});
+    if(!items.length)return;
+    h+='<div style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:'+priColor[pri]+';margin:12px 0 6px">'
+      +priLabel[pri]+' ('+items.length+')</div>';
+    items.forEach(function(item){
+      var isDone=item.status==='done';
+      h+='<div class="txp-row">'
+        +'<div class="txp-pri" style="background:'+priColor[pri]+'22;color:'+priColor[pri]+';border:1.5px solid '+priColor[pri]+'44">'
+          +(item.tooth||'—')+'</div>'
+        +'<div style="flex:1;min-width:0">'
+          +'<div style="font-size:.85rem;font-weight:600;color:var(--ink);text-decoration:'+(isDone?'line-through':'none')+';opacity:'+(isDone?.55:1)+'">'+esc(item.procedure||'')+'</div>'
+          +(item.notes?'<div style="font-size:.7rem;color:var(--slate);margin-top:2px">'+esc(item.notes)+'</div>':'')
+        +'</div>'
+        +'<div style="display:flex;flex-direction:column;gap:4px;flex-shrink:0">'
+          +'<select onchange="updateTxStatus(\''+item.id+'\',this.value)" style="font-size:.62rem;padding:4px 6px;border-radius:6px;border:1px solid var(--ln);background:var(--warm);color:var(--ink);font-family:inherit;cursor:pointer">'
+          +statusOpts.map(function(s){return '<option value="'+s+'"'+(item.status===s?' selected':'')+'>'+s+'</option>';}).join('')
+          +'</select>'
+          +'<button onclick="delTxItem(\''+item.id+'\')" style="font-size:.62rem;padding:4px 6px;border-radius:6px;background:rgba(192,57,43,.07);border:1px solid rgba(192,57,43,.2);color:var(--red);cursor:pointer;font-family:inherit">Remove</button>'
+        +'</div>'
+        +'</div>';
+    });
+  });
+  body.innerHTML=h;
+}
+
+function addTxItem(){
+  var tooth=document.getElementById('txa-tooth').value.trim();
+  var procSel=document.getElementById('txa-proc');
+  var proc=procSel.value==='__custom'?prompt('Enter procedure name:'):procSel.value;
+  if(!proc)return;
+  var pri=document.getElementById('txa-pri').value;
+  var notes=document.getElementById('txa-notes').value.trim();
+  var pat=P[_txPatId]; if(!pat)return;
+  if(!pat.chart.txPlan)pat.chart.txPlan=[];
+  pat.chart.txPlan.push({id:uid(),tooth:tooth,procedure:proc,priority:parseInt(pri),status:'pending',notes:notes});
+  saveQuiet();
+  document.getElementById('txa-tooth').value='';
+  document.getElementById('txa-notes').value='';
+  renderTxPlan();
+  toast('✓ Item added');
+}
+
+function delTxItem(id){
+  var pat=P[_txPatId]; if(!pat||!pat.chart||!pat.chart.txPlan)return;
+  pat.chart.txPlan=pat.chart.txPlan.filter(function(x){return x.id!==id;});
+  saveQuiet(); renderTxPlan();
+}
+
+function updateTxStatus(id,status){
+  var pat=P[_txPatId]; if(!pat||!pat.chart||!pat.chart.txPlan)return;
+  var item=pat.chart.txPlan.find(function(x){return x.id===id;});
+  if(item){item.status=status;saveQuiet();renderTxPlan();}
+}
+
+function printTxPlan(){
+  var pat=P[_txPatId]; if(!pat)return;
+  var patName=pat.name||'Patient';
+  var plan=(pat.chart&&pat.chart.txPlan)||[];
+  var diagRows=getChartDiagnosis();
+  var COND=getCOND(_chartMode);
+
+  var w=window.open('','_blank','width=900,height=700');
+  if(!w){toast('Allow pop-ups to print');return;}
+
+  var priLabel={1:'Urgent',2:'Routine',3:'Elective'};
+  var priColor={1:'#EF4444',2:'#F59E0B',3:'#22C55E'};
+  var statusIcon={'pending':'⏳','in progress':'🔄','done':'✅'};
+
+  var diagHTML='';
+  if(diagRows.length){
+    diagHTML='<div class="section-title">Current Diagnosis</div>'
+      +'<table class="tbl"><thead><tr><th>Tooth</th><th>Surface</th><th>Condition</th></tr></thead><tbody>';
+    diagRows.forEach(function(row){
+      row.conds.forEach(function(c,i){
+        diagHTML+='<tr>'
+          +(i===0?'<td rowspan="'+row.conds.length+'" class="tooth-num">'+row.tooth+'</td>':'')
+          +'<td>'+c.surf+'</td>'
+          +'<td><span class="badge" style="background:'+c.color+';border-color:'+c.border+'">'+c.label+'</span></td>'
+          +'</tr>';
+      });
+    });
+    diagHTML+='</tbody></table>';
+  }
+
+  var planHTML='<div class="section-title" style="margin-top:20px">Treatment Plan</div>';
+  if(!plan.length){
+    planHTML+='<p style="color:#9CA3AF;font-size:.78rem;font-style:italic">No treatment plan items recorded.</p>';
+  } else {
+    planHTML+='<table class="tbl"><thead><tr><th>Tooth</th><th>Procedure</th><th>Priority</th><th>Status</th><th>Notes</th></tr></thead><tbody>';
+    [1,2,3].forEach(function(pri){
+      plan.filter(function(x){return parseInt(x.priority)===pri;}).forEach(function(item){
+        planHTML+='<tr>'
+          +'<td class="tooth-num">'+esc(item.tooth||'—')+'</td>'
+          +'<td style="font-weight:600">'+esc(item.procedure||'')+'</td>'
+          +'<td><span class="badge" style="background:'+priColor[pri]+'18;border-color:'+priColor[pri]+'66;color:'+priColor[pri]+'">'+priLabel[pri]+'</span></td>'
+          +'<td>'+(statusIcon[item.status]||'')+'&nbsp;'+esc(item.status||'pending')+'</td>'
+          +'<td style="color:#6B7280;font-size:.72rem">'+esc(item.notes||'')+'</td>'
+          +'</tr>';
+      });
+    });
+    planHTML+='</tbody></table>';
+  }
+
+  w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8">'
+    +'<title>Treatment Plan — '+patName+'</title>'
+    +'<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">'
+    +'<style>'
+    +'*{box-sizing:border-box;margin:0;padding:0}'
+    +'body{font-family:Outfit,sans-serif;background:#fff;color:#1C2B22;padding:20px 24px}'
+    +'h1{font-family:"Playfair Display",serif;font-size:1.5rem;color:#0F2318;margin-bottom:3px}'
+    +'.meta{font-size:.72rem;color:#4A6355;margin-bottom:20px;display:flex;gap:14px;flex-wrap:wrap}'
+    +'.section-title{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#2A5C3F;margin-bottom:8px;padding-bottom:4px;border-bottom:1.5px solid #E4DDD4}'
+    +'.tbl{width:100%;border-collapse:collapse;font-size:.78rem;margin-bottom:6px}'
+    +'.tbl th{text-align:left;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#4A6355;padding:6px 8px;border-bottom:1.5px solid #E4DDD4}'
+    +'.tbl td{padding:6px 8px;border-bottom:1px solid #F3F4F6;vertical-align:middle}'
+    +'.tbl tr:last-child td{border-bottom:none}'
+    +'.tooth-num{font-weight:700;font-size:.82rem}'
+    +'.badge{display:inline-block;padding:2px 9px;border-radius:20px;font-size:.66rem;font-weight:600;border:1px solid transparent}'
+    +'@page{size:A4;margin:12mm}'
+    +'@media print{body{padding:0}}'
+    +'</style></head><body>'
+    +'<h1>Treatment Plan</h1>'
+    +'<div class="meta">'
+    +'<span>Patient: <strong>'+patName+'</strong></span>'
+    +(pat.age?'<span>Age: <strong>'+pat.age+'</strong></span>':'')
+    +(pat.gender?'<span>Gender: <strong>'+pat.gender+'</strong></span>':'')
+    +'<span>Mode: <strong>'+MODE_LABELS[_chartMode]+'</strong></span>'
+    +'<span>Date: <strong>'+new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})+'</strong></span>'
+    +'</div>'
+    +diagHTML
+    +planHTML
+    +'<script>window.onload=function(){setTimeout(function(){window.print();},300);}<\/script>'
     +'</body></html>');
   w.document.close();
 }
@@ -2117,205 +2573,107 @@ function perioToothSVG(tooth, isMolar, isUpper, width, height){
 
 function renderPerioChart(){
   var b=document.getElementById('perio-body'); if(!b)return;
-  var h='<div style="padding:12px 8px 20px">';
+  var mob=S.mob;
+  var toothW=mob?30:38, toothSvgH=mob?50:62, probH=mob?62:80;
+  var inputSz=mob?25:32, inputH=mob?22:26, labelW=mob?82:108;
+  var fsSm=mob?'.58rem':'.62rem', fsIn=mob?'.68rem':'.75rem';
+  var h='<div style="padding:8px 0 20px">';
 
-  function drawArch(teeth, isUpper, label){
-    var archH='';
-    var toothW=38, toothSvgH=60, probH=80, inputH=28, bleedH=14;
-    var totalW=teeth.length*toothW + 20;
-
-    archH+='<div style="margin-bottom:16px">';
-    archH+='<div style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--FL);text-align:center;margin-bottom:6px">'+label+'</div>';
-
-    // SVG perio diagram
-    var svgH = toothSvgH + probH + bleedH + 20;
-    if(!isUpper) svgH = probH + toothSvgH + bleedH + 20;
-
-    archH += '<div style="overflow-x:auto;-webkit-overflow-scrolling:touch">';
-    archH += '<svg width="'+(totalW)+'" height="'+(svgH)+'" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:0 auto">';
-
-    var xStart=10;
-    var toothY = isUpper ? 0 : probH+10;
-    var probY  = isUpper ? toothSvgH+5 : 5;
-    var gumLineY = isUpper ? toothSvgH+5 : probH+5;
-    var mgJY = isUpper ? toothSvgH+probH*0.75 : probH*0.25+5;
-
-    // Background grid lines
-    for(var gi=0;gi<=5;gi++){
-      var gy=probY + gi*(probH/5);
-      archH+=''; // will add to SVG string below
-    }
-
-    // Build SVG content
-    var svgContent='';
-
-    // Grid lines in probe area
-    for(var gi=0;gi<=5;gi++){
-      var gy=probY + gi*(probH/5);
-      svgContent+='<line x1="'+xStart+'" y1="'+gy+'" x2="'+(xStart+teeth.length*toothW)+'" y2="'+gy+'" stroke="#E4DDD4" stroke-width="0.5"/>';
-    }
-
-    // Gingival margin line (purple) - connects midpoints
-    var gmPoints=[];
-    var calPoints=[];
+  function drawArch(teeth,isUpper,label){
+    var totalW=teeth.length*toothW, svgTotalH=toothSvgH+probH+18;
+    var toothY=isUpper?0:probH+8, probY=isUpper?toothSvgH+5:5;
+    var mgJY=isUpper?toothSvgH+probH*0.75:probH*0.25+5;
+    var lblStyle='position:sticky;left:0;z-index:3;background:var(--cream);text-align:right;padding:3px 7px 3px 4px;font-weight:600;white-space:nowrap;color:var(--slate);font-size:'+fsSm+';border-bottom:1px solid var(--ln);min-width:'+labelW+'px';
+    var cellStyle='padding:2px 1px;text-align:center;border-bottom:1px solid var(--ln);width:'+toothW+'px';
+    var aH='<div style="margin-bottom:18px;padding:0 8px">';
+    aH+='<div style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--FL);margin-bottom:6px">'+label+'</div>';
+    aH+='<div style="overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:10px;border:1px solid var(--ln);background:var(--warm)">';
+    aH+='<table style="border-collapse:collapse;font-size:'+fsSm+';table-layout:fixed">';
+    // Header: tooth numbers
+    aH+='<thead><tr><th style="'+lblStyle+';font-weight:400;color:var(--mist);font-size:.5rem;border-bottom:1.5px solid var(--ln)"> </th>';
+    teeth.forEach(function(t){ aH+='<th style="width:'+toothW+'px;text-align:center;font-size:'+fsSm+';font-weight:700;color:var(--slate);padding:3px 0;border-bottom:1.5px solid var(--ln)">'+t+'</th>'; });
+    aH+='</tr></thead><tbody>';
+    // SVG row
+    aH+='<tr><td style="'+lblStyle+';font-style:italic;font-weight:400;color:var(--mist)">'+(isUpper?'&uarr;':'&darr;')+'</td>';
+    aH+='<td colspan="'+teeth.length+'" style="padding:0;line-height:0">';
+    aH+='<svg width="'+totalW+'" height="'+svgTotalH+'" xmlns="http://www.w3.org/2000/svg" style="display:block">';
+    var sc='';
+    // Grid
+    for(var gi=0;gi<=5;gi++){var gy=probY+gi*(probH/5);sc+='<line x1="0" y1="'+gy+'" x2="'+totalW+'" y2="'+gy+'" stroke="#E4DDD4" stroke-width="0.5"/>';}
+    // GM/CAL lines
+    var gm2=[],cal2=[];
     teeth.forEach(function(tooth,i){
-      var d=getPerioData(tooth);
-      var gm=parseFloat(d.gm||0);
-      var pd3=[(parseFloat(d.pd_m||3)),(parseFloat(d.pd_b||3)),(parseFloat(d.pd_d||3))];
-      var avgPd=(pd3[0]+pd3[1]+pd3[2])/3;
-      var cx2=xStart+i*toothW+toothW/2;
-      var gmY=isUpper ? probY+probH*(gm/10) : probY+probH*(1-gm/10);
-      var calY=isUpper ? probY+probH*(avgPd/10) : probY+probH*(1-avgPd/10);
-      gmPoints.push(cx2+','+gmY);
-      calPoints.push(cx2+','+calY);
+      var d=getPerioData(tooth),gm=parseFloat(d.gm||0);
+      var avgPd=(parseFloat(d.pd_m||3)+parseFloat(d.pd_b||3)+parseFloat(d.pd_d||3))/3;
+      var cx2=i*toothW+toothW/2;
+      gm2.push(cx2+','+(isUpper?probY+probH*(gm/10):probY+probH*(1-gm/10)));
+      cal2.push(cx2+','+(isUpper?probY+probH*(avgPd/10):probY+probH*(1-avgPd/10)));
     });
-    if(gmPoints.length>1){
-      svgContent+='<polyline points="'+gmPoints.join(' ')+'" fill="none" stroke="#9333EA" stroke-width="1.5" stroke-linejoin="round"/>';
-      svgContent+='<polyline points="'+calPoints.join(' ')+'" fill="none" stroke="#2563EB" stroke-width="1.5" stroke-linejoin="round"/>';
+    if(gm2.length>1){
+      sc+='<polyline points="'+gm2.join(' ')+'" fill="none" stroke="#9333EA" stroke-width="1.5" stroke-linejoin="round"/>';
+      sc+='<polyline points="'+cal2.join(' ')+'" fill="none" stroke="#2563EB" stroke-width="1.5" stroke-linejoin="round"/>';
     }
-    // Mucogingival junction line (orange)
-    svgContent+='<line x1="'+xStart+'" y1="'+mgJY+'" x2="'+(xStart+teeth.length*toothW)+'" y2="'+mgJY+'" stroke="#F97316" stroke-width="1.2" stroke-dasharray="4,3"/>';
-
-    // Per-tooth elements
+    sc+='<line x1="0" y1="'+mgJY+'" x2="'+totalW+'" y2="'+mgJY+'" stroke="#F97316" stroke-width="1.2" stroke-dasharray="4,3"/>';
+    // Teeth
     teeth.forEach(function(tooth,i){
-      var d=getPerioData(tooth);
-      var n=parseInt(tooth.split('.')[1]);
-      var isMolar=(n>=6&&n<=8);
-      var cx2=xStart+i*toothW+toothW/2;
-      var tx=xStart+i*toothW;
-
-      // Tooth silhouette (embedded as foreignObject equivalent — use rect+path approximation)
-      // Draw simplified tooth shape directly in SVG
-      var tw=toothW-4, th=toothSvgH-4;
-      var tcx=tx+2+tw/2, tcy=toothY+2+th/2;
-      var crownH=th*0.42, rootH=th*0.52;
-      var crownW=isMolar?tw*0.88:tw*0.68;
-      var crownX=tcx-crownW/2, crownY=toothY+2;
-
-      // Crown
-      svgContent+='<rect x="'+crownX+'" y="'+crownY+'" width="'+crownW+'" height="'+(crownH)+'" rx="'+(crownW*0.22)+'" fill="#F0EBE0" stroke="#C8B89A" stroke-width="1"/>';
-      // Root(s)
-      var neckY=crownY+crownH;
-      if(isMolar){
-        var rw2=crownW*0.32, rh2=rootH*0.85;
-        if(isUpper){
-          svgContent+='<rect x="'+(crownX+crownW*0.04)+'" y="'+neckY+'" width="'+rw2+'" height="'+rh2+'" rx="'+(rw2*0.45)+'" fill="#F0EBE0" stroke="#C8B89A" stroke-width="0.9"/>';
-          svgContent+='<rect x="'+(crownX+crownW*0.36)+'" y="'+neckY+'" width="'+(rw2*0.65)+'" height="'+(rh2*0.75)+'" rx="'+(rw2*0.4)+'" fill="#F0EBE0" stroke="#C8B89A" stroke-width="0.9"/>';
-          svgContent+='<rect x="'+(crownX+crownW*0.62)+'" y="'+neckY+'" width="'+rw2+'" height="'+rh2+'" rx="'+(rw2*0.45)+'" fill="#F0EBE0" stroke="#C8B89A" stroke-width="0.9"/>';
-        } else {
-          svgContent+='<rect x="'+(crownX+crownW*0.06)+'" y="'+neckY+'" width="'+rw2+'" height="'+rh2+'" rx="'+(rw2*0.45)+'" fill="#F0EBE0" stroke="#C8B89A" stroke-width="0.9"/>';
-          svgContent+='<rect x="'+(crownX+crownW*0.6)+'" y="'+neckY+'" width="'+rw2+'" height="'+rh2+'" rx="'+(rw2*0.45)+'" fill="#F0EBE0" stroke="#C8B89A" stroke-width="0.9"/>';
-        }
-      } else {
-        var rw2=crownW*0.52, rh2=rootH*0.85;
-        svgContent+='<rect x="'+(tcx-rw2/2)+'" y="'+neckY+'" width="'+rw2+'" height="'+rh2+'" rx="'+(rw2*0.45)+'" fill="#F0EBE0" stroke="#C8B89A" stroke-width="0.9"/>';
-      }
-
-      // Probing depth bars (3 per tooth: M, B/L, D)
-      var sites=['pd_m','pd_b','pd_d'];
-      var siteX=[tx+3, cx2-3, tx+toothW-11];
+      var d=getPerioData(tooth),n=parseInt(tooth.split('.')[1]),isMolar=(n>=6&&n<=8);
+      var tx=i*toothW,cx2=tx+toothW/2,tw2=toothW-4,th2=toothSvgH-4;
+      var cH=th2*0.42,cW=isMolar?tw2*0.88:tw2*0.68;
+      var cX=tx+(toothW-cW)/2,cY=toothY+2;
+      sc+='<rect x="'+cX+'" y="'+cY+'" width="'+cW+'" height="'+cH+'" rx="'+(cW*0.22)+'" fill="#F0EBE0" stroke="#C8B89A" stroke-width="1"/>';
+      var nY=cY+cH,rH=th2*0.52;
+      if(isMolar){var rw=cW*0.32,rh=rH*0.85;
+        if(isUpper){sc+='<rect x="'+(cX+cW*0.04)+'" y="'+nY+'" width="'+rw+'" height="'+rh+'" rx="'+(rw*0.45)+'" fill="#F0EBE0" stroke="#C8B89A" stroke-width="0.9"/>';sc+='<rect x="'+(cX+cW*0.36)+'" y="'+nY+'" width="'+(rw*0.65)+'" height="'+(rh*0.75)+'" rx="'+(rw*0.4)+'" fill="#F0EBE0" stroke="#C8B89A" stroke-width="0.9"/>';sc+='<rect x="'+(cX+cW*0.62)+'" y="'+nY+'" width="'+rw+'" height="'+rh+'" rx="'+(rw*0.45)+'" fill="#F0EBE0" stroke="#C8B89A" stroke-width="0.9"/>';}
+        else{sc+='<rect x="'+(cX+cW*0.06)+'" y="'+nY+'" width="'+rw+'" height="'+rh+'" rx="'+(rw*0.45)+'" fill="#F0EBE0" stroke="#C8B89A" stroke-width="0.9"/>';sc+='<rect x="'+(cX+cW*0.6)+'" y="'+nY+'" width="'+rw+'" height="'+rh+'" rx="'+(rw*0.45)+'" fill="#F0EBE0" stroke="#C8B89A" stroke-width="0.9"/>';}
+      }else{var rw=cW*0.52,rh=rH*0.85;sc+='<rect x="'+(cx2-rw/2)+'" y="'+nY+'" width="'+rw+'" height="'+rh+'" rx="'+(rw*0.45)+'" fill="#F0EBE0" stroke="#C8B89A" stroke-width="0.9"/>';}
+      // PD bars
+      var sites=['pd_m','pd_b','pd_d'],sOff=[1,toothW/2-3,toothW-8];
       sites.forEach(function(site,si){
-        var pd_val=parseFloat(d[site]||0);
-        var bleed=d['bl_'+site.split('_')[1]]==='1';
-        var barH=pd_val>0 ? Math.min(probH-4, pd_val*(probH/10)) : 0;
-        var barW=5;
-        var bx=siteX[si];
-        var by=isUpper ? probY+probH-barH-2 : probY+2;
-
-        if(barH>0){
-          svgContent+='<rect x="'+bx+'" y="'+by+'" width="'+barW+'" height="'+barH+'" rx="2" fill="'+(bleed?'#EF4444':'#16A34A')+'"/>';
-        }
-        // Bleeding dot
-        if(bleed){
-          var dotY=isUpper ? probY+probH+4 : probY-4;
-          svgContent+='<circle cx="'+(bx+barW/2)+'" cy="'+dotY+'" r="3" fill="#EF4444"/>';
-        }
+        var pv=parseFloat(d[site]||0),bl=d['bl_'+site.split('_')[1]]==='1';
+        var bH=pv>0?Math.min(probH-4,pv*(probH/10)):0,bW=Math.max(3,toothW*0.13),bx=tx+sOff[si],by=isUpper?probY+probH-bH-2:probY+2;
+        if(bH>0)sc+='<rect x="'+bx+'" y="'+by+'" width="'+bW+'" height="'+bH+'" rx="2" fill="'+(bl?'#EF4444':'#16A34A')+'"/>';
+        if(bl)sc+='<circle cx="'+(bx+bW/2)+'" cy="'+(isUpper?probY+probH+4:probY-4)+'" r="3" fill="#EF4444"/>';
       });
-
-      // Furcation indicator for molars
-      if(isMolar){
-        var furc=parseInt(d.furc||0);
-        if(furc>0){
-          var fx=cx2, fy=isUpper ? toothY+toothSvgH-4 : toothY+4;
-          var fColors=['','#F97316','#EF4444','#991B1B'];
-          // Triangle
-          var ts=7;
-          if(isUpper){
-            svgContent+='<polygon points="'+fx+','+(fy)+' '+(fx-ts/2)+','+(fy+ts)+' '+(fx+ts/2)+','+(fy+ts)+'" fill="'+(furc===1?'none':fColors[furc])+'" stroke="'+fColors[furc]+'" stroke-width="1.5"/>';
-          } else {
-            svgContent+='<polygon points="'+fx+','+(fy)+' '+(fx-ts/2)+','+(fy-ts)+' '+(fx+ts/2)+','+(fy-ts)+'" fill="'+(furc===1?'none':fColors[furc])+'" stroke="'+fColors[furc]+'" stroke-width="1.5"/>';
-          }
-        }
-      }
-
-      // Tooth number label
-      var numY=isUpper ? svgH-4 : 10;
-      svgContent+='<text x="'+cx2+'" y="'+numY+'" text-anchor="middle" font-size="8" font-family="Outfit,sans-serif" font-weight="700" fill="#4A6355">'+tooth+'</text>';
+      // Furcation
+      if(isMolar){var furc=parseInt(d.furc||0);if(furc>0){
+        var fC=['','#F97316','#EF4444','#991B1B'][furc]||'#F97316',fx=cx2,fy=isUpper?toothY+toothSvgH-4:toothY+4,ts=6;
+        sc+=isUpper?'<polygon points="'+fx+','+fy+' '+(fx-ts/2)+','+(fy+ts)+' '+(fx+ts/2)+','+(fy+ts)+'" fill="'+(furc===1?'none':fC)+'" stroke="'+fC+'" stroke-width="1.5"/>':'<polygon points="'+fx+','+fy+' '+(fx-ts/2)+','+(fy-ts)+' '+(fx+ts/2)+','+(fy-ts)+'" fill="'+(furc===1?'none':fC)+'" stroke="'+fC+'" stroke-width="1.5"/>';
+      }}
     });
-
-    archH += svgContent + '</svg></div>';
-
-    // Input rows
-    archH += '<div style="overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:6px">';
-    archH += '<table style="border-collapse:collapse;margin:0 auto;font-size:.65rem">';
-    // Row labels
-    var rows=[
-      {key:'pd_b', label:'PD Buccal (mm)', placeholder:'3'},
-      {key:'pd_m', label:'PD Mesial (mm)', placeholder:'3'},
-      {key:'pd_d', label:'PD Distal (mm)', placeholder:'3'},
-      {key:'gm',   label:'Gingival Margin', placeholder:'0'},
-      {key:'furc', label:'Furcation (0-3)', placeholder:'0'},
-      {key:'calc', label:'Calculus (0-3)', placeholder:'0'},
-      {key:'stain',label:'Staining (0-3)', placeholder:'0'},
-    ];
-    // Bleeding checkboxes
-    archH += '<tr><td style="padding:2px 4px;color:var(--slate);font-weight:600;white-space:nowrap;text-align:right">Bleeding</td>';
-    teeth.forEach(function(tooth){
-      var d=getPerioData(tooth);
-      var checked=d.bl_b==='1';
-      archH+='<td style="padding:2px 3px;text-align:center"><input type="checkbox" data-tooth="'+tooth+'" data-field="bl_b" '+(checked?'checked':'')+' onchange="perioCbChange(this)" style="width:14px;height:14px;accent-color:#EF4444"></td>';
+    aH+=sc+'</svg></td></tr>';
+    // Bleeding row
+    aH+='<tr><td style="'+lblStyle+'">Bleeding</td>';
+    teeth.forEach(function(tooth){var d=getPerioData(tooth);aH+='<td style="'+cellStyle+'"><input type="checkbox" data-tooth="'+tooth+'" data-field="bl_b" '+(d.bl_b==='1'?'checked':'')+' onchange="perioCbChange(this)" style="width:15px;height:15px;accent-color:#EF4444;cursor:pointer;margin:1px auto;display:block"></td>';});
+    aH+='</tr>';
+    // Data rows
+    [{key:'pd_b',lbl:'PD Buccal',ph:'3',mx:'20'},{key:'pd_m',lbl:'PD Mesial',ph:'3',mx:'20'},{key:'pd_d',lbl:'PD Distal',ph:'3',mx:'20'},{key:'gm',lbl:'Gingival Margin',ph:'0',mx:'20'},{key:'furc',lbl:'Furcation (0-3)',ph:'0',mx:'3'},{key:'calc',lbl:'Calculus (0-3)',ph:'0',mx:'3'}].forEach(function(row,ri,arr){
+      var last=ri===arr.length-1,ls=lblStyle+(last?';border-bottom:none':''),cs=cellStyle+(last?';border-bottom:none':'');
+      aH+='<tr><td style="'+ls+'">'+row.lbl+'</td>';
+      teeth.forEach(function(tooth){var d=getPerioData(tooth);aH+='<td style="'+cs+'"><input class="perio-input" type="number" inputmode="numeric" pattern="[0-9]*" data-tooth="'+tooth+'" data-field="'+row.key+'" min="0" max="'+row.mx+'" value="'+(d[row.key]||'')+'" placeholder="'+row.ph+'" onchange="perioInputChange(this)" style="width:'+inputSz+'px;height:'+inputH+'px;border:1px solid var(--ln);border-radius:4px;text-align:center;font-size:'+fsIn+';background:var(--warm);color:var(--ink);font-family:inherit;display:block;margin:0 auto"></td>';});
+      aH+='</tr>';
     });
-    archH += '</tr>';
-    rows.forEach(function(row){
-      archH += '<tr>';
-      archH += '<td style="padding:2px 4px;color:var(--slate);font-weight:600;white-space:nowrap;text-align:right;font-size:.62rem">'+row.label+'</td>';
-      teeth.forEach(function(tooth){
-        var d=getPerioData(tooth);
-        var val=d[row.key]||'';
-        archH += '<td style="padding:2px 3px;text-align:center">'
-          +'<input class="perio-input" type="number" data-tooth="'+tooth+'" data-field="'+row.key+'" min="0" max="'+(row.key==='furc'||row.key==='calc'||row.key==='stain'?'3':'20')+'" value="'+val+'" placeholder="'+row.placeholder+'"'
-          +' onchange="perioInputChange(this)" style="width:34px;height:24px;border:1px solid var(--ln);border-radius:4px;text-align:center;font-size:.75rem;background:var(--warm);color:var(--ink)">'
-          +'</td>';
-      });
-      archH += '</tr>';
-    });;
-    archH += '</table></div>';
-    archH += '</div>';
-    return archH;
+    aH+='</tbody></table></div></div>';
+    return aH;
   }
 
-  h += drawArch(PERIO_U, true, 'Upper Arch — Buccal');
-  h += '<div style="height:1px;background:var(--ln);margin:8px 0"></div>';
-  h += drawArch(PERIO_L, false, 'Lower Arch — Buccal');
-
-  // Legend
-  h += '<div style="background:var(--warm);border-radius:12px;border:1px solid var(--ln);padding:12px 16px;margin-top:12px">';
-  h += '<div style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--FL);margin-bottom:8px">Legend</div>';
-  h += '<div style="display:flex;flex-wrap:wrap;gap:12px;font-size:.7rem;color:var(--ink)">';
-  h += '<div style="display:flex;align-items:center;gap:5px"><svg width="12" height="12"><circle cx="6" cy="6" r="5" fill="#EF4444"/></svg>Bleeding on Probing</div>';
-  h += '<div style="display:flex;align-items:center;gap:5px"><svg width="16" height="12"><rect x="0" y="0" width="6" height="12" rx="2" fill="#16A34A"/></svg>Probing Depth (healthy)</div>';
-  h += '<div style="display:flex;align-items:center;gap:5px"><svg width="16" height="12"><rect x="0" y="0" width="6" height="12" rx="2" fill="#EF4444"/></svg>Probing Depth (bleeding)</div>';
-  h += '<div style="display:flex;align-items:center;gap:5px"><svg width="20" height="8"><line x1="0" y1="4" x2="20" y2="4" stroke="#9333EA" stroke-width="2"/></svg>Gingival Margin</div>';
-  h += '<div style="display:flex;align-items:center;gap:5px"><svg width="20" height="8"><line x1="0" y1="4" x2="20" y2="4" stroke="#2563EB" stroke-width="2"/></svg>Clinical Attachment Level</div>';
-  h += '<div style="display:flex;align-items:center;gap:5px"><svg width="20" height="8"><line x1="0" y1="4" x2="20" y2="4" stroke="#F97316" stroke-width="2" stroke-dasharray="4,2"/></svg>Mucogingival Junction</div>';
-  h += '<div style="display:flex;align-items:center;gap:5px"><svg width="14" height="12"><polygon points="7,0 0,12 14,12" fill="none" stroke="#F97316" stroke-width="1.5"/></svg>Furcation Grade 1</div>';
-  h += '<div style="display:flex;align-items:center;gap:5px"><svg width="14" height="12"><polygon points="7,0 0,12 14,12" fill="#EF4444" stroke="#EF4444" stroke-width="1.5"/></svg>Furcation Grade 2-3</div>';
-  h += '</div></div>';
-
-  h += '</div>';
-  b.innerHTML = h;
+  h+=drawArch(PERIO_U,true,'Upper Arch \u2014 Buccal');
+  h+='<div style="height:1px;background:var(--ln);margin:4px 8px 12px"></div>';
+  h+=drawArch(PERIO_L,false,'Lower Arch \u2014 Buccal');
+  h+='<div style="background:var(--warm);border-radius:12px;border:1px solid var(--ln);padding:12px 16px;margin:8px 8px 0">';
+  h+='<div style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--FL);margin-bottom:8px">Legend</div>';
+  h+='<div style="display:flex;flex-wrap:wrap;gap:10px;font-size:.68rem;color:var(--ink)">';
+  h+='<span style="display:flex;align-items:center;gap:4px"><svg width="10" height="10"><circle cx="5" cy="5" r="4" fill="#EF4444"/></svg>Bleeding on Probing</span>';
+  h+='<span style="display:flex;align-items:center;gap:4px"><svg width="14" height="10"><rect x="0" y="0" width="5" height="10" rx="2" fill="#16A34A"/></svg>PD Healthy</span>';
+  h+='<span style="display:flex;align-items:center;gap:4px"><svg width="14" height="10"><rect x="0" y="0" width="5" height="10" rx="2" fill="#EF4444"/></svg>PD Bleeding</span>';
+  h+='<span style="display:flex;align-items:center;gap:4px"><svg width="18" height="8"><line x1="0" y1="4" x2="18" y2="4" stroke="#9333EA" stroke-width="2"/></svg>Gingival Margin</span>';
+  h+='<span style="display:flex;align-items:center;gap:4px"><svg width="18" height="8"><line x1="0" y1="4" x2="18" y2="4" stroke="#2563EB" stroke-width="2"/></svg>CAL</span>';
+  h+='<span style="display:flex;align-items:center;gap:4px"><svg width="18" height="8"><line x1="0" y1="4" x2="18" y2="4" stroke="#F97316" stroke-width="2" stroke-dasharray="4,2"/></svg>MGJ</span>';
+  h+='<span style="display:flex;align-items:center;gap:4px"><svg width="12" height="10"><polygon points="6,0 0,10 12,10" fill="none" stroke="#F97316" stroke-width="1.5"/></svg>Furc I</span>';
+  h+='<span style="display:flex;align-items:center;gap:4px"><svg width="12" height="10"><polygon points="6,0 0,10 12,10" fill="#EF4444" stroke="#EF4444" stroke-width="1.5"/></svg>Furc II\u2013III</span>';
+  h+='</div></div>';
+  h+='</div>';
+  b.innerHTML=h;
 }
-
 function perioCbChange(el){
   var tooth=el.getAttribute('data-tooth'), field=el.getAttribute('data-field');
   setPerioData(tooth,field,el.checked?'1':'0');
