@@ -1234,43 +1234,41 @@ function buildApptPanel(){
     +'<label class="lbl">Appointment Notes</label>'
     +'<textarea class="inp" id="ap-notes" style="min-height:52px" oninput="_AF.notes=this.value">'+esc(f.notes)+'</textarea></div>'
 
-```
 // Patient
-+'<div style="margin-bottom:20px"><div class="sbar">Patient</div>'
-+'<select class="inp" id="ap-pat" onchange="apPatChange(this.value)">'+patOpts+'</select>'
-+'<button onclick="quickNewPat()" style="margin-top:8px;font-size:.77rem;color:var(--FL);font-weight:600;text-decoration:underline;cursor:pointer">+ Create new patient</button>'
-+'</div>'
++’<div style="margin-bottom:20px"><div class="sbar">Patient</div>’
++’<select class="inp" id="ap-pat" onchange="apPatChange(this.value)">’+patOpts+’</select>’
++’<button onclick="quickNewPat()" style="margin-top:8px;font-size:.77rem;color:var(--FL);font-weight:600;text-decoration:underline;cursor:pointer">+ Create new patient</button>’
++’</div>’
 // Clinical
-+'<div id="ap-clin" style="'+(f.patientId?'':'opacity:.4;pointer-events:none')+'">'
-+'<div class="sbar">🦷 Visit Record</div>'
-+'<div style="margin-bottom:10px"><label class="lbl">Chief Complaint</label>'
-+'<input class="inp" id="ap-cc" value="'+esc(f.complaint)+'" placeholder="e.g. Pain upper right molar" oninput="_AF.complaint=this.value"></div>'
-+'<div style="margin-bottom:14px"><label class="lbl">Diagnosis</label>'
-+'<textarea class="inp" id="ap-dx" style="min-height:60px" oninput="_AF.diag=this.value">'+esc(f.diag)+'</textarea></div>'
++’<div id="ap-clin" style="'+(f.patientId?'':'opacity:.4;pointer-events:none')+'">’
++’<div class="sbar">🦷 Visit Record</div>’
++’<div style="margin-bottom:10px"><label class="lbl">Chief Complaint</label>’
++’<input class="inp" id="ap-cc" value="'+esc(f.complaint)+'" placeholder="e.g. Pain upper right molar" oninput="_AF.complaint=this.value"></div>’
++’<div style="margin-bottom:14px"><label class="lbl">Diagnosis</label>’
++’<textarea class="inp" id="ap-dx" style="min-height:60px" oninput="_AF.diag=this.value">’+esc(f.diag)+’</textarea></div>’
 // Treatments
-+'<div style="margin-bottom:14px">'
-+'<label class="lbl" style="margin-bottom:8px">Treatments Done</label>'
-+'<div id="ap-tx-pick" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px">'+txPickerHTML()+'</div>'
-+'<div id="ap-tx-rows">'+txRowsHTML()+'</div>'
-+'</div>'
-+'<div style="margin-bottom:10px"><label class="lbl">Visit Notes</label>'
-+'<textarea class="inp" id="ap-vn" style="min-height:60px" oninput="_AF.vnotes=this.value">'+esc(f.vnotes)+'</textarea></div>'
++’<div style="margin-bottom:14px">’
++’<label class="lbl" style="margin-bottom:8px">Treatments Done</label>’
++’<div id="ap-tx-pick" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px">’+txPickerHTML()+’</div>’
++’<div id="ap-tx-rows">’+txRowsHTML()+’</div>’
++’</div>’
++’<div style="margin-bottom:10px"><label class="lbl">Visit Notes</label>’
++’<textarea class="inp" id="ap-vn" style="min-height:60px" oninput="_AF.vnotes=this.value">’+esc(f.vnotes)+’</textarea></div>’
 // Photos
-+'<div><div class="sbar">📷 Photos</div>'
-+'<div onclick="document.getElementById(\'ap-pf\').click()" style="border:2px dashed var(--ln);border-radius:12px;padding:16px;text-align:center;background:var(--parch);cursor:pointer">'
-+'<div style="font-size:1.5rem;margin-bottom:4px">🔬</div>'
-+'<div style="font-size:.8rem;font-weight:600;color:var(--slate)">Upload Clinical Photos</div>'
-+'<div style="font-size:.69rem;color:var(--mist);margin-top:2px">X-rays · Intraoral · Periapical</div></div>'
-+'<input type="file" id="ap-pf" accept="image/*" multiple style="display:none" onchange="addPhotos(this)">'
-+'<div id="ap-pg" style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:8px">'+phH+'</div>'
-+'</div></div>'
-+'</div>'
-+'<div style="padding:'+(S.mob?'12px 18px':'12px 22px')+';padding-bottom:'+(S.mob?'max(12px,env(safe-area-inset-bottom))':'12px')+';border-top:1px solid var(--ln);display:flex;gap:9px;background:var(--cream);flex-shrink:0">'
-+'<button class="bghost" onclick="closePanel()" style="padding:12px 18px;font-size:.88rem">Cancel</button>'
-+((_AF.patientId&&P[_AF.patientId])?'<button onclick="scheduleRecall(\''+_AF.patientId+'\')" style="padding:12px 14px;background:rgba(201,168,76,.15);border:1.5px solid rgba(201,168,76,.35);color:var(--gold);font-weight:600;border-radius:12px;font-size:.82rem;cursor:pointer;font-family:inherit;white-space:nowrap">📅 6m Recall</button>':'')
-+'<button class="bgold" id="ap-save-btn" onclick="saveAppt()" style="flex:1;padding:12px;font-size:.88rem">Save</button>'
-+'</div>';
-```
++’<div><div class="sbar">📷 Photos</div>’
++’<div onclick="document.getElementById(\'ap-pf\').click()" style="border:2px dashed var(--ln);border-radius:12px;padding:16px;text-align:center;background:var(--parch);cursor:pointer">’
++’<div style="font-size:1.5rem;margin-bottom:4px">🔬</div>’
++’<div style="font-size:.8rem;font-weight:600;color:var(--slate)">Upload Clinical Photos</div>’
++’<div style="font-size:.69rem;color:var(--mist);margin-top:2px">X-rays · Intraoral · Periapical</div></div>’
++’<input type="file" id="ap-pf" accept="image/*" multiple style="display:none" onchange="addPhotos(this)">’
++’<div id="ap-pg" style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:8px">’+phH+’</div>’
++’</div></div>’
++’</div>’
++’<div style="padding:'+(S.mob?'12px 18px':'12px 22px')+';padding-bottom:'+(S.mob?'max(12px,env(safe-area-inset-bottom))':'12px')+';border-top:1px solid var(--ln);display:flex;gap:9px;background:var(--cream);flex-shrink:0">’
++’<button class="bghost" onclick="closePanel()" style="padding:12px 18px;font-size:.88rem">Cancel</button>’
++((_AF.patientId&&P[_AF.patientId])?’<button onclick="scheduleRecall(\''+_AF.patientId+'\')" style="padding:12px 14px;background:rgba(201,168,76,.15);border:1.5px solid rgba(201,168,76,.35);color:var(--gold);font-weight:600;border-radius:12px;font-size:.82rem;cursor:pointer;font-family:inherit;white-space:nowrap">📅 6m Recall</button>’:’’)
++’<button class="bgold" id="ap-save-btn" onclick="saveAppt()" style="flex:1;padding:12px;font-size:.88rem">Save</button>’
++’</div>’;
 
 }
 
@@ -1590,7 +1588,7 @@ function toggleMedCond(con){
 if(!_PF.medHistory)_PF.medHistory={conditions:[],medications:’’,allergies:’’,bloodType:’’};
 var idx=(_PF.medHistory.conditions||[]).indexOf(con);
 if(idx>-1)_PF.medHistory.conditions.splice(idx,1);
-else{if(!_PF.medHistory.conditions)_PF.medHistory.conditions=[];*PF.medHistory.conditions.push(con);}
+else{if(!_PF.medHistory.conditions)_PF.medHistory.conditions=[];_PF.medHistory.conditions.push(con);}
 var btn=document.getElementById(‘mcon-’+con.replace(/\W/g,’*’));
 if(btn){
 var on=_PF.medHistory.conditions.indexOf(con)>-1;
@@ -2058,29 +2056,27 @@ var ALL_WHOLE=[‘crown’,‘bridge’,‘pontic’,‘ssc’,‘ext_plan’,�
 if(wholeAll&&ALL_WHOLE.indexOf(wholeAll)>-1){
 var wc=C[wholeAll]||C[’’];
 
-```
 /* Dual-layer: endo base + restoration on top */
 if(baseAll&&ENDO_CONDS.indexOf(baseAll)>-1&&RESTO_CONDS.indexOf(wholeAll)>-1){
-  var bc=C[baseAll]||C[''];
-  // Base endo fill
-  h+='<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+(ow/2)+'" ry="'+(oh/2)+'" fill="'+bc.color+'" stroke="'+bc.border+'" stroke-width="'+(sw*1.2)+'"/>';
-  // Restoration overlay at 78% opacity
-  h+='<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+(ow/2)+'" ry="'+(oh/2)+'" fill="'+wc.color+'" stroke="'+wc.border+'" stroke-width="'+(sw*1.2)+'" opacity="0.78"/>';
-  // Restoration abbreviation (main, slightly up)
-  h+=abbText(wholeAll,wc.text,-size*0.07,0.24);
-  // Endo abbreviation (smaller, below)
-  h+=abbText(baseAll,bc.border,size*0.12,0.18);
+var bc=C[baseAll]||C[’’];
+// Base endo fill
+h+=’<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+(ow/2)+'" ry="'+(oh/2)+'" fill="'+bc.color+'" stroke="'+bc.border+'" stroke-width="'+(sw*1.2)+'"/>’;
+// Restoration overlay at 78% opacity
+h+=’<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+(ow/2)+'" ry="'+(oh/2)+'" fill="'+wc.color+'" stroke="'+wc.border+'" stroke-width="'+(sw*1.2)+'" opacity="0.78"/>’;
+// Restoration abbreviation (main, slightly up)
+h+=abbText(wholeAll,wc.text,-size*0.07,0.24);
+// Endo abbreviation (smaller, below)
+h+=abbText(baseAll,bc.border,size*0.12,0.18);
 } else {
-  // Single whole-tooth condition
-  h+='<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+(ow/2)+'" ry="'+(oh/2)+'" fill="'+wc.color+'" stroke="'+wc.border+'" stroke-width="'+(sw*1.2)+'"/>';
-  h+=abbText(wholeAll,wc.text,0,0.26);
-  // Extra marker for ext_plan: diagonal line
-  if(wholeAll==='ext_plan'){
-    h+='<line x1="'+(cx-r*0.38)+'" y1="'+(cy-r*0.38)+'" x2="'+(cx+r*0.38)+'" y2="'+(cy+r*0.38)+'" stroke="'+wc.border+'" stroke-width="'+(sw*1.3)+'" stroke-linecap="round"/>';
-  }
+// Single whole-tooth condition
+h+=’<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+(ow/2)+'" ry="'+(oh/2)+'" fill="'+wc.color+'" stroke="'+wc.border+'" stroke-width="'+(sw*1.2)+'"/>’;
+h+=abbText(wholeAll,wc.text,0,0.26);
+// Extra marker for ext_plan: diagonal line
+if(wholeAll===‘ext_plan’){
+h+=’<line x1="'+(cx-r*0.38)+'" y1="'+(cy-r*0.38)+'" x2="'+(cx+r*0.38)+'" y2="'+(cy+r*0.38)+'" stroke="'+wc.border+'" stroke-width="'+(sw*1.3)+'" stroke-linecap="round"/>’;
 }
-h+='</svg>'; return h;
-```
+}
+h+=’</svg>’; return h;
 
 }
 
@@ -2508,42 +2504,40 @@ var curBase=td[‘base’]||’’;
 var curIsEndo=ENDO_CONDS.indexOf(curAll)>-1;
 var curIsResto=RESTO_CONDS.indexOf(curAll)>-1;
 
-```
 if(isEndo&&curIsResto){
-  // Adding endo to a tooth already showing a restoration
-  if(curBase===_selCond){
-    // Toggle off: remove base
-    var newTd={}; newTd['all']=curAll;
-    pat.chart.teeth[tooth]=newTd;
-  } else {
-    // Set base endo
-    var newTd={}; newTd['all']=curAll; newTd['base']=_selCond;
-    pat.chart.teeth[tooth]=newTd;
-  }
-} else if(isResto&&curIsEndo){
-  // Adding restoration on top of an endo tooth
-  if(curAll===_selCond){
-    // Toggle off restoration: restore endo base or clear
-    pat.chart.teeth[tooth]=curBase?{all:curBase}:{};
-  } else {
-    // Layer restoration over endo
-    var newTd={}; newTd['all']=_selCond; newTd['base']=curAll;
-    pat.chart.teeth[tooth]=newTd;
-  }
-} else if(isResto&&curIsResto&&curBase){
-  // Swapping one restoration for another — keep base
-  if(curAll===_selCond){
-    // Toggle off: restore endo
-    pat.chart.teeth[tooth]={all:curBase};
-  } else {
-    var newTd={}; newTd['all']=_selCond; newTd['base']=curBase;
-    pat.chart.teeth[tooth]=newTd;
-  }
+// Adding endo to a tooth already showing a restoration
+if(curBase===_selCond){
+// Toggle off: remove base
+var newTd={}; newTd[‘all’]=curAll;
+pat.chart.teeth[tooth]=newTd;
 } else {
-  // Normal whole-tooth toggle
-  pat.chart.teeth[tooth]=(curAll===_selCond&&!curBase)?{}:{all:_selCond};
+// Set base endo
+var newTd={}; newTd[‘all’]=curAll; newTd[‘base’]=_selCond;
+pat.chart.teeth[tooth]=newTd;
 }
-```
+} else if(isResto&&curIsEndo){
+// Adding restoration on top of an endo tooth
+if(curAll===_selCond){
+// Toggle off restoration: restore endo base or clear
+pat.chart.teeth[tooth]=curBase?{all:curBase}:{};
+} else {
+// Layer restoration over endo
+var newTd={}; newTd[‘all’]=_selCond; newTd[‘base’]=curAll;
+pat.chart.teeth[tooth]=newTd;
+}
+} else if(isResto&&curIsResto&&curBase){
+// Swapping one restoration for another — keep base
+if(curAll===_selCond){
+// Toggle off: restore endo
+pat.chart.teeth[tooth]={all:curBase};
+} else {
+var newTd={}; newTd[‘all’]=_selCond; newTd[‘base’]=curBase;
+pat.chart.teeth[tooth]=newTd;
+}
+} else {
+// Normal whole-tooth toggle
+pat.chart.teeth[tooth]=(curAll===_selCond&&!curBase)?{}:{all:_selCond};
+}
 
 } else if(surf===’__miss’){
 pat.chart.teeth[tooth]=td[‘all’]===‘missing’?{}:{all:‘missing’};
@@ -2586,30 +2580,28 @@ var data=JSON.stringify({patients:P,appointments:A,exported:new Date().toISOStri
 var blob=new Blob([data],{type:‘application/json’});
 var filename = ‘DentaLog_backup.json’;
 
-```
-  // Fix for iOS Home Screen Apps: Pop open the Share/Save menu
-  if (navigator.canShare && navigator.share) {
-    var file = new File([blob], filename, { type: 'application/json' });
-    if (navigator.canShare({ files: [file] })) {
-      navigator.share({
-        title: 'DentaLog Backup',
-        files: [file]
-      }).then(function(){ toast('💾 Backup saved!'); }).catch(function(){});
-      return; 
-    }
-  }
+// Fix for iOS Home Screen Apps: Pop open the Share/Save menu
+if (navigator.canShare && navigator.share) {
+var file = new File([blob], filename, { type: ‘application/json’ });
+if (navigator.canShare({ files: [file] })) {
+navigator.share({
+title: ‘DentaLog Backup’,
+files: [file]
+}).then(function(){ toast(‘💾 Backup saved!’); }).catch(function(){});
+return;
+}
+}
 
-  // Fallback for regular browsers
-  var a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);
-  a.download=filename;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  setTimeout(function(){try{URL.revokeObjectURL(a.href);}catch(e){}},1000);
-  if(pCount>0)toast('💾 Backed up '+pCount+' patients');
-}catch(e){ toast('Backup failed'); }
-```
+// Fallback for regular browsers
+var a=document.createElement(‘a’);
+a.href=URL.createObjectURL(blob);
+a.download=filename;
+document.body.appendChild(a);
+a.click();
+document.body.removeChild(a);
+setTimeout(function(){try{URL.revokeObjectURL(a.href);}catch(e){}},1000);
+if(pCount>0)toast(‘💾 Backed up ‘+pCount+’ patients’);
+}catch(e){ toast(‘Backup failed’); }
 
 },800);
 }
@@ -2905,7 +2897,7 @@ planHTML+=’<tr>’
 +’<td class="tooth-num">’+esc(item.tooth||’—’)+’</td>’
 +’<td style="font-weight:600">’+esc(item.procedure||’’)+’</td>’
 +’<td><span class="badge" style="background:'+priColor[pri]+'18;border-color:'+priColor[pri]+'66;color:'+priColor[pri]+'">’+priLabel[pri]+’</span></td>’
-+’<td>’+(statusIcon[item.status]||’’)+’ ’+esc(item.status||‘pending’)+’</td>’
++’<td>’+(statusIcon[item.status]||’’)+’ ‘+esc(item.status||‘pending’)+’</td>’
 +’<td style="color:#6B7280;font-size:.72rem">’+esc(item.notes||’’)+’</td>’
 +’</tr>’;
 });
@@ -3480,7 +3472,7 @@ aH+=’<thead><tr><th style="'+lblStyle+';font-weight:400;color:var(--mist);font
 teeth.forEach(function(t){ aH+=’<th style="width:'+toothW+'px;text-align:center;font-size:'+fsSm+';font-weight:700;color:var(--slate);padding:3px 0;border-bottom:1.5px solid var(--ln)">’+t+’</th>’; });
 aH+=’</tr></thead><tbody>’;
 // SVG row
-aH+=’<tr><td style="'+lblStyle+';font-style:italic;font-weight:400;color:var(--mist)">’+(isUpper?’↑’:’↓’)+’</td>’;
+aH+=’<tr><td style="'+lblStyle+';font-style:italic;font-weight:400;color:var(--mist)">’+(isUpper?‘↑’:‘↓’)+’</td>’;
 aH+=’<td colspan="'+teeth.length+'" style="padding:0;line-height:0">’;
 aH+=’<svg width="'+totalW+'" height="'+svgTotalH+'" xmlns="http://www.w3.org/2000/svg" style="display:block">’;
 var sc=’’;
