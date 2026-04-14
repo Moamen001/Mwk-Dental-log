@@ -568,8 +568,8 @@ function calcAge(dob){
 function calcAgeStr(dob){
   var a=calcAge(dob); if(a===null)return '';
   return a+' yrs';
-function onDobInput(el){_PF.dob=el.value;var a=calcAge(el.value);_PF.age=a!==null?String(a):"";var d=document.getElementById("pp-age-display");if(d)d.textContent=a!==null?a+" yrs":"";}
 }
+function onDobInput(el){_PF.dob=el.value;var a=calcAge(el.value);_PF.age=a!==null?String(a):"";var d=document.getElementById("pp-age-display");if(d)d.textContent=a!==null?a+" yrs":"";}
 var INFECTIOUS_CONDS=['HIV/AIDS','Hepatitis B','Hepatitis C','Tuberculosis','COVID-19 (hx)','Herpes (HSV)'];
 var PRECAUTION_CONDS=['Heart Disease','Bleeding Disorder','Diabetes','Epilepsy','Pregnancy','Immunocompromised'];
 function patMedRisk(pat){
