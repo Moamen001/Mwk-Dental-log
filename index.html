@@ -1,4 +1,4 @@
-<!-- DENTALOG-V18-CLEAN -->
+<!-- DENTALOG-V19-CLEAN -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -2596,7 +2596,8 @@ delete pat.chart.teeth[tooth][surf];
 pat.chart.teeth[tooth][surf]=_selCond;
 }
 }
-saveQuiet(); renderChart();
+saveQuiet();
+renderChart();
 }
 
 /* ── Immature toggle ── */
@@ -4494,6 +4495,9 @@ paintGallery(_PF.id);
 
 /* ── INIT ─────────────────────────────── */
 applyDarkMode();
+// Ensure localStorage keys exist so loadData always uses LS path
+if(localStorage.getItem(KP)===null){localStorage.setItem(KP,"{}");}
+if(localStorage.getItem(KA)===null){localStorage.setItem(KA,"{}");}
 try{paint();}catch(e){}
 loadData();
 
