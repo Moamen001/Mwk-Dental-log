@@ -9,8 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="theme-color" content="#0F2318"/>
 <title>DentaLog</title>
-<link rel="manifest" href="manifest.json"/>
-<link rel="apple-touch-icon" href="icon-192.png"/>
+
 <meta name="apple-mobile-web-app-title" content="DentaLog"/>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
 <meta http-equiv="Pragma" content="no-cache"/>
@@ -1751,7 +1750,7 @@ w.document.write(’<tr><td style="font-weight:600">’+shortD(a.date)+’</td><
 w.document.write(’</tbody></table></div>’);
 }
 w.document.write(’<div style="margin-top:24px;padding-top:14px;border-top:1px solid #E4DDD4;font-size:.62rem;color:#9CA3AF;text-align:center">DentaLog — Dr. M.W. Khalil — Private & Confidential</div>’);
-w.document.write(’<script>window.onload=function(){setTimeout(function(){window.print();},300);}</script></body></html>’);
+w.document.write(’<scr’+‘ipt>window.onload=function(){setTimeout(function(){window.print();},300);}<’+’/script></body></html>’);
 w.document.close();
 }
 
@@ -2752,7 +2751,7 @@ w.document.write(’<!DOCTYPE html><html><head><meta charset="UTF-8">’
 +diagHTML
 +txHTML
 +legHTML
-+’<script>’
++’<scr’+‘ipt>’
 +‘window.onload=function(){’
 +’  var wrap=document.querySelector(”.arch-wrap”);’
 +’  if(wrap){’
@@ -2943,7 +2942,7 @@ w.document.write(’<!DOCTYPE html><html><head><meta charset="UTF-8">’
 +planHTML
 +’<style>.back-btn{position:fixed;top:14px;right:14px;padding:8px 16px;background:#0F2318;color:#fff;border-radius:8px;font-family:Outfit,sans-serif;font-size:.78rem;font-weight:600;cursor:pointer;border:none;z-index:9999}@media print{.back-btn{display:none}}</style>’
 +’<button class="back-btn" onclick="window.close()">← Back to App</button>’
-+’<script>window.onload=function(){setTimeout(function(){window.print();},300);}</script>’
++’<scr’+‘ipt>window.onload=function(){setTimeout(function(){window.print();},300);}</script>’
 +’</body></html>’);
 w.document.close();
 }
@@ -3892,7 +3891,7 @@ w.document.write(’<div class="footer">’
 +’<div class="sig-line">Prescriber Signature</div>’
 +’<div style="font-size:.65rem;color:#9CA3AF;text-align:right">Private & Confidential<br>Valid for prescription purposes</div>’
 +’</div>’);
-w.document.write(’<script>window.onload=function(){setTimeout(function(){window.print();},400);}</script></body></html>’);
+w.document.write(’<scr’+‘ipt>window.onload=function(){setTimeout(function(){window.print();},400);}<’+’/script></body></html>’);
 w.document.close();
 closeRxModal();
 }
