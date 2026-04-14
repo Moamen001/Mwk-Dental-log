@@ -498,6 +498,7 @@ transition:background .15s,color .15s
   // Check if already unlocked
   if(sessionStorage.getItem('dla')==='1'){
     document.getElementById('LS').className='gone';
+    if(typeof loadData==='function')loadData().catch(function(){try{paint();}catch(e){}});
   }
   // Attach listeners after DOM ready
   window.addEventListener('DOMContentLoaded',function(){
@@ -4452,6 +4453,7 @@ paintGallery(_PF.id);
 
 /* ── INIT ─────────────────────────────── */
 applyDarkMode();
+try{paint();}catch(e){}
 loadData();
 
 window.addEventListener(“DOMContentLoaded”,()=>{setTimeout(()=>{if(!document.getElementById(“app”).innerHTML.trim())paint()},1000)});
