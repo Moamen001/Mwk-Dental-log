@@ -2761,7 +2761,7 @@ w.document.write(’<!DOCTYPE html><html><head><meta charset="UTF-8">’
 +’  }’
 +’  setTimeout(function(){window.print();},400);’
 +’}’
-+’</script>’
++’<’+’/script>’
 +’</body></html>’);
 w.document.close();
 }
@@ -2942,7 +2942,7 @@ w.document.write(’<!DOCTYPE html><html><head><meta charset="UTF-8">’
 +planHTML
 +’<style>.back-btn{position:fixed;top:14px;right:14px;padding:8px 16px;background:#0F2318;color:#fff;border-radius:8px;font-family:Outfit,sans-serif;font-size:.78rem;font-weight:600;cursor:pointer;border:none;z-index:9999}@media print{.back-btn{display:none}}</style>’
 +’<button class="back-btn" onclick="window.close()">← Back to App</button>’
-+’<scr’+‘ipt>window.onload=function(){setTimeout(function(){window.print();},300);}</script>’
++’<scr’+‘ipt>window.onload=function(){setTimeout(function(){window.print();},300);}<’+’/script>’
 +’</body></html>’);
 w.document.close();
 }
