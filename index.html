@@ -1,4 +1,4 @@
-<!-- DENTALOG-V17-CLEAN -->
+<!-- DENTALOG-V18-CLEAN -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -3785,7 +3785,9 @@ await initDB();
 // localStorage is ALWAYS current (saveQuiet writes synchronously)
 // IndexedDB may lag behind if async write was interrupted
 var lsP = lsGet(KP, {}), lsA = lsGet(KA, {});
-var hasLS = Object.keys(lsP).length > 0;
+// Treat LS as primary if it has ANY data
+// Even empty {} patients means we had a fresh install, not a cleared cache
+var hasLS = localStorage.getItem(KP) !== null;
 
 if (hasLS) {
 // Use LS as primary -- it's always up to date
@@ -4426,8 +4428,10 @@ btn.style.transform='translateX(0)';
 var _origSaveQuiet = saveQuiet;
 saveQuiet = function() {
 _origSaveQuiet();
-syncToDB();
+syncToDB().catch(function(){});
 };
+// Save before page unload
+window.addEventListener('beforeunload', function(){ try{lsSet(KP,P);lsSet(KA,A);}catch(e){} });
 
 /* ── IMAGE GALLERY ─────────────────────── */
 async function handleImgUpload(el) {
