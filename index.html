@@ -520,6 +520,10 @@ window.addEventListener('unhandledrejection', function(e) {
     var inp=document.getElementById('LI');
     if(btn)btn.addEventListener('click',unlock);
     if(inp)inp.addEventListener('keydown',function(e){if(e.key==='Enter')unlock();});
+    // Auto-show PIN pad if PIN is set
+    if(localStorage.getItem('dl_pin')){
+      setTimeout(function(){if(typeof showPinModal==='function')showPinModal();},100);
+    }
   });
 })();
 
@@ -4195,7 +4199,10 @@ if(_pinBuffer===pin){
 _pinAttempts=0;
 document.getElementById('pin-modal').style.display='none';
 sessionStorage.setItem('dla','1');
-showGreeting();
+var ls=document.getElementById('LS');
+if(ls){ls.className='gone';ls.style.cssText='';}
+try{if(typeof loadData==='function')loadData().catch(function(){try{paint();}catch(e){}});}catch(e){try{paint();}catch(e2){}}
+setTimeout(function(){showGreeting();},200);
 } else {
 _pinAttempts++;
 _pinBuffer='';
