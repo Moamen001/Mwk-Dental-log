@@ -4426,13 +4426,7 @@ btn.style.transform='translateX(0)';
 });
 },50);
 }
-
-// Override saveQuiet to also sync to DB
-var _origSaveQuiet = saveQuiet;
-saveQuiet = function() {
-_origSaveQuiet();
-syncToDB().catch(function(){});
-};
+// saveQuiet saves to localStorage directly
 // Save before page unload
 window.addEventListener('beforeunload', function(){ try{lsSet(KP,P);lsSet(KA,A);}catch(e){} });
 
