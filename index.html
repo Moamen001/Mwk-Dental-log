@@ -698,7 +698,8 @@ if(!_foundP||!_foundA){
 }
 // Always save under current key so future loads are instant
 lsSet(KP,P);lsSet(KA,A);
-function saveAll(){lsSet(KP,P);lsSet(KA,A);}
+function saveQuiet(){lsSet(KP,P);lsSet(KA,A);}
+
 
 /* ── DATA ─────────────────────────────── */
 function getAppts(date){return (A[date]||[]).slice().sort(function(a,b){return (a.time||'')>(b.time||'')?1:-1;});}
