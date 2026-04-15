@@ -697,8 +697,9 @@ if(!_foundP||!_foundA){
   if(!_foundA&&Object.keys(_recovered.appts).length>0){A=_recovered.appts;}
 }
 // Always save under current key so future loads are instant
-lsSet(KP,P);lsSet(KA,A);
+function saveAll(){lsSet(KP,P);lsSet(KA,A);}
 function saveQuiet(){lsSet(KP,P);lsSet(KA,A);}
+
 
 
 /* ── DATA ─────────────────────────────── */
