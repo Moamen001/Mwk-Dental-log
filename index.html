@@ -1844,8 +1844,8 @@ saveAll();closePanel();toast(‘Patient deleted’);R();
 }
 function savePat(){
 if(!(_PF.name||’’).trim()){toast(‘Please enter a name’);return;}
-// Always pull live chart/perio/endo from P[] — saveQuiet() writes there directly,
-// so _PF’s deep-copy may be stale if the chart was edited while the patient panel was open
+// Always pull live chart/perio/endo from P[] - saveQuiet() writes there directly,
+// so _PF deep-copy may be stale if the chart was edited while the patient panel was open
 var existing=P[_PF.id];
 if(existing){
 if(existing.chart)_PF.chart=existing.chart;
