@@ -3341,42 +3341,52 @@ return null;
 
 function _parseVoicePerio(transcript){
 var t=transcript.toLowerCase().trim();
-// Fix: capture FDI "X.Y" notation (e.g. "1.6") BEFORE dots are stripped
+
+// ── 1. Extract FDI dot-notation BEFORE dots are stripped (e.g. "1.6") ──
 var _preFDI=null;
-var _fdm=t.match(/([1-4])\.([1-8])/);
+var _fdm=t.match(/\b([1-4])\.([1-8])\b/);
 if(_fdm){_preFDI=_fdm[1]+'.'+_fdm[2];t=t.replace(_fdm[0],'').trim();}
-// Normalise: "tooth" prefix optional, commas → spaces
-t=t.replace(/tooth/g,'').replace(/[,.]/g,' ').replace(/\s+/g,' ').trim();
 
-// BOP flag
-var bop=/(bleeding|bop|bleed|positive|bled)/.test(t);
-t=t.replace(/(bleeding|bop|bleed|positive|bled|no bleed|no bleeding)/g,'').trim();
+// ── 2. Normalise: strip "tooth", commas/dots → spaces ──
+t=t.replace(/\btooth\b/g,'').replace(/[,.]/g,' ').replace(/\s+/g,' ').trim();
 
-// Extract tooth number -- word-numbers or raw digits; use pre-extracted FDI if available
+// ── 3. BOP flag ──
+var bop=/\b(bleeding|bop|bleed|positive|bled)\b/.test(t);
+t=t.replace(/\b(bleeding|bop|bleed|positive|bled|no bleed|no bleeding)\b/g,'').trim();
+
+// ── 4. Extract tooth FDI (skip if already found via dot-notation) ──
 var toothFDI=_preFDI;
-// Try multi-word numbers first (e.g. "forty six")
+if(!toothFDI){
+// Try multi-word first ("forty six"), sorted longest-first to avoid partial matches
 var words=Object.keys(_VNUM).sort(function(a,b){return b.length-a.length;});
 for(var i=0;i<words.length;i++){
 if(t.indexOf(words[i])>-1){
-var n=_VNUM[words[i]];
-var fdi=_vNumericToFDI(n);
+var fdi=_vNumericToFDI(_VNUM[words[i]]);
 if(fdi){toothFDI=fdi;t=t.replace(words[i],'').trim();break;}
 }
 }
-// Try raw 2-digit number
+}
 if(!toothFDI){
-var m=t.match(/([1-4][1-8])/);
+// Fall back to raw 2-digit number
+var m=t.match(/\b([1-4][1-8])\b/);
 if(m){toothFDI=_vNumericToFDI(parseInt(m[1]));t=t.replace(m[1],'').trim();}
 }
 if(!toothFDI)return null;
 
-// Extract up to 6 probing depth values (1-12mm each)
-var nums=[], remaining=t;
-var nm;
-while((nm=remaining.match(/([0-9]{1,2})/))){
+// ── 5. Convert word-digits in remaining text to numerals ──
+// (Speech API sometimes returns "three two three" instead of "3 2 3")
+var _WD={one:1,two:2,three:3,four:4,five:5,six:6,seven:7,eight:8,nine:9,ten:10,eleven:11,twelve:12};
+Object.keys(_WD).forEach(function(w){
+t=t.replace(new RegExp('\\b'+w+'\\b','g'),String(_WD[w]));
+});
+
+// ── 6. Extract up to 6 probing depth values (1–12 mm) ──
+var nums=[],remaining=t,nm;
+while((nm=remaining.match(/\b([0-9]{1,2})\b/))){
 var val=parseInt(nm[1]);
 if(val>=1&&val<=12)nums.push(val);
 remaining=remaining.replace(nm[0],'');
+if(remaining===t)break; // safety
 }
 if(nums.length<1)return null;
 
@@ -3423,7 +3433,7 @@ for(var i=e.resultIndex;i<e.results.length;i++){
 if(e.results[i].isFinal)final+=e.results[i][0].transcript;
 else interim+=e.results[i][0].transcript;
 }
-if(txt)txt.textContent=interim||'Listening...';
+if(txt)txt.textContent='🎙️ '+(interim||final||'Listening...');
 if(final){
 var result=_parseVoicePerio(final);
 if(result){
@@ -3433,11 +3443,14 @@ var msg='✓ Tooth '+result.tooth+': '+result.pds.join('-')+(result.bop?' BOP':'
 if(txt)txt.textContent=msg;
 renderPerioChart();
 toast(msg);
-// Flash the tooth cell
 setTimeout(function(){if(txt)txt.textContent='Listening...';},1800);
 } else {
-if(txt)txt.textContent='⚠ Could not parse: '+final;
+if(txt)txt.textContent='⚠ Heard: “'+final+'” -- try: 46 3 4 3';
+setTimeout(function(){if(txt)txt.textContent='Listening...';},3000);
 }
+} else {
+if(txt)txt.textContent='⚠ Heard: “'+final+'” -- try: 46 3 4 3';
+setTimeout(function(){if(txt)txt.textContent='Listening...';},3000);
 }
 }
 };
@@ -4072,8 +4085,8 @@ var pat=P[_chartPatId]; if(!pat)return;
 if(!pat.endo)pat.endo={};
 var _d=pat.endo[tooth]||{};
 var d={
-canals:Object.assign({MB:false,ML:false,DB:false,DL:false,P:false,MV2:false},_d.canals||{}),
-wls:Object.assign({MB:'',ML:'',DB:'',DL:'',P:'',MV2:''},_d.wls||({})),
+canals:Object.assign({MB:false,ML:false,DB:false,DL:false,P:false,MB2:false},_d.canals||{}),
+wls:Object.assign({MB:'',ML:'',DB:'',DL:'',P:'',MB2:''},_d.wls||({})),
 ref:_d.ref||'',
 maf:_d.maf||'',
 irrigants:Object.assign({NaOCl:false,EDTA:false,CHX:false,saline:false},_d.irrigants||{}),
@@ -4090,7 +4103,7 @@ function cbChk(id,label,val){return '<label id="lbl-'+id+'" style="display:flex;
 +'<input type="checkbox" id="'+id+'"'+(val?' checked':'')+' onchange="updateEndo()" style="width:15px;height:15px;accent-color:#8B5CF6">'+label+'</label>';}
 function irChk(id,label,val,col){return '<label style="display:flex;align-items:center;gap:6px;font-size:.78rem;color:var(--ink);cursor:pointer;padding:5px 10px;border-radius:8px;background:'+(val?col+'18':' var(--parch)')+';border:1px solid '+(val?col:'var(--ln)')+'">'
 +'<input type="checkbox" id="'+id+'"'+(val?' checked':'')+' onchange="updateEndo()" style="width:15px;height:15px;accent-color:'+col+'">'+label+'</label>';}
-var CANAL_LIST=['MB','ML','DB','DL','P','MV2'];
+var CANAL_LIST=['MB','ML','DB','DL','P','MB2'];
 // Build per-canal WL fields (visible only when canal is checked)
 var wlFields='';
 CANAL_LIST.forEach(function(cn){
@@ -4111,7 +4124,7 @@ m.innerHTML='<div style="background:var(--cream);border-radius:22px 22px 0 0;wid
 +'<div style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#7C3AED;margin-bottom:8px">Canals Present</div>'
 +'<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px" id="endo-canals">'
 +cbChk('ec-MB','MB',d.canals.MB)+cbChk('ec-ML','ML',d.canals.ML)+cbChk('ec-DB','DB',d.canals.DB)
-+cbChk('ec-DL','DL',d.canals.DL)+cbChk('ec-P','P',d.canals.P)+cbChk('ec-MV2','MV2',d.canals.MV2)
++cbChk('ec-DL','DL',d.canals.DL)+cbChk('ec-P','P',d.canals.P)+cbChk('ec-MB2','MB2',d.canals.MB2)
 +'</div>'
 +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">'
 +'<div>'
@@ -4139,7 +4152,7 @@ m.addEventListener('click',function(e){if(e.target===m)m.remove();});
 
 function updateEndoVisuals(){
 // Fix 4b: re-style canal labels and toggle WL rows based on current checkbox state
-var CANAL_LIST=['MB','ML','DB','DL','P','MV2'];
+var CANAL_LIST=['MB','ML','DB','DL','P','MB2'];
 var anyChecked=false;
 CANAL_LIST.forEach(function(cn){
 var cb=document.getElementById('ec-'+cn);
@@ -4163,7 +4176,7 @@ updateEndoVisuals();
 var tooth=m._tooth;
 var pat=P[_chartPatId]; if(!pat)return;
 if(!pat.endo)pat.endo={};
-var CANAL_LIST=['MB','ML','DB','DL','P','MV2'];
+var CANAL_LIST=['MB','ML','DB','DL','P','MB2'];
 var wls={};
 CANAL_LIST.forEach(function(cn){wls[cn]=(document.getElementById('ewl-'+cn)||{}).value||'';});
 pat.endo[tooth]={
@@ -4173,7 +4186,7 @@ ML:document.getElementById('ec-ML').checked,
 DB:document.getElementById('ec-DB').checked,
 DL:document.getElementById('ec-DL').checked,
 P:document.getElementById('ec-P').checked,
-MV2:document.getElementById('ec-MV2').checked,
+MB2:document.getElementById('ec-MB2').checked,
 },
 wls:wls,
 maf:(document.getElementById('endo-maf')||{}).value||'',
