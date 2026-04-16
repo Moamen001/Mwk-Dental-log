@@ -2365,18 +2365,35 @@ b.addEventListener('click',b._h);
 function selCond(cond){_selCond=cond;buildCondSelector();}
 function buildCondSelector(){
 var COND=getCOND(_chartMode);
-var h='<div style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--FL);width:100%;margin-bottom:8px">'
-+'Mode: '+MODE_LABELS[_chartMode]
-+'</div><div style="display:flex;flex-wrap:wrap;gap:5px">';
-Object.keys(COND).forEach(function(k){
-var c=COND[k], on=_selCond===k;
-h+='<div class="csel'+(on?' active':'')+'" data-cond="'+esc(k)+'" '
+var EXAM_KEYS=['','caries','caries2','fracture','missing','ext_plan'];
+var TX_BASE_KEYS=['filling','crown','bridge','pontic','extracted','rct','vpt','dpc','ipc'];
+var TX_PEDO_KEYS=['pulp_p','pulp_t','ssc','apex','revasc'];
+function _chip(k){
+var c=COND[k]; if(!c)return '';
+var on=_selCond===k;
+return '<div class="csel'+(on?' active':'')+'" data-cond="'+esc(k)+'" '
 +'style="background:'+c.color+';color:'+(k?c.text:'var(--ink)')+';border-color:'+(on?'#0F2318':c.border)+'">'
 +(k?'<span style="width:8px;height:8px;border-radius:50%;background:'+c.border+';display:inline-block;flex-shrink:0"></span>':'')
-+c.label+(on?' ✓':'')+'</div>';
-});
++c.label+(on?' \u2713':'')+'</div>';
+}
+function _sectionLabel(icon,text){
+return '<div style="font-size:.56rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--FL);width:100%;margin:8px 0 4px">'+icon+' '+text+'</div>';
+}
+var h='<div style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--FL);width:100%;margin-bottom:8px">'
++'Mode: '+MODE_LABELS[_chartMode]
++'</div>';
+// Examination findings section
+h+='<div style="display:flex;flex-wrap:wrap;gap:5px;width:100%">';
+h+=_sectionLabel('\uD83D\uDD0D','Examination Findings');
+EXAM_KEYS.forEach(function(k){h+=_chip(k);});
 h+='</div>';
-if(_chartMode!=='adult')h+='<div style="font-size:.58rem;color:var(--mist);margin-top:5px;font-style:italic">Pink tones = paediatric procedures</div>';
+// Treatment completed section
+var txKeys=TX_BASE_KEYS.slice();
+if(_chartMode!=='adult')TX_PEDO_KEYS.forEach(function(k){txKeys.push(k);});
+h+='<div style="display:flex;flex-wrap:wrap;gap:5px;width:100%;margin-top:4px">';
+h+=_sectionLabel('\u2705','Treatment Completed');
+txKeys.forEach(function(k){h+=_chip(k);});
+h+='</div>';
 var el=document.getElementById('cond-legend'); if(el)el.innerHTML=h;
 // Attach handlers
 document.querySelectorAll('#cond-legend .csel').forEach(function(el){
@@ -2775,8 +2792,10 @@ w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8">'
 +'.leg-item{display:flex;align-items:center;gap:4px;font-size:.65rem;color:#1C2B22}'
 +'.leg-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}'
 +'@page{size:A4;margin:12mm}'
-+'@media print{body{padding:0}.no-print{display:none}}'
++'.back-btn{position:fixed;top:12px;right:14px;background:#2A5C3F;color:#fff;border:none;padding:7px 14px;border-radius:20px;font-size:.72rem;font-weight:700;cursor:pointer;font-family:Outfit,sans-serif;z-index:99}'
++'@media print{body{padding:0}.no-print{display:none}.back-btn{display:none}}'
 +'</style></head><body>'
++'<button class="back-btn" onclick="window.close()">\u2190 Close</button>'
 +'<h1>Dental Chart</h1>'
 +'<div class="meta">'
 +'<span>Patient: <strong>'+patName+'</strong></span>'
@@ -3322,6 +3341,10 @@ return null;
 
 function _parseVoicePerio(transcript){
 var t=transcript.toLowerCase().trim();
+// Fix: capture FDI "X.Y" notation (e.g. "1.6") BEFORE dots are stripped
+var _preFDI=null;
+var _fdm=t.match(/([1-4])\.([1-8])/);
+if(_fdm){_preFDI=_fdm[1]+'.'+_fdm[2];t=t.replace(_fdm[0],'').trim();}
 // Normalise: "tooth" prefix optional, commas → spaces
 t=t.replace(/tooth/g,'').replace(/[,.]/g,' ').replace(/\s+/g,' ').trim();
 
@@ -3329,8 +3352,8 @@ t=t.replace(/tooth/g,'').replace(/[,.]/g,' ').replace(/\s+/g,' ').trim();
 var bop=/(bleeding|bop|bleed|positive|bled)/.test(t);
 t=t.replace(/(bleeding|bop|bleed|positive|bled|no bleed|no bleeding)/g,'').trim();
 
-// Extract tooth number -- look for word numbers first then raw digits
-var toothFDI=null;
+// Extract tooth number -- word-numbers or raw digits; use pre-extracted FDI if available
+var toothFDI=_preFDI;
 // Try multi-word numbers first (e.g. "forty six")
 var words=Object.keys(_VNUM).sort(function(a,b){return b.length-a.length;});
 for(var i=0;i<words.length;i++){
@@ -3685,13 +3708,35 @@ if(el){el.focus();var v=el.value;el.value='';el.value=v;}
 function printPerioChart(){
 var content=document.getElementById('perio-body');
 if(!content)return;
-var w=window.open('','_blank');
-w.document.write('<html><head><title>Periodontal Chart</title><style>body{font-family:sans-serif;padding:20px}table{border-collapse:collapse}input{border:1px solid #ccc;text-align:center;width:32px}</style></head><body>');
-w.document.write('<h2>Periodontal Chart</h2>');
+var pat=P[_chartPatId];
+var patName=pat?(pat.name||'Patient'):'Patient';
+var w=window.open('','_blank','width=1100,height=800');
+if(!w){toast('Allow pop-ups to print');return;}
+w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8">'
++'<title>Periodontal Chart \u2014 '+patName+'</title>'
++'<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">'
++'<style>'
++'*{box-sizing:border-box;margin:0;padding:0}'
++'body{font-family:Outfit,sans-serif;background:#fff;color:#1C2B22;padding:20px 24px}'
++'h1{font-size:1.3rem;color:#0F2318;margin-bottom:4px}'
++'p.meta{font-size:.72rem;color:#4A6355;margin-bottom:18px}'
++'table{border-collapse:collapse;width:100%}'
++'th,td{border:1px solid #D1D5DB;text-align:center;padding:4px 3px;font-size:.65rem}'
++'th{background:#F3F4F6;font-weight:700}'
++'input{border:none;text-align:center;width:28px;font-size:.65rem;background:transparent}'
++'.back-btn{position:fixed;top:12px;right:14px;background:#2A5C3F;color:#fff;border:none;'
++'padding:7px 14px;border-radius:20px;font-size:.72rem;font-weight:700;cursor:pointer;'
++'font-family:Outfit,sans-serif;z-index:99}'
++'@page{size:A4 landscape;margin:10mm}'
++'@media print{.back-btn{display:none}}'
++'</style></head><body>'
++'<button class="back-btn" onclick="window.close()">\u2190 Close</button>'
++'<h1>Periodontal Chart</h1>'
++'<p class="meta">Patient: <strong>'+patName+'</strong>'
++(pat&&pat.age?' &nbsp;|&nbsp; Age: <strong>'+pat.age+'</strong>':'')+'</p>');
 w.document.write(content.innerHTML);
-w.document.write('</body></html>');
+w.document.write('<scr'+'ipt>window.onload=function(){setTimeout(function(){window.print();},400);}<'+'/script></body></html>');
 w.document.close();
-w.print();
 }
 
 /* ── INDEXEDDB CORE ──────────────────────── */
@@ -4025,38 +4070,58 @@ ENDO TRACKER
 function openEndoPanel(tooth){
 var pat=P[_chartPatId]; if(!pat)return;
 if(!pat.endo)pat.endo={};
-var d=pat.endo[tooth]||{canals:{MB:false,ML:false,DB:false,DL:false,P:false,MV2:false},wl:'',ref:'',maf:'',irrigants:{NaOCl:false,EDTA:false,CHX:false,saline:false},notes:''};
+var _d=pat.endo[tooth]||{};
+var d={
+canals:Object.assign({MB:false,ML:false,DB:false,DL:false,P:false,MV2:false},_d.canals||{}),
+wls:Object.assign({MB:'',ML:'',DB:'',DL:'',P:'',MV2:''},_d.wls||({})),
+ref:_d.ref||'',
+maf:_d.maf||'',
+irrigants:Object.assign({NaOCl:false,EDTA:false,CHX:false,saline:false},_d.irrigants||{}),
+notes:_d.notes||''
+};
+// Backward-compat: if old single wl exists and no wls yet, pre-fill MB
+if(_d.wl&&!_d.wls)d.wls.MB=_d.wl;
 var m=document.createElement('div');
 m.id='endo-panel';
 m.style.cssText='position:fixed;inset:0;z-index:970;background:rgba(5,12,8,.65);display:flex;align-items:flex-end;justify-content:center;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)';
 var FDI_NAMES={'1.1':'UR1','1.2':'UR2','1.3':'UR3','1.4':'UR4','1.5':'UR5','1.6':'UR6','1.7':'UR7','1.8':'UR8','2.1':'UL1','2.2':'UL2','2.3':'UL3','2.4':'UL4','2.5':'UL5','2.6':'UL6','2.7':'UL7','2.8':'UL8','3.1':'LL1','3.2':'LL2','3.3':'LL3','3.4':'LL4','3.5':'LL5','3.6':'LL6','3.7':'LL7','3.8':'LL8','4.1':'LR1','4.2':'LR2','4.3':'LR3','4.4':'LR4','4.5':'LR5','4.6':'LR6','4.7':'LR7','4.8':'LR8'};
 var tname=FDI_NAMES[tooth]||tooth;
-function cbChk(id,label,val){return '<label style="display:flex;align-items:center;gap:6px;font-size:.78rem;color:var(--ink);cursor:pointer;padding:5px 10px;border-radius:8px;background:'+(val?'rgba(139,92,246,.12)':'var(--parch)')+';border:1px solid '+(val?'#8B5CF6':'var(--ln)')+'">'
+function cbChk(id,label,val){return '<label id="lbl-'+id+'" style="display:flex;align-items:center;gap:6px;font-size:.78rem;color:var(--ink);cursor:pointer;padding:5px 10px;border-radius:8px;background:'+(val?'rgba(139,92,246,.12)':'var(--parch)')+';border:1px solid '+(val?'#8B5CF6':'var(--ln)')+'">'
 +'<input type="checkbox" id="'+id+'"'+(val?' checked':'')+' onchange="updateEndo()" style="width:15px;height:15px;accent-color:#8B5CF6">'+label+'</label>';}
 function irChk(id,label,val,col){return '<label style="display:flex;align-items:center;gap:6px;font-size:.78rem;color:var(--ink);cursor:pointer;padding:5px 10px;border-radius:8px;background:'+(val?col+'18':' var(--parch)')+';border:1px solid '+(val?col:'var(--ln)')+'">'
 +'<input type="checkbox" id="'+id+'"'+(val?' checked':'')+' onchange="updateEndo()" style="width:15px;height:15px;accent-color:'+col+'">'+label+'</label>';}
+var CANAL_LIST=['MB','ML','DB','DL','P','MV2'];
+// Build per-canal WL fields (visible only when canal is checked)
+var wlFields='';
+CANAL_LIST.forEach(function(cn){
+var vis=d.canals[cn];
+wlFields+='<div id="wl-row-'+cn+'" style="display:'+(vis?'flex':'none')+';align-items:center;gap:6px;margin-bottom:6px">'
++'<span style="font-size:.72rem;font-weight:700;color:#7C3AED;min-width:32px">'+cn+'</span>'
++'<input class="inp" id="ewl-'+cn+'" type="number" inputmode="decimal" step="0.5" value="'+esc(d.wls[cn]||'')+'" placeholder="mm" oninput="updateEndo()" style="font-size:15px;max-width:90px">'
++'<span style="font-size:.68rem;color:var(--mist)">mm</span>'
++'</div>';
+});
 m.innerHTML='<div style="background:var(--cream);border-radius:22px 22px 0 0;width:100%;max-width:520px;max-height:88vh;overflow-y:auto;-webkit-overflow-scrolling:touch;animation:slUp .28s cubic-bezier(.16,1,.3,1)">'
-// header
 +'<div style="background:#7C3AED;padding:18px 20px 14px;border-radius:22px 22px 0 0;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:1">'
 +'<div><div style="font-family:Playfair Display,serif;font-size:1rem;color:#fff">Endo Tracker</div>'
 +'<div style="font-size:.68rem;color:rgba(255,255,255,.65);margin-top:2px">Tooth '+tname+' ('+tooth+')</div></div>'
-+'<button onclick="document.getElementById(\'endo-panel\').remove()" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.15);color:#fff;font-size:1.2rem;display:flex;align-items:center;justify-content:center;border:none;cursor:pointer">×</button>'
++'<button onclick="document.getElementById(\'endo-panel\').remove()" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.15);color:#fff;font-size:1.2rem;display:flex;align-items:center;justify-content:center;border:none;cursor:pointer">\xd7</button>'
 +'</div>'
-// body
 +'<div style="padding:18px 20px">'
-// canals
 +'<div style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#7C3AED;margin-bottom:8px">Canals Present</div>'
 +'<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px" id="endo-canals">'
 +cbChk('ec-MB','MB',d.canals.MB)+cbChk('ec-ML','ML',d.canals.ML)+cbChk('ec-DB','DB',d.canals.DB)
 +cbChk('ec-DL','DL',d.canals.DL)+cbChk('ec-P','P',d.canals.P)+cbChk('ec-MV2','MV2',d.canals.MV2)
 +'</div>'
-// measurements
 +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">'
-+'<div><label class="lbl">Working Length (mm)</label><input class="inp" id="endo-wl" type="number" inputmode="decimal" step="0.5" value="'+esc(d.wl||'')+'" placeholder="e.g. 21.0" oninput="updateEndo()" style="font-size:16px"></div>'
++'<div>'
++'<label class="lbl">Working Length per Canal</label>'
++'<div id="wl-fields">'+wlFields+'</div>'
++'<div id="wl-empty" style="font-size:.7rem;color:var(--mist);font-style:italic;display:'+(CANAL_LIST.some(function(cn){return d.canals[cn];})?'none':'block')+'">Check canals above to enter WL</div>'
++'</div>'
 +'<div><label class="lbl">Master Apical File</label><input class="inp" id="endo-maf" value="'+esc(d.maf||'')+'" placeholder="e.g. #35" oninput="updateEndo()" style="font-size:16px"></div>'
 +'<div style="grid-column:1/-1"><label class="lbl">Reference Point</label><input class="inp" id="endo-ref" value="'+esc(d.ref||'')+'" placeholder="e.g. Mesiobuccal cusp tip" oninput="updateEndo()" style="font-size:16px"></div>'
 +'</div>'
-// irrigants
 +'<div style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#7C3AED;margin-bottom:8px">Irrigants Used</div>'
 +'<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px" id="endo-irr">'
 +irChk('ei-NaOCl','NaOCl',d.irrigants.NaOCl,'#3B82F6')
@@ -4064,7 +4129,6 @@ m.innerHTML='<div style="background:var(--cream);border-radius:22px 22px 0 0;wid
 +irChk('ei-CHX','CHX',d.irrigants.CHX,'#F97316')
 +irChk('ei-saline','Saline',d.irrigants.saline,'#94A3B8')
 +'</div>'
-// notes
 +'<div style="margin-bottom:18px"><label class="lbl">Clinical Notes</label>'
 +'<textarea class="inp" id="endo-notes" style="min-height:65px;font-size:14px" oninput="updateEndo()" placeholder="Calcified canals, separated file, etc...">'+esc(d.notes||'')+'</textarea></div>'
 +'</div></div>';
@@ -4072,12 +4136,36 @@ document.body.appendChild(m);
 m._tooth=tooth;
 m.addEventListener('click',function(e){if(e.target===m)m.remove();});
 }
+
+function updateEndoVisuals(){
+// Fix 4b: re-style canal labels and toggle WL rows based on current checkbox state
+var CANAL_LIST=['MB','ML','DB','DL','P','MV2'];
+var anyChecked=false;
+CANAL_LIST.forEach(function(cn){
+var cb=document.getElementById('ec-'+cn);
+if(!cb)return;
+var lbl=document.getElementById('lbl-ec-'+cn);
+var row=document.getElementById('wl-row-'+cn);
+var on=cb.checked;
+if(on)anyChecked=true;
+if(lbl){lbl.style.background=on?'rgba(139,92,246,.12)':'var(--parch)';lbl.style.borderColor=on?'#8B5CF6':'var(--ln)';}
+if(row)row.style.display=on?'flex':'none';
+});
+var emptyMsg=document.getElementById('wl-empty');
+if(emptyMsg)emptyMsg.style.display=anyChecked?'none':'block';
+}
+
 function updateEndo(){
 var m=document.getElementById('endo-panel');
 if(!m)return;
+// Fix 4b: update visuals first
+updateEndoVisuals();
 var tooth=m._tooth;
 var pat=P[_chartPatId]; if(!pat)return;
 if(!pat.endo)pat.endo={};
+var CANAL_LIST=['MB','ML','DB','DL','P','MV2'];
+var wls={};
+CANAL_LIST.forEach(function(cn){wls[cn]=(document.getElementById('ewl-'+cn)||{}).value||'';});
 pat.endo[tooth]={
 canals:{
 MB:document.getElementById('ec-MB').checked,
@@ -4087,7 +4175,7 @@ DL:document.getElementById('ec-DL').checked,
 P:document.getElementById('ec-P').checked,
 MV2:document.getElementById('ec-MV2').checked,
 },
-wl:(document.getElementById('endo-wl')||{}).value||'',
+wls:wls,
 maf:(document.getElementById('endo-maf')||{}).value||'',
 ref:(document.getElementById('endo-ref')||{}).value||'',
 irrigants:{
