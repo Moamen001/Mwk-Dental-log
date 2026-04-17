@@ -1632,7 +1632,7 @@ labSumH+='<div style="background:'+col+'12;border:1px solid '+col+'33;border-rad
 labSumH+='<div><div style="font-size:.75rem;font-weight:600;color:var(--ink)">'+esc(lc.item)+'</div>';
 if(lc.lab)labSumH+='<div style="font-size:.62rem;color:var(--mist)">'+esc(lc.lab)+(lc.expectedDate?' · Due: '+shortD(lc.expectedDate):'')+'</div>';
 labSumH+='</div>';
-labSumH+='<select onchange="var pat=P[\''+esc(f.id)+'\'];if(pat&&pat.labCases){pat.labCases[pat.labCases.indexOf(pat.labCases.find(function(x){return x.id===\''+esc(lc.id)+'\';}))]&&(pat.labCases.find(function(x){return x.id===\''+esc(lc.id)+'\';}).status=this.value);saveAll();buildPatPanel();}" style="font-size:.62rem;padding:3px 6px;border-radius:6px;border:1.5px solid '+col+'55;background:'+col+'18;color:'+col+';font-weight:700;font-family:inherit;cursor:pointer">';
+labSumH+='<select data-patid="'+esc(f.id)+'" data-lcid="'+esc(lc.id)+'" onchange="patLabStatusChange(this)" style="font-size:.62rem;padding:3px 6px;border-radius:6px;border:1.5px solid '+col+'55;background:'+col+'18;color:'+col+';font-weight:700;font-family:inherit;cursor:pointer">';
 labSumH+=LAB_STATUSES.map(function(s){return '<option value="'+s+'"'+(lc.status===s?' selected':'')+'>'+s+'</option>';}).join('');
 labSumH+='</select>';
 labSumH+='</div>';
@@ -4189,6 +4189,13 @@ var _labVisitDate=null;
 var LAB_STATUSES=['Impression Taken','Sent to Lab','Fit In','Delivery','Completed'];
 var LAB_STATUS_COLORS={'Impression Taken':'#8B5CF6','Sent to Lab':'#3B82F6','Fit In':'#F59E0B','Delivery':'#10B981','Completed':'#6B7280'};
 
+function patLabStatusChange(sel){
+var patId=sel.dataset.patid;
+var lcId=sel.dataset.lcid;
+var pat=P[patId]; if(!pat||!pat.labCases)return;
+var lc=pat.labCases.find(function(x){return x.id===lcId;});
+if(lc){lc.status=sel.value;saveAll();buildPatPanel();}
+}
 function openLabModal(patId,visitDate){
 _labVisitDate=visitDate||null;
 _labPatId=patId||null;
