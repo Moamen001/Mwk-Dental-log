@@ -420,7 +420,8 @@ window.addEventListener('unhandledrejection', function(e) {
   </div>
   <div style="flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:10px 0 16px" id="chart-body"></div>
   <div style="padding:10px 12px;padding-bottom:max(10px,env(safe-area-inset-bottom));border-top:1px solid var(--ln);background:var(--cream);flex-shrink:0;max-height:38vh;overflow-y:auto;-webkit-overflow-scrolling:touch">
-    <div style="display:flex;gap:5px;flex-wrap:wrap" id="cond-legend"></div>
+    <div id="chart-arch-btns" style="padding:6px 0 8px;display:flex;gap:6px;flex-wrap:wrap"><button onclick="applyArchDenture('upper','complete_denture')" style="padding:5px 10px;border-radius:20px;font-size:.6rem;font-weight:700;cursor:pointer;font-family:inherit;border:1.5px solid #D97706;background:rgba(217,119,6,.15);color:#D97706">Upper Full Denture</button><button onclick="applyArchDenture('lower','complete_denture')" style="padding:5px 10px;border-radius:20px;font-size:.6rem;font-weight:700;cursor:pointer;font-family:inherit;border:1.5px solid #D97706;background:rgba(217,119,6,.15);color:#D97706">Lower Full Denture</button><button onclick="applyArchDenture('upper','partial_denture')" style="padding:5px 10px;border-radius:20px;font-size:.6rem;font-weight:700;cursor:pointer;font-family:inherit;border:1.5px solid #F59E0B;background:rgba(245,158,11,.15);color:#F59E0B">Upper Partial Denture</button><button onclick="applyArchDenture('lower','partial_denture')" style="padding:5px 10px;border-radius:20px;font-size:.6rem;font-weight:700;cursor:pointer;font-family:inherit;border:1.5px solid #F59E0B;background:rgba(245,158,11,.15);color:#F59E0B">Lower Partial Denture</button></div>
+<div style="display:flex;gap:5px;flex-wrap:wrap" id="cond-legend"></div>
   </div>
 </div>
 <div id="tooth-detail-bg" onclick="closeToothDetail()"></div>
@@ -1691,6 +1692,7 @@ needs.sort(function(a,b){
   });
   return aE-bE;
 });
+chartSumH+=sumBox('Completed',done,'#16A34A','✓');
 chartSumH+=sumBox('Needs Attention',needs,'#EF4444','⚠');
 if(txPlan.length)chartSumH+=sumBox('Treatment Plan',txPlan,'#F59E0B','📋');
 chartSumH+='</div>';
@@ -1965,7 +1967,8 @@ var priLabel={1:'Urgent',2:'Routine',3:'Elective'};
 w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8">'
 +'<title>Patient Record -- '+esc(f.name||'Patient')+'</title>'
 +'<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">'
-+'<style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:Outfit,sans-serif;color:#1C2B22;padding:22px 28px}h1{font-family:"Playfair Display",serif;font-size:1.5rem;color:#0F2318;margin-bottom:3px}.meta{font-size:.72rem;color:#4A6355;margin-bottom:20px;display:flex;gap:14px;flex-wrap:wrap}.sec{margin-bottom:18px}.sec-title{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#2A5C3F;margin-bottom:8px;padding-bottom:4px;border-bottom:1.5px solid #E4DDD4}.tbl{width:100%;border-collapse:collapse;font-size:.78rem}.tbl th{text-align:left;font-size:.6rem;font-weight:700;text-transform:uppercase;color:#4A6355;padding:5px 8px;border-bottom:1.5px solid #E4DDD4}.tbl td{padding:5px 8px;border-bottom:1px solid #F3F4F6}.badge{display:inline-block;padding:2px 9px;border-radius:20px;font-size:.66rem;font-weight:600;border:1px solid transparent}@page{size:A4;margin:12mm}@media print{body{padding:0}}</style></head><body>'
++'<style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:Outfit,sans-serif;color:#1C2B22;padding:22px 28px}h1{font-family:"Playfair Display",serif;font-size:1.5rem;color:#0F2318;margin-bottom:3px}.meta{font-size:.72rem;color:#4A6355;margin-bottom:20px;display:flex;gap:14px;flex-wrap:wrap}.sec{margin-bottom:18px}.sec-title{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#2A5C3F;margin-bottom:8px;padding-bottom:4px;border-bottom:1.5px solid #E4DDD4}.tbl{width:100%;border-collapse:collapse;font-size:.78rem}.tbl th{text-align:left;font-size:.6rem;font-weight:700;text-transform:uppercase;color:#4A6355;padding:5px 8px;border-bottom:1.5px solid #E4DDD4}.tbl td{padding:5px 8px;border-bottom:1px solid #F3F4F6}.badge{display:inline-block;padding:2px 9px;border-radius:20px;font-size:.66rem;font-weight:600;border:1px solid transparent}@page{size:A4;margin:12mm}@media print{body{padding:0}.back-btn{display:none}}.back-btn{position:fixed;top:12px;right:14px;background:#2A5C3F;color:#fff;border:none;padding:7px 14px;border-radius:20px;font-size:.72rem;font-weight:700;cursor:pointer;font-family:Outfit,sans-serif;z-index:99}</style></head><body>'
++'<button class="back-btn" onclick="window.close()">\u2190 Close</button>'
 +'<h1>'+esc(f.name||'Patient')+'</h1>'
 +'<div class="meta">'
 +(f.age?'<span>Age: <strong>'+f.age+'</strong></span>':'')
@@ -2403,7 +2406,14 @@ return '<text x="'+cx+'" y="'+(cy+(yOffset||0)+fs*0.36)+'" text-anchor="middle" 
 
 /* ── Whole-tooth conditions ── */
 var ALL_WHOLE=['crown','bridge','pontic','ssc','ext_plan','extracted',
-'rct','vpt','pulp_p','pulp_t','apex','revasc'];
+'rct','vpt','pulp_p','pulp_t','apex','revasc',
+'implant','partial_denture','complete_denture'];
+
+// Abscess: transparent overlay — handled separately below
+if(wholeAll==='abscess'){
+  // Draw normal tooth, then red glow overlay
+  // Fall through to surface rendering but add overlay
+}
 
 if(wholeAll&&ALL_WHOLE.indexOf(wholeAll)>-1){
 var wc=C[wholeAll]||C[''];
@@ -2497,6 +2507,14 @@ h+='<ellipse cx="'+(ox+ow*0.88)+'" cy="'+cy+'" rx="'+(ow*0.12)+'" ry="'+(oh*0.26
 }
 
 h+='<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+(ow/2)+'" ry="'+(oh/2)+'" fill="none" stroke="#CBD5E1" stroke-width="'+sw+'"/>';
+// Abscess overlay: semi-transparent red halo on top of any tooth
+if(wholeAll==='abscess'){
+  var acol='rgba(239,68,68,.28)';
+  var abord='#EF4444';
+  h+='<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+(ow/2)+'" ry="'+(oh/2)+'" fill="'+acol+'" stroke="'+abord+'" stroke-width="'+(sw*1.5)+'"/>';
+  var abAbbr=COND_ABBR['abscess']||'AB';
+  h+='<text x="'+cx+'" y="'+(cy+size*0.1)+'" text-anchor="middle" font-size="'+(size*0.22)+'" font-weight="800" fill="#7F1D1D" font-family="system-ui,sans-serif">'+abAbbr+'</text>';
+}
 h+='</svg>'; return h;
 }
 
@@ -2640,10 +2658,17 @@ var teeth=arch==='upper'?upper:lower;
 var allHave=teeth.every(function(t){return (pat.chart.teeth[t]&&pat.chart.teeth[t]['all'])===cond;});
 teeth.forEach(function(t){
   if(!pat.chart.teeth[t])pat.chart.teeth[t]={};
-  if(allHave){pat.chart.teeth[t]['all']='';}
-  else{pat.chart.teeth[t]['all']=cond;}
+  if(allHave){
+    pat.chart.teeth[t]['all']='';
+    // Also remove 'all' key entirely if empty to keep data clean
+    if(!pat.chart.teeth[t]['base']&&!Object.keys(pat.chart.teeth[t]).some(function(k){return k!=='all'&&pat.chart.teeth[t][k];})){
+      delete pat.chart.teeth[t];
+    }
+  } else {
+    pat.chart.teeth[t]['all']=cond;
+  }
 });
-saveQuiet(); renderChart();
+saveAll(); renderChart();
 toast((allHave?'Cleared ':'Applied ')+cond.replace('_',' ')+' for '+arch+' arch');
 }
 function renderChart(){
@@ -2672,32 +2697,6 @@ h+='<div style="text-align:center;font-size:.55rem;color:var(--slate);font-weigh
 h+=archGrid(MX_L,'lower');
 }
 b.innerHTML=h;
-// Arch-level denture quick buttons
-var archBtns=document.getElementById('chart-arch-btns');
-if(!archBtns){
-  archBtns=document.createElement('div');
-  archBtns.id='chart-arch-btns';
-  archBtns.style.cssText='padding:8px 12px 4px;display:flex;gap:6px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.08)';
-  var archDefs=[
-    {label:'Upper Full Denture',  arch:'upper', cond:'complete_denture', col:'#D97706'},
-    {label:'Lower Full Denture',  arch:'lower', cond:'complete_denture', col:'#D97706'},
-    {label:'Upper Partial Denture',arch:'upper', cond:'partial_denture',  col:'#F59E0B'},
-    {label:'Lower Partial Denture',arch:'lower', cond:'partial_denture',  col:'#F59E0B'}
-  ];
-  archDefs.forEach(function(d){
-    var btn=document.createElement('button');
-    btn.style.cssText='padding:5px 10px;border-radius:20px;font-size:.62rem;font-weight:700;cursor:pointer;font-family:inherit;border:1.5px solid '+d.col+';background:'+d.col+'22;color:'+d.col;
-    btn.textContent=d.label;
-    btn.onclick=(function(arch,cond){return function(){applyArchDenture(arch,cond);};})(d.arch,d.cond);
-    archBtns.appendChild(btn);
-  });
-  var chartBody=document.getElementById('chart-body');
-  if(chartBody&&chartBody.parentNode){
-    var legend=document.getElementById('chart-panel').querySelector('[id="cond-legend"]');
-    var legendWrap=legend?legend.parentElement:null;
-    if(legendWrap)legendWrap.insertBefore(archBtns,legendWrap.firstChild);
-  }
-}
 buildCondSelector();
 // Event delegation - remove old if exists to prevent stacking
 if(b._h)b.removeEventListener('click',b._h);
@@ -2907,7 +2906,7 @@ _detailTooth=null;
 
 /* ── Surface tap ── */
 var WHOLE_TOOTH_CONDS=['crown','bridge','pontic','ssc','ext_plan','extracted','missing',
-'rct','vpt','pulp_p','pulp_t','apex','revasc','implant','partial_denture','complete_denture'];
+'rct','vpt','pulp_p','pulp_t','apex','revasc','implant','partial_denture','complete_denture','abscess'];
 
 function tapSurf(tooth,surf){
 var pat=P[_chartPatId]; if(!pat)return;
