@@ -381,6 +381,7 @@ window.addEventListener('unhandledrejection', function(e) {
     <div id="ls-drname" style="font-size:.72rem;color:#C9A84C;letter-spacing:.06em;font-weight:600;margin-bottom:2px;transition:opacity .25s ease,transform .25s ease">DR. MOAMEN WALID KHALIL</div>
     <div id="ls-drtitle" style="font-size:.65rem;color:#8BAF95;letter-spacing:.08em;text-transform:uppercase;margin-bottom:20px;transition:opacity .2s ease,transform .2s ease">Doctor of Dental Medicine</div>
     <div id="ls-tap-hint" style="display:none;margin-bottom:24px;font-size:.62rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(201,168,76,.65);animation:tapHintPulse 2.6s ease-in-out infinite">TAP LOGO TO UNLOCK</div>
+    <script>if(localStorage.getItem('dl_pin')){document.write('<style>#ls-pw-area,#ls-private{display:none!important}#ls-tap-hint{display:block!important}#ls-logo-wrap{cursor:pointer}</style>');}</script>
     <div id="ls-pw-area" style="width:100%;transition:opacity .25s ease,transform .25s ease"><input id="LI" type="password" placeholder="Password" autocomplete="off"
       style="width:100%;padding:14px 18px;border-radius:14px;border:1.5px solid rgba(255,255,255,.15);background:rgba(255,255,255,.08);color:#fff;font-size:1.1rem;text-align:center;letter-spacing:.1em;font-family:inherit;outline:none"/>
     <button id="LB"
